@@ -1,0 +1,736 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+  
+
+  
+
+  
+    <meta name="author" content="南神">
+  
+
+  
+
+  
+
+  <title>三剑客sed_grep_awk | Welcome to Nanbert&#39;s blog</title>
+
+  
+
+  
+    <link rel="icon" href="/favicon.ico">
+  
+
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+    <link href="https://cdn.bootcss.com/highlight.js/9.15.6/styles/default.min.css" rel="stylesheet">
+  
+
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+  <div id="container">
+    <!-- header -->
+<header class="header">
+  <div class="header-container ">
+    <nav class="header-navbar">
+      <div class="header-navbar-left">
+        <h1 class="header-navbar-logo">
+          <a href="/">
+            
+              <img src="https://s2.ax1x.com/2019/07/18/ZXn6S0.png">
+            
+          </a>
+        </h1>
+      </div>
+      <div class="header-navbar-right">
+        <div class="header-navbar-btn">
+          <div></div>
+          <div></div>
+          <div></div>
+        </div>
+        <ul class="header-navbar-list">
+          
+            <li class="header-navbar-item"><a href="/">首页</a></li>
+          
+            <li class="header-navbar-item"><a href="/categories">分类</a></li>
+          
+            <li class="header-navbar-item"><a href="/tags">标签</a></li>
+          
+        </ul>
+      </div>
+    </nav>
+  </div>
+</header>
+
+
+    <section id="main"><!-- 文章详情页 -->
+
+<!-- banner container -->
+<div class="banner-container" style="background-image: url(css/images/1.jpg)">
+  <div class="banner-inner">
+
+    
+    
+
+    
+    
+
+    
+    
+
+    
+    
+    
+
+    
+    
+      <h1 class="header-title"><a href="/2019/07/18/三剑客sed_awk_grep/">三剑客sed_grep_awk</a></h1>
+      <h2 class="header-subtitle">
+        
+          <a class="article-category-link" href="/categories/文本处理/">文本处理</a>
+          <!--
+          
+  <a href="javascript:;" class="article-date">
+    <time datetime="2019-07-18T10:16:15.000Z" itemprop="datePublished">2019-07-18 06:16:15</time>
+  </a>
+
+          -->
+        
+      </h2>
+    
+
+    
+    
+  </div>
+</div>
+
+<!-- 文章内容 -->
+
+<div class="body-container">
+  <article id="article-content" class="main-container article-content zoom">
+    
+    
+
+    <div class="article-entry">
+      <ol>
+<li>script即脚本，至少包含一行指令，每个指令都包括两个部分:<strong>模式和过程</strong>,模式是由斜杠(/)分割的正则表达式。模式默认为每一行，过程默认为打印,sed与awk的过程有较大的区别。</li>
+<li>sed选项总结</li>
+</ol>
+<table>
+<thead>
+<tr>
+<th align="center">options</th>
+<th align="center">describe</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">-e</td>
+<td align="center">编辑随后的指令</td>
+</tr>
+<tr>
+<td align="center">-f</td>
+<td align="center">跟随脚本中的文件名</td>
+</tr>
+<tr>
+<td align="center">-n</td>
+<td align="center">阻止输入行的自动输出</td>
+</tr>
+<tr>
+<td align="center">-r</td>
+<td align="center">支持扩展的正则表达式</td>
+</tr>
+<tr>
+<td align="center">-i</td>
+<td align="center">直接修改读取的文件内容,而不是由屏幕输出</td>
+</tr>
+</tbody></table>
+<ol start="3">
+<li>awk选项总结</li>
+</ol>
+<table>
+<thead>
+<tr>
+<th align="center">options</th>
+<th align="center">describe</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">-F</td>
+<td align="center">改变字段分割符,默认为空格</td>
+</tr>
+<tr>
+<td align="center">-f</td>
+<td align="center">跟随脚本中的文件名</td>
+</tr>
+<tr>
+<td align="center">-v</td>
+<td align="center">跟随var=value,作用域在BEGIN之前</td>
+</tr>
+<tr>
+<td align="center">awk内置变量</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center">variable</td>
+<td align="center">describe</td>
+</tr>
+<tr>
+<td align="center">:-:</td>
+<td align="center">:-:</td>
+</tr>
+<tr>
+<td align="center">$0</td>
+<td align="center">整行内容</td>
+</tr>
+<tr>
+<td align="center">NR</td>
+<td align="center">行号</td>
+</tr>
+<tr>
+<td align="center">NF</td>
+<td align="center">每段记录(即行)的字段数(即单词)</td>
+</tr>
+<tr>
+<td align="center">FS</td>
+<td align="center">字段分隔符,最好在BEGIN的时候定义</td>
+</tr>
+<tr>
+<td align="center">RS</td>
+<td align="center">记录分隔符</td>
+</tr>
+<tr>
+<td align="center">FILENAME</td>
+<td align="center">当前输入文件名称</td>
+</tr>
+<tr>
+<td align="center">ARGV</td>
+<td align="center">命令行参数的数组,不包括脚本本身,下标从0开始,最后一个是ARGC-1</td>
+</tr>
+<tr>
+<td align="center">ARGC</td>
+<td align="center">ARGV数组个数</td>
+</tr>
+<tr>
+<td align="center">ENVIRON</td>
+<td align="center">环境变量数组,下标是环境变量名</td>
+</tr>
+</tbody></table>
+<ol start="4">
+<li><p>正则表达式的元字</p>
+<table>
+<thead>
+<tr>
+<th align="center">特殊字符</th>
+<th align="center">用途</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center"><code>.</code></td>
+<td align="center">匹配除换行符外的任一单字符。在awk中,句点也能匹配换行符</td>
+</tr>
+<tr>
+<td align="center"><code>*</code></td>
+<td align="center">匹配任一个(包括零个)在它面前的字符(包括由正则表达式指定的字符)</td>
+</tr>
+<tr>
+<td align="center"><code>[...]</code></td>
+<td align="center">匹配方括号中的字符类中的任意一个。如果方括号中第一个字符为脱字符号(^),则表示否定匹配,即匹配除了换行符和类中列出的那些字符以外的所有字符。在awk中,也匹配换行符。连字符(-)用于表示字符的范围。如果类中的第一个字符为右方括号(])则表示它是类的成员＝所有其他的元字符在被指定为类中的成员时都会失去它们原来的含义</td>
+</tr>
+<tr>
+<td align="center"><code>^</code></td>
+<td align="center">如果作为正则表达式的第一个字符,则表示匹配行的开始。在awk中匹配字符串的开始,即使字符串包含嵌入的换行符</td>
+</tr>
+<tr>
+<td align="center"><code>$</code></td>
+<td align="center">如果作为正则表达式的最后一个字符,则表示匹配行的结尾。在awk中匹配字符串的结尾,即使字符串包含嵌入的换行符。</td>
+</tr>
+<tr>
+<td align="center"><code>\{n,m\}</code></td>
+<td align="center">匹配它前面某个范围内单个字符出现的次数(包括由正则表达式指定的字符)。<code>\{n\}</code>将匹配n次出现,<code>\{n,\}</code>至少匹配n次出现,而且<code>\{n,m\}</code>匹配n和m之间任意次的出现</td>
+</tr>
+<tr>
+<td align="center"><code>\</code></td>
+<td align="center">转义随后的特殊字符</td>
+</tr>
+</tbody></table>
+</li>
+<li><p>扩展的元字符  </p>
+<table>
+<thead>
+<tr>
+<th align="center">特殊字符</th>
+<th align="center">用途</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center"><code>+</code></td>
+<td align="center">匹配前面的正则表达式的一次或多次出现</td>
+</tr>
+<tr>
+<td align="center"><code>?</code></td>
+<td align="center">匹配前面的正则表达式的零次或一次出现</td>
+</tr>
+<tr>
+<td align="center"><code>|</code></td>
+<td align="center">逻辑表达或,指定可以匹配前面的或后面的正则表达式</td>
+</tr>
+<tr>
+<td align="center"><code>()</code></td>
+<td align="center">对正则表达式分组,括号里的内容选择性匹配,如Lab(oratories)</td>
+</tr>
+<tr>
+<td align="center"><code>{n,m}</code></td>
+<td align="center">匹配它前面某个范围内单个字符出现的次数,与上面的一样</td>
+</tr>
+</tbody></table>
+</li>
+<li><p>POSIX字符类</p>
+<table>
+<thead>
+<tr>
+<th align="center">类</th>
+<th align="center">打印字符</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">[:alnum:]</td>
+<td align="center">可打印的字符(包括空白字符)</td>
+</tr>
+<tr>
+<td align="center">[:alpha:]</td>
+<td align="center">字母字符</td>
+</tr>
+<tr>
+<td align="center">[:blank:]</td>
+<td align="center">空格和制表符</td>
+</tr>
+<tr>
+<td align="center">[:cntrl:]</td>
+<td align="center">控制字符</td>
+</tr>
+<tr>
+<td align="center">[:digit:]</td>
+<td align="center">数字字符</td>
+</tr>
+<tr>
+<td align="center">[:graph:]</td>
+<td align="center">可打印和可见的(非空格)字符</td>
+</tr>
+<tr>
+<td align="center">[:lower:]</td>
+<td align="center">小写字符</td>
+</tr>
+<tr>
+<td align="center">[:print:]</td>
+<td align="center">可打印的字符(包括空白字符)</td>
+</tr>
+<tr>
+<td align="center">[:punct:]</td>
+<td align="center">标点符号字符</td>
+</tr>
+<tr>
+<td align="center">[:space:]</td>
+<td align="center">空白字符</td>
+</tr>
+<tr>
+<td align="center">[:xdigit:]</td>
+<td align="center">十六进制数字</td>
+</tr>
+</tbody></table>
+</li>
+<li><p>替换的标志位</p>
+<table>
+<thead>
+<tr>
+<th align="center">flag</th>
+<th align="center">含义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">n</td>
+<td align="center">1到512之间的一个数字,表示对文本模式中指定模式第n次出现的情况进行替换</td>
+</tr>
+<tr>
+<td align="center">g</td>
+<td align="center">对模式空间的所有出现的情况进行全局更改</td>
+</tr>
+<tr>
+<td align="center">p</td>
+<td align="center">打印模式空间的内容</td>
+</tr>
+<tr>
+<td align="center">W</td>
+<td align="center">将模式空间的内容写到文件file中</td>
+</tr>
+</tbody></table>
+</li>
+</ol>
+<p>替换部分的元字符:&amp;表示命中的正则表达式,<code>\</code>后面可接回车,<code>\&lt;n&gt;</code>表示匹配的部分</p>
+<p>9.如果模式中含有’/‘可以用感叹号作定界符,如<code>s!/usr/mail!/usr2/mail!</code></p>
+<ol start="10">
+<li><p>a.追加[line-address(单个行)]a\</p>
+   <text>
+b.插入[line-address(单个行)]i\
+   <text>
+c.更改[address(可以是范围)]c\
+   <text>
+以上三个命令text内容如果是多行,则行末要加反斜线,最后一行不需要,文本内容不影响模式空间,也不参与后面的脚本运行
+d.列表[address]l;不仅显示内容,非打印字符显示为两个数字的ASCLL代码
+e.[line-address]=;不打印内容,但打印行号
+f.[address]n;读取输入的下一行,并且后续命令用于新行
+g.[line-address]r <filename>;在匹配行之后,读入某个文件
+h.[address]w <filename>;写入某个文件
+i.[line-address]q;停止读入新行
+j.[address]y/abc/xyz/;转换(类似于tr),有用的例子转换大小写y/abcdefghijklmnopqrstuvwxyz/ABCDEFGHIJKLMNOPQRSTUVWXYZ/</filename></filename></text></text></text></li>
+<li><p>提取文件中一行只包含一个引号(假定其余都是两个引号):<code>grep &#39;&quot;&#39; file | egrep -v &#39;.*&quot;.*&quot;.*&#39;</code></p>
+</li>
+<li><p>sed:反斜线圆括号用法<br><code>s/\([0-9]\)-\([0-9]\)/\2-\1/g</code>指交换斜杠前后的两个数字</p>
+</li>
+<li><p>grep一些知识</p>
+<table>
+<thead>
+<tr>
+<th align="center">options</th>
+<th align="center">describe</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">-n</td>
+<td align="center">显示行号</td>
+</tr>
+<tr>
+<td align="center">-v</td>
+<td align="center">显示所有不包含模式的行</td>
+</tr>
+<tr>
+<td align="center">-i</td>
+<td align="center">跟随var=value</td>
+</tr>
+</tbody></table>
+</li>
+<li><p>应用举例<br>　a.<code>cat jane.txt | tr &#39;[A-Z]&#39; &#39;[a-z]&#39; | tr &#39;;.?\047,():&quot;-&#39; &#39; &#39;|tr &#39; &#39; &#39;\012&#39; | grep -v &#39;^ *$&#39; | sort | uniq -c | sort -n</code>:统计单词数,首先大写替换为小写，然后替换标点为空格,再替换空格为换行,去空行,排序，计数，再排序。<br>　b.<code>grep -5 &#39;pattern&#39; inputfile</code> 打印匹配前后5行<br>　c.<code>grep -A 5 &#39;pattern&#39; inputfile</code> 打印匹配后5行<br>　d.<code>grep -B 5 &#39;pattern&#39; inputfile</code> 打印匹配前5行</p>
+</li>
+<li><p>正则表达式举例<br>　<code>&quot;.*&quot;</code>引号中的任意字符串</p>
+</li>
+<li><p>脚本中所有编辑命令都将依次应用于每个输入行</p>
+</li>
+<li><p>sed分组命令格式</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">/pattern/ &#123;</span><br><span class="line">动作１</span><br><span class="line">动作２</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>多行模式空间:多行Next(N)命令通过读取新的输入行,并将它添加到模式空间的现有内容来创建多行模式空间。模式空间最初的内容和新的输入行之间用换行符分隔。在模式空间中嵌入的换行符可以用转义序列”\n”来匹配。在多行模式空间中,元字符”^”匹配空间中的第一个字条,而不匹配换行符后面的字符。同样,”$”只匹配模式空间中最后的换行符,而不匹配任何嵌入的换行符。在执行next命令之后,控制将被传递给脚本中的后续命令。<br>举例:例如要将”Owner and Operator Guide”换成”Installation Guide”,对于处于不同行的情况可以这样做:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">/Operator$/&#123;</span><br><span class="line">N</span><br><span class="line">s/Owner and Operator\nGuide/Installation Guide/</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+</li>
+</ol>
+<p>上面比较不普遍,更普遍做法是:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">s/Owner and Operator Guide/Installtion Guide/</span><br><span class="line">/Owner/&#123;</span><br><span class="line">N</span><br><span class="line">s/ *\n/ /</span><br><span class="line">s/Owner and Operator Guide *Installation Guide\</span><br><span class="line">/</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ol start="15">
+<li>删除命令(d)删除模式空间的内容并导致读入新的输入行,从而在脚本的顶端重新使用编辑方法。删除命令(D)稍微有些不同:它删除模式空间中直到第一个嵌入的换行符的这部分内容。他不会导致读入新的输入行,相反,<strong>它返回到脚本的顶端</strong>,将这些指令应用于模式空间的剩余内容。<br>例子:<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">/^ $/&#123;</span><br><span class="line">N</span><br><span class="line">/^ \n$/D</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+</li>
+</ol>
+<p>以上可以删除连续多个空行,只保留一个空行</p>
+<ol start="16">
+<li><p>保持空间:当改变模式空间中的原始内容时,用于保留当前输入行的副本。影响模式空间的命令</p>
+<table>
+<thead>
+<tr>
+<th align="center">命令</th>
+<th align="center">缩写</th>
+<th align="center">功能</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">Hold</td>
+<td align="center">h或H</td>
+<td align="center">将模式空间的内容复制或追加到保持空间(大写追加)</td>
+</tr>
+<tr>
+<td align="center">Get</td>
+<td align="center">g或G</td>
+<td align="center">将保持空间的内容复制或追加到模式空间(大写追加)</td>
+</tr>
+<tr>
+<td align="center">Exchange</td>
+<td align="center">x</td>
+<td align="center">交换保持空间和模式空间的内容</td>
+</tr>
+</tbody></table>
+</li>
+<li><p>分支:在脚本中将控制转移到另一行</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">:top</span><br><span class="line">command1</span><br><span class="line">command2</span><br><span class="line">/pattern/b top</span><br><span class="line">command3</span><br></pre></td></tr></table></figure>
+
+</li>
+</ol>
+<p>如果没有定义top(可以为任意命名),则将跳转到脚本末尾,上面例子意思是如果找不到pattern,才执行commmand3<br>测试:如果当前匹配行上成功进行了替换,那么test命令就会转到标签处,用法和分支一样,把b改成t即可</p>
+<ol start="18">
+<li>awk处理多行记录,主要改变分隔符<br><code>BEGIN { FS=&quot;\n&quot;;RS=&quot;&quot;}</code>,RS代表空行</li>
+<li>awk 循环判断与C语言一样</li>
+<li><code>awk &#39;script&#39; x=1 test1 x=2 test2</code>,awk可以这样传递变量</li>
+<li>awk中的数组不需要声明定义,都是关联数组<br><code>delete array[subscript]</code>删除一个元素</li>
+<li>awk内置函数<table>
+<thead>
+<tr>
+<th align="center">算术函数</th>
+<th align="center">描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">cos(x)</td>
+<td align="center">返回x的余弦</td>
+</tr>
+<tr>
+<td align="center">exp(x)</td>
+<td align="center">返回e的x次幂</td>
+</tr>
+<tr>
+<td align="center">sin(x)</td>
+<td align="center">返回x的正弦</td>
+</tr>
+<tr>
+<td align="center">int(x)</td>
+<td align="center">返回x的整数部分的值</td>
+</tr>
+<tr>
+<td align="center">log(x)</td>
+<td align="center">返回x的自然对数(以e为底)</td>
+</tr>
+<tr>
+<td align="center">sqrt(x)</td>
+<td align="center">返回x的平方根</td>
+</tr>
+<tr>
+<td align="center">atan2(y,x)</td>
+<td align="center">返回y/x的反正切</td>
+</tr>
+<tr>
+<td align="center">rand()</td>
+<td align="center">返回0-1之间的随机数</td>
+</tr>
+<tr>
+<td align="center">srand(x)</td>
+<td align="center">建立rand()的新的种子数。如果没有指定种子数,就用当天的时间。返回旧的种子值</td>
+</tr>
+<tr>
+<td align="center">字符串函数</td>
+<td align="center">描述</td>
+</tr>
+<tr>
+<td align="center">gsub(r,s,t)</td>
+<td align="center">在字符串t中用字符串s替换和正则表达式r匹配的所有字符串。返回替换的个数。如果没有给出t,默认$0</td>
+</tr>
+<tr>
+<td align="center">index(s,t)</td>
+<td align="center">返回子串t在字符串s中的位置,如果没有指定s,则返回0</td>
+</tr>
+<tr>
+<td align="center">length(s)</td>
+<td align="center">返回字符串s的长度,当没有给出s时,返回$0的长度</td>
+</tr>
+<tr>
+<td align="center">match(s,r)</td>
+<td align="center">如果正则表达式r在s中出现,则返回出现的起始位置;如果没有,则返回0</td>
+</tr>
+<tr>
+<td align="center">spllit(s,a,sep)</td>
+<td align="center">使用字段分隔符sep将字符串s分解到数组a的元素中,返回元素个数。如果没有给出sep,则使用FS。数组分割和字段分隔采用相同的方式</td>
+</tr>
+<tr>
+<td align="center">sub(r,s,t)</td>
+<td align="center">在字符串t中用s替换正则表达式r的首次匹配。如果成功则返回1,否则返回0,,如果没有给出t,默认为$0</td>
+</tr>
+<tr>
+<td align="center">substr(s,p,n)</td>
+<td align="center">返回字符串s中从位置p开始最大长度为n的子串。如果没有给出n,返回从p开始剩余的字符串。</td>
+</tr>
+<tr>
+<td align="center">tolower(s)</td>
+<td align="center">将字符串s中的所有大写字符转换为小写,并返回新串</td>
+</tr>
+<tr>
+<td align="center">toupper(s)</td>
+<td align="center">将字符串s中的小写字符转换为大写,并返回新串</td>
+</tr>
+</tbody></table>
+</li>
+<li>自定义函数除了参数不需要类型声明(都是字符串),和C语言一样<br>例子:<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> insert(STRING,POS,INS) &#123;</span><br><span class="line">	...</span><br><span class="line">	...</span><br><span class="line">	...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+</li>
+</ol>
+
+    </div>
+
+    <div class="article-footer">
+      
+    </div>
+
+    <div class="article-navs">
+      
+<nav class="card-container card-article-nav">
+  <div class="card-wrap">
+    
+      <div class="card-item">
+        <article>
+          
+          <a class="card-link article-nav-link" href="/2019/07/19/字符相关/"></a>
+          <div class="article-nav-caption">Newer</div>
+          <div class="article-nav-title">字符相关</div>
+        </article>
+      </div>
+    
+    
+      <div class="card-item">
+        <article>
+          
+          <a class="card-link article-nav-link" href="/2019/07/18/C-小知识/"></a>
+          <div class="article-nav-caption">Older</div>
+          <div class="article-nav-title">C++小知识</div>
+        </article>
+      </div>
+    
+  </div>
+</nav>
+
+    </div>
+    
+    
+  <div id="comment-container" class="comment-container"></div>
+
+  </article>
+</div></section>
+
+    <!-- footer container -->
+<footer id="footer" class="footer">
+  <div class="footer-container">
+    <p>&copy; 2020 <a href="/" target="_blank">南神</a></p>
+
+    
+      <p id="hitokoto"></p>
+      <script src="https://v1.hitokoto.cn/?c=a&amp;encode=js&select=%23hitokoto" defer></script>
+    
+
+    
+
+    <p>Powered by <a href="https://hexo.io" target="_blank">Hexo</a> Theme - <a href="https://github.com/miiiku/flex-block" target="_blank">flex-block</a></p>
+  </div>
+</footer>
+  </div>
+
+  
+  <!-- 尾部其他内容 -->
+
+<!-- analytics -->
+
+
+
+
+
+
+
+  
+  
+
+<!-- dplayer 视频 -->
+<link rel="stylesheet" href="/lib/DPlayer.min.css">
+<script src="/lib/DPlayer.min.js"></script>
+<script type="text/javascript">
+  const dplayer = document.querySelectorAll(".dplayer");
+  dplayer && initDPlayer(dplayer);
+  function initDPlayer(els) {
+    let elsArr = Array.from(els);
+    elsArr.forEach(el => {
+      let url = el.dataset.url;
+      let cover = el.dataset.cover;
+      new DPlayer({
+        container: el,
+        video: { url: url, pic: cover },
+        theme: "#b7daff",
+        autoplay: false,
+        loop: false,
+        mutex: true,
+      });
+    });
+  }
+</script>
+
+
+<!-- 瀑布流 -->
+<script src="/lib/macy.js"></script>
+<script type="text/javascript">
+
+if (document.querySelector(".waterfall-container")) {
+  initCss()
+  initMacy(".waterfall-container")
+}
+
+function initMacy(selector) {
+  new Macy({
+    container: selector,
+    trueOrder: false,
+    waitForImages: false,
+    useOwnImageLoader: false,
+    mobileFirst: true,
+    columns: 1,
+    margin: {
+      y: 16,
+      x: '2%',
+    },
+    breakAt: {
+      1200: {
+        margin: {
+          x: 20
+        },
+        columns: 4
+      },
+      940: {
+        margin: {
+          x: 20
+        },
+        columns: 3
+      },
+      520: {
+        margin: {
+          x: 10
+        },
+        columns: 2
+      },
+      400: {
+        margin: {
+          x: 0
+        },
+        columns: 1
+      },
+    }
+  });
+}
+
+function initCss() {
+  let cssStyle = document.createElement("style")
+  cssStyle.innerText = `.waterfall-container p { display: block; border-radius: 4px; overflow: hidden; margin: 0; }`
+  document.head.appendChild(cssStyle);
+}
+</script>
+
+
+<!-- 图片预览 -->
+<script src="/lib/zoom.min.js"></script>
+<script>
+  document.querySelector(".zoom") && zoom(".zoom", {
+    margin: 15,
+    padding: 15,
+    radius: 5,
+    specify: "",
+    filter: "gallery",
+  });
+</script>
+
+
+<script src="/js/script.js"></script>
+</body>
+</html>

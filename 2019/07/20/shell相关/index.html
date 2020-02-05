@@ -154,11 +154,11 @@
 </tr>
 <tr>
 <td align="center">`</td>
-<td align="center">命令替换</td>
+<td align="center">命令替换,<code>\\</code>代表反斜线自身,```代表反撇号自身</td>
 </tr>
 <tr>
 <td align="center">* [] ?</td>
-<td align="center">文件通配符</td>
+<td align="center">文件通配符,不匹配*和/</td>
 </tr>
 <tr>
 <td align="center">()</td>
@@ -177,6 +177,84 @@
 <td align="center">取消所有元字符特殊含义</td>
 </tr>
 </tbody></table>
+<ol start="3">
+<li><code>bash -x script.sh</code>调试脚本</li>
+<li><code>-x</code> 可执行返回真<br><code>-f</code> 文件存在返回真<br><code>-z</code> 变量为空返回真<br><code>-w</code> 测试文件可否写<br><code>-r</code> 测试文件可否读<br><code>-d</code> 目录文件是否为真<br><code>-s</code> 文件大小是否大于0<br><code>$(#var)</code>变量字符数<br><code>$((数字表达式))</code>必须双括号</li>
+<li>特殊变量<table>
+<thead>
+<tr>
+<th align="center">变量</th>
+<th align="center">意义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center"><code>RANDOM</code></td>
+<td align="center">随机值</td>
+</tr>
+<tr>
+<td align="center"><code>IFS</code></td>
+<td align="center">分隔符默认为空格</td>
+</tr>
+<tr>
+<td align="center"><code>OPTARG</code></td>
+<td align="center">当前参数后面跟的字符窜</td>
+</tr>
+<tr>
+<td align="center"><code>OPTIND</code></td>
+<td align="center">参数个数</td>
+</tr>
+<tr>
+<td align="center"><code>$$</code></td>
+<td align="center">该脚本进程ID</td>
+</tr>
+<tr>
+<td align="center"><code>$?</code></td>
+<td align="center">上个调用返回值</td>
+</tr>
+<tr>
+<td align="center"><code>$@</code></td>
+<td align="center">除$0的所有参数列表</td>
+</tr>
+<tr>
+<td align="center"><code>$*</code></td>
+<td align="center">除$0的所有参数列表</td>
+</tr>
+<tr>
+<td align="center"><code>$#</code></td>
+<td align="center">参数个数</td>
+</tr>
+</tbody></table>
+</li>
+<li>追加信息于文件<br><code>cat - &gt;&gt; filename</code></li>
+<li>操作符<table>
+<thead>
+<tr>
+<th align="center">操作符</th>
+<th align="center">意义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center"><code>:=</code></td>
+<td align="center">如果变量未定义则使用后面的定义</td>
+</tr>
+<tr>
+<td align="center"><code>:-</code></td>
+<td align="center">如果变量定义但为空则使用后面定义</td>
+</tr>
+<tr>
+<td align="center">:?</td>
+<td align="center">判断变量是否定义</td>
+</tr>
+</tbody></table>
+</li>
+<li>读文件<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">while</span> <span class="built_in">read</span> line</span><br><span class="line"><span class="keyword">do</span></span><br><span class="line"><span class="built_in">echo</span> <span class="variable">$line</span></span><br><span class="line"><span class="keyword">done</span> &lt; filename</span><br></pre></td></tr></table></figure>
+
+</li>
+</ol>
+<p>9.eval命令<br><code>eval $(date &#39;+weekday=&quot;%a&quot; month=&quot;%b&quot; day=&quot;%e&quot; year=&quot;%G&quot;&#39;)</code>分别赋予几个变量值<br>10.trap命令<br><code>trap &quot;命令&quot; &quot;信号&quot;</code>当脚本遇到信号前执行的命令,信号有:SIGEXIT、SIGQUIT(CTRL-C)<br>11.<code>{}</code>花括号中的命令在当前shell执行命令<br>12.<code>expr string : pattern</code>判断是否符合正则表达式<br>13.</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> &lt;name&gt; <span class="keyword">in</span> &lt;list&gt;</span><br><span class="line"><span class="keyword">do</span> </span><br><span class="line">...</span><br><span class="line"><span class="keyword">done</span></span><br></pre></td></tr></table></figure>
+
+<p>如果省略list,则list为命令行参数<br>还有一种<code>for i in $(seq start step end)</code></p>
 
     </div>
 
@@ -222,7 +300,7 @@
     <!-- footer container -->
 <footer id="footer" class="footer">
   <div class="footer-container">
-    <p>&copy; 2019 <a href="/" target="_blank">南神</a></p>
+    <p>&copy; 2020 <a href="/" target="_blank">南神</a></p>
 
     
       <p id="hitokoto"></p>
