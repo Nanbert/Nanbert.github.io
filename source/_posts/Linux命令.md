@@ -6,6 +6,7 @@ categories: Linux
 tags: 命令
 cover:
 ---
+
 1.  
 `grep -r "关键字" "目录"`
 跳过二进制选项:- -binary-files=without-match
