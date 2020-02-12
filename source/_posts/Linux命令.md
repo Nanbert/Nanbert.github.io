@@ -252,3 +252,4 @@ command:执行的命令
 `crontab -l`显示crontab文件
 `crontab -r`删除crontab文件
 `crontab -ir`删除crontab文件前提醒用户
+hello
