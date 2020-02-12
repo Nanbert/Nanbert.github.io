@@ -130,7 +130,7 @@
 <li>单独命令间:<br>“;”:一直执行无论成功与否<br>“&amp;&amp;”:前面的命令执行成功才能执行后面<br>“||”:前面的命令执行失败才能执行后面</li>
 <li><code>kill %2</code><br>2代表jobs命令显示下的任务号码,%区别于进程ID</li>
 <li>export相当于把局部变量扩展至全局</li>
-<li><code>man 3 fork</code><br>man中数字1表示命令，2表示系统调用，3表示库函数，5表示配置文件，上面就是查看库函数fork的帮助文档</li>
+<li><code>man 3 fork</code><br>man中数字1表示命令，2表示系统调用，3表示库函数，5表示配置文件，上面就是查看库函数fork的帮助文档<br><code>man 2 syscalls</code>查看系统调用</li>
 <li>后台运行<br><code>nohup [命令参数] &amp;</code></li>
 <li>ln命令：<code>ln source target</code> 硬链接，<code>ln -s source target</code>软连接。<br>两者的区别:<br>1.软连接不增加文件的链接数，而硬链接则增加<br>2.不能跨文件系统创建硬链接，硬链接不能连接目录<br>3.硬链接的inode号完全相同，指向同一文件，软连接则有不同的inode号，并且新文件类型为专有软链接类型，其指向的文件内容存储着实际文件的路径<br>4.硬链接指向的文件当链接数减为0时，才真正删除，软链接若实际文件删除，则软链接失效。</li>
 <li><code>nslookup github.global.ssl.fastly.Net</code><br><code>nslookup github.com</code><br>查到的域名加到/etc/hosts里可以加快访问速度<br><code>sudo /etc/init.d/networking restart</code>刷新缓存</li>
@@ -161,6 +161,7 @@
 <li>输入重定向<br><code>cat &lt; filename</code>打印名为filename的文件内容<br><code>cat &lt;&lt; END</code>接下来直到END之间的内容<br><code>cat &lt;&lt;&lt; filename</code>打印filename这个单词</li>
 <li>du命令<br>　<code>du -sh * | sort -rh</code>查看当前目录下所有文件大小并排序<br>　<code>du -sh</code>统计当前目录大小<br>　<code>du -h --max-depth=1 | sort</code>查看当前所有一级子目录大小并排序</li>
 </ol>
+<p>41.at命令一次性任务计划<br><code>systemctl start atd.service</code>启动服务<br><code>at &lt;时间点&gt;</code>时间点格式举例:19:33、3pm+7 days、20:00 tomorrow<br>之后进入交互界面,输入命令,ctrl+D退出<br><code>at -l</code>查看列表<br><code>at -c 任务号</code>查看任务内容<br><code>at -r 任务号</code>取消任务<br>/etc/at.deny,文件中的用户不能执行at(系统默认存在)<br>/etc/at.allow,默认不存在,只要存在的用户才能执行<br>42.crontab服务定时任务计划<br><code>sudo systemctl start cronie.service</code>启动服务<br><code>crontab -e</code>新增任务或编辑任务<br>格式如下:<br><code>&lt;minute&gt; &lt;hour&gt; &lt;day&gt; &lt;month&gt; &lt;week&gt; &lt;command&gt;</code><br>minute:0到59之间任何整数<br>hour:0到23之间任何整数<br>day:1到31之间的任何整数<br>month:1到12之间任何整数<br>week:1到7之间任何整数,<br>command:执行的命令<br>(*)代表所有可能值<br>(,)一个列表范围<br>(-)表示一个整数范围<br>(/)指定时间间隔的频率,比如”0-23/2”表示每两小时执行<br><code>crontab -l</code>显示crontab文件<br><code>crontab -r</code>删除crontab文件<br><code>crontab -ir</code>删除crontab文件前提醒用户<br>hello</p>
 
     </div>
 
