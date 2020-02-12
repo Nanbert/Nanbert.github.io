@@ -50,6 +50,7 @@ export相当于把局部变量扩展至全局
 12.  
 `man 3 fork`
 man中数字1表示命令，2表示系统调用，3表示库函数，5表示配置文件，上面就是查看库函数fork的帮助文档
+`man 2 syscalls`查看系统调用
 13. 
 后台运行
 ` nohup [命令参数] &`
@@ -223,3 +224,30 @@ chmod [ugoa][+=-][rwxst] 文件名表
 　`du -sh`统计当前目录大小
 　`du -h --max-depth=1 | sort`查看当前所有一级子目录大小并排序
 
+41.at命令一次性任务计划  
+`systemctl start atd.service`启动服务
+`at <时间点>`时间点格式举例:19:33、3pm+7 days、20:00 tomorrow
+之后进入交互界面,输入命令,ctrl+D退出
+`at -l`查看列表
+`at -c 任务号`查看任务内容
+`at -r 任务号`取消任务
+/etc/at.deny,文件中的用户不能执行at(系统默认存在)
+/etc/at.allow,默认不存在,只要存在的用户才能执行
+42.crontab服务定时任务计划
+`sudo systemctl start cronie.service`启动服务
+`crontab -e`新增任务或编辑任务
+格式如下:
+`<minute> <hour> <day> <month> <week> <command>`
+minute:0到59之间任何整数
+hour:0到23之间任何整数
+day:1到31之间的任何整数
+month:1到12之间任何整数
+week:1到7之间任何整数,
+command:执行的命令
+(*)代表所有可能值
+(,)一个列表范围
+(-)表示一个整数范围
+(/)指定时间间隔的频率,比如"0-23/2"表示每两小时执行
+`crontab -l`显示crontab文件
+`crontab -r`删除crontab文件
+`crontab -ir`删除crontab文件前提醒用户

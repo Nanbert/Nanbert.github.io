@@ -10,6 +10,7 @@ cover:
 1.make中遇到的第一条规则是最终目标  
 2.变量相关  
 　a.内置变量
+
 |变量类型|特殊变量|含义|用例或说明|
 |:-:|:-:|:-:|:-:|
 |特殊变量|`VPATH`|寻找依赖的路径|`VPATH = src:../headers`|
@@ -35,6 +36,7 @@ cover:
 |自动变量|`$^`|依赖集|所有依赖目标的集合,去掉重复以空格分隔|
 |自动变量|`$+`|依赖集|所有依赖目标的集合,不去掉重复以空格分隔|
 |自动变量|`$*`||对应模式的'%'及之前的部分,包括路径|
+
 所有自动变量都可以与`D`,`F`搭配使用,表示匹配的目录部分和文件部分,如`$(@D)`
 　b.`:=`操作符,操作符右边只能出现已定义的变量,如果是未定义的变量,则会自动忽略 
 　`=`操作符右边可以出现未定义的变量
@@ -137,6 +139,7 @@ endif
 13.函数
 　a.调用语法:`$(<function> <arguments>)`,参数间用','分隔
 　b.字符串函数
+
 |函数|功能|返回|
 |:-:|:-:|:-:|
 |`$(subst <from>,<to>,<text>)`|把字符串<text>中的<from>换成<to>|`被替换过的字符串`|
@@ -149,7 +152,9 @@ endif
 |`$(word <n>,<text>)`|取字符串<text>中的第<n>个单词|返回该单词,如果n过大,则返回空字符串|
 |`$(wordlist <n>,<m>,<text>)`|取第<n>-第<m>个单词|返回那些单词|
 |`$(words <text>)`|统计<text>中的单词数|返回个数|
+
 　c.文件名函数
+
 |格式|例子|返回值|
 |:-:|:-:|:-:|
 |`$(dir <names...>)`|`$(dir src/foo.c hacks)`|`src/ ./`|
@@ -159,6 +164,7 @@ endif
 |`$(addsuffix <suffix>,<names...>)`|`$(addsuffix .c,foo bar)`|`foo.c bar.c`|
 |`$(addprefix <prefix>,<names...>)`|`$(addprefix src/,foo bar)`|`src/foo src/bar`|
 |`$(join <list1>,<list2>)`|`$(join aaa bbb,111 222 333)`|`aaa111 bbb222`|
+
 　d.foreach函数
 ```bash
 names:= a b c d
@@ -178,6 +184,7 @@ foo=$(call reverse,a,b)
   `files:=$(shell echo *.c)`
   h.origin函数
   `$(origin <variable>)`:告知变量来源情况
+
 |返回值|含义|
 |:-:|:-:|
 |undefined|未定义|
@@ -187,7 +194,9 @@ foo=$(call reverse,a,b)
 |override|被override重新定义|
 |automatic|命令运行中的自动化变量|
 |command line|命令行定义|
+
  14.一些常用伪目标命名
+
 |名称|含义|
 |:-:|:-:|
 |all|这个伪目标一般是所有目标的目标,一般为编译所有的目标|
@@ -198,7 +207,9 @@ foo=$(call reverse,a,b)
 |dist|一般是把打包文件进行压缩|
 |tags|这个伪目标的功能用于更新所有的目标,以备完整地重新编译|
 |check、test|一般用来测试makefile文件流程|
+
 15.make选项参数
+
 |短选项|长选项|含义|
 |:-:|:-:|:-:|
 |-n|--just-print、--dry-run、--recon|不管目标更不更新,只打印命令,不执行|
@@ -219,8 +230,8 @@ foo=$(call reverse,a,b)
 |-s|--silent;--quiet|命令运行时不显示命令的输出|
 |-S|--no-keep-going;--stop|取消-k选项的作用|
 |-w|--print-directory|输出运行makefile文件之前之后的信息,跟踪嵌套make时很有用|
-||--no-print-directory|禁止-w选项|
-||--warn-undefined-variables|警告未定义的变量|
+|长|--no-print-directory|禁止-w选项|
+|长|--warn-undefined-variables|警告未定义的变量|
 
 --debug <options>,options可以是以下:
 a:也就是all,输出所有的调试信息
@@ -244,3 +255,16 @@ m:也就是makefile文件,输出make,读取makefile,更新makefile文件,并执�
 foolib(hack.o): hack.o
 	ar cr foolib hack.o  #foolib是库名,hack.o是包含文件
 ```
+==================gcc======
+18.选项
+-l<library> 链接动态库
+-L<dir> 动态库搜索目录
+-D<expression> 宏定义命令中定义
+-l <dir>头文件搜索目录
+18.静态库编译和使用
+`gcc -c increase.c -o increase.o`把.c编译成.o
+`ar -r libincrease.a increase.o`归档成静态库.a
+`gcc main.c -L -static -o main`链接成可执行文件
+19.动态库编译和使用
+`gcc -shared -fPIC -o libinc.so increase.c`-fPIC生成位置独立的代码,此类代码可以在不同进程间共享
+`gcc -lincrease -o main main.c`链接动态库
