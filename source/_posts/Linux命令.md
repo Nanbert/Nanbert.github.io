@@ -128,6 +128,7 @@ C.分支管理
 　`git branch -d newbranch`删除分支
 　`git merge xxbranch`合并指定分支到当前分支
 D.本地与服务器
+  `git remote add origin https://github.com/username/repositoryname.git`关联远程库
 　`git --bare init`初始化空的远程库
 　在本地进行类似Ａ的操作
 　`git remote add ssh://xx@192.23.234.2:/ss/ssk`添加远程库地址
