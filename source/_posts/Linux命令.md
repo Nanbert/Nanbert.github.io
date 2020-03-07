@@ -38,6 +38,9 @@ sudo pppoeconf:启用设置
     ctrl+u:删除光标钱的字符
     ctrl+s:锁定屏幕
     ctrl+q:解锁
+	ctrl+r:搜索词
+	!$:重新使用上一个命令中的最后一项(`alt+.`可以跳转上几次)
+	!!:重用上个命令(sudo !!一般这么用)
 9.   
 单独命令间:
  ";":一直执行无论成功与否
@@ -221,6 +224,7 @@ chmod [ugoa][+=-][rwxst] 文件名表
 `cat < filename`打印名为filename的文件内容
 `cat << END`接下来直到END之间的内容
 `cat <<< filename`打印filename这个单词
+`> 文件名`清空文件
 41.du命令  
 　`du -sh * | sort -rh`查看当前目录下所有文件大小并排序
 　`du -sh`统计当前目录大小
