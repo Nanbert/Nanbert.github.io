@@ -257,4 +257,6 @@ command:执行的命令
 `crontab -l`显示crontab文件
 `crontab -r`删除crontab文件
 `crontab -ir`删除crontab文件前提醒用户
-hello
+43.run-parts一个接一个运行同一目录下的脚本
+`run-parts<directory-path>`
+`run-parts --list --regex  '^s.*sh$' <directory> `
