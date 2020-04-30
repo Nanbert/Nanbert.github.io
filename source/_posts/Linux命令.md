@@ -260,3 +260,13 @@ command:执行的命令
 43.run-parts一个接一个运行同一目录下的脚本
 `run-parts<directory-path>`
 `run-parts --list --regex  '^s.*sh$' <directory> `
+44.ffmpeg
+裁剪:`ffmpeg -i xx.mp4 -vcodec copy -acodec copy -ss 00:00:00 -to 01:18:08 output.mp4`
+合并:
+先建立个文本文档file,格式如下:
+```
+file '1.mp4'
+file '2.mp4'
+```
+`ffmpeg -f concat -i file -c copy output.mkv`
+
