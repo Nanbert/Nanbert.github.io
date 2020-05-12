@@ -203,17 +203,22 @@ F.
 36.xargs命令,将标准输入构造为命令的命令行参数,如果命令行参数过多,会启动多个进程,与单一普通管道相比就是批处理
 举例:`find src -name \*.c -print | xargs grep -n -- --help`
 37.文件归档tar
-　格式:tar <options> <destination> <target>
-　a.<option>:
-　　c:Create创建新磁带,存在则覆盖
-　　t:Table列表,磁带文件名列表
-　　x:extract抽取,抽取文件
-　　v:verbose冗长
-　　f:必须指定设备文件名
-　　z:gzip算法压缩
-　　j:bzip2算法压缩
-　b.举例:
-　 `tar cvf my.tar *.[ch] makefile`
+　格式:tar [options] [destination] [target]
+|options|作用|
+|:-:|:-:|
+|c|Create创建新磁带,存在则覆盖|
+|t|Table列表,磁带文件名列表|
+|d|磁带与文件系统的不同|
+|r|添加文件至磁带末尾|
+|u|只添加更新的文件|
+|x|extract抽取,抽取文件|
+|v|verbose冗长|
+|f|必须指定设备文件名|
+|z|gzip算法压缩|
+|j|bzip2算法压缩|
+b.举例:
+不压缩创建: `tar cvf my.tar *.[ch] makefile`
+提取文件至指定文件夹:`tar xvf tar_file -C destination_direectory`
 38.chmod命令
 chmod [ugoa][+=-][rwxst] 文件名表
 39.umask命令
