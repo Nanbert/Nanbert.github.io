@@ -121,6 +121,13 @@ j.[address]y/abc/xyz/;转换(类似于tr),有用的例子转换大小写y/abcdef
 　b.`grep -5 'pattern' inputfile` 打印匹配前后5行
 　c.`grep -A 5 'pattern' inputfile` 打印匹配后5行
 　d.`grep -B 5 'pattern' inputfile` 打印匹配前5行
+　e.`grep -i 'pattern' inputfile` 打印匹配前5行
+13.grep
+-i:忽略大小写
+-w:只识别整个单词(即模式前后有空格)
+-l:只打印匹配到的文件名
+-E:识别扩展正则表达式
+-c:统计个数
 11.正则表达式举例  
 　`".*"`引号中的任意字符串
 12.脚本中所有编辑命令都将依次应用于每个输入行
