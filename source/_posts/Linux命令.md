@@ -106,39 +106,6 @@ plymouth更换主题,主题文件夹：/usr/share/plymouth/themes/,设置文件�
 `update-alternatives --install <link> <name> <path> <priority>`
 `update-alternatives --install /usr/bin/arm-linux-gnueabi-gcc arm-linux-gnueabi-gcc /usr/bin/arm-linux-gnueabi-gcc-5 5`
 `update-alternatives --config arm-linux-gnueabi-gcc`
-22.  
-A.git预设置
-　`git config --global user.name "xxx"`
-　`git config --global user.email "xx.com"`
-　`git config --list`检查已有配置信息
-B.git修改和提交
-　a.修改、增加或删除一个或者多个文件
-　b.使用git diff查看当前修改
-　c.使用git status查看当前工作目录状态
-　d.使用git add把修改、增加或删除的文件添加到本地版本库
-　e.使用git commit命令生成一个提交
-　d.使用git push <远程主机名(origin)> <本地分支名>:<远程分支名>
-　注:  
-　`git diff`显示尚未缓存的改动
-　`git diff --cached`查看已经缓存的改动
-　`git diff HEAD`查看所有的改动
-　`git diff --stat`显示摘要
-C.分支管理
-`git clone -b <分支名> <仓库地址>`克隆指定分支
-　`git branch`显示所有分支
-　`git branch xxx`创建新分支
-　`git checkout newbranch`切换到新分支
-　`git branch -d newbranch`删除分支
-　`git merge xxbranch`合并指定分支到当前分支
-D.本地与服务器
-  `git remote add origin https://github.com/username/repositoryname.git`关联远程库
-　`git --bare init`初始化空的远程库
-　在本地进行类似Ａ的操作
-　`git remote add ssh://xx@192.23.234.2:/ss/ssk`添加远程库地址
-　推送
-E.分支冲突管理
-　解决冲突文件;git add 对应文件;git merge --continue
-F.
 23.  
 内核模块相关
 `modinfo *.ko`查看某个编译好的模块
