@@ -69,6 +69,8 @@ cover:
   |%cr|提交日期,按多久以前的方式显示|
   |%s|提交说明|
 10.`git reset HEAD <file>`:撤销某个暂存文件
+　 git reset HEAD~1:回退到上一个版本
+11.git revert HEAD:回退到HEAD上一个版本,但是树结构往下走，只不过与父节点相同
 11.`git checkout -- [file]`:撤销某个工作目录下文件的修改,危险的命令,你的修改将不会保存
 12.`git remote`远程仓库的使用
 　-v:显示简写对应的url
@@ -86,6 +88,8 @@ cover:
 　-a:增加个标签,可以在后面加个校验和,为指定的补打标签
 　-m:在命令行增加说明
 　-d:删除某个标签
+　-l:列举标签
+　label hash:为某个哈希打标签
 　必须显示地推送标签至远程库'git push origin v1.5',当某个标签被删除或信息改变'git push origin  :refs/tags/v1.42'
 ///////**************************************************///
 /***分支管理***/
@@ -93,6 +97,7 @@ cover:
 1.`git branch xxx`创建分支,不加任何xxx会显示所有分支
 2.`git log --oneline --decorate`查看各个分支当前所指对象
 3.`git checkout xxx`切换分支,切换分支会改变工作目录里的文件
+　`git checkout -b foo o/master;`:设置foo跟踪远程分支而非master
 4.`git log --oneline --decorate --graph --all`查看分叉历史
 5.`git merge xxbranch`合并指定分支到当前分支,如果当前分支可以沿着一条线走下去则会有'fast-forward提示'
 6.`git checkout -b serverfix origin/serverfix`跟踪远程库其他分支等价于`git checkout --track orighin/serverfix`
@@ -101,5 +106,15 @@ cover:
  -d xxx: 删除分支
  -D xxx:强制删除某个未合并的分支
  -v:显示每个分支最后的提交
- --no-merged:查看所有包含未合并工作的分支
-9. 
+ --merged:查看所有已与当前分支合并的分支
+ --no-merged:查看所有未与当前分支合并的分支
+ -f some hash:强制some分支移动到某hash版本
+ `-u origin:master`:设置当前分支跟踪远程分支
+9.`git rebase` 
+　`git rebase xxx`把当前分支衍合到xxx分支
+　`git rebase --onto master server client`把server与client共同祖先之后的变化加到master中去
+　`git rebase -i xx`以他为xx基础或其共同祖先节点进行交互界面的rebase
+10.`git cherry-pick a b c`把a,b,c等应用到当前分支
+11.`git describe <branch>`会输出以下信息
+`<最近的tag>_<tag距离分支几个节点>_<当前分支hash值>`
+12.`^`第一个父提交`^2`第二个父提交`~2`爷爷提交
