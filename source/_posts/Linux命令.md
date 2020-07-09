@@ -241,4 +241,7 @@ file '1.mp4'
 file '2.mp4'
 ```
 `ffmpeg -f concat -i file -c copy output.mkv`
-
+或者支持不好先转换ts
+`ffmpeg -i 1.mp4 -vcodec copy -acodec copy -vbsf h264_mp4toannexb 1.ts`
+`ffmpeg -i 2.mp4 -vcodec copy -acodec copy -vbsf h264_mp4toannexb 2.ts`
+`ffmpeg -i "concat:1.ts|2.ts" -acodec copy -vcodec copy -absf aac_adtstoasc output.mp4`
