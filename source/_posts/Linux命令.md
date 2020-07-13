@@ -245,3 +245,19 @@ file '2.mp4'
 `ffmpeg -i 1.mp4 -vcodec copy -acodec copy -vbsf h264_mp4toannexb 1.ts`
 `ffmpeg -i 2.mp4 -vcodec copy -acodec copy -vbsf h264_mp4toannexb 2.ts`
 `ffmpeg -i "concat:1.ts|2.ts" -acodec copy -vcodec copy -absf aac_adtstoasc output.mp4`
+添加字幕:
+`ffmpeg -i 2020-07-13\ 08-20-26.mkv -vf subtitles=test.srt -y output.mkv`
+srt格式:
+```
+1
+00:00:03,000 --> 00:00:06,000
+Hi,I am Nanbert Don De Niro
+
+2
+00:00:06,000 --> 00:00:08,000
+Hi,I am Donald Trump
+
+3
+00:00:08,444 --> 00:00:10,000
+It's you,Assole!
+```
