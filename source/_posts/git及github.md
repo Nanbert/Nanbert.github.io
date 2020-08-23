@@ -93,6 +93,8 @@ cover:
 　-l:列举标签
 　label hash:为某个哈希打标签
 　必须显示地推送标签至远程库'git push origin v1.5',当某个标签被删除或信息改变'git push origin  :refs/tags/v1.42'
+`git tag -d <tagname>`删除一个远程标签
+`git branch <new-branch-name> <tag-name>`从指定的标签拉取一个分支出来
 /***分支管理***/
 `git clone -b <分支名> <仓库地址>`克隆指定分支
 1.`git branch xxx`创建分支,不加任何xxx会显示所有分支
