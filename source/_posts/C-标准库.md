@@ -6,12 +6,16 @@ categories: C++
 tags:
 cover:
 ---
-1.  
-标准库数据结构
-|类型|数据结构类型|访问速度|插入、删除速度|
-|:-:|:-:|:-:|:-:|
-|vector/string(字符专用)|顺序存储结构的线性表|快速随机访问|在尾部插入或删除元素快，其他位置较慢|
-|deque|s|s|s|s|
-|list|双向链表存储结构的线性表|双向顺序访问|插入、删除较快|
-|forward_list|单向链表存储结构的线性表|单向访问|插入、删除都很快|
-|array|顺序存储结构的线性表|快速随机访问|不支持插入删除|
+1.顺序容器
+|方法|说明|
+|:-:|:-:|
+|c.resize(n)|调整c的大小为n个元素。要么多出的元素被丢弃,要么新添加默认值的元素|
+|c.resize(n,t)|调整c的大小为n个元素。任何新添加的元素初始为t|
+|c.shrink_to_fit()|只适用于vector,string和deque。将capacity()减少与size()相同大小|
+|c.capacity()|只适用于vector和string,返回c可以保存多少元素|
+|c.reserve(n)|只适用于vector和string,分配至少容纳n个元素的内存空间|
+2.lambda
+格式:`[capture list] (parameter list) -> return type {function body}`,capture list可以为空，里面一般是包含此lambda的函数的(非static)局部变量,该函数外的变量可以在函数体内直接用,return type可以省略。
+3.优先队列
+格式:`priority_queue<Type,Container,Functional>`
+例子:`priority_queue<int,vector<int>,myCompare>`
