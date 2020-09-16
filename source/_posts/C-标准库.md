@@ -20,4 +20,4 @@ cover:
 格式:`[capture list] (parameter list) -> return type {function body}`,capture list可以为空，里面一般是包含此lambda的函数的(非static)局部变量,该函数外的变量可以在函数体内直接用,return type可以省略。
 3.优先队列
 格式:`priority_queue<Type,Container,Functional>`
-例子:`priority_queue<int,vector<int>,myCompare>`
+例子:`priority_queue<int,vector<int>,myCompare>`,myCompare可以替换为less<int>降序,greater<int>升序

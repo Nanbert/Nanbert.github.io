@@ -70,10 +70,12 @@ cover:
   |%cr|提交日期,按多久以前的方式显示|
   |%s|提交说明|
 
-10.`git reset HEAD <file>`:撤销某个暂存文件
-　 git reset HEAD\~1:回退到上一个版本
+10.`git reset HEAD <file>`(适用已提交add):撤销某个暂存文件,即将add退回
+　 `git reset HEAD\~1`:回退到上一个版本
+   `git reset --hard <commit_id>`注意此步骤会将commit_id后的commit删除,最好不用
+　　`git push origin HEAD --force`让服务器也回退到某版本(本地仓库已回退)
 11.git revert HEAD:回退到HEAD上一个版本,但是树结构往下走，只不过与父节点相同
-11.`git checkout -- [file]`:撤销某个工作目录下文件的修改,危险的命令,你的修改将不会保存
+11.`git checkout -- [file]`(未git add的情况下):撤销某个工作目录下文件的修改,恢复为版本库中一模一样的版本,危险的命令,你的修改将不会保存
 12.`git remote`远程仓库的使用
 　-v:显示简写对应的url
 　`show origin`:展示origin的具体信息
@@ -82,6 +84,7 @@ cover:
 13.`git push <remote-name> <branch-name>`
 　`--tags`:推送所有标签
 　使用git push <远程主机名(origin)> <本地分支名>:<远程分支名>
+　`git push --set-upstream <remote_name> <branch_name>`将远程分支作为当前分支的上游分支
 14.
 　git fetch:会抓取数据到本地数据库，但不会自动合并并修改当前工作
   git clone:会自动将其添加为远程仓库并默认以'origin'缩写,并自动跟踪远程master
@@ -91,17 +94,19 @@ cover:
 　-m:在命令行增加说明
 　-d:删除某个标签
 　-l:列举标签
-　label hash:为某个哈希打标签
-　必须显示地推送标签至远程库'git push origin v1.5',当某个标签被删除或信息改变'git push origin  :refs/tags/v1.42'
-`git tag -d <tagname>`删除一个远程标签
+　<tag_name> <commit_id>:为某个哈希打标签
+　必须显示地推送标签至远程库'git push origin v1.5',当某个标签被删除或信息改变'git push origin  :refs/tags/<tag_name>'
 `git branch <new-branch-name> <tag-name>`从指定的标签拉取一个分支出来
+　`git show <tag_name>`查看tag信息
 /***分支管理***/
 `git clone -b <分支名> <仓库地址>`克隆指定分支
+`git fetch origin <branch_name>`抓取某个远程分支
 1.`git branch xxx`创建分支,不加任何xxx会显示所有分支
 2.`git log --oneline --decorate`查看各个分支当前所指对象
 3.`git checkout xxx`切换分支,切换分支会改变工作目录里的文件
 4.`git log --oneline --decorate --graph --all`查看分叉历史
 5.`git merge xxbranch`合并指定分支到当前分支,如果当前分支可以沿着一条线走下去则会有'fast-forward提示'
+　`git merge --abort`取消当前合并,重建合并前状态
 6.`git checkout -b serverfix origin/serverfix`跟踪远程库其他分支等价于`git checkout --track orighin/serverfix`
 7.`git push origin --delete xxx` 删除远程分支
 8.git branch 选项
@@ -112,6 +117,8 @@ cover:
  --no-merged:查看所有未与当前分支合并的分支
  -f some hash:强制some分支移动到某hash版本
  `-u origin:master`:设置当前分支跟踪远程分支
+　`-r`:显示所有远程分支
+　`-a`:显示所有本地和远程分支
 9.`git rebase` 
 　`git rebase xxx`把当前分支衍合到xxx分支
 　`git rebase --onto master server client`把server与client共同祖先之后的变化加到master中去
@@ -121,3 +128,35 @@ cover:
 `<最近的tag>_<tag距离分支几个节点>_<当前分支hash值>`
 12.`^`第一个父提交`^2`第二个父提交`~2`爷爷提交
 13.格式:`[source:destination]`
+###############################高级#####
+1.`git stash`
+　备份当前的工作区内容，从最新的一次提交中读取相关内容，让工作区保证和上次提交的内容一致。同时，将当前的工作区修改的内容保存到git栈中
+`git stash list`显示所有栈内的备份
+`git stash apply <stash_name>`从栈中读取最新一次保存的内容，恢复工作区的相关内容
+`git stash pop`删除最新的暂存
+`git stash drop<stash_name>`删除指定暂存
+#################建议规范########
+1.推荐的分支管理
+`master`:主分支,禁止直接在master上进行代码的提交和修改,此分支的代码可以随时被发布到线上
+`develop`:测试分支,所有开发完成需要提交测试的功能合并到该分支,该分支包含最新的更改
+`feature`:开发分支,大家根据不同需求创建独立的功能分支,开发后合并到develop分支
+`fix`:分支为bug修复分支,需要根据实际情况对已发布的版本进行漏洞修复
+2.标签tag管理
+Tag采用三段式:v版本.里程碑.序号(v2.3.1)
+第一位:架构升级或架构重大调整
+第二位:新功能上线或模块大的调整
+第三位:bug修复
+3.提交信息格式
+中文:
+-<新功能>添加解析url功能
+-<修改>修改某功能的某个实现为另一个实先
+-<Bug修复>修复url的特殊情况下解析失败的问题
+-<重构>重构获取数据的方法
+-<测试>添加(修改、删除)获取数据的单元测试代码
+-<文档>修改(添加、删除)文档
+英文:
+-feat:新功能
+-fix:修补bug
+-refactor:重构
+-test:测试相关
+-docs:文档
