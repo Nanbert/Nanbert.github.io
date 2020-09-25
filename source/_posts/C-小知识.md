@@ -51,3 +51,5 @@ ps:从以上可以看出指针从左至右结合，
 .内存上，指针有分配的存储空间，而应用则不用
 10.
 c++无符号右移高位都补0
+11.
+`auto dp = vector<vector<int>>(length, vector<int>(length));`可以这样声明数组
