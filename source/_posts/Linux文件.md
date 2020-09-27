@@ -48,3 +48,4 @@ cover:
 一个进程所处的位置是由fs_struct来描述的,而一个进程(或用户)打开的文件是由files_struct来描述的,而整个系统所打开的文件是由file结构来描述的
 17./etc/ld.so.conf.d/*.conf
 里面是库文件所在目录，配置完用`ldconfig`更新一下
+18./usr/share/doc目录下为各个安装软件的文档
