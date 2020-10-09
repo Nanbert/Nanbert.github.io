@@ -91,7 +91,7 @@ systemctl查看/etc/init.d中哪些服务进程会在引导时启动
 查看前一次启动的开机日志  
 `journalctl -b -1`  
 查看启动服务消耗时间  
-`systemd-analyze blame`
+systemd-analyze blame`
 mask禁用某种服务
 `systemctl mask xx.service`
 17.  

@@ -49,3 +49,4 @@ cover:
 17./etc/ld.so.conf.d/*.conf
 里面是库文件所在目录，配置完用`ldconfig`更新一下
 18./usr/share/doc目录下为各个安装软件的文档
+19./etc/modprobe.d/sony-laptop.conf 索尼背光灯设置文件
