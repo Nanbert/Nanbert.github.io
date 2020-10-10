@@ -207,6 +207,8 @@ chmod [ugoa][+=-][rwxst] 文件名表
 `cat << END`接下来直到END之间的内容
 `cat <<< filename`打印filename这个单词
 `> 文件名`清空文件
+tee:从Stdin读取数据，并同时输出到Stdout和文件
+`ls /usr/bin | tee ls.txt |grep zip`
 41.du命令  
 　`du -sh * | sort -rh`查看当前目录下所有文件大小并排序
 　`du -sh`统计当前目录大小
