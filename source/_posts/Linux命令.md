@@ -283,3 +283,5 @@ It's you,Assole!
 `which <command>'给出可执行程序的位置，对别名和内建命令无效
 47.
 `whatis <command>`会给出命令简短的说明
+48.
+`rm !(*.csv)`删除除了csv结尾的所有文件(貌似只有bash支持，zsh不支持)
