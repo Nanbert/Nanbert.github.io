@@ -1,102 +1,125 @@
 <!DOCTYPE html>
-
-
 <html lang="en">
-
-
 <head>
-  <meta charset="utf-8" />
-    
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
-  <title>
-    Linux命令 |  Welcome to Nanbert&#39;s blog
-  </title>
-  <meta name="generator" content="hexo-theme-ayer">
-  
-  <link rel="shortcut icon" href="/favicon.ico" />
-  
-  
-<link rel="stylesheet" href="/dist/main.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
 
-  
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Shen-Yu/cdn/css/remixicon.min.css">
-
-  
-<link rel="stylesheet" href="/css/custom.css">
-
-  
-  
-<script src="https://cdn.jsdelivr.net/npm/pace-js@1.0.2/pace.min.js"></script>
-
-  
   
 
   
 
-</head>
+  
+    <meta name="author" content="南神">
+  
 
-</html>
+  
 
+  
+
+  <title>Linux命令 | Welcome to Nanbert&#39;s blog</title>
+
+  
+
+  
+    <link rel="icon" href="/favicon.ico">
+  
+
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+    <link href="https://cdn.bootcss.com/highlight.js/9.15.6/styles/default.min.css" rel="stylesheet">
+  
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 5.2.0"></head>
 <body>
-  <div id="app">
-    
-      
-    <main class="content on">
-      <section class="outer">
-  <article
-  id="post-Linux命令"
-  class="article article-type-post"
-  itemscope
-  itemprop="blogPost"
-  data-scroll-reveal
->
-  <div class="article-inner">
-    
-    <header class="article-header">
-       
-<h1 class="article-title sea-center" style="border-left:0" itemprop="name">
-  Linux命令
-</h1>
- 
-
-    </header>
-     
-    <div class="article-meta">
-      <a href="/2019/07/18/Linux%E5%91%BD%E4%BB%A4/" class="article-date">
-  <time datetime="2019-07-18T08:15:42.000Z" itemprop="datePublished">2019-07-18</time>
-</a> 
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/Linux/">Linux</a>
+  <div id="container">
+    <!-- header -->
+<header class="header">
+  <div class="header-container ">
+    <nav class="header-navbar">
+      <div class="header-navbar-left">
+        <h1 class="header-navbar-logo">
+          <a href="/">
+            
+              <img src="https://s2.ax1x.com/2019/07/18/ZXn6S0.png"/>
+            
+          </a>
+        </h1>
+      </div>
+      <div class="header-navbar-right">
+        <div class="header-navbar-btn">
+          <div></div>
+          <div></div>
+          <div></div>
+        </div>
+        <ul class="header-navbar-list">
+          
+            <li class="header-navbar-item"><a href="/">首页</a></li>
+          
+            <li class="header-navbar-item"><a href="/categories">分类</a></li>
+          
+            <li class="header-navbar-item"><a href="/tags">标签</a></li>
+          
+        </ul>
+      </div>
+    </nav>
   </div>
-  
-<div class="word_count">
-    <span class="post-time">
-        <span class="post-meta-item-icon">
-            <i class="ri-quill-pen-line"></i>
-            <span class="post-meta-item-text"> Word count:</span>
-            <span class="post-count">2.5k</span>
-        </span>
-    </span>
+</header>
 
-    <span class="post-time">
-        &nbsp; | &nbsp;
-        <span class="post-meta-item-icon">
-            <i class="ri-book-open-line"></i>
-            <span class="post-meta-item-text"> Reading time≈</span>
-            <span class="post-count">10 min</span>
-        </span>
-    </span>
+
+    <section id="main"><!-- 文章详情页 -->
+
+<!-- banner container -->
+<div class="banner-container" style="background-image: url(css/images/1.jpg)">
+  <div class="banner-inner">
+
+    
+    
+
+    
+    
+
+    
+    
+
+    
+    
+    
+
+    
+    
+      <h1 class="header-title"><a href="/2019/07/18/Linux%E5%91%BD%E4%BB%A4/">Linux命令</a></h1>
+      <h2 class="header-subtitle">
+        
+          <a class="article-category-link" href="/categories/Linux/">Linux</a>
+          <!--
+          
+  <a href="javascript:;" class="article-date">
+    <time datetime="2019-07-18T08:15:42.000Z" itemprop="datePublished">2019-07-18 04:15:42</time>
+  </a>
+
+          -->
+        
+      </h2>
+    
+
+    
+    
+  </div>
 </div>
- 
-    </div>
-      
 
+<!-- 文章内容 -->
 
+<div class="body-container">
+  <article id="article-content" class="main-container article-content zoom">
+    
+    
 
-  
-    <div class="article-entry" itemprop="articleBody">
-       
-  <ol>
+    <div class="article-entry">
+      <ol>
 <li><code>grep -r &quot;关键字&quot; &quot;目录&quot;</code><br>跳过二进制选项:- -binary-files=without-match<br>跳过某个目录:- -exclude-dir=(目录路径)</li>
 <li>同时对某个目录下多个文件操作用{<em>,</em>}</li>
 <li><code>sudo apt --fix-broken install</code>或者<code>sudo apt install -f</code></li>
@@ -109,11 +132,55 @@
 <li>单独命令间:<br>“;”:一直执行无论成功与否<br>“&amp;&amp;”:前面的命令执行成功才能执行后面<br>“||”:前面的命令执行失败才能执行后面</li>
 <li><code>kill %2</code><br>2代表jobs命令显示下的任务号码,%区别于进程ID</li>
 <li>export相当于把局部变量扩展至全局</li>
-<li><code>man 3 fork</code><br>man中数字1表示命令，2表示系统调用，3表示库函数，5表示配置文件，上面就是查看库函数fork的帮助文档<br><code>man 2 syscalls</code>查看系统调用</li>
+<li><code>man 3 fork</code><br><code>man 2 syscalls</code><table>
+<thead>
+<tr>
+<th align="center">章节</th>
+<th align="center">内容</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">1</td>
+<td align="center">用户命令</td>
+</tr>
+<tr>
+<td align="center">2</td>
+<td align="center">程序接口内核系统调用</td>
+</tr>
+<tr>
+<td align="center">3</td>
+<td align="center">c库函数程序接口</td>
+</tr>
+<tr>
+<td align="center">4</td>
+<td align="center">特殊文件,比如说设备节点和驱动程序</td>
+</tr>
+<tr>
+<td align="center">5</td>
+<td align="center">文件格式</td>
+</tr>
+<tr>
+<td align="center">6</td>
+<td align="center">游戏娱乐,如屏幕保护程序</td>
+</tr>
+<tr>
+<td align="center">7</td>
+<td align="center">其他方面</td>
+</tr>
+<tr>
+<td align="center">8</td>
+<td align="center">系统管理员命令</td>
+</tr>
+<tr>
+<td align="center"><code>-k &lt;pattern&gt;</code>在文档中搜索某个关键字,</td>
+<td align="center"></td>
+</tr>
+</tbody></table>
+</li>
 <li>后台运行<br><code> nohup [命令参数] &amp;</code></li>
 <li>ln命令：<code>ln source target</code> 硬链接，<code>ln -s source target</code>软连接。<br>两者的区别:<br>1.软连接不增加文件的链接数，而硬链接则增加<br>2.不能跨文件系统创建硬链接，硬链接不能连接目录<br>3.硬链接的inode号完全相同，指向同一文件，软连接则有不同的inode号，并且新文件类型为专有软链接类型，其指向的文件内容存储着实际文件的路径<br>4.硬链接指向的文件当链接数减为0时，才真正删除，软链接若实际文件删除，则软链接失效。</li>
 <li><code>nslookup github.global.ssl.fastly.Net</code><br><code>nslookup github.com</code><br>查到的域名加到/etc/hosts里可以加快访问速度<br><code>sudo /etc/init.d/networking restart</code>刷新缓存</li>
-<li>systemctl查看/etc/init.d中哪些服务进程会在引导时启动<br><code>systemctl list-unit-files --type=service | grep enabled</code><br>查找废弃服务<br><code>systemctl --all | grep not-found</code><br>停止某个服务进程、开机禁止启动以及某个进程的状态<br><code>sudo systemctl stop xxx.service</code><br><code>sudo systemctl disable xxx.service</code><br><code>sudo systemctl status xxx.service</code><br>注:不能启用或禁用静态服务，这些服务为其他进程所依赖。<br>查看前一次启动的开机日志<br><code>journalctl -b -1</code><br>查看启动服务消耗时间<br><code>systemd-analyze blame</code><br>mask禁用某种服务<br><code>systemctl mask xx.service</code></li>
+<li>systemctl查看/etc/init.d中哪些服务进程会在引导时启动<br><code>systemctl list-unit-files --type=service | grep enabled</code><br>查找废弃服务<br><code>systemctl --all | grep not-found</code><br>停止某个服务进程、开机禁止启动以及某个进程的状态<br><code>sudo systemctl stop xxx.service</code><br><code>sudo systemctl disable xxx.service</code><br><code>sudo systemctl status xxx.service</code><br>注:不能启用或禁用静态服务，这些服务为其他进程所依赖。<br>查看前一次启动的开机日志<br><code>journalctl -b -1</code><br>查看启动服务消耗时间<br>systemd-analyze blame<code>mask禁用某种服务</code>systemctl mask xx.service`</li>
 <li>U盘只读不可写问题<br>a.<code>df -h</code>查找挂载点<br>b.<code>sudo umount 位置</code>卸载U盘而不拔掉<br>c.<code>sudo dosfsck -v -a 文件系统(如:/dev/sdb1)</code>修复故障<br>d.<code>sudo mount 文件系统 挂载点</code>重新挂载</li>
 <li>命令行复制到剪贴板<br><code>cat filename | xsel -b</code></li>
 <li>plymouth更换主题,主题文件夹：/usr/share/plymouth/themes/,设置文件夹:/etc/plymouth/plymouthd.conf<br><code>plymouth-set-default-theme -l</code>列出主题列表<br><code>sudo vi /etc/plymouth/plymouthd.conf</code>更改Theme=的内容<br><code>sudo mkinitcpio -p linux</code>生成新的镜像,重启生效<br>需要’quite splash’静默启动参数,在grub里设置</li>
@@ -196,531 +263,192 @@
 </li>
 <li>chmod命令<br>chmod [ugoa][+=-][rwxst] 文件名表</li>
 <li>umask命令<br>例子:掩码值:022<br>　　二进制: 000 010 010<br>　　取消新文件和新目录的组w权限和其他用户w权限</li>
-<li>输入重定向<br><code>cat &lt; filename</code>打印名为filename的文件内容<br><code>cat &lt;&lt; END</code>接下来直到END之间的内容<br><code>cat &lt;&lt;&lt; filename</code>打印filename这个单词<br><code>&gt; 文件名</code>清空文件</li>
+<li>输入重定向<br><code>cat &lt; filename</code>打印名为filename的文件内容<br><code>cat &lt;&lt; END</code>接下来直到END之间的内容<br><code>cat &lt;&lt;&lt; filename</code>打印filename这个单词<br><code>&gt; 文件名</code>清空文件<br>tee:从Stdin读取数据，并同时输出到Stdout和文件<br><code>ls /usr/bin | tee ls.txt |grep zip</code></li>
 <li>du命令<br>　<code>du -sh * | sort -rh</code>查看当前目录下所有文件大小并排序<br>　<code>du -sh</code>统计当前目录大小<br>　<code>du -h --max-depth=1 | sort</code>查看当前所有一级子目录大小并排序</li>
 </ol>
 <p>41.at命令一次性任务计划<br><code>systemctl start atd.service</code>启动服务<br><code>at &lt;时间点&gt;</code>时间点格式举例:19:33、3pm+7 days、20:00 tomorrow<br>之后进入交互界面,输入命令,ctrl+D退出<br><code>at -l</code>查看列表<br><code>at -c 任务号</code>查看任务内容<br><code>at -r 任务号</code>取消任务<br>/etc/at.deny,文件中的用户不能执行at(系统默认存在)<br>/etc/at.allow,默认不存在,只要存在的用户才能执行<br>42.crontab服务定时任务计划<br><code>sudo systemctl start cronie.service</code>启动服务<br><code>crontab -e</code>新增任务或编辑任务<br>格式如下:<br><code>&lt;minute&gt; &lt;hour&gt; &lt;day&gt; &lt;month&gt; &lt;week&gt; &lt;command&gt;</code><br>minute:0到59之间任何整数<br>hour:0到23之间任何整数<br>day:1到31之间的任何整数<br>month:1到12之间任何整数<br>week:1到7之间任何整数,<br>command:执行的命令<br>(*)代表所有可能值<br>(,)一个列表范围<br>(-)表示一个整数范围<br>(/)指定时间间隔的频率,比如”0-23/2”表示每两小时执行<br><code>crontab -l</code>显示crontab文件<br><code>crontab -r</code>删除crontab文件<br><code>crontab -ir</code>删除crontab文件前提醒用户<br>43.run-parts一个接一个运行同一目录下的脚本<br><code>run-parts&lt;directory-path&gt;</code><br><code>run-parts --list --regex  &#39;^s.*sh$&#39; &lt;directory&gt; </code><br>44.ffmpeg<br>裁剪:<code>ffmpeg -i xx.mp4 -vcodec copy -acodec copy -ss 00:00:00 -to 01:18:08 output.mp4</code><br>合并:<br>先建立个文本文档file,格式如下:</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">file &#39;1.mp4&#39;</span><br><span class="line">file &#39;2.mp4&#39;</span><br></pre></td></tr></table></figure>
 <p><code>ffmpeg -f concat -i file -c copy output.mkv</code><br>或者支持不好先转换ts<br><code>ffmpeg -i 1.mp4 -vcodec copy -acodec copy -vbsf h264_mp4toannexb 1.ts</code><br><code>ffmpeg -i 2.mp4 -vcodec copy -acodec copy -vbsf h264_mp4toannexb 2.ts</code><br><code>ffmpeg -i &quot;concat:1.ts|2.ts&quot; -acodec copy -vcodec copy -absf aac_adtstoasc output.mp4</code><br>添加字幕:<br><code>ffmpeg -i 2020-07-13\ 08-20-26.mkv -vf subtitles=test.srt -y output.mkv</code><br>srt格式:</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">1</span><br><span class="line">00:00:03,000 --&gt; 00:00:06,000</span><br><span class="line">Hi,I am Nanbert Don De Niro</span><br><span class="line"></span><br><span class="line">2</span><br><span class="line">00:00:06,000 --&gt; 00:00:08,000</span><br><span class="line">Hi,I am Donald Trump</span><br><span class="line"></span><br><span class="line">3</span><br><span class="line">00:00:08,444 --&gt; 00:00:10,000</span><br><span class="line">It&#39;s you,Assole!</span><br></pre></td></tr></table></figure>
+<p>45.<br><code>type &lt;command&gt;</code>识别命令,有以下几种<br>　a.可执行命令，给出路径<br>　b.shell自身的命令(builtins)<br>　c.一个shell函数<br>　d.别名命令<br>46.<br><code>which &lt;command&gt;&#39;给出可执行程序的位置，对别名和内建命令无效 47. </code>whatis <command><code>会给出命令简短的说明 48. </code>rm !(*.csv)`删除除了csv结尾的所有文件(貌似只有bash支持，zsh不支持)<br>49.<br>‘mkdir {2007..2009}_0{1..9}{A,B}’创建一系列文件夹</p>
 
- 
-      <!-- reward -->
+    </div>
+
+    <div class="article-footer">
+      <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%91%BD%E4%BB%A4/" rel="tag">#命令</a></li></ul>
+    </div>
+
+    <div class="article-navs">
       
-      <div id="reward-btn">
-        Donate
-      </div>
-      
-    </div>
+<nav class="card-container card-article-nav">
+  <div class="card-wrap">
     
-
-    <!-- copyright -->
-    
-    <div class="declare">
-      <ul class="post-copyright">
-        <li>
-          <i class="ri-copyright-line"></i>
-          <strong>Copyright： </strong>
-          Copyright is owned by the author. For commercial reprints, please contact the author for authorization. For non-commercial reprints, please indicate the source.
-        </li>
-      </ul>
-    </div>
-    
-    <footer class="article-footer">
-       
-<div class="share-btn">
-      <span class="share-sns share-outer">
-        <i class="ri-share-forward-line"></i>
-        分享
-      </span>
-      <div class="share-wrap">
-        <i class="arrow"></i>
-        <div class="share-icons">
+      <div class="card-item">
+        <article>
           
-          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
-            <i class="ri-weibo-fill"></i>
-          </a>
-          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
-            <i class="ri-wechat-fill"></i>
-          </a>
-          <a class="qq share-sns" href="javascript:;" data-type="qq">
-            <i class="ri-qq-fill"></i>
-          </a>
-          <a class="douban share-sns" href="javascript:;" data-type="douban">
-            <i class="ri-douban-line"></i>
-          </a>
-          <!-- <a class="qzone share-sns" href="javascript:;" data-type="qzone">
-            <i class="icon icon-qzone"></i>
-          </a> -->
-          
-          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
-            <i class="ri-facebook-circle-fill"></i>
-          </a>
-          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
-            <i class="ri-twitter-fill"></i>
-          </a>
-          <a class="google share-sns" href="javascript:;" data-type="google">
-            <i class="ri-google-fill"></i>
-          </a>
-        </div>
+          <a class="card-link article-nav-link" href="/2019/07/18/Linux%E6%96%87%E4%BB%B6/"></a>
+          <div class="article-nav-caption">Newer</div>
+          <div class="article-nav-title">Linux文件</div>
+        </article>
       </div>
-</div>
+    
+    
+      <div class="card-item">
+        <article>
+          
+          <a class="card-link article-nav-link" href="/2019/07/18/html%E5%8F%8Amarkdown/"></a>
+          <div class="article-nav-caption">Older</div>
+          <div class="article-nav-title">html及markdown</div>
+        </article>
+      </div>
+    
+  </div>
+</nav>
 
-<div class="wx-share-modal">
-    <a class="modal-close" href="javascript:;"><i class="ri-close-circle-line"></i></a>
-    <p>扫一扫，分享到微信</p>
-    <div class="wx-qrcode">
-      <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=http://yoursite.com/2019/07/18/Linux%E5%91%BD%E4%BB%A4/" alt="微信分享二维码">
     </div>
-</div>
+    
+    
+  <div id="comment-container" class="comment-container"></div>
 
-<div id="share-mask"></div>  
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%91%BD%E4%BB%A4/" rel="tag">命令</a></li></ul>
+  </article>
+</div></section>
 
-    </footer>
+    <!-- footer container -->
+<footer id="footer" class="footer">
+  <div class="footer-container">
+    <p>&copy; 2020 <a href="/" target="_blank">南神</a></p>
+
+    
+      <p id="hitokoto"></p>
+      <script src="https://v1.hitokoto.cn/?c=a&amp;encode=js&select=%23hitokoto" defer></script>
+    
+
+    
+
+    <p>Powered by <a href="https://hexo.io" target="_blank">Hexo</a> Theme - <a href="https://github.com/miiiku/flex-block" target="_blank">flex-block</a></p>
+  </div>
+</footer>
   </div>
 
-   
-  <nav class="article-nav">
-    
-      <a href="/2019/07/18/Linux%E6%96%87%E4%BB%B6/" class="article-nav-link">
-        <strong class="article-nav-caption">上一篇</strong>
-        <div class="article-nav-title">
-          
-            Linux文件
-          
-        </div>
-      </a>
-    
-    
-      <a href="/2019/07/18/html%E5%8F%8Amarkdown/" class="article-nav-link">
-        <strong class="article-nav-caption">下一篇</strong>
-        <div class="article-nav-title">html及markdown</div>
-      </a>
-    
-  </nav>
+  
+  <!-- 尾部其他内容 -->
 
-   
-<!-- valine评论 -->
-<div id="vcomments-box">
-  <div id="vcomments"></div>
-</div>
-<script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/valine@1.4.14/dist/Valine.min.js"></script>
-<script>
-  new Valine({
-    el: "#vcomments",
-    app_id: "",
-    app_key: "",
-    path: window.location.pathname,
-    avatar: "monsterid",
-    placeholder: "给我的文章加点评论吧~",
-    recordIP: true,
-  });
-  const infoEle = document.querySelector("#vcomments .info");
-  if (infoEle && infoEle.childNodes && infoEle.childNodes.length > 0) {
-    infoEle.childNodes.forEach(function (item) {
-      item.parentNode.removeChild(item);
+<!-- analytics -->
+
+
+
+
+
+
+
+  
+  
+
+<!-- dplayer 视频 -->
+
+<link rel="stylesheet" href="/lib/DPlayer.min.css">
+
+
+<script src="/lib/DPlayer.min.js"></script>
+
+<script type="text/javascript">
+  const dplayer = document.querySelectorAll(".dplayer");
+  dplayer && initDPlayer(dplayer);
+  function initDPlayer(els) {
+    let elsArr = Array.from(els);
+    elsArr.forEach(el => {
+      let url = el.dataset.url;
+      let cover = el.dataset.cover;
+      new DPlayer({
+        container: el,
+        video: { url: url, pic: cover },
+        theme: "#b7daff",
+        autoplay: false,
+        loop: false,
+        mutex: true,
+      });
     });
   }
 </script>
-<style>
-  #vcomments-box {
-    padding: 5px 30px;
-  }
 
-  @media screen and (max-width: 800px) {
-    #vcomments-box {
-      padding: 5px 0px;
+
+<!-- 瀑布流 -->
+
+<script src="/lib/macy.js"></script>
+
+<script type="text/javascript">
+
+if (document.querySelector(".waterfall-container")) {
+  initCss()
+  initMacy(".waterfall-container")
+}
+
+function initMacy(selector) {
+  new Macy({
+    container: selector,
+    trueOrder: false,
+    waitForImages: false,
+    useOwnImageLoader: false,
+    mobileFirst: true,
+    columns: 1,
+    margin: {
+      y: 16,
+      x: '2%',
+    },
+    breakAt: {
+      1200: {
+        margin: {
+          x: 20
+        },
+        columns: 4
+      },
+      940: {
+        margin: {
+          x: 20
+        },
+        columns: 3
+      },
+      520: {
+        margin: {
+          x: 10
+        },
+        columns: 2
+      },
+      400: {
+        margin: {
+          x: 0
+        },
+        columns: 1
+      },
     }
-  }
+  });
+}
 
-  #vcomments-box #vcomments {
-    background-color: #fff;
-  }
-
-  .v .vlist .vcard .vh {
-    padding-right: 20px;
-  }
-
-  .v .vlist .vcard {
-    padding-left: 10px;
-  }
-</style>
-
- 
-     
-</article>
-
-</section>
-      <footer class="footer">
-  <div class="outer">
-    <ul>
-      <li>
-        Copyrights &copy;
-        2015-2020
-        <i class="ri-heart-fill heart_icon"></i> 南神
-      </li>
-    </ul>
-    <ul>
-      <li>
-        
-        
-        
-        Powered by <a href="https://hexo.io" target="_blank">Hexo</a>
-        <span class="division">|</span>
-        Theme - <a href="https://github.com/Shen-Yu/hexo-theme-ayer" target="_blank">Ayer</a>
-        
-      </li>
-    </ul>
-    <ul>
-      <li>
-        
-        
-        <span>
-  <span><i class="ri-user-3-fill"></i>Visitors:<span id="busuanzi_value_site_uv"></span></s>
-  <span class="division">|</span>
-  <span><i class="ri-eye-fill"></i>Views:<span id="busuanzi_value_page_pv"></span></span>
-</span>
-        
-      </li>
-    </ul>
-    <ul>
-      
-    </ul>
-    <ul>
-      <li>
-        <!-- cnzz统计 -->
-        
-        <script type="text/javascript" src='https://s9.cnzz.com/z_stat.php?id=1278069914&amp;web_id=1278069914'></script>
-        
-      </li>
-    </ul>
-  </div>
-</footer>
-      <div class="float_btns">
-        <div class="totop" id="totop">
-  <i class="ri-arrow-up-line"></i>
-</div>
-
-<div class="todark" id="todark">
-  <i class="ri-moon-line"></i>
-</div>
-
-      </div>
-    </main>
-    <aside class="sidebar on">
-      <button class="navbar-toggle"></button>
-<nav class="navbar">
-  
-  <div class="logo">
-    <a href="/"><img src="/images/ayer-side.svg" alt="Welcome to Nanbert&#39;s blog"></a>
-  </div>
-  
-  <ul class="nav nav-main">
-    
-    <li class="nav-item">
-      <a class="nav-item-link" href="/">主页</a>
-    </li>
-    
-    <li class="nav-item">
-      <a class="nav-item-link" href="/archives">归档</a>
-    </li>
-    
-    <li class="nav-item">
-      <a class="nav-item-link" href="/categories">分类</a>
-    </li>
-    
-    <li class="nav-item">
-      <a class="nav-item-link" href="/tags">标签</a>
-    </li>
-    
-    <li class="nav-item">
-      <a class="nav-item-link" href="/tags/%E6%97%85%E8%A1%8C/">旅行</a>
-    </li>
-    
-    <li class="nav-item">
-      <a class="nav-item-link" target="_blank" rel="noopener" href="http://shenyu-vip.lofter.com">摄影</a>
-    </li>
-    
-    <li class="nav-item">
-      <a class="nav-item-link" href="/2019/about">关于我</a>
-    </li>
-    
-  </ul>
-</nav>
-<nav class="navbar navbar-bottom">
-  <ul class="nav">
-    <li class="nav-item">
-      
-      <a class="nav-item-link nav-item-search"  title="Search">
-        <i class="ri-search-line"></i>
-      </a>
-      
-      
-      <a class="nav-item-link" target="_blank" href="/atom.xml" title="RSS Feed">
-        <i class="ri-rss-line"></i>
-      </a>
-      
-    </li>
-  </ul>
-</nav>
-<div class="search-form-wrap">
-  <div class="local-search local-search-plugin">
-  <input type="search" id="local-search-input" class="local-search-input" placeholder="Search...">
-  <div id="local-search-result" class="local-search-result"></div>
-</div>
-</div>
-    </aside>
-    <script>
-      if (window.matchMedia("(max-width: 768px)").matches) {
-        document.querySelector('.content').classList.remove('on');
-        document.querySelector('.sidebar').classList.remove('on');
-      }
-    </script>
-    <div id="mask"></div>
-
-<!-- #reward -->
-<div id="reward">
-  <span class="close"><i class="ri-close-line"></i></span>
-  <p class="reward-p"><i class="ri-cup-line"></i>请我喝杯咖啡吧~</p>
-  <div class="reward-box">
-    
-    <div class="reward-item">
-      <img class="reward-img" src="https://cdn.jsdelivr.net/gh/Shen-Yu/cdn/img/alipay.jpg">
-      <span class="reward-type">支付宝</span>
-    </div>
-    
-    
-    <div class="reward-item">
-      <img class="reward-img" src="https://cdn.jsdelivr.net/gh/Shen-Yu/cdn/img/wechat.jpg">
-      <span class="reward-type">微信</span>
-    </div>
-    
-  </div>
-</div>
-    
-<script src="/js/jquery-2.0.3.min.js"></script>
+function initCss() {
+  let cssStyle = document.createElement("style")
+  cssStyle.innerText = `.waterfall-container p { display: block; border-radius: 4px; overflow: hidden; margin: 0; }`
+  document.head.appendChild(cssStyle);
+}
+</script>
 
 
-<script src="/js/lazyload.min.js"></script>
+<!-- 图片预览 -->
 
-<!-- Tocbot -->
-
-
-<script src="/js/tocbot.min.js"></script>
+<script src="/lib/zoom.min.js"></script>
 
 <script>
-  tocbot.init({
-    tocSelector: '.tocbot',
-    contentSelector: '.article-entry',
-    headingSelector: 'h1, h2, h3, h4, h5, h6',
-    hasInnerContainers: true,
-    scrollSmooth: true,
-    scrollContainer: 'main',
-    positionFixedSelector: '.tocbot',
-    positionFixedClass: 'is-position-fixed',
-    fixedSidebarOffset: 'auto'
+  document.querySelector(".zoom") && zoom(".zoom", {
+    margin: 15,
+    padding: 15,
+    radius: 5,
+    specify: "",
+    filter: "gallery",
   });
 </script>
 
-<script src="https://cdn.jsdelivr.net/npm/jquery-modal@0.9.2/jquery.modal.min.js"></script>
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/jquery-modal@0.9.2/jquery.modal.min.css">
-<script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/js/jquery.justifiedGallery.min.js"></script>
-
-<script src="/dist/main.js"></script>
-
-<!-- ImageViewer -->
-
-<!-- Root element of PhotoSwipe. Must have class pswp. -->
-<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
-
-    <!-- Background of PhotoSwipe. 
-         It's a separate element as animating opacity is faster than rgba(). -->
-    <div class="pswp__bg"></div>
-
-    <!-- Slides wrapper with overflow:hidden. -->
-    <div class="pswp__scroll-wrap">
-
-        <!-- Container that holds slides. 
-            PhotoSwipe keeps only 3 of them in the DOM to save memory.
-            Don't modify these 3 pswp__item elements, data is added later on. -->
-        <div class="pswp__container">
-            <div class="pswp__item"></div>
-            <div class="pswp__item"></div>
-            <div class="pswp__item"></div>
-        </div>
-
-        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
-        <div class="pswp__ui pswp__ui--hidden">
-
-            <div class="pswp__top-bar">
-
-                <!--  Controls are self-explanatory. Order can be changed. -->
-
-                <div class="pswp__counter"></div>
-
-                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
-
-                <button class="pswp__button pswp__button--share" style="display:none" title="Share"></button>
-
-                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
-
-                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
-
-                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
-                <!-- element will get class pswp__preloader--active when preloader is running -->
-                <div class="pswp__preloader">
-                    <div class="pswp__preloader__icn">
-                        <div class="pswp__preloader__cut">
-                            <div class="pswp__preloader__donut"></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
-                <div class="pswp__share-tooltip"></div>
-            </div>
-
-            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
-            </button>
-
-            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
-            </button>
-
-            <div class="pswp__caption">
-                <div class="pswp__caption__center"></div>
-            </div>
-
-        </div>
-
-    </div>
-
-</div>
-
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css">
-<script src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"></script>
-
-<script>
-    function viewer_init() {
-        let pswpElement = document.querySelectorAll('.pswp')[0];
-        let $imgArr = document.querySelectorAll(('.article-entry img:not(.reward-img)'))
-
-        $imgArr.forEach(($em, i) => {
-            $em.onclick = () => {
-                // slider展开状态
-                // todo: 这样不好，后面改成状态
-                if (document.querySelector('.left-col.show')) return
-                let items = []
-                $imgArr.forEach(($em2, i2) => {
-                    let img = $em2.getAttribute('data-idx', i2)
-                    let src = $em2.getAttribute('data-target') || $em2.getAttribute('src')
-                    let title = $em2.getAttribute('alt')
-                    // 获得原图尺寸
-                    const image = new Image()
-                    image.src = src
-                    items.push({
-                        src: src,
-                        w: image.width || $em2.width,
-                        h: image.height || $em2.height,
-                        title: title
-                    })
-                })
-                var gallery = new PhotoSwipe(pswpElement, PhotoSwipeUI_Default, items, {
-                    index: parseInt(i)
-                });
-                gallery.init()
-            }
-        })
-    }
-    viewer_init()
-</script>
-
-<!-- MathJax -->
-
-<!-- Katex -->
-
-<!-- busuanzi  -->
 
 
-<script src="/js/busuanzi-2.3.pure.min.js"></script>
+<script src="/js/script.js"></script>
 
-
-<!-- ClickLove -->
-
-<!-- ClickBoom1 -->
-
-<!-- ClickBoom2 -->
-
-<!-- CodeCopy -->
-
-
-<link rel="stylesheet" href="/css/clipboard.css">
-
-<script src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js"></script>
-<script>
-  function wait(callback, seconds) {
-    var timelag = null;
-    timelag = window.setTimeout(callback, seconds);
-  }
-  !function (e, t, a) {
-    var initCopyCode = function(){
-      var copyHtml = '';
-      copyHtml += '<button class="btn-copy" data-clipboard-snippet="">';
-      copyHtml += '<i class="ri-file-copy-2-line"></i><span>COPY</span>';
-      copyHtml += '</button>';
-      $(".highlight .code pre").before(copyHtml);
-      $(".article pre code").before(copyHtml);
-      var clipboard = new ClipboardJS('.btn-copy', {
-        target: function(trigger) {
-          return trigger.nextElementSibling;
-        }
-      });
-      clipboard.on('success', function(e) {
-        let $btn = $(e.trigger);
-        $btn.addClass('copied');
-        let $icon = $($btn.find('i'));
-        $icon.removeClass('ri-file-copy-2-line');
-        $icon.addClass('ri-checkbox-circle-line');
-        let $span = $($btn.find('span'));
-        $span[0].innerText = 'COPIED';
-        
-        wait(function () { // 等待两秒钟后恢复
-          $icon.removeClass('ri-checkbox-circle-line');
-          $icon.addClass('ri-file-copy-2-line');
-          $span[0].innerText = 'COPY';
-        }, 2000);
-      });
-      clipboard.on('error', function(e) {
-        e.clearSelection();
-        let $btn = $(e.trigger);
-        $btn.addClass('copy-failed');
-        let $icon = $($btn.find('i'));
-        $icon.removeClass('ri-file-copy-2-line');
-        $icon.addClass('ri-time-line');
-        let $span = $($btn.find('span'));
-        $span[0].innerText = 'COPY FAILED';
-        
-        wait(function () { // 等待两秒钟后恢复
-          $icon.removeClass('ri-time-line');
-          $icon.addClass('ri-file-copy-2-line');
-          $span[0].innerText = 'COPY';
-        }, 2000);
-      });
-    }
-    initCopyCode();
-  }(window, document);
-</script>
-
-
-<!-- CanvasBackground -->
-
-
-    
-  </div>
 </body>
-
 </html>
