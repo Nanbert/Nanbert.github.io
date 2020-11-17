@@ -1,123 +1,98 @@
 <!DOCTYPE html>
+
+
 <html lang="en">
-<head><meta name="generator" content="Hexo 3.9.0">
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+
+<head>
+  <meta charset="utf-8" />
+    
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+  <title>
+    Make及gcc |  Welcome to Nanbert&#39;s blog
+  </title>
+  <meta name="generator" content="hexo-theme-ayer">
+  
+  <link rel="shortcut icon" href="/favicon.ico" />
+  
+  
+<link rel="stylesheet" href="/dist/main.css">
+
+  
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Shen-Yu/cdn/css/remixicon.min.css">
+
+  
+<link rel="stylesheet" href="/css/custom.css">
+
+  
+  
+<script src="https://cdn.jsdelivr.net/npm/pace-js@1.0.2/pace.min.js"></script>
+
+  
+  
 
   
 
-  
-
-  
-    <meta name="author" content="南神">
-  
-
-  
-
-  
-
-  <title>Make及gcc | Welcome to Nanbert&#39;s blog</title>
-
-  
-
-  
-    <link rel="icon" href="/favicon.ico">
-  
-
-  
-    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
-    <link href="https://cdn.bootcss.com/highlight.js/9.15.6/styles/default.min.css" rel="stylesheet">
-  
-
-  <link rel="stylesheet" href="/css/style.css">
 </head>
+
+</html>
+
 <body>
-  <div id="container">
-    <!-- header -->
-<header class="header">
-  <div class="header-container ">
-    <nav class="header-navbar">
-      <div class="header-navbar-left">
-        <h1 class="header-navbar-logo">
-          <a href="/">
-            
-              <img src="https://s2.ax1x.com/2019/07/18/ZXn6S0.png">
-            
-          </a>
-        </h1>
-      </div>
-      <div class="header-navbar-right">
-        <div class="header-navbar-btn">
-          <div></div>
-          <div></div>
-          <div></div>
-        </div>
-        <ul class="header-navbar-list">
-          
-            <li class="header-navbar-item"><a href="/">首页</a></li>
-          
-            <li class="header-navbar-item"><a href="/categories">分类</a></li>
-          
-            <li class="header-navbar-item"><a href="/tags">标签</a></li>
-          
-        </ul>
-      </div>
-    </nav>
-  </div>
-</header>
+  <div id="app">
+    
+      
+    <main class="content on">
+      <section class="outer">
+  <article
+  id="post-Make及gcc"
+  class="article article-type-post"
+  itemscope
+  itemprop="blogPost"
+  data-scroll-reveal
+>
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h1 class="article-title sea-center" style="border-left:0" itemprop="name">
+  Make及gcc
+</h1>
+ 
 
+    </header>
+     
+    <div class="article-meta">
+      <a href="/2020/01/17/Make%E5%8F%8Agcc/" class="article-date">
+  <time datetime="2020-01-17T04:45:15.000Z" itemprop="datePublished">2020-01-17</time>
+</a>   
+<div class="word_count">
+    <span class="post-time">
+        <span class="post-meta-item-icon">
+            <i class="ri-quill-pen-line"></i>
+            <span class="post-meta-item-text"> Word count:</span>
+            <span class="post-count">2.9k</span>
+        </span>
+    </span>
 
-    <section id="main"><!-- 文章详情页 -->
-
-<!-- banner container -->
-<div class="banner-container" style="background-image: url(css/images/1.jpg)">
-  <div class="banner-inner">
-
-    
-    
-
-    
-    
-
-    
-    
-
-    
-    
-    
-
-    
-    
-      <h1 class="header-title"><a href="/2020/01/17/Make及gcc/">Make及gcc</a></h1>
-      <h2 class="header-subtitle">
-        
-          
-          <!--
-          
-  <a href="javascript:;" class="article-date">
-    <time datetime="2020-01-17T04:45:15.000Z" itemprop="datePublished">2020-01-17 12:45:15</time>
-  </a>
-
-          -->
-        
-      </h2>
-    
-
-    
-    
-  </div>
+    <span class="post-time">
+        &nbsp; | &nbsp;
+        <span class="post-meta-item-icon">
+            <i class="ri-book-open-line"></i>
+            <span class="post-meta-item-text"> Reading time≈</span>
+            <span class="post-count">11 min</span>
+        </span>
+    </span>
 </div>
+ 
+    </div>
+      
 
-<!-- 文章内容 -->
 
-<div class="body-container">
-  <article id="article-content" class="main-container article-content zoom">
-    
-    
 
-    <div class="article-entry">
-      <p>1.make中遇到的第一条规则是最终目标<br>2.变量相关<br>　a.内置变量</p>
+  
+    <div class="article-entry" itemprop="articleBody">
+       
+  <p>1.make中遇到的第一条规则是最终目标<br>2.变量相关<br>　a.内置变量</p>
 <table>
 <thead>
 <tr>
@@ -268,31 +243,22 @@
 </tbody></table>
 <p>所有自动变量都可以与<code>D</code>,<code>F</code>搭配使用,表示匹配的目录部分和文件部分,如<code>$(@D)</code><br>　b.<code>:=</code>操作符,操作符右边只能出现已定义的变量,如果是未定义的变量,则会自动忽略<br>　<code>=</code>操作符右边可以出现未定义的变量<br>　<code>?=</code>如果变量没有定义过,则使用后面的值<br>　<code>+=</code>追加变量值<br>　c.变量定义要注意空格<br>　d.替换<code>.o</code>到<code>.c</code><br>　　方法一:</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">foo:=a.o b.o c.o</span><br><span class="line">bar:=$(foo:.o=.c)</span><br></pre></td></tr></table></figure>
-
 <p>　　方法二:</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">foo:=a.o b.o c.o</span><br><span class="line">bar:=$(foo:%.o=%.c)</span><br></pre></td></tr></table></figure>
-
-<p>　e.<code>override &lt;variable&gt;=&lt;value&gt;</code>:强制覆盖,make命令行参数可以用这个强制覆盖,否则覆盖不了<br>　f.替换变量中字符串<br>　<code>变量名: s/原字符串/新字符串</code><br>　g.加前后缀<br>　<code>变量:^ &quot;前缀&quot;</code><br>　<code>变量:+ &quot;后缀&quot;</code><br>　h.取部分<br>　<code>$(VARIABLE:&lt;option&gt;)</code>,option有3个选项d(仅取路径)、b(文件名,不包括扩展)、f(文件名,包括扩展)<br>3.关键字vpath<br>　用法一: vpath <pattern> <directories>;符合模式的在指定文件夹搜索<br>　用法二: vpath <pattern>;清除对应模式搜索目录<br>　用法三: vpath;清除所有搜索目录<br><strong><em>注意:都必须包含%,意思是包含一个以上的匹配字符</em></strong><br>　f.局部作用的变量:</pattern></directories></pattern></p>
+<p>　e.<code>override &lt;variable&gt;=&lt;value&gt;</code>:强制覆盖,make命令行参数可以用这个强制覆盖,否则覆盖不了<br>　f.替换变量中字符串<br>　<code>变量名: s/原字符串/新字符串</code><br>　g.加前后缀<br>　<code>变量:^ &quot;前缀&quot;</code><br>　<code>变量:+ &quot;后缀&quot;</code><br>　h.取部分<br>　<code>$(VARIABLE:&lt;option&gt;)</code>,option有3个选项d(仅取路径)、b(文件名,不包括扩展)、f(文件名,包括扩展)<br>3.关键字vpath<br>　用法一: vpath <pattern> <directories>;符合模式的在指定文件夹搜索<br>　用法二: vpath <pattern>;清除对应模式搜索目录<br>　用法三: vpath;清除所有搜索目录<br><strong><em>注意:都必须包含%,意思是包含一个以上的匹配字符</em></strong><br>　f.局部作用的变量:</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">prog: CFLAGS = -g</span><br><span class="line">	prog: prog.o foo.o bar.o</span><br><span class="line">		$(gcc) $(CFLAGS) prog.o foo.o bar.o</span><br><span class="line">	prog.o: prog.c</span><br><span class="line">		$(gcc) $(CFLAGS) prog.c</span><br><span class="line">	foo.o: foo.c</span><br><span class="line">		$(gcc) $(CFLAGS) bar.c</span><br></pre></td></tr></table></figure>
-
 <p>不管全局的$(CFLAGS)的值是什么,prog目标及其所引发的所有规则中(prog.o foo.o bar.o),$(CFLAGS)的值都是-gl<br>4.伪目标:<code>.PHONY</code><br>　-伪目标并不是文件，只是个标签<br>　-只有显式地指名才能使其生效<br>　-最终目标可以是伪目标,一个用法如下,使一个make文件生成多个目标:</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">all: prog1 prog2 prog3</span><br><span class="line">.PHONY: all</span><br><span class="line">prog1: prog1.o utils.o</span><br><span class="line">	gcc -o prog1 prog1.o utils.o</span><br><span class="line">prog2: prog2.o</span><br><span class="line">	gcc -o prog2 prog2.o</span><br><span class="line">prog3: prog3.o sort.o utils.o</span><br><span class="line">	gcc -o prog3 prog3.o sort.o utils.o</span><br></pre></td></tr></table></figure>
-
 <p>5.静态模式:更方便定义多目标<code>&lt;targets&gt;: &lt;target-pattern&gt;: &lt;prereq-patterns&gt;</code><br>例子:</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">objects = foo.o bar.o</span><br><span class="line">all: $(objects)</span><br><span class="line">$(objects): %.o: %.c</span><br><span class="line">	$(gcc) -c $(CFLAGS) $&lt; -o <span class="variable">$@</span></span><br></pre></td></tr></table></figure>
-
 <p>等价于</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">foo.o: foo.c</span><br><span class="line">	$(gcc) -c $(CFLAGS) foo.c -o foo.o</span><br><span class="line">bar.o: bar.c</span><br><span class="line">	$(gcc) -c $(CFLAGS) bar.c -o bar.o</span><br></pre></td></tr></table></figure>
-
 <p>6.gcc -MM选项可以为.c源文件自动生成依赖<br>7.make默认会显示命令,在命令前加@可以阻止输出<br>8.要想前一个命令影响后一个命令要以‘;’分隔,不能分行写,<br>9.在命令前加上”-“,则命令都会被认为成功执行,如<code>-mkdir dir</code>,这样可以避免目录已存在的错误而终止规则<br>10.嵌套make  </p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">subsystem:</span><br><span class="line">	<span class="built_in">cd</span> subdir &amp;&amp; $(MAKE) <span class="comment">#也可以这么写$(MAKE) -C subdir</span></span><br></pre></td></tr></table></figure>
-
 <p>　要想传递变量给嵌套的make,使用export,不想传递使用unexport<br>　其中<code>SHELL</code>和<code>MAKEFLAGS</code>总会影响下层make,但-C、-f、-h、-o、-W几个参数并不往下传递<br>11.定义命令包(即命令集)<br>例子:</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">define run-yacc</span><br><span class="line">	mkdir dir</span><br><span class="line">	mv dir newdir</span><br><span class="line">endef</span><br><span class="line">crap: </span><br><span class="line">	$(run-yacc)</span><br></pre></td></tr></table></figure>
-
 <p>12.条件判断</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&lt;conditional-directive&gt; <span class="comment">#可以是ifeq(arg1,arg2)、ifneq、ifdef &lt;variable-name&gt;、ifndef</span></span><br><span class="line">	&lt;text-if-true&gt;</span><br><span class="line"><span class="keyword">else</span></span><br><span class="line">	&lt;text-if-false&gt;</span><br><span class="line">endif</span><br></pre></td></tr></table></figure>
-
 <p>13.函数<br>　a.调用语法:<code>$(&lt;function&gt; &lt;arguments&gt;)</code>,参数间用’,’分隔<br>　b.字符串函数</p>
 <table>
 <thead>
@@ -304,52 +270,52 @@
 </thead>
 <tbody><tr>
 <td align="center"><code>$(subst &lt;from&gt;,&lt;to&gt;,&lt;text&gt;)</code></td>
-<td align="center">把字符串<text>中的<from>换成<to></to></from></text></td>
+<td align="center">把字符串<text>中的<from>换成<to></td>
 <td align="center"><code>被替换过的字符串</code></td>
 </tr>
 <tr>
 <td align="center"><code>$(patsubst &lt;pattern&gt;,&lt;replacement&gt;,&lt;text&gt;)</code></td>
-<td align="center">查找<text>中的单词符合<pattern>,替换<replacement></replacement></pattern></text></td>
+<td align="center">查找<text>中的单词符合<pattern>,替换<replacement></td>
 <td align="center">被替换后的字符串</td>
 </tr>
 <tr>
 <td align="center"><code>$(strip &lt;string&gt;)</code></td>
-<td align="center">去掉<string>中开头和结尾的空字符</string></td>
+<td align="center">去掉<string>中开头和结尾的空字符</td>
 <td align="center">去掉空字符的字符串</td>
 </tr>
 <tr>
 <td align="center"><code>$(findstring &lt;find&gt;,&lt;in&gt;)</code></td>
-<td align="center">在字符串<in>中查找<find></find></in></td>
-<td align="center">如果找到,返回<find>,否则返回空字符串</find></td>
+<td align="center">在字符串<in>中查找<find></td>
+<td align="center">如果找到,返回<find>,否则返回空字符串</td>
 </tr>
 <tr>
 <td align="center"><code>$(filter &lt;pattern...&gt;,&lt;text&gt;)</code></td>
-<td align="center">以<pattern>模式过滤<text>字符串中的字符串,可以有多个模式,以空格分割</text></pattern></td>
-<td align="center">返回符合<pattern>的字符串</pattern></td>
+<td align="center">以<pattern>模式过滤<text>字符串中的字符串,可以有多个模式,以空格分割</td>
+<td align="center">返回符合<pattern>的字符串</td>
 </tr>
 <tr>
 <td align="center"><code>$(filter-out &lt;pattern...&gt;,&lt;text&gt;)</code></td>
-<td align="center">以<pattern>模式过滤<text>字符串中的字符串,可以有多个模式,以空格分割</text></pattern></td>
-<td align="center">返回不符合<pattern>的字符串</pattern></td>
+<td align="center">以<pattern>模式过滤<text>字符串中的字符串,可以有多个模式,以空格分割</td>
+<td align="center">返回不符合<pattern>的字符串</td>
 </tr>
 <tr>
 <td align="center"><code>$(sort &lt;list&gt;)</code></td>
-<td align="center">给字符串<list>中的单词升序</list></td>
+<td align="center">给字符串<list>中的单词升序</td>
 <td align="center">返回排序后的字符串(会去掉相同的单词)</td>
 </tr>
 <tr>
 <td align="center"><code>$(word &lt;n&gt;,&lt;text&gt;)</code></td>
-<td align="center">取字符串<text>中的第<n>个单词</n></text></td>
+<td align="center">取字符串<text>中的第<n>个单词</td>
 <td align="center">返回该单词,如果n过大,则返回空字符串</td>
 </tr>
 <tr>
 <td align="center"><code>$(wordlist &lt;n&gt;,&lt;m&gt;,&lt;text&gt;)</code></td>
-<td align="center">取第<n>-第<m>个单词</m></n></td>
+<td align="center">取第<n>-第<m>个单词</td>
 <td align="center">返回那些单词</td>
 </tr>
 <tr>
 <td align="center"><code>$(words &lt;text&gt;)</code></td>
-<td align="center">统计<text>中的单词数</text></td>
+<td align="center">统计<text>中的单词数</td>
 <td align="center">返回个数</td>
 </tr>
 </tbody></table>
@@ -400,10 +366,8 @@
 </tbody></table>
 <p>　d.foreach函数</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">names:= a b c d</span><br><span class="line">	files:= $(foreach n,$(names),$(n).o)</span><br></pre></td></tr></table></figure>
-
-<p>　$(files)的值是‘a.o b.o c.o d.o’<br>　e.if函数<br>　<code>$(if &lt;condition&gt;,&lt;then-part&gt;,&lt;else-part&gt;)</code>,<condition>若返回为非空,则执行<then-part>,其是整个函数的返回值<br>　f.call函数<br><code>$(call &lt;expression&gt;,&lt;parm1&gt;,&lt;parm2&gt;,&lt;parm3&gt;...)</code>;<expression>中$(1),$(2)等,会被参数<parm1>、<parm2>等代替</parm2></parm1></expression></then-part></condition></p>
+<p>　$(files)的值是‘a.o b.o c.o d.o’<br>　e.if函数<br>　<code>$(if &lt;condition&gt;,&lt;then-part&gt;,&lt;else-part&gt;)</code>,<condition>若返回为非空,则执行<then-part>,其是整个函数的返回值<br>　f.call函数<br><code>$(call &lt;expression&gt;,&lt;parm1&gt;,&lt;parm2&gt;,&lt;parm3&gt;...)</code>;<expression>中$(1),$(2)等,会被参数<parm1>、<parm2>等代替</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">reverse=$(2) $(1)</span><br><span class="line">foo=$(call reverse,a,b)</span><br></pre></td></tr></table></figure>
-
 <p>此时foo的值就是’b a’<br>  g.shell函数<br>  <code>files:=$(shell echo *.c)</code><br>  h.origin函数<br>  <code>$(origin &lt;variable&gt;)</code>:告知变量来源情况</p>
 <table>
 <thead>
@@ -512,8 +476,8 @@
 <td align="center">认为所有目标都需要更新(重编译)</td>
 </tr>
 <tr>
-<td align="center">-W <file></file></td>
-<td align="center">–what-if=<file>;–assume-new=<file>;–new-file=<file></file></file></file></td>
+<td align="center">-W <file></td>
+<td align="center">–what-if=<file>;–assume-new=<file>;–new-file=<file></td>
 <td align="center">make会根据规则推导来运行依赖于这个文件的命令</td>
 </tr>
 <tr>
@@ -532,8 +496,8 @@
 <td align="center">在执行时忽略所有的错误</td>
 </tr>
 <tr>
-<td align="center">-I <dir></dir></td>
-<td align="center">–include-dir=<dir></dir></td>
+<td align="center">-I <dir></td>
+<td align="center">–include-dir=<dir></td>
 <td align="center">指定一个包含makefile文件的搜索目标</td>
 </tr>
 <tr>
@@ -542,13 +506,13 @@
 <td align="center">出错也不停止,目标失败,依赖于其上的就不会执行</td>
 </tr>
 <tr>
-<td align="center">-o <file></file></td>
-<td align="center">–old-file=<file>;–assume-old=<file></file></file></td>
-<td align="center">不生成指定的<file>,即使这个目标的依赖文件比他新</file></td>
+<td align="center">-o <file></td>
+<td align="center">–old-file=<file>;–assume-old=<file></td>
+<td align="center">不生成指定的<file>,即使这个目标的依赖文件比他新</td>
 </tr>
 <tr>
-<td align="center">-l <load></load></td>
-<td align="center">–load-average [=<load>];–max-load[=<load>]</load></load></td>
+<td align="center">-l <load></td>
+<td align="center">–load-average [=<load>];–max-load[=<load>]</td>
 <td align="center">指定make运行命令的负载</td>
 </tr>
 <tr>
@@ -592,183 +556,526 @@
 <td align="center">警告未定义的变量</td>
 </tr>
 </tbody></table>
-<p>–debug <options>,options可以是以下:<br>a:也就是all,输出所有的调试信息<br>b:也就是basic,只输出简单的调试信息,即输出不需要重新编译的目标<br>v:也就是verbose,输出的信息包括哪一个makefile文件被解析,不需要重新编译的依赖文件(或是依赖目标)<br>i:也就是implicit,输出所有的隐含规则<br>j:也就是jobs,输出执行规则中命令的详细信息,如PID、返回码等<br>m:也就是makefile文件,输出make,读取makefile,更新makefile文件,并执行makefile文件的信息<br>16.隐含规则<br>　a.C程序隐含规则:<n>.o的目标的依赖目标会是:<n>.c,命令是<code>$(CC) -c $(CPPFLAGS)$(CFLAGS)</code><br>　b.C++程序隐含规则:<n>.o的目标的依赖目标是:<n>.cc或<n>.C,命令是<code>$(CXX) -c  $(CPPFLAGS)$(CXXFLAGS)</code><br>　c.模式规则示例:</n></n></n></n></n></options></p>
+<p>–debug <options>,options可以是以下:<br>a:也就是all,输出所有的调试信息<br>b:也就是basic,只输出简单的调试信息,即输出不需要重新编译的目标<br>v:也就是verbose,输出的信息包括哪一个makefile文件被解析,不需要重新编译的依赖文件(或是依赖目标)<br>i:也就是implicit,输出所有的隐含规则<br>j:也就是jobs,输出执行规则中命令的详细信息,如PID、返回码等<br>m:也就是makefile文件,输出make,读取makefile,更新makefile文件,并执行makefile文件的信息<br>16.隐含规则<br>　a.C程序隐含规则:<n>.o的目标的依赖目标会是:<n>.c,命令是<code>$(CC) -c $(CPPFLAGS)$(CFLAGS)</code><br>　b.C++程序隐含规则:<n>.o的目标的依赖目标是:<n>.cc或<n>.C,命令是<code>$(CXX) -c  $(CPPFLAGS)$(CXXFLAGS)</code><br>　c.模式规则示例:</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">%.o: %.c</span><br><span class="line"> $(CC) -c $(CFLAGS) $(CPPFLAGS) $&lt; -o <span class="variable">$@</span></span><br></pre></td></tr></table></figure>
-
 <p>17.函数库打包<br>函数库文件也就是对.o文件的打包文件<br>示例:</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">foolib(hack.o): hack.o</span><br><span class="line">	ar cr foolib hack.o  <span class="comment">#foolib是库名,hack.o是包含文件</span></span><br></pre></td></tr></table></figure>
-
-<p>==================gcc======<br>18.选项<br>-l<library> 链接动态库<br>-L<dir> 动态库搜索目录<br>-D<expression> 宏定义命令中定义<br>-l <dir>头文件搜索目录<br>18.静态库编译和使用<br><code>gcc -c increase.c -o increase.o</code>把.c编译成.o<br><code>ar -r libincrease.a increase.o</code>归档成静态库.a<br><code>gcc main.c -L -static -o main</code>链接成可执行文件<br>19.动态库编译和使用<br><code>gcc -shared -fPIC -o libinc.so increase.c</code>-fPIC生成位置独立的代码,此类代码可以在不同进程间共享<br><code>gcc -lincrease -o main main.c</code>链接动态库</dir></expression></dir></library></p>
-
-    </div>
-
-    <div class="article-footer">
+<p>==================gcc======<br>18.选项<br>-l<library> 链接动态库<br>-L<dir> 动态库搜索目录<br>-D<expression> 宏定义命令中定义<br>-l <dir>头文件搜索目录<br>18.静态库编译和使用<br><code>gcc -c increase.c -o increase.o</code>把.c编译成.o<br><code>ar -r libincrease.a increase.o</code>归档成静态库.a<br><code>gcc main.c -L -static -o main</code>链接成可执行文件<br>19.动态库编译和使用<br><code>gcc -shared -fPIC -o libinc.so increase.c</code>-fPIC生成位置独立的代码,此类代码可以在不同进程间共享<br><code>gcc -lincrease -o main main.c</code>链接动态库</p>
+ 
+      <!-- reward -->
+      
+      <div id="reward-btn">
+        Donate
+      </div>
       
     </div>
+    
 
-    <div class="article-navs">
-      
-<nav class="card-container card-article-nav">
-  <div class="card-wrap">
+    <!-- copyright -->
     
-      <div class="card-item img">
-        <article>
-          
-            <div class="card-cover" style="background-image: url(https://s2.ax1x.com/2019/07/20/Zz6QN8.jpg)"></div>
-          
-          <a class="card-link article-nav-link" href="/2020/02/05/hello-world/"></a>
-          <div class="article-nav-caption">Newer</div>
-          <div class="article-nav-title">Hello World</div>
-        </article>
-      </div>
-    
-    
-      <div class="card-item">
-        <article>
-          
-          <a class="card-link article-nav-link" href="/2020/01/16/GDB/"></a>
-          <div class="article-nav-caption">Older</div>
-          <div class="article-nav-title">GDB</div>
-        </article>
-      </div>
-    
-  </div>
-</nav>
-
+    <div class="declare">
+      <ul class="post-copyright">
+        <li>
+          <i class="ri-copyright-line"></i>
+          <strong>Copyright： </strong>
+          Copyright is owned by the author. For commercial reprints, please contact the author for authorization. For non-commercial reprints, please indicate the source.
+        </li>
+      </ul>
     </div>
     
-    
-  <div id="comment-container" class="comment-container"></div>
+    <footer class="article-footer">
+       
+<div class="share-btn">
+      <span class="share-sns share-outer">
+        <i class="ri-share-forward-line"></i>
+        分享
+      </span>
+      <div class="share-wrap">
+        <i class="arrow"></i>
+        <div class="share-icons">
+          
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="ri-weibo-fill"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="ri-wechat-fill"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="ri-qq-fill"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="ri-douban-line"></i>
+          </a>
+          <!-- <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a> -->
+          
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="ri-facebook-circle-fill"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="ri-twitter-fill"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="ri-google-fill"></i>
+          </a>
+        </div>
+      </div>
+</div>
 
-  </article>
-</div></section>
+<div class="wx-share-modal">
+    <a class="modal-close" href="javascript:;"><i class="ri-close-circle-line"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=http://yoursite.com/2020/01/17/Make%E5%8F%8Agcc/" alt="微信分享二维码">
+    </div>
+</div>
 
-    <!-- footer container -->
-<footer id="footer" class="footer">
-  <div class="footer-container">
-    <p>&copy; 2020 <a href="/" target="_blank">南神</a></p>
-
-    
-      <p id="hitokoto"></p>
-      <script src="https://v1.hitokoto.cn/?c=a&amp;encode=js&select=%23hitokoto" defer></script>
-    
-
-    
-
-    <p>Powered by <a href="https://hexo.io" target="_blank">Hexo</a> Theme - <a href="https://github.com/miiiku/flex-block" target="_blank">flex-block</a></p>
+<div id="share-mask"></div>  
+    </footer>
   </div>
-</footer>
-  </div>
 
-  
-  <!-- 尾部其他内容 -->
+   
+  <nav class="article-nav">
+    
+      <a href="/2020/02/05/hello-world/" class="article-nav-link">
+        <strong class="article-nav-caption">上一篇</strong>
+        <div class="article-nav-title">
+          
+            Hello World
+          
+        </div>
+      </a>
+    
+    
+      <a href="/2020/01/16/GDB/" class="article-nav-link">
+        <strong class="article-nav-caption">下一篇</strong>
+        <div class="article-nav-title">GDB</div>
+      </a>
+    
+  </nav>
 
-<!-- analytics -->
-
-
-
-
-
-
-
-  
-  
-
-<!-- dplayer 视频 -->
-<link rel="stylesheet" href="/lib/DPlayer.min.css">
-<script src="/lib/DPlayer.min.js"></script>
-<script type="text/javascript">
-  const dplayer = document.querySelectorAll(".dplayer");
-  dplayer && initDPlayer(dplayer);
-  function initDPlayer(els) {
-    let elsArr = Array.from(els);
-    elsArr.forEach(el => {
-      let url = el.dataset.url;
-      let cover = el.dataset.cover;
-      new DPlayer({
-        container: el,
-        video: { url: url, pic: cover },
-        theme: "#b7daff",
-        autoplay: false,
-        loop: false,
-        mutex: true,
-      });
+   
+<!-- valine评论 -->
+<div id="vcomments-box">
+  <div id="vcomments"></div>
+</div>
+<script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/valine@1.4.14/dist/Valine.min.js"></script>
+<script>
+  new Valine({
+    el: "#vcomments",
+    app_id: "",
+    app_key: "",
+    path: window.location.pathname,
+    avatar: "monsterid",
+    placeholder: "给我的文章加点评论吧~",
+    recordIP: true,
+  });
+  const infoEle = document.querySelector("#vcomments .info");
+  if (infoEle && infoEle.childNodes && infoEle.childNodes.length > 0) {
+    infoEle.childNodes.forEach(function (item) {
+      item.parentNode.removeChild(item);
     });
   }
 </script>
+<style>
+  #vcomments-box {
+    padding: 5px 30px;
+  }
 
-
-<!-- 瀑布流 -->
-<script src="/lib/macy.js"></script>
-<script type="text/javascript">
-
-if (document.querySelector(".waterfall-container")) {
-  initCss()
-  initMacy(".waterfall-container")
-}
-
-function initMacy(selector) {
-  new Macy({
-    container: selector,
-    trueOrder: false,
-    waitForImages: false,
-    useOwnImageLoader: false,
-    mobileFirst: true,
-    columns: 1,
-    margin: {
-      y: 16,
-      x: '2%',
-    },
-    breakAt: {
-      1200: {
-        margin: {
-          x: 20
-        },
-        columns: 4
-      },
-      940: {
-        margin: {
-          x: 20
-        },
-        columns: 3
-      },
-      520: {
-        margin: {
-          x: 10
-        },
-        columns: 2
-      },
-      400: {
-        margin: {
-          x: 0
-        },
-        columns: 1
-      },
+  @media screen and (max-width: 800px) {
+    #vcomments-box {
+      padding: 5px 0px;
     }
-  });
-}
+  }
 
-function initCss() {
-  let cssStyle = document.createElement("style")
-  cssStyle.innerText = `.waterfall-container p { display: block; border-radius: 4px; overflow: hidden; margin: 0; }`
-  document.head.appendChild(cssStyle);
-}
-</script>
+  #vcomments-box #vcomments {
+    background-color: #fff;
+  }
+
+  .v .vlist .vcard .vh {
+    padding-right: 20px;
+  }
+
+  .v .vlist .vcard {
+    padding-left: 10px;
+  }
+</style>
+
+ 
+     
+</article>
+
+</section>
+      <footer class="footer">
+  <div class="outer">
+    <ul>
+      <li>
+        Copyrights &copy;
+        2015-2020
+        <i class="ri-heart-fill heart_icon"></i> 南神
+      </li>
+    </ul>
+    <ul>
+      <li>
+        
+        
+        
+        Powered by <a href="https://hexo.io" target="_blank">Hexo</a>
+        <span class="division">|</span>
+        Theme - <a href="https://github.com/Shen-Yu/hexo-theme-ayer" target="_blank">Ayer</a>
+        
+      </li>
+    </ul>
+    <ul>
+      <li>
+        
+        
+        <span>
+  <span><i class="ri-user-3-fill"></i>Visitors:<span id="busuanzi_value_site_uv"></span></s>
+  <span class="division">|</span>
+  <span><i class="ri-eye-fill"></i>Views:<span id="busuanzi_value_page_pv"></span></span>
+</span>
+        
+      </li>
+    </ul>
+    <ul>
+      
+    </ul>
+    <ul>
+      <li>
+        <!-- cnzz统计 -->
+        
+        <script type="text/javascript" src='https://s9.cnzz.com/z_stat.php?id=1278069914&amp;web_id=1278069914'></script>
+        
+      </li>
+    </ul>
+  </div>
+</footer>
+      <div class="float_btns">
+        <div class="totop" id="totop">
+  <i class="ri-arrow-up-line"></i>
+</div>
+
+<div class="todark" id="todark">
+  <i class="ri-moon-line"></i>
+</div>
+
+      </div>
+    </main>
+    <aside class="sidebar on">
+      <button class="navbar-toggle"></button>
+<nav class="navbar">
+  
+  <div class="logo">
+    <a href="/"><img src="/images/ayer-side.svg" alt="Welcome to Nanbert&#39;s blog"></a>
+  </div>
+  
+  <ul class="nav nav-main">
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/">主页</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/archives">归档</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/categories">分类</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/tags">标签</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/tags/%E6%97%85%E8%A1%8C/">旅行</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" target="_blank" rel="noopener" href="http://shenyu-vip.lofter.com">摄影</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/2019/about">关于我</a>
+    </li>
+    
+  </ul>
+</nav>
+<nav class="navbar navbar-bottom">
+  <ul class="nav">
+    <li class="nav-item">
+      
+      <a class="nav-item-link nav-item-search"  title="Search">
+        <i class="ri-search-line"></i>
+      </a>
+      
+      
+      <a class="nav-item-link" target="_blank" href="/atom.xml" title="RSS Feed">
+        <i class="ri-rss-line"></i>
+      </a>
+      
+    </li>
+  </ul>
+</nav>
+<div class="search-form-wrap">
+  <div class="local-search local-search-plugin">
+  <input type="search" id="local-search-input" class="local-search-input" placeholder="Search...">
+  <div id="local-search-result" class="local-search-result"></div>
+</div>
+</div>
+    </aside>
+    <script>
+      if (window.matchMedia("(max-width: 768px)").matches) {
+        document.querySelector('.content').classList.remove('on');
+        document.querySelector('.sidebar').classList.remove('on');
+      }
+    </script>
+    <div id="mask"></div>
+
+<!-- #reward -->
+<div id="reward">
+  <span class="close"><i class="ri-close-line"></i></span>
+  <p class="reward-p"><i class="ri-cup-line"></i>请我喝杯咖啡吧~</p>
+  <div class="reward-box">
+    
+    <div class="reward-item">
+      <img class="reward-img" src="https://cdn.jsdelivr.net/gh/Shen-Yu/cdn/img/alipay.jpg">
+      <span class="reward-type">支付宝</span>
+    </div>
+    
+    
+    <div class="reward-item">
+      <img class="reward-img" src="https://cdn.jsdelivr.net/gh/Shen-Yu/cdn/img/wechat.jpg">
+      <span class="reward-type">微信</span>
+    </div>
+    
+  </div>
+</div>
+    
+<script src="/js/jquery-2.0.3.min.js"></script>
 
 
-<!-- 图片预览 -->
-<script src="/lib/zoom.min.js"></script>
+<script src="/js/lazyload.min.js"></script>
+
+<!-- Tocbot -->
+
+
+<script src="/js/tocbot.min.js"></script>
+
 <script>
-  document.querySelector(".zoom") && zoom(".zoom", {
-    margin: 15,
-    padding: 15,
-    radius: 5,
-    specify: "",
-    filter: "gallery",
+  tocbot.init({
+    tocSelector: '.tocbot',
+    contentSelector: '.article-entry',
+    headingSelector: 'h1, h2, h3, h4, h5, h6',
+    hasInnerContainers: true,
+    scrollSmooth: true,
+    scrollContainer: 'main',
+    positionFixedSelector: '.tocbot',
+    positionFixedClass: 'is-position-fixed',
+    fixedSidebarOffset: 'auto'
   });
 </script>
 
+<script src="https://cdn.jsdelivr.net/npm/jquery-modal@0.9.2/jquery.modal.min.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/jquery-modal@0.9.2/jquery.modal.min.css">
+<script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/js/jquery.justifiedGallery.min.js"></script>
 
-<script src="/js/script.js"></script>
+<script src="/dist/main.js"></script>
+
+<!-- ImageViewer -->
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                <!--  Controls are self-explanatory. Order can be changed. -->
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" style="display:none" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css">
+<script src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"></script>
+
+<script>
+    function viewer_init() {
+        let pswpElement = document.querySelectorAll('.pswp')[0];
+        let $imgArr = document.querySelectorAll(('.article-entry img:not(.reward-img)'))
+
+        $imgArr.forEach(($em, i) => {
+            $em.onclick = () => {
+                // slider展开状态
+                // todo: 这样不好，后面改成状态
+                if (document.querySelector('.left-col.show')) return
+                let items = []
+                $imgArr.forEach(($em2, i2) => {
+                    let img = $em2.getAttribute('data-idx', i2)
+                    let src = $em2.getAttribute('data-target') || $em2.getAttribute('src')
+                    let title = $em2.getAttribute('alt')
+                    // 获得原图尺寸
+                    const image = new Image()
+                    image.src = src
+                    items.push({
+                        src: src,
+                        w: image.width || $em2.width,
+                        h: image.height || $em2.height,
+                        title: title
+                    })
+                })
+                var gallery = new PhotoSwipe(pswpElement, PhotoSwipeUI_Default, items, {
+                    index: parseInt(i)
+                });
+                gallery.init()
+            }
+        })
+    }
+    viewer_init()
+</script>
+
+<!-- MathJax -->
+
+<!-- Katex -->
+
+<!-- busuanzi  -->
+
+
+<script src="/js/busuanzi-2.3.pure.min.js"></script>
+
+
+<!-- ClickLove -->
+
+<!-- ClickBoom1 -->
+
+<!-- ClickBoom2 -->
+
+<!-- CodeCopy -->
+
+
+<link rel="stylesheet" href="/css/clipboard.css">
+
+<script src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js"></script>
+<script>
+  function wait(callback, seconds) {
+    var timelag = null;
+    timelag = window.setTimeout(callback, seconds);
+  }
+  !function (e, t, a) {
+    var initCopyCode = function(){
+      var copyHtml = '';
+      copyHtml += '<button class="btn-copy" data-clipboard-snippet="">';
+      copyHtml += '<i class="ri-file-copy-2-line"></i><span>COPY</span>';
+      copyHtml += '</button>';
+      $(".highlight .code pre").before(copyHtml);
+      $(".article pre code").before(copyHtml);
+      var clipboard = new ClipboardJS('.btn-copy', {
+        target: function(trigger) {
+          return trigger.nextElementSibling;
+        }
+      });
+      clipboard.on('success', function(e) {
+        let $btn = $(e.trigger);
+        $btn.addClass('copied');
+        let $icon = $($btn.find('i'));
+        $icon.removeClass('ri-file-copy-2-line');
+        $icon.addClass('ri-checkbox-circle-line');
+        let $span = $($btn.find('span'));
+        $span[0].innerText = 'COPIED';
+        
+        wait(function () { // 等待两秒钟后恢复
+          $icon.removeClass('ri-checkbox-circle-line');
+          $icon.addClass('ri-file-copy-2-line');
+          $span[0].innerText = 'COPY';
+        }, 2000);
+      });
+      clipboard.on('error', function(e) {
+        e.clearSelection();
+        let $btn = $(e.trigger);
+        $btn.addClass('copy-failed');
+        let $icon = $($btn.find('i'));
+        $icon.removeClass('ri-file-copy-2-line');
+        $icon.addClass('ri-time-line');
+        let $span = $($btn.find('span'));
+        $span[0].innerText = 'COPY FAILED';
+        
+        wait(function () { // 等待两秒钟后恢复
+          $icon.removeClass('ri-time-line');
+          $icon.addClass('ri-file-copy-2-line');
+          $span[0].innerText = 'COPY';
+        }, 2000);
+      });
+    }
+    initCopyCode();
+  }(window, document);
+</script>
+
+
+<!-- CanvasBackground -->
+
+
+    
+  </div>
 </body>
+
 </html>
