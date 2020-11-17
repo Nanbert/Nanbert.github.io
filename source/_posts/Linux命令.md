@@ -285,3 +285,5 @@ It's you,Assole!
 `whatis <command>`会给出命令简短的说明
 48.
 `rm !(*.csv)`删除除了csv结尾的所有文件(貌似只有bash支持，zsh不支持)
+49.
+'mkdir {2007..2009}_0{1..9}{A,B}'创建一系列文件夹
