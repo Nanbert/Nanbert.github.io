@@ -156,26 +156,6 @@ plymouth更换主题,主题文件夹：/usr/share/plymouth/themes/,设置文件�
 33.增量拷贝
 `cp -u <...>`只拷贝时间戳更新的文件,相同文件不拷贝
 `rsync`远程拷贝,相比于cp -u,它对改动很小的文件的操作更快
-34.find命令  
-　格式:find <范围> <条件> <动作>
-　a.条件选项  
-　　`-name '<filename>'`查找某个文件
-　　`-regex <pattern>`整个路径名与pattern匹配
-　　`-type <option>`
-　　　option选项:
-　　　f:普通文件 d:目录 l:符号链接文件
-　　　c:字符设备文件 b:块设备文件 p:管道文件
-　　`-size ±n单位`指定文件大小(大于+,等于,小于-);单位有c(字符),b(块,512字节),k,M,G,默认为b
-　　`-mtime ±ndays`文件最近修改时间
-　　`-newer file`文件最近修改时间比file还晚
-　　`复合条件`:与-a;或-o;非!
-　b.动作选项
-　　`-print`打印文件的路径名
-　　`-exec`在-exec及随后的分号(分号要用反斜线)之间的内容作为一条命令,其中{}代表遍历到的目标文件的路径名
-　　`-ok`与-exec类似，但有确认选项
-　c.例子
-　　`sudo find /tmp -type d -empty`
-　　`find ~ -perm /a=x`查找所有可执行文件
 35.在任何命令前加`time`,可以计时运行时间
 36.xargs命令,将标准输入构造为命令的命令行参数,如果命令行参数过多,会启动多个进程,与单一普通管道相比就是批处理
 举例:`find src -name \*.c -print | xargs grep -n -- --help`
