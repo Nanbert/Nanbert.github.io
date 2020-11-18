@@ -73,7 +73,7 @@
     <section id="main"><!-- 文章详情页 -->
 
 <!-- banner container -->
-<div class="banner-container" style="background-image: url(css/images/1.jpg)">
+<div class="banner-container" style="background-image: url(css/images/find.jpg)">
   <div class="banner-inner">
 
     
@@ -119,8 +119,120 @@
     
 
     <div class="article-entry">
-      <p>1.find命令<br>　格式:find &lt;范围&gt; &lt;条件&gt; &lt;动作&gt;<br>2.查询表<br>|测试条件|描述|<br>|:-:|:-:|<br>|-cmin [num]|匹配文件的最后修改时间正好在[num]分钟之前|<br>|-cnewer [fileName]|匹配文件的最后修改时间晚于file的文件或目录|<br>|-ctime [num]|匹配文件的最后修改时间在num*24小时之前|<br>|-empty|匹配空文件和目录|<br>|-group [groupName]|匹配属于一个组的文件|<br>|-iname [pattern]|与-name一样，但是不区分大小写|<br>|-inum [nodeId]|匹配inode号是[nodeId]的文件,可用来查找硬链接|<br>|-mmin [num]|匹配内容修改于[num]分钟之前|<br>|-mtime [num]|匹配内容修改于[num*24]小时之前|<br>|-name [pattern]|用指定的通配符模式匹配文件名|<br>|-newer [file]|匹配晚于[file]的文件|<br>|-nouser|匹配不属于一个有效用户的文件|<br>|-nogroup|匹配不属于一个有效组的文件|<br>|-perm [mode]|匹配权限设置为[mode]的文件,mode可用八进制或符号|<br>|-samefile [filename]|类似于-inum测试条件,匹配和文件[fileName]享有同样inode号的文件|<br>|-size [num]|匹配大小为[num]的文件,数字后加单位,详情见其他表|<br>|-type [fileType]|匹配文件类型是[fileType]的文件|<br>|-user name|匹配属于某个用户文件|</p>
-<p>(注:一般[num]都可以在前面加±号,表示大于或少于,如+5,-5)<br>|:-:|:-:|<br>|字符|单位|<br>|b|512个字节快,为默认值|<br>|c|字节|<br>|w|两个字节的字|<br>|k|千字节(1024个字节单位)|<br>|M|兆字节(1048576个字节单位)|<br>|G|千兆字节(1073741824个字节单位)|</p>
+      <p>1.<strong>格式</strong><br>find &lt;范围&gt; &lt;条件&gt; &lt;动作&gt;<br>2.<strong>查询表</strong></p>
+<table>
+<thead>
+<tr>
+<th align="center">测试条件</th>
+<th align="center">描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">-cmin [num]</td>
+<td align="center">匹配文件的最后修改时间正好在[num]分钟之前</td>
+</tr>
+<tr>
+<td align="center">-cnewer [fileName]</td>
+<td align="center">匹配文件的最后修改时间晚于file的文件或目录</td>
+</tr>
+<tr>
+<td align="center">-ctime [num]</td>
+<td align="center">匹配文件的最后修改时间在num*24小时之前</td>
+</tr>
+<tr>
+<td align="center">-empty</td>
+<td align="center">匹配空文件和目录</td>
+</tr>
+<tr>
+<td align="center">-group [groupName]</td>
+<td align="center">匹配属于一个组的文件</td>
+</tr>
+<tr>
+<td align="center">-iname [pattern]</td>
+<td align="center">与-name一样，但是不区分大小写</td>
+</tr>
+<tr>
+<td align="center">-inum [nodeId]</td>
+<td align="center">匹配inode号是[nodeId]的文件,可用来查找硬链接</td>
+</tr>
+<tr>
+<td align="center">-mmin [num]</td>
+<td align="center">匹配内容修改于[num]分钟之前</td>
+</tr>
+<tr>
+<td align="center">-mtime [num]</td>
+<td align="center">匹配内容修改于[num*24]小时之前</td>
+</tr>
+<tr>
+<td align="center">-name [pattern]</td>
+<td align="center">用指定的通配符模式匹配文件名</td>
+</tr>
+<tr>
+<td align="center">-newer [file]</td>
+<td align="center">匹配晚于[file]的文件</td>
+</tr>
+<tr>
+<td align="center">-nouser</td>
+<td align="center">匹配不属于一个有效用户的文件</td>
+</tr>
+<tr>
+<td align="center">-nogroup</td>
+<td align="center">匹配不属于一个有效组的文件</td>
+</tr>
+<tr>
+<td align="center">-perm [mode]</td>
+<td align="center">匹配权限设置为[mode]的文件,mode可用八进制或符号</td>
+</tr>
+<tr>
+<td align="center">-samefile [filename]</td>
+<td align="center">类似于-inum测试条件,匹配和文件[fileName]享有同样inode号的文件</td>
+</tr>
+<tr>
+<td align="center">-size [num]</td>
+<td align="center">匹配大小为[num]的文件,数字后加单位,详情见其他表</td>
+</tr>
+<tr>
+<td align="center">-type [fileType]</td>
+<td align="center">匹配文件类型是[fileType]的文件</td>
+</tr>
+<tr>
+<td align="center">-user name</td>
+<td align="center">匹配属于某个用户文件</td>
+</tr>
+</tbody></table>
+<p>(注:一般[num]都可以在前面加±号,表示大于或少于,如+5,-5)</p>
+<table>
+<thead>
+<tr>
+<th align="center">字符</th>
+<th align="center">单位</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">b</td>
+<td align="center">512个字节快,为默认值</td>
+</tr>
+<tr>
+<td align="center">c</td>
+<td align="center">字节</td>
+</tr>
+<tr>
+<td align="center">w</td>
+<td align="center">两个字节的字</td>
+</tr>
+<tr>
+<td align="center">k</td>
+<td align="center">千字节(1024个字节单位)</td>
+</tr>
+<tr>
+<td align="center">M</td>
+<td align="center">兆字节(1048576个字节单位)</td>
+</tr>
+<tr>
+<td align="center">G</td>
+<td align="center">千兆字节(1073741824个字节单位)</td>
+</tr>
+</tbody></table>
 <table>
 <thead>
 <tr>
@@ -145,7 +257,38 @@
 <td align="center">用来改变优先级,注意一般shell对其有特殊解释,所以用引号或反斜杠加来转义</td>
 </tr>
 </tbody></table>
-<p>|操作|描述|<br>|-delete|删除当前匹配的文件|<br>|-print|默认操作，打印|<br>|-ls|对匹配文件执行等同ls -dils命令|<br>|-quit|匹配到第一个即立刻退出|<br>|<code>-exec [command] &#39;&#123;&#125;&#39; &#39;;&#39;</code>|”{}”代表匹配到的文件(为决定路径),因为是shell特殊符号所以要用单引号,结尾必须用”;”,同样是特殊符号,要用单引号|<br>|<code>-ok [command] &#39;&#123;&#125;&#39; &#39;;&#39;</code>|与-exec相似，只不过执行前会进行确认|</p>
+<table>
+<thead>
+<tr>
+<th align="center">操作</th>
+<th align="center">描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">-delete</td>
+<td align="center">删除当前匹配的文件</td>
+</tr>
+<tr>
+<td align="center">-print</td>
+<td align="center">默认操作，打印</td>
+</tr>
+<tr>
+<td align="center">-ls</td>
+<td align="center">对匹配文件执行等同ls -dils命令</td>
+</tr>
+<tr>
+<td align="center">-quit</td>
+<td align="center">匹配到第一个即立刻退出</td>
+</tr>
+<tr>
+<td align="center"><code>-exec [command] &#39;&#123;&#125;&#39; &#39;;&#39;</code></td>
+<td align="center">“{}”代表匹配到的文件(为决定路径),因为是shell特殊符号所以要用单引号,结尾必须用”;”,同样是特殊符号,要用单引号</td>
+</tr>
+<tr>
+<td align="center"><code>-ok [command] &#39;&#123;&#125;&#39; &#39;;&#39;</code></td>
+<td align="center">与-exec相似，只不过执行前会进行确认</td>
+</tr>
+</tbody></table>
 <table>
 <thead>
 <tr>
@@ -174,8 +317,37 @@
 <td align="center">符号链接</td>
 </tr>
 </tbody></table>
-<p>控制find命令的搜索范围<br>|选项|描述|<br>|:-:|:-:|<br>|-depth|指定find程序先处理目录中的文件,再处理目录自身(深度优先搜索?)。当指定-delete行为时,会自动用这个选项|<br>|-maxdepth [num]|设置陷入目录树的最大级别数|<br>|-mindepth [num]|设置陷入目录树的最小级别数|<br>|-mount|不搜索挂载到其他系统下的目录|<br>|-noleaf|在搜索DOS/Win文件系统或CD/ROMS时的时候优化选项|<br>3.-exec与”+”<br><code>find -type f -name &#39;foo*&#39; -exec ls -l &#39;&#123;&#125;&#39; &#39;;&#39;</code><br><code>find -type f -name &#39;foo*&#39; -exec ls -l &#39;&#123;&#125;&#39; +</code><br>上述两个命令的区别在于,假设匹配到fooA与fooB两个文件,第一个相当于执行两次ls命令,相当于<code>ls -l fooA</code>和<code>ls -l fooB</code>而第二个只执行一次<code>ls -l fooA fooB</code></p>
-<p>4.xargs<br><code>find ~ -type f -name &#39;foo*&#39; -print | xargs ls -l</code>与上述带有”+”的-exec选项效果一样,注意xargs有最大参数个数限制,可以通过<code>xargs -show-limits</code>来查看最大值<br>5.文件名存在空格的问题<br>类 Unix 的系统允许在文件名中嵌入空格(甚至换行符)。这就给一些程序,如<br>为其它程序构建参数列表的 xargs 程序,造成了问题。一个嵌入的空格会被看作是<br>一个分隔符,生成的命令会把每个空格分离的单词解释为单独的参数。为了解决这<br>个问题,find 命令和 xarg 程序允许使用一个可选的 null 字符作为参数分隔符。一<br>个 null 字符被定义在 ASCII 码中,由数字零来表示(相反的,例如,空格字符在<br>ASCII 码中由数字 32 表示)。find 命令提供的 -print0 行为,则会产生由 null 字符<br>分离的输出,并且 xargs 命令有一个 –null 选项,这个选项会接受由 null 字符分离<br>的输入。这里有一个例子<br><code>find ~ -iname &#39;*.jpg&#39; -print0 | xargs -null ls -l</code><br>5.例子<br><code>sudo find /tmp -type d -empty</code><br><code>find ~ -perm /a=x</code>查找所有可执行文件</p>
+<p>控制find命令的搜索范围</p>
+<table>
+<thead>
+<tr>
+<th align="center">选项</th>
+<th align="center">描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">-depth</td>
+<td align="center">指定find程序先处理目录中的文件,再处理目录自身(深度优先搜索?)。当指定-delete行为时,会自动用这个选项</td>
+</tr>
+<tr>
+<td align="center">-maxdepth [num]</td>
+<td align="center">设置陷入目录树的最大级别数</td>
+</tr>
+<tr>
+<td align="center">-mindepth [num]</td>
+<td align="center">设置陷入目录树的最小级别数</td>
+</tr>
+<tr>
+<td align="center">-mount</td>
+<td align="center">不搜索挂载到其他系统下的目录</td>
+</tr>
+<tr>
+<td align="center">-noleaf</td>
+<td align="center">在搜索DOS/Win文件系统或CD/ROMS时的时候优化选项</td>
+</tr>
+</tbody></table>
+<p>3.<strong>-exec与”+”</strong><br><code>find -type f -name &#39;foo*&#39; -exec ls -l &#39;&#123;&#125;&#39; &#39;;&#39;</code><br><code>find -type f -name &#39;foo*&#39; -exec ls -l &#39;&#123;&#125;&#39; +</code><br>上述两个命令的区别在于,假设匹配到fooA与fooB两个文件,第一个相当于执行两次ls命令,相当于<code>ls -l fooA</code>和<code>ls -l fooB</code>而第二个只执行一次<code>ls -l fooA fooB</code></p>
+<p>4.<strong>xargs</strong><br><code>find ~ -type f -name &#39;foo*&#39; -print | xargs ls -l</code>与上述带有”+”的-exec选项效果一样,注意xargs有最大参数个数限制,可以通过<code>xargs -show-limits</code>来查看最大值<br>5.<strong>文件名存在空格的问题</strong><br>类 Unix 的系统允许在文件名中嵌入空格(甚至换行符)。这就给一些程序,如<br>为其它程序构建参数列表的 xargs 程序,造成了问题。一个嵌入的空格会被看作是<br>一个分隔符,生成的命令会把每个空格分离的单词解释为单独的参数。为了解决这<br>个问题,find 命令和 xarg 程序允许使用一个可选的 null 字符作为参数分隔符。一<br>个 null 字符被定义在 ASCII 码中,由数字零来表示(相反的,例如,空格字符在<br>ASCII 码中由数字 32 表示)。find 命令提供的 -print0 行为,则会产生由 null 字符<br>分离的输出,并且 xargs 命令有一个 –null 选项,这个选项会接受由 null 字符分离<br>的输入。这里有一个例子<br><code>find ~ -iname &#39;*.jpg&#39; -print0 | xargs -null ls -l</code><br>6.<strong>例子</strong><br><code>sudo find /tmp -type d -empty</code><br><code>find ~ -perm /a=x</code>查找所有可执行文件</p>
 
     </div>
 
