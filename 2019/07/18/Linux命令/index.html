@@ -197,7 +197,6 @@
 <li>gbk中文字符转换为utf<br><code>iconv -f utf-8 -t gbk</code><br><code>echo &quot;汉字&quot; | iconv -f utf-8 -t gbk | od -t x1</code></li>
 <li><code>--</code>显示终止选项命令,如<code>rm -- -i</code>表示删除名为’-i’的文件</li>
 <li>增量拷贝<br><code>cp -u &lt;...&gt;</code>只拷贝时间戳更新的文件,相同文件不拷贝<br><code>rsync</code>远程拷贝,相比于cp -u,它对改动很小的文件的操作更快</li>
-<li>find命令<br>　格式:find &lt;范围&gt; &lt;条件&gt; &lt;动作&gt;<br>　a.条件选项<br>　　<code>-name &#39;&lt;filename&gt;&#39;</code>查找某个文件<br>　　<code>-regex &lt;pattern&gt;</code>整个路径名与pattern匹配<br>　　<code>-type &lt;option&gt;</code><br>　　　option选项:<br>　　　f:普通文件 d:目录 l:符号链接文件<br>　　　c:字符设备文件 b:块设备文件 p:管道文件<br>　　<code>-size ±n单位</code>指定文件大小(大于+,等于,小于-);单位有c(字符),b(块,512字节),k,M,G,默认为b<br>　　<code>-mtime ±ndays</code>文件最近修改时间<br>　　<code>-newer file</code>文件最近修改时间比file还晚<br>　　<code>复合条件</code>:与-a;或-o;非!<br>　b.动作选项<br>　　<code>-print</code>打印文件的路径名<br>　　<code>-exec</code>在-exec及随后的分号(分号要用反斜线)之间的内容作为一条命令,其中{}代表遍历到的目标文件的路径名<br>　　<code>-ok</code>与-exec类似，但有确认选项<br>　c.例子<br>　　<code>sudo find /tmp -type d -empty</code><br>　　<code>find ~ -perm /a=x</code>查找所有可执行文件</li>
 <li>在任何命令前加<code>time</code>,可以计时运行时间</li>
 <li>xargs命令,将标准输入构造为命令的命令行参数,如果命令行参数过多,会启动多个进程,与单一普通管道相比就是批处理<br>举例:<code>find src -name \*.c -print | xargs grep -n -- --help</code></li>
 <li>文件归档tar<br>　格式:tar [options] [destination] [target]<table>

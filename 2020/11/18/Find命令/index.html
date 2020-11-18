@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+  
+
+  
+
+  
+    <meta name="author" content="南神">
+  
+
+  
+
+  
+
+  <title>Find命令 | Welcome to Nanbert&#39;s blog</title>
+
+  
+
+  
+    <link rel="icon" href="/favicon.ico">
+  
+
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+    <link href="https://cdn.bootcss.com/highlight.js/9.15.6/styles/default.min.css" rel="stylesheet">
+  
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 5.2.0"></head>
+<body>
+  <div id="container">
+    <!-- header -->
+<header class="header">
+  <div class="header-container ">
+    <nav class="header-navbar">
+      <div class="header-navbar-left">
+        <h1 class="header-navbar-logo">
+          <a href="/">
+            
+              <img src="https://s2.ax1x.com/2019/07/18/ZXn6S0.png"/>
+            
+          </a>
+        </h1>
+      </div>
+      <div class="header-navbar-right">
+        <div class="header-navbar-btn">
+          <div></div>
+          <div></div>
+          <div></div>
+        </div>
+        <ul class="header-navbar-list">
+          
+            <li class="header-navbar-item"><a href="/">首页</a></li>
+          
+            <li class="header-navbar-item"><a href="/categories">分类</a></li>
+          
+            <li class="header-navbar-item"><a href="/tags">标签</a></li>
+          
+        </ul>
+      </div>
+    </nav>
+  </div>
+</header>
+
+
+    <section id="main"><!-- 文章详情页 -->
+
+<!-- banner container -->
+<div class="banner-container" style="background-image: url(css/images/1.jpg)">
+  <div class="banner-inner">
+
+    
+    
+
+    
+    
+
+    
+    
+
+    
+    
+    
+
+    
+    
+      <h1 class="header-title"><a href="/2020/11/18/Find%E5%91%BD%E4%BB%A4/">Find命令</a></h1>
+      <h2 class="header-subtitle">
+        
+          
+          <!--
+          
+  <a href="javascript:;" class="article-date">
+    <time datetime="2020-11-18T10:40:05.000Z" itemprop="datePublished">2020-11-18 06:40:05</time>
+  </a>
+
+          -->
+        
+      </h2>
+    
+
+    
+    
+  </div>
+</div>
+
+<!-- 文章内容 -->
+
+<div class="body-container">
+  <article id="article-content" class="main-container article-content zoom">
+    
+    
+
+    <div class="article-entry">
+      <p>1.find命令<br>　格式:find &lt;范围&gt; &lt;条件&gt; &lt;动作&gt;<br>2.查询表<br>|测试条件|描述|<br>|:-:|:-:|<br>|-cmin [num]|匹配文件的最后修改时间正好在[num]分钟之前|<br>|-cnewer [fileName]|匹配文件的最后修改时间晚于file的文件或目录|<br>|-ctime [num]|匹配文件的最后修改时间在num*24小时之前|<br>|-empty|匹配空文件和目录|<br>|-group [groupName]|匹配属于一个组的文件|<br>|-iname [pattern]|与-name一样，但是不区分大小写|<br>|-inum [nodeId]|匹配inode号是[nodeId]的文件,可用来查找硬链接|<br>|-mmin [num]|匹配内容修改于[num]分钟之前|<br>|-mtime [num]|匹配内容修改于[num*24]小时之前|<br>|-name [pattern]|用指定的通配符模式匹配文件名|<br>|-newer [file]|匹配晚于[file]的文件|<br>|-nouser|匹配不属于一个有效用户的文件|<br>|-nogroup|匹配不属于一个有效组的文件|<br>|-perm [mode]|匹配权限设置为[mode]的文件,mode可用八进制或符号|<br>|-samefile [filename]|类似于-inum测试条件,匹配和文件[fileName]享有同样inode号的文件|<br>|-size [num]|匹配大小为[num]的文件,数字后加单位,详情见其他表|<br>|-type [fileType]|匹配文件类型是[fileType]的文件|<br>|-user name|匹配属于某个用户文件|</p>
+<p>(注:一般[num]都可以在前面加±号,表示大于或少于,如+5,-5)<br>|:-:|:-:|<br>|字符|单位|<br>|b|512个字节快,为默认值|<br>|c|字节|<br>|w|两个字节的字|<br>|k|千字节(1024个字节单位)|<br>|M|兆字节(1048576个字节单位)|<br>|G|千兆字节(1073741824个字节单位)|</p>
+<table>
+<thead>
+<tr>
+<th align="center">操作符</th>
+<th align="center">描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">-and(-a)</td>
+<td align="center">如果操作符两边的测试条件都是真,则匹配,默认使用</td>
+</tr>
+<tr>
+<td align="center">-or(-o)</td>
+<td align="center">如果操作符两边的测试条件,任一是真,则匹配</td>
+</tr>
+<tr>
+<td align="center">-not(!)</td>
+<td align="center">如果操作符后面的条件为假,则匹配</td>
+</tr>
+<tr>
+<td align="center">()</td>
+<td align="center">用来改变优先级,注意一般shell对其有特殊解释,所以用引号或反斜杠加来转义</td>
+</tr>
+</tbody></table>
+<p>|操作|描述|<br>|-delete|删除当前匹配的文件|<br>|-print|默认操作，打印|<br>|-ls|对匹配文件执行等同ls -dils命令|<br>|-quit|匹配到第一个即立刻退出|<br>|<code>-exec [command] &#39;&#123;&#125;&#39; &#39;;&#39;</code>|”{}”代表匹配到的文件(为决定路径),因为是shell特殊符号所以要用单引号,结尾必须用”;”,同样是特殊符号,要用单引号|<br>|<code>-ok [command] &#39;&#123;&#125;&#39; &#39;;&#39;</code>|与-exec相似，只不过执行前会进行确认|</p>
+<table>
+<thead>
+<tr>
+<th align="center">文件类型</th>
+<th align="center">描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">b</td>
+<td align="center">块特殊设备文件</td>
+</tr>
+<tr>
+<td align="center">c</td>
+<td align="center">字符特殊设备文件</td>
+</tr>
+<tr>
+<td align="center">d</td>
+<td align="center">目录</td>
+</tr>
+<tr>
+<td align="center">f</td>
+<td align="center">普通文件</td>
+</tr>
+<tr>
+<td align="center">l</td>
+<td align="center">符号链接</td>
+</tr>
+</tbody></table>
+<p>控制find命令的搜索范围<br>|选项|描述|<br>|:-:|:-:|<br>|-depth|指定find程序先处理目录中的文件,再处理目录自身(深度优先搜索?)。当指定-delete行为时,会自动用这个选项|<br>|-maxdepth [num]|设置陷入目录树的最大级别数|<br>|-mindepth [num]|设置陷入目录树的最小级别数|<br>|-mount|不搜索挂载到其他系统下的目录|<br>|-noleaf|在搜索DOS/Win文件系统或CD/ROMS时的时候优化选项|<br>3.-exec与”+”<br><code>find -type f -name &#39;foo*&#39; -exec ls -l &#39;&#123;&#125;&#39; &#39;;&#39;</code><br><code>find -type f -name &#39;foo*&#39; -exec ls -l &#39;&#123;&#125;&#39; +</code><br>上述两个命令的区别在于,假设匹配到fooA与fooB两个文件,第一个相当于执行两次ls命令,相当于<code>ls -l fooA</code>和<code>ls -l fooB</code>而第二个只执行一次<code>ls -l fooA fooB</code></p>
+<p>4.xargs<br><code>find ~ -type f -name &#39;foo*&#39; -print | xargs ls -l</code>与上述带有”+”的-exec选项效果一样,注意xargs有最大参数个数限制,可以通过<code>xargs -show-limits</code>来查看最大值<br>5.文件名存在空格的问题<br>类 Unix 的系统允许在文件名中嵌入空格(甚至换行符)。这就给一些程序,如<br>为其它程序构建参数列表的 xargs 程序,造成了问题。一个嵌入的空格会被看作是<br>一个分隔符,生成的命令会把每个空格分离的单词解释为单独的参数。为了解决这<br>个问题,find 命令和 xarg 程序允许使用一个可选的 null 字符作为参数分隔符。一<br>个 null 字符被定义在 ASCII 码中,由数字零来表示(相反的,例如,空格字符在<br>ASCII 码中由数字 32 表示)。find 命令提供的 -print0 行为,则会产生由 null 字符<br>分离的输出,并且 xargs 命令有一个 –null 选项,这个选项会接受由 null 字符分离<br>的输入。这里有一个例子<br><code>find ~ -iname &#39;*.jpg&#39; -print0 | xargs -null ls -l</code><br>5.例子<br><code>sudo find /tmp -type d -empty</code><br><code>find ~ -perm /a=x</code>查找所有可执行文件</p>
+
+    </div>
+
+    <div class="article-footer">
+      
+    </div>
+
+    <div class="article-navs">
+      
+<nav class="card-container card-article-nav">
+  <div class="card-wrap">
+    
+    
+      <div class="card-item">
+        <article>
+          
+          <a class="card-link article-nav-link" href="/2020/08/04/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%8E%9F%E7%90%86/"></a>
+          <div class="article-nav-caption">Older</div>
+          <div class="article-nav-title">计算机原理</div>
+        </article>
+      </div>
+    
+  </div>
+</nav>
+
+    </div>
+    
+    
+  <div id="comment-container" class="comment-container"></div>
+
+  </article>
+</div></section>
+
+    <!-- footer container -->
+<footer id="footer" class="footer">
+  <div class="footer-container">
+    <p>&copy; 2020 <a href="/" target="_blank">南神</a></p>
+
+    
+      <p id="hitokoto"></p>
+      <script src="https://v1.hitokoto.cn/?c=a&amp;encode=js&select=%23hitokoto" defer></script>
+    
+
+    
+
+    <p>Powered by <a href="https://hexo.io" target="_blank">Hexo</a> Theme - <a href="https://github.com/miiiku/flex-block" target="_blank">flex-block</a></p>
+  </div>
+</footer>
+  </div>
+
+  
+  <!-- 尾部其他内容 -->
+
+<!-- analytics -->
+
+
+
+
+
+
+
+  
+  
+
+<!-- dplayer 视频 -->
+
+<link rel="stylesheet" href="/lib/DPlayer.min.css">
+
+
+<script src="/lib/DPlayer.min.js"></script>
+
+<script type="text/javascript">
+  const dplayer = document.querySelectorAll(".dplayer");
+  dplayer && initDPlayer(dplayer);
+  function initDPlayer(els) {
+    let elsArr = Array.from(els);
+    elsArr.forEach(el => {
+      let url = el.dataset.url;
+      let cover = el.dataset.cover;
+      new DPlayer({
+        container: el,
+        video: { url: url, pic: cover },
+        theme: "#b7daff",
+        autoplay: false,
+        loop: false,
+        mutex: true,
+      });
+    });
+  }
+</script>
+
+
+<!-- 瀑布流 -->
+
+<script src="/lib/macy.js"></script>
+
+<script type="text/javascript">
+
+if (document.querySelector(".waterfall-container")) {
+  initCss()
+  initMacy(".waterfall-container")
+}
+
+function initMacy(selector) {
+  new Macy({
+    container: selector,
+    trueOrder: false,
+    waitForImages: false,
+    useOwnImageLoader: false,
+    mobileFirst: true,
+    columns: 1,
+    margin: {
+      y: 16,
+      x: '2%',
+    },
+    breakAt: {
+      1200: {
+        margin: {
+          x: 20
+        },
+        columns: 4
+      },
+      940: {
+        margin: {
+          x: 20
+        },
+        columns: 3
+      },
+      520: {
+        margin: {
+          x: 10
+        },
+        columns: 2
+      },
+      400: {
+        margin: {
+          x: 0
+        },
+        columns: 1
+      },
+    }
+  });
+}
+
+function initCss() {
+  let cssStyle = document.createElement("style")
+  cssStyle.innerText = `.waterfall-container p { display: block; border-radius: 4px; overflow: hidden; margin: 0; }`
+  document.head.appendChild(cssStyle);
+}
+</script>
+
+
+<!-- 图片预览 -->
+
+<script src="/lib/zoom.min.js"></script>
+
+<script>
+  document.querySelector(".zoom") && zoom(".zoom", {
+    margin: 15,
+    padding: 15,
+    radius: 5,
+    specify: "",
+    filter: "gallery",
+  });
+</script>
+
+
+
+<script src="/js/script.js"></script>
+
+</body>
+</html>
