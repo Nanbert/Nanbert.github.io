@@ -199,67 +199,6 @@
 <li>增量拷贝<br><code>cp -u &lt;...&gt;</code>只拷贝时间戳更新的文件,相同文件不拷贝<br><code>rsync</code>远程拷贝,相比于cp -u,它对改动很小的文件的操作更快</li>
 <li>在任何命令前加<code>time</code>,可以计时运行时间</li>
 <li>xargs命令,将标准输入构造为命令的命令行参数,如果命令行参数过多,会启动多个进程,与单一普通管道相比就是批处理<br>举例:<code>find src -name \*.c -print | xargs grep -n -- --help</code></li>
-<li>文件归档tar<br>　格式:tar [options] [destination] [target]<table>
-<thead>
-<tr>
-<th align="center">options</th>
-<th align="center">作用</th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="center">c</td>
-<td align="center">Create创建新磁带,存在则覆盖</td>
-</tr>
-<tr>
-<td align="center">t</td>
-<td align="center">Table列表,磁带文件名列表</td>
-</tr>
-<tr>
-<td align="center">d</td>
-<td align="center">磁带与文件系统的不同</td>
-</tr>
-<tr>
-<td align="center">r</td>
-<td align="center">添加文件至磁带末尾</td>
-</tr>
-<tr>
-<td align="center">u</td>
-<td align="center">只添加更新的文件</td>
-</tr>
-<tr>
-<td align="center">x</td>
-<td align="center">extract抽取,抽取文件</td>
-</tr>
-<tr>
-<td align="center">v</td>
-<td align="center">verbose冗长</td>
-</tr>
-<tr>
-<td align="center">f</td>
-<td align="center">必须指定设备文件名</td>
-</tr>
-<tr>
-<td align="center">z</td>
-<td align="center">gzip算法压缩</td>
-</tr>
-<tr>
-<td align="center">j</td>
-<td align="center">bzip2算法压缩</td>
-</tr>
-<tr>
-<td align="center">b.举例:</td>
-<td align="center"></td>
-</tr>
-<tr>
-<td align="center">不压缩创建: <code>tar cvf my.tar *.[ch] makefile</code></td>
-<td align="center"></td>
-</tr>
-<tr>
-<td align="center">提取文件至指定文件夹:<code>tar xvf tar_file -C destination_direectory</code></td>
-<td align="center"></td>
-</tr>
-</tbody></table>
-</li>
 <li>chmod命令<br>chmod [ugoa][+=-][rwxst] 文件名表</li>
 <li>umask命令<br>例子:掩码值:022<br>　　二进制: 000 010 010<br>　　取消新文件和新目录的组w权限和其他用户w权限</li>
 <li>输入重定向<br><code>cat &lt; filename</code>打印名为filename的文件内容<br><code>cat &lt;&lt; END</code>接下来直到END之间的内容<br><code>cat &lt;&lt;&lt; filename</code>打印filename这个单词<br><code>&gt; 文件名</code>清空文件<br>tee:从Stdin读取数据，并同时输出到Stdout和文件<br><code>ls /usr/bin | tee ls.txt |grep zip</code></li>
