@@ -17,7 +17,7 @@
 
   
 
-  <title>Linux文件 | Welcome to Nanbert&#39;s blog</title>
+  <title>Archives | Welcome to Nanbert&#39;s blog</title>
 
   
 
@@ -70,7 +70,7 @@
 </header>
 
 
-    <section id="main"><!-- 文章详情页 -->
+    <section id="main"><!-- 文章归档 -->
 
 <!-- banner container -->
 <div class="banner-container" style="background-image: url(css/images/1.jpg)">
@@ -81,29 +81,18 @@
 
     
     
-
-    
-    
-
-    
-    
+      <h1 class="header-title"><a href="/archives/2020/page/2/">归档</a></h1>
+      <h2 class="header-subtitle">共有23篇文章</h2>
     
 
     
     
-      <h1 class="header-title"><a href="/2019/07/18/Linux%E6%96%87%E4%BB%B6/">Linux文件</a></h1>
-      <h2 class="header-subtitle">
-        
-          <a class="article-category-link" href="/categories/Linux/">Linux</a>
-          <!--
-          
-  <a href="javascript:;" class="article-date">
-    <time datetime="2019-07-18T08:28:04.000Z" itemprop="datePublished">2019-07-18 04:28:04</time>
-  </a>
 
-          -->
-        
-      </h2>
+    
+    
+    
+
+    
     
 
     
@@ -111,97 +100,49 @@
   </div>
 </div>
 
-<!-- 文章内容 -->
-
+<!-- post list container -->
 <div class="body-container">
-  <article id="article-content" class="main-container article-content zoom">
-    
-    
-
-    <div class="article-entry">
-      <ol>
-<li><p>/etc/resolv.conf:加快网速的</p>
-</li>
-<li><p>/etc/apt/sources.list:源列表</p>
-</li>
-<li><p>/etc/passwd:用户名位置</p>
-</li>
-<li><p>/etc/group:组名</p>
-</li>
-<li><p>/etc/sudoers:sudo权限设置</p>
-</li>
-<li><p>/etc/xinetd.d/:守护进程文件夹</p>
-</li>
-<li><p>/etc/inputrc:登录式bash的热键设置</p>
-</li>
-<li><p>登录式bash加载设置文件顺序:/etc/profile -&gt; ~/.bash_profile(~/.bash_login、~/.profile) -&gt; ~/.bashrc</p>
-</li>
-<li><p>非登录式bash加载设置文件顺序:~/.bashrc -&gt; /etc/bashrc -&gt; /etc/profile.d/*.sh<br>这其中的/etc/profile.d/*.sh里为bash操作界面、语系等</p>
-</li>
-<li><p>/dev/pts:伪终端设备的目录<br>/dev/:字符设备对应的节点</p>
-</li>
-<li><p>/proc/net/dev:网络终端接口</p>
-</li>
-<li><p>/etc/mkinitcpio.conf:钩子的配置文件</p>
-</li>
-<li><p>/etc/default/grub:设置当前系统的启动参数(仅deepin有)<br>/boot/grub/grub.cfg:设置所有系统的启动参数(arch的也可以设置,存在于deepin目录)</p>
-</li>
-<li><p>/proc/kallsyms:内核导出的符号表，第一列表示内核地址空间地址，第二列表示符号属性，第三段表示符号的字符串，也就是EXPORT_SYMBOL()导出的符号，第四列表示那些模块在使用这些符号</p>
-</li>
-<li><p>/proc/devices:字符设备,第一列数字代表主设备号,第二列则是设备内核模块名<br>/proc/(number):进程号的相关动态信息</p>
-</li>
-<li><p>超级块是对一个文件系统的描述<br>索引节点是对一个文件物理属性的描述<br>目录项是对一个文件逻辑属性的描述<br>一个进程所处的位置是由fs_struct来描述的,而一个进程(或用户)打开的文件是由files_struct来描述的,而整个系统所打开的文件是由file结构来描述的</p>
-</li>
-<li><p>/etc/ld.so.conf.d/*.conf<br>里面是库文件所在目录，配置完用<code>ldconfig</code>更新一下</p>
-</li>
-<li><p>/usr/share/doc目录下为各个安装软件的文档</p>
-</li>
-<li><p>/etc/modprobe.d/sony-laptop.conf 索尼背光灯设置文件</p>
-</li>
-<li><p>/usr/share/dict下竟然存了个英文字典</p>
-</li>
-</ol>
-
-    </div>
-
-    <div class="article-footer">
-      <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%96%87%E4%BB%B6/" rel="tag">#文件</a></li></ul>
-    </div>
-
-    <div class="article-navs">
-      
-<nav class="card-container card-article-nav">
-  <div class="card-wrap">
-    
-      <div class="card-item">
-        <article>
+  <div class="main-container article-list">
+    <div class="card-container card-articles">
+      <div class="card-wrap">
+        
           
-          <a class="card-link article-nav-link" href="/2019/07/18/vi%E5%8F%8Avim/"></a>
-          <div class="article-nav-caption">Newer</div>
-          <div class="article-nav-title">vi及vim</div>
-        </article>
+          <div class="card-item">
+            <article>
+              
+              
+                <a class="article-link" href="/2020/01/16/GDB/" itemprop="url"></a>
+              
+              <h2 class="article-title">GDB</h2>
+              <div class="article-meta">
+                <strong>南神</strong>
+                <span>发布于</span>
+                
+  <a href="/2020/01/16/GDB/" class="article-date">
+    <time datetime="2020-01-16T03:47:33.000Z" itemprop="datePublished">2020-01-16</time>
+  </a>
+
+              </div>
+              <div class="article-category">
+                
+              </div>
+            </article>
+          </div>
+        
       </div>
-    
-    
-      <div class="card-item">
-        <article>
-          
-          <a class="card-link article-nav-link" href="/2019/07/18/Linux%E5%91%BD%E4%BB%A4/"></a>
-          <div class="article-nav-caption">Older</div>
-          <div class="article-nav-title">Linux命令</div>
-        </article>
-      </div>
-    
+    </div>
   </div>
-</nav>
+</div>
 
-    </div>
-    
-    
-  <div id="comment-container" class="comment-container"></div>
+<!-- page container -->
 
-  </article>
-</div></section>
+  <nav class="page-container">
+    
+    <a class="extend prev" rel="prev" href="/archives/2020/">«</a><a class="page-number" href="/archives/2020/">1</a><span class="page-number current">2</span>
+  </nav>
+
+
+</section>
 
     <!-- footer container -->
 <footer id="footer" class="footer">

@@ -223,128 +223,9 @@
 </tr>
 </tbody></table>
 <ol start="4">
-<li><p>正则表达式的元字</p>
-<table>
-<thead>
-<tr>
-<th align="center">特殊字符</th>
-<th align="center">用途</th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="center"><code>.</code></td>
-<td align="center">匹配除换行符外的任一单字符。在awk中,句点也能匹配换行符</td>
-</tr>
-<tr>
-<td align="center"><code>*</code></td>
-<td align="center">匹配任一个(包括零个)在它面前的字符(包括由正则表达式指定的字符)</td>
-</tr>
-<tr>
-<td align="center"><code>[...]</code></td>
-<td align="center">匹配方括号中的字符类中的任意一个。如果方括号中第一个字符为脱字符号(^),则表示否定匹配,即匹配除了换行符和类中列出的那些字符以外的所有字符。在awk中,也匹配换行符。连字符(-)用于表示字符的范围。如果类中的第一个字符为右方括号(])则表示它是类的成员＝所有其他的元字符在被指定为类中的成员时都会失去它们原来的含义</td>
-</tr>
-<tr>
-<td align="center"><code>^</code></td>
-<td align="center">如果作为正则表达式的第一个字符,则表示匹配行的开始。在awk中匹配字符串的开始,即使字符串包含嵌入的换行符</td>
-</tr>
-<tr>
-<td align="center"><code>$</code></td>
-<td align="center">如果作为正则表达式的最后一个字符,则表示匹配行的结尾。在awk中匹配字符串的结尾,即使字符串包含嵌入的换行符。</td>
-</tr>
-<tr>
-<td align="center"><code>\&#123;n,m\&#125;</code></td>
-<td align="center">匹配它前面某个范围内单个字符出现的次数(包括由正则表达式指定的字符)。<code>\&#123;n\&#125;</code>将匹配n次出现,<code>\&#123;n,\&#125;</code>至少匹配n次出现,而且<code>\&#123;n,m\&#125;</code>匹配n和m之间任意次的出现</td>
-</tr>
-<tr>
-<td align="center"><code>\</code></td>
-<td align="center">转义随后的特殊字符</td>
-</tr>
-</tbody></table>
-</li>
-<li><p>扩展的元字符  </p>
-<table>
-<thead>
-<tr>
-<th align="center">特殊字符</th>
-<th align="center">用途</th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="center"><code>+</code></td>
-<td align="center">匹配前面的正则表达式的一次或多次出现</td>
-</tr>
-<tr>
-<td align="center"><code>?</code></td>
-<td align="center">匹配前面的正则表达式的零次或一次出现</td>
-</tr>
-<tr>
-<td align="center"><code>|</code></td>
-<td align="center">逻辑表达或,指定可以匹配前面的或后面的正则表达式</td>
-</tr>
-<tr>
-<td align="center"><code>()</code></td>
-<td align="center">对正则表达式分组,括号里的内容选择性匹配,如Lab(oratories)</td>
-</tr>
-<tr>
-<td align="center"><code>&#123;n,m&#125;</code></td>
-<td align="center">匹配它前面某个范围内单个字符出现的次数,与上面的一样</td>
-</tr>
-</tbody></table>
-</li>
-<li><p>POSIX字符类</p>
-<table>
-<thead>
-<tr>
-<th align="center">类</th>
-<th align="center">打印字符</th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="center">[:alnum:]</td>
-<td align="center">可打印的字符(包括空白字符)</td>
-</tr>
-<tr>
-<td align="center">[:alpha:]</td>
-<td align="center">字母字符</td>
-</tr>
-<tr>
-<td align="center">[:blank:]</td>
-<td align="center">空格和制表符</td>
-</tr>
-<tr>
-<td align="center">[:cntrl:]</td>
-<td align="center">控制字符</td>
-</tr>
-<tr>
-<td align="center">[:digit:]</td>
-<td align="center">数字字符</td>
-</tr>
-<tr>
-<td align="center">[:graph:]</td>
-<td align="center">可打印和可见的(非空格)字符</td>
-</tr>
-<tr>
-<td align="center">[:lower:]</td>
-<td align="center">小写字符</td>
-</tr>
-<tr>
-<td align="center">[:print:]</td>
-<td align="center">可打印的字符(包括空白字符)</td>
-</tr>
-<tr>
-<td align="center">[:punct:]</td>
-<td align="center">标点符号字符</td>
-</tr>
-<tr>
-<td align="center">[:space:]</td>
-<td align="center">空白字符</td>
-</tr>
-<tr>
-<td align="center">[:xdigit:]</td>
-<td align="center">十六进制数字</td>
-</tr>
-</tbody></table>
-</li>
+<li></li>
+<li></li>
+<li></li>
 <li><p>替换的标志位</p>
 <table>
 <thead>
@@ -373,7 +254,7 @@
 </li>
 </ol>
 <p>替换部分的元字符:&amp;表示命中的正则表达式,<code>\</code>后面可接回车,<code>\&lt;n&gt;</code>表示匹配的部分</p>
-<p>9.如果模式中含有’/‘可以用感叹号作定界符,如<code>s!/usr/mail!/usr2/mail!</code><br>10.<br>a.追加[line-address(单个行)]a<br>        <text><br>b.插入[line-address(单个行)]i<br>        <text><br>c.更改[address(可以是范围)]c<br>        <text><br>以上三个命令text内容如果是多行,则行末要加反斜线,最后一行不需要,文本内容不影响模式空间,也不参与后面的脚本运行<br>d.列表[address]l;不仅显示内容,非打印字符显示为两个数字的ASCLL代码<br>e.[line-address]=;不打印内容,但打印行号<br>f.[address]n;读取输入的下一行,并且后续命令用于新行<br>g.[line-address]r <filename>;在匹配行之后,读入某个文件<br>h.[address]w <filename>;写入某个文件<br>i.[line-address]q;停止读入新行<br>j.[address]y/abc/xyz/;转换(类似于tr),有用的例子转换大小写y/abcdefghijklmnopqrstuvwxyz/ABCDEFGHIJKLMNOPQRSTUVWXYZ/<br>7.<br>提取文件中一行只包含一个引号(假定其余都是两个引号):<code>grep &#39;&quot;&#39; file | egrep -v &#39;.*&quot;.*&quot;.*&#39;</code><br>8.sed:反斜线圆括号用法<br><code>s/\([0-9]\)-\([0-9]\)/\2-\1/g</code>指交换斜杠前后的两个数字<br>9.grep一些知识<br>|options|describe|<br>|:-:|:-:|<br>|-n|显示行号|<br>|-v|显示所有不包含模式的行|<br>|-i|跟随var=value|<br>10.应用举例<br>　a.<code>cat jane.txt | tr &#39;[A-Z]&#39; &#39;[a-z]&#39; | tr &#39;;.?\047,():&quot;-&#39; &#39; &#39;|tr &#39; &#39; &#39;\012&#39; | grep -v &#39;^ *$&#39; | sort | uniq -c | sort -n</code>:统计单词数,首先大写替换为小写，然后替换标点为空格,再替换空格为换行,去空行,排序，计数，再排序。<br>　b.<code>grep -5 &#39;pattern&#39; inputfile</code> 打印匹配前后5行<br>　c.<code>grep -A 5 &#39;pattern&#39; inputfile</code> 打印匹配后5行<br>　d.<code>grep -B 5 &#39;pattern&#39; inputfile</code> 打印匹配前5行<br>　e.<code>grep -i &#39;pattern&#39; inputfile</code> 打印匹配前5行<br>13.grep<br>-i:忽略大小写<br>-w:只识别整个单词(即模式前后有空格)<br>-l:只打印匹配到的文件名<br>-E:识别扩展正则表达式<br>-c:统计个数<br>11.正则表达式举例<br>　<code>&quot;.*&quot;</code>引号中的任意字符串<br>12.脚本中所有编辑命令都将依次应用于每个输入行<br>13.sed分组命令格式</p>
+<p>9.如果模式中含有’/‘可以用感叹号作定界符,如<code>s!/usr/mail!/usr2/mail!</code><br>10.<br>a.追加[line-address(单个行)]a<br>        <text><br>b.插入[line-address(单个行)]i<br>        <text><br>c.更改[address(可以是范围)]c<br>        <text><br>以上三个命令text内容如果是多行,则行末要加反斜线,最后一行不需要,文本内容不影响模式空间,也不参与后面的脚本运行<br>d.列表[address]l;不仅显示内容,非打印字符显示为两个数字的ASCLL代码<br>e.[line-address]=;不打印内容,但打印行号<br>f.[address]n;读取输入的下一行,并且后续命令用于新行<br>g.[line-address]r <filename>;在匹配行之后,读入某个文件<br>h.[address]w <filename>;写入某个文件<br>i.[line-address]q;停止读入新行<br>j.[address]y/abc/xyz/;转换(类似于tr),有用的例子转换大小写y/abcdefghijklmnopqrstuvwxyz/ABCDEFGHIJKLMNOPQRSTUVWXYZ/<br>8.sed:反斜线圆括号用法<br><code>s/\([0-9]\)-\([0-9]\)/\2-\1/g</code>指交换斜杠前后的两个数字<br>12.脚本中所有编辑命令都将依次应用于每个输入行<br>12.　a.<code>cat jane.txt | tr &#39;[A-Z]&#39; &#39;[a-z]&#39; | tr &#39;;.?\047,():&quot;-&#39; &#39; &#39;|tr &#39; &#39; &#39;\012&#39; | grep -v &#39;^ *$&#39; | sort | uniq -c | sort -n</code>:统计单词数,首先大写替换为小写，然后替换标点为空格,再替换空格为换行,去空行,排序，计数，再排序。<br>13.sed分组命令格式</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">/pattern/ &#123;</span><br><span class="line">动作１</span><br><span class="line">动作２</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <ol start="14">
 <li><p>多行模式空间:多行Next(N)命令通过读取新的输入行,并将它添加到模式空间的现有内容来创建多行模式空间。模式空间最初的内容和新的输入行之间用换行符分隔。在模式空间中嵌入的换行符可以用转义序列”\n”来匹配。在多行模式空间中,元字符”^”匹配空间中的第一个字条,而不匹配换行符后面的字符。同样,”$”只匹配模式空间中最后的换行符,而不匹配任何嵌入的换行符。在执行next命令之后,控制将被传递给脚本中的后续命令。<br>举例:例如要将”Owner and Operator Guide”换成”Installation Guide”,对于处于不同行的情况可以这样做:</p>

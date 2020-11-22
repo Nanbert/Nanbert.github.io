@@ -288,6 +288,10 @@
 <td align="center"><code>-ok [command] &#39;&#123;&#125;&#39; &#39;;&#39;</code></td>
 <td align="center">与-exec相似，只不过执行前会进行确认</td>
 </tr>
+<tr>
+<td align="center">-regex</td>
+<td align="center">文件路径的正则匹配</td>
+</tr>
 </tbody></table>
 <table>
 <thead>
@@ -347,7 +351,7 @@
 </tr>
 </tbody></table>
 <p>3.<strong>-exec与”+”</strong><br><code>find -type f -name &#39;foo*&#39; -exec ls -l &#39;&#123;&#125;&#39; &#39;;&#39;</code><br><code>find -type f -name &#39;foo*&#39; -exec ls -l &#39;&#123;&#125;&#39; +</code><br>上述两个命令的区别在于,假设匹配到fooA与fooB两个文件,第一个相当于执行两次ls命令,相当于<code>ls -l fooA</code>和<code>ls -l fooB</code>而第二个只执行一次<code>ls -l fooA fooB</code></p>
-<p>4.<strong>xargs</strong><br><code>find ~ -type f -name &#39;foo*&#39; -print | xargs ls -l</code>与上述带有”+”的-exec选项效果一样,注意xargs有最大参数个数限制,可以通过<code>xargs -show-limits</code>来查看最大值<br>5.<strong>文件名存在空格的问题</strong><br>类 Unix 的系统允许在文件名中嵌入空格(甚至换行符)。这就给一些程序,如<br>为其它程序构建参数列表的 xargs 程序,造成了问题。一个嵌入的空格会被看作是<br>一个分隔符,生成的命令会把每个空格分离的单词解释为单独的参数。为了解决这<br>个问题,find 命令和 xarg 程序允许使用一个可选的 null 字符作为参数分隔符。一<br>个 null 字符被定义在 ASCII 码中,由数字零来表示(相反的,例如,空格字符在<br>ASCII 码中由数字 32 表示)。find 命令提供的 -print0 行为,则会产生由 null 字符<br>分离的输出,并且 xargs 命令有一个 –null 选项,这个选项会接受由 null 字符分离<br>的输入。这里有一个例子<br><code>find ~ -iname &#39;*.jpg&#39; -print0 | xargs -null ls -l</code><br>6.<strong>例子</strong><br><code>sudo find /tmp -type d -empty</code><br><code>find ~ -perm /a=x</code>查找所有可执行文件</p>
+<p>4.<strong>xargs</strong><br><code>find ~ -type f -name &#39;foo*&#39; -print | xargs ls -l</code>与上述带有”+”的-exec选项效果一样,注意xargs有最大参数个数限制,可以通过<code>xargs -show-limits</code>来查看最大值<br>5.<strong>文件名存在空格的问题</strong><br>类 Unix 的系统允许在文件名中嵌入空格(甚至换行符)。这就给一些程序,如<br>为其它程序构建参数列表的 xargs 程序,造成了问题。一个嵌入的空格会被看作是<br>一个分隔符,生成的命令会把每个空格分离的单词解释为单独的参数。为了解决这<br>个问题,find 命令和 xarg 程序允许使用一个可选的 null 字符作为参数分隔符。一<br>个 null 字符被定义在 ASCII 码中,由数字零来表示(相反的,例如,空格字符在<br>ASCII 码中由数字 32 表示)。find 命令提供的 -print0 行为,则会产生由 null 字符<br>分离的输出,并且 xargs 命令有一个 –null 选项,这个选项会接受由 null 字符分离<br>的输入。这里有一个例子<br><code>find ~ -iname &#39;*.jpg&#39; -print0 | xargs -null ls -l</code><br>6.<strong>例子</strong><br><code>sudo find /tmp -type d -empty</code><br><code>find ~ -perm /a=x</code>查找所有可执行文件<br><code>find . -regex &#39;.*[^-\_./0-9a-zA-Z].*&#39;</code>查找不符合规范字符的路径名(中文咋办?)</p>
 
     </div>
 
