@@ -220,6 +220,8 @@ file '2.mp4'
 `ffmpeg -i 1.mp4 -vcodec copy -acodec copy -vbsf h264_mp4toannexb 1.ts`
 `ffmpeg -i 2.mp4 -vcodec copy -acodec copy -vbsf h264_mp4toannexb 2.ts`
 `ffmpeg -i "concat:1.ts|2.ts" -acodec copy -vcodec copy -absf aac_adtstoasc output.mp4`
+rmvb->mp4:
+`ffmpeg -i name1.rmvb -c:v libx264 -strict -2 name2.mp4 `
 添加字幕:
 `ffmpeg -i 2020-07-13\ 08-20-26.mkv -vf subtitles=test.srt -y output.mkv`
 srt格式:
