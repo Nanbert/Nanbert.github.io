@@ -17,7 +17,7 @@
 
   
 
-  <title>Make及gcc | Welcome to Nanbert&#39;s blog</title>
+  <title>Make | Welcome to Nanbert&#39;s blog</title>
 
   
 
@@ -91,7 +91,7 @@
 
     
     
-      <h1 class="header-title"><a href="/2020/01/17/Make%E5%8F%8Agcc/">Make及gcc</a></h1>
+      <h1 class="header-title"><a href="/2020/01/17/Make/">Make</a></h1>
       <h2 class="header-subtitle">
         
           
@@ -587,7 +587,6 @@
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">%.o: %.c</span><br><span class="line"> $(CC) -c $(CFLAGS) $(CPPFLAGS) $&lt; -o <span class="variable">$@</span></span><br></pre></td></tr></table></figure>
 <p>17.函数库打包<br>函数库文件也就是对.o文件的打包文件<br>示例:</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">foolib(hack.o): hack.o</span><br><span class="line">	ar cr foolib hack.o  <span class="comment">#foolib是库名,hack.o是包含文件</span></span><br></pre></td></tr></table></figure>
-<p>==================gcc======<br>18.选项<br>-l<library> 链接动态库<br>-L<dir> 动态库搜索目录<br>-D<expression> 宏定义命令中定义<br>-l <dir>头文件搜索目录<br>18.静态库编译和使用<br><code>gcc -c increase.c -o increase.o</code>把.c编译成.o<br><code>ar -r libincrease.a increase.o</code>归档成静态库.a<br><code>gcc main.c -L -static -o main</code>链接成可执行文件<br>19.动态库编译和使用<br><code>gcc -shared -fPIC -o libinc.so increase.c</code>-fPIC生成位置独立的代码,此类代码可以在不同进程间共享<br><code>gcc -lincrease -o main main.c</code>链接动态库</p>
 
     </div>
 

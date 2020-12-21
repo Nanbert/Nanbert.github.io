@@ -17,7 +17,7 @@
 
   
 
-  <title>Archives | Welcome to Nanbert&#39;s blog</title>
+  <title>gcc编译器及编译原理 | Welcome to Nanbert&#39;s blog</title>
 
   
 
@@ -70,10 +70,10 @@
 </header>
 
 
-    <section id="main"><!-- 文章归档 -->
+    <section id="main"><!-- 文章详情页 -->
 
 <!-- banner container -->
-<div class="banner-container" style="background-image: url(css/images/1.jpg)">
+<div class="banner-container" style="background-image: url(css/images/gcc.jpg)">
   <div class="banner-inner">
 
     
@@ -81,9 +81,6 @@
 
     
     
-      <h1 class="header-title"><a href="/archives/2019/page/2/">归档</a></h1>
-      <h2 class="header-subtitle">共有24篇文章</h2>
-    
 
     
     
@@ -93,6 +90,20 @@
     
 
     
+    
+      <h1 class="header-title"><a href="/2020/12/19/gcc%E7%BC%96%E8%AF%91%E5%99%A8%E5%8F%8A%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86/">gcc编译器及编译原理</a></h1>
+      <h2 class="header-subtitle">
+        
+          
+          <!--
+          
+  <a href="javascript:;" class="article-date">
+    <time datetime="2020-12-19T09:25:41.000Z" itemprop="datePublished">2020-12-19 05:25:41</time>
+  </a>
+
+          -->
+        
+      </h2>
     
 
     
@@ -100,72 +111,49 @@
   </div>
 </div>
 
-<!-- post list container -->
+<!-- 文章内容 -->
+
 <div class="body-container">
-  <div class="main-container article-list">
-    <div class="card-container card-articles">
-      <div class="card-wrap">
-        
-          
-          <div class="card-item">
-            <article>
-              
-              
-                <a class="article-link" href="/2019/07/18/Linux%E5%91%BD%E4%BB%A4/" itemprop="url"></a>
-              
-              <h2 class="article-title">Linux命令</h2>
-              <div class="article-meta">
-                <strong>南神</strong>
-                <span>发布于</span>
-                
-  <a href="/2019/07/18/Linux%E5%91%BD%E4%BB%A4/" class="article-date">
-    <time datetime="2019-07-18T08:15:42.000Z" itemprop="datePublished">2019-07-18</time>
-  </a>
-
-              </div>
-              <div class="article-category">
-                <a class="article-category-link" href="/categories/Linux/">Linux</a>
-              </div>
-            </article>
-          </div>
-        
-          
-          <div class="card-item">
-            <article>
-              
-              
-                <a class="article-link" href="/2019/07/18/html%E5%8F%8Amarkdown/" itemprop="url"></a>
-              
-              <h2 class="article-title">html及markdown</h2>
-              <div class="article-meta">
-                <strong>南神</strong>
-                <span>发布于</span>
-                
-  <a href="/2019/07/18/html%E5%8F%8Amarkdown/" class="article-date">
-    <time datetime="2019-07-18T07:54:54.000Z" itemprop="datePublished">2019-07-18</time>
-  </a>
-
-              </div>
-              <div class="article-category">
-                <a class="article-category-link" href="/categories/html/">html</a>
-              </div>
-            </article>
-          </div>
-        
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- page container -->
-
-  <nav class="page-container">
+  <article id="article-content" class="main-container article-content zoom">
     
-    <a class="extend prev" rel="prev" href="/archives/2019/">«</a><a class="page-number" href="/archives/2019/">1</a><span class="page-number current">2</span>
-  </nav>
+    
 
+    <div class="article-entry">
+      <p><strong>1.基本概念</strong><br><strong>预处理:</strong><code>g++ -E main.cpp -o main.ii</code>,-E表示只进行预处理。预处理主要是处理各种宏的展开;添加行号和文件标识符,为编译器产生调试信息提供便利;删除注释;保留编译器用到的编译器指令等<br><strong>编译:</strong><code>g++ -S main.ii -o main.s</code>,-S表示只编译。编译是在预处理的基础上经过一系列词法分析、语法分析及优化后生成汇编代码。<br><strong>汇编:</strong><code>g++ -c main.s -o main.o</code>,汇编将汇编代码转换为机器可执行的指令<br><strong>链接:</strong><code>g++ main.o</code>,链接生成可执行程序,之所以需要链接是因为我们的代码不可能像main.cpp这么简单,现代软件动则成百上千万行,如果写在一个main.cpp既不利于分工合作,也无法维护,因此通常是由一堆cpp文件组成,编译器分别编译每个cpp,这些cpp里会引用别的模块中的函数或全局变量,在编译单个cpp的时候是没法知道它们的准确地址,因此在编译结束后,需要连接器将各种还没有准确地址的符号(函数、变量等)设置为正确的值,这样组装在一起就可以形成一个完整的可执行程序<br><strong>2.选项</strong><br>-l<library> 链接动态库<br>-L<dir> 动态库搜索目录<br>-D<expression> 宏定义命令中定义<br>-l <dir>头文件搜索目录<br><strong>3.静态库编译和使用</strong><br><code>gcc -c increase.c -o increase.o</code>把.c编译成.o<br><code>ar -r libincrease.a increase.o</code>归档成静态库.a<br><code>gcc main.c -L -static -o main</code>链接成可执行文件<br><strong>4.动态库编译和使用</strong><br><code>gcc -shared -fPIC -o libinc.so increase.c</code>-fPIC生成位置独立的代码,此类代码可以在不同进程间共享<br><code>gcc -lincrease -o main main.c</code>链接动态库</p>
 
-</section>
+    </div>
+
+    <div class="article-footer">
+      
+    </div>
+
+    <div class="article-navs">
+      
+<nav class="card-container card-article-nav">
+  <div class="card-wrap">
+    
+    
+      <div class="card-item img">
+        <article>
+          
+            <div class="card-cover" style="background-image: url(css/images/knifes.jpg)"></div>
+          
+          <a class="card-link article-nav-link" href="/2020/11/21/%E6%96%87%E6%9C%AC%E5%A4%84%E7%90%86%E7%91%9E%E5%A3%AB%E5%86%9B%E5%88%80-%E5%B0%8F%E8%80%8C%E5%BC%BA%E6%82%8D/"></a>
+          <div class="article-nav-caption">Older</div>
+          <div class="article-nav-title">文本处理瑞士军刀--小而强悍</div>
+        </article>
+      </div>
+    
+  </div>
+</nav>
+
+    </div>
+    
+    
+  <div id="comment-container" class="comment-container"></div>
+
+  </article>
+</div></section>
 
     <!-- footer container -->
 <footer id="footer" class="footer">
