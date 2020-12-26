@@ -238,6 +238,8 @@ Hi,I am Donald Trump
 00:00:08,444 --> 00:00:10,000
 It's you,Assole!
 ```
+静音:`ffmpeg -i 10.mp4 -af "volume=0" 10Silent.mp4`
+静音一部分:`ffmpeg -i 10.mp4 -af "volume=enable='between(t,0,8)':volume=0" 10Silent.mp4`
 45.
 `type <command>`识别命令,有以下几种
 　a.可执行命令，给出路径
