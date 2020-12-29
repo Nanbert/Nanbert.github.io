@@ -146,5 +146,46 @@ ssh-add命令用来将私钥加入ssh-agent
 |-D|从内存中删除所有已经添加的私钥|
 |-l|列出所有已经添加的私钥|
 
+<font size=10>**服务器端sshd**</font>
+**1.sshd配置文件**
+`/etc/ssh/sshd_config`配置文件
+`/etc/ssh/ssh_host_ecdsa_key`ECDSA私钥
+`/etc/ssh/ssh_host_ecdsa_key.pub`ECDSA公钥
+`/etc/ssh/ssh_host_key`用于SSH1协议版本的RSA私钥
+`/etc/ssh/ssh_host_key.pub`用于SSH1协议版本的RSA公钥
+`/etc/ssh/ssh_host_rsa_key`用于SSH2协议版本的RSA私钥
+`/etc/ssh/ssh_host_rsa_key.pub`用于SSH2协议版本的RSA公钥
+`/etc/pam.d/sshd`PAM配置文件
+<font color=#FF0000>重装会使这些文件失效,可以先备份</font>
+**sshd配置项**
 
-
+|配置项|含义|
+|:-:|:-:|
+|AcceptEnv [variables...]|允许接受客户端通过SendEnv命令发来的哪些环境变量,变量名用空格分隔|
+|AllowGroups [groupNames...]|指定允许登录的用户组,多个组之间用空格隔开,若不用该项,则所有组都可以用|
+|AllowUsers [userNames...]|指定允许登录的用户,用户名之间用空格隔开,支持通配符|
+|AllowTcpForwarding [options]|默认值为yes,允许端口转发,local只允许本地端口转发,remote表示只允许远程端口转发|
+|AuthorizedKeysFile [directory]|指定存储用户公钥的目录,默认是`~/.ssh/authorized_keys`|
+|Banner [file]|指定用户登录后,sshd向其展示的信息文件,默认不展示任何内容|
+|ChallengeResponseAuthentication [yesOrNo]|指定是否用"键盘交互"身份验证方案,默认值为yes,如果完全禁用基于密码的验证,PasswordAuthentication也设为no|
+|Ciphers [algorithms]|指定sshd可以接受的加密算法,多个算法之间使用逗号分割|
+|ClientAliveCountMax [num]|指定建立连接后,客户端失去响应时,服务器尝试连接的次数|
+|ClientAliveInterval [num]|允许客户端发呆的时间,单位为秒,如果超过这时间,连接将会关闭|
+|Compression [yesOrNo]|Compression指定客户端与服务器之间的数据传输是否为压缩,默认为yes|
+|DenyGroups [groupNames...]|指定不允许登录的用户组,组间空格分开|
+|DenyUsers [userNames...]|指定不允许登录的用户,空格分开不同用户|
+|FascistLogging [yesOrNo]|SSH1版本专用,指定日志是否输出全部Debug信息|
+|HostKey [filePath]|指定服务器密钥的文件路径|
+|KeyRegenerationInterval [num]|指定SSH1版本的密钥重新生成的时间间隔,单位为秒,默认为3600|
+|ListenAddress [ipAddress]|指定sshd监听本机的IP地址,即sshd启用的IP地址,默认是0.0.0.0,表示在本机所有网络接口启用。可以改成只在某个网络接口启用,可以多次使用该配置项,来监听多个ip地址|
+|LoginGraceTime [num]|指定允许客户端登录时发呆的最长时间,超过该时间就断开,0表示没有限制|
+|LogLevel [options]|指定日志的详细程度,可能的值有:QUIET,FATAL,ERROR,INFO,VERNBOSE,DEBUG,DEBUG1,DEBUG2,DEBUG3,默认为INFO|
+|MACs [algorithms]|指定sshd可以接受的数据校验算法(MACs hmac-sha1),多个算法之间使用逗号分隔|
+|MaxAuthTries [num]|指定SSH登录允许的最大密码尝试数|
+|MaxStartups [num]|指定允许同时并发的SSH链接数量,0表示没有限制,也可以是A:B:C形式,如10:50:20,表示如果达到10个并发链接,后面的连接有50%的概率被拒绝,如果达到20个并发连接,则后面的100%拒绝|
+|PasswordAuthentication [yesOrNo]|是否允许密码登录,默认值为yes|
+|PermitEmptyPasswords [yesOrNo]|指定是否允许空密码登录,默认为yes|
+|PermitRootLogin [yesOrNo]|是否允许根用户登录,默认为yes,也可以设为prohibit-password,表示允许密钥登录root,但禁止密码登录|
+|PermitUserEnvironment [yesOrNo]|是否允许sshd加载客户端的~/.ssh/environment文件和~/.ssh/authorized_keys文件里面的environment=options 环境变量设置.默认值为no|
+|Port [num]|指定sshd监听的端口,默认22,可以多次设置,监听多个端口|
+|PrintMoth [yesOrNo]|指定用户登录后,是否向其展示系统的motd的信息文件/etc/motd,默认为yes|
