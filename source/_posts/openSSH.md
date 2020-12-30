@@ -121,10 +121,10 @@ SSH密钥登录采用非对称加密,每个永不通过自己的密钥登录。�
 |-t [algorithm]|指定加密算法,一般为dsa或rsa|
 
 *手动上传公钥*
-把客户端生成的公钥复制粘贴到文件~/.ssh/authorized_keys中去,一个公钥占据一行
+把客户端生成的公钥复制粘贴到文件\~/.ssh/authorized_keys中去,一个公钥占据一行
 *ssh-copy-id--自动上传公钥*
 `ssh-copy-id -i key_file user@host` 自动上传公钥到服务器
-公钥文件可以不指定路劲和.pub后缀,会自动在~/.ssh目录下寻找
+公钥文件可以不指定路劲和.pub后缀,会自动在\~/.ssh目录下寻找
 确保authorized_keys文件末尾为换行符,否则两个公钥连在一起,两个都会失效
 
 *ssh-agent命令*
@@ -146,7 +146,7 @@ ssh-add命令用来将私钥加入ssh-agent
 |-D|从内存中删除所有已经添加的私钥|
 |-l|列出所有已经添加的私钥|
 
-<font size=10>**服务器端sshd**</font>
+<font size=6>**服务器端sshd**</font>
 **1.sshd配置文件**
 `/etc/ssh/sshd_config`配置文件
 `/etc/ssh/ssh_host_ecdsa_key`ECDSA私钥
@@ -189,3 +189,25 @@ ssh-add命令用来将私钥加入ssh-agent
 |PermitUserEnvironment [yesOrNo]|是否允许sshd加载客户端的~/.ssh/environment文件和~/.ssh/authorized_keys文件里面的environment=options 环境变量设置.默认值为no|
 |Port [num]|指定sshd监听的端口,默认22,可以多次设置,监听多个端口|
 |PrintMoth [yesOrNo]|指定用户登录后,是否向其展示系统的motd的信息文件/etc/motd,默认为yes|
+|Protocol [options]|1表示使用SSH1协议,'1,2'表示支持两个版本的协议|
+|PubKeyAuthentication [yesOrNo]|指定是否允许公钥登录,默认为yes|
+|QuietMode [yesOrNo]|SSH1专用,yes表示日志只输出致命的错误信息|
+|RSAAuthentication [yesOrNo]||指定是否允许RSA认证,默认值为yes|
+|ServerKeyBits [num]|指定SSH1版本的密钥重新生成时的位数,默认为767|
+|StrictModes [yesOrNo]|指定sshd是否检查用户的一些重要文件和目录权限,即对于用户的SSH配置文件,密钥文件和所在目录,SSH要求拥有者必须是根用户或用户本人,其他人的写权限必须关闭|
+|SyslogFacility [options]|指定Syslog如何处理sshd日志,默认是AUTH|
+|TCPKeepAlive [unknown]|指定打开sshd跟客户端tcp链接的keepalive参数|
+|UseDNS [yesOrNo]|指定用户SSH登录一个域名时,服务器是否使用DNS,确认该域名对应的IP地址包含本机,建议关闭|
+|UserLogin [yesOrNo]|指定用户认证内部是否使用/user/bin/login代替SSH工具,默认为no|
+|UserPrivilegeSeparation|指定用户认证通过后,使用另一个子线程处理用户权限相关的操作,这样利于提高安全性|
+|VerboseMode|SSH2版本专用,指定日志输出详细的Debug信息|
+|X11Forwarding|指定是否打开X window的转发,默认值为no|
+**sshd命令行配置项**
+|-d|用于显示debug信息|
+|-D|指定sshd不作为后台守护进程运行|
+|-e|将sshd写入系统日志syslog的内容导向标准错误|
+|-f [filePath]|指定配置文件位置|
+|-h [filePath]|指定密钥|
+|-o [Key Value]|指定配置文件的一个配置项和对应的值,如:sshd -o "Port 2034"|
+|-p [num]|指定sshd的服务端口|
+|-t|检查配置文件语法是否正确|
