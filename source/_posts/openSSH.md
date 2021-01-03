@@ -40,6 +40,7 @@ ssh会将本机链接过的所有服务器公钥的指纹存储在"~/.ssh/known_
 |-V|显示客户端版本信息||
 |-X|表示打开X窗口转发|`ssh -X server.example.com`|
 |-1,-2,-4,-6|1表示SSH1协议,2表示SSH2协议,4表示IPv4协议(默认值),6表示Ipv6协议||
+
 5.配置文件
 
 |路径|作用|
@@ -203,6 +204,9 @@ ssh-add命令用来将私钥加入ssh-agent
 |VerboseMode|SSH2版本专用,指定日志输出详细的Debug信息|
 |X11Forwarding|指定是否打开X window的转发,默认值为no|
 **sshd命令行配置项**
+
+|参数|含义|
+|:-:|:-:|
 |-d|用于显示debug信息|
 |-D|指定sshd不作为后台守护进程运行|
 |-e|将sshd写入系统日志syslog的内容导向标准错误|
@@ -211,3 +215,30 @@ ssh-add命令用来将私钥加入ssh-agent
 |-o [Key Value]|指定配置文件的一个配置项和对应的值,如:sshd -o "Port 2034"|
 |-p [num]|指定sshd的服务端口|
 |-t|检查配置文件语法是否正确|
+
+<font size=6>**scp命令**</font>
+**简介**
+它的底层是SSH协议,默认端口22,相当于先用ssh命令登陆远程主机,然后在执行拷贝,可以用于两个远程系统之间的复制
+
+|参数|含义|
+|:-:|:-:|
+|-c|指定传输的加密算法,如blowfish|
+|-C|传输时压缩文件|
+|-F|用来指定ssh_config文件,供ssh链接使用|
+|-i|用来指定密钥的文件|
+|-l|用来限制传输数据的带宽速率,单位是kb/s|
+|-p|用来保留修改时间,访问时间,文件状态等原始文件的信息|
+|-P|用来指定远程主机的SSH端口,默认用22|
+|-q|用来关闭显示拷贝的进度条|
+|-r|递归复制|
+|-v|显示详细的输出|
+
+<font size=6>**sftp命令**</font>
+**简介**
+sftp是ssh提供的一个客户端应用程序,主要用来安全地访问FTP。因为FTP是不加密协议,很不安全,sftp相当于将FTP放入SSH:
+`sftp username@hostname`
+进入sftp后,使用那些命令,如get获取远程文件,put上传文件等
+<font size=6>**端口转发**</font>
+(待建)可见<https://wangdoc.com/ssh/port-forwarding.html>
+<font size=6>**证书登录**</font>
+(待建)可见<https://wangdoc.com/ssh/ca.html>
