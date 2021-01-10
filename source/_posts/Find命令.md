@@ -23,6 +23,7 @@ find <范围> <条件> <动作>
 |-mtime [num]|匹配内容修改于[num\*24]小时之前|
 |-name [pattern]|用指定的通配符模式匹配文件名|
 |-newer [file]|匹配晚于[file]的文件|
+|-newerct [yyyy-mm-dd HH:mm:ss]|创建晚于某个时间,详见man|
 |-nouser|匹配不属于一个有效用户的文件|
 |-nogroup|匹配不属于一个有效组的文件|
 |-perm [mode]|匹配权限设置为[mode]的文件,mode可用八进制或符号|

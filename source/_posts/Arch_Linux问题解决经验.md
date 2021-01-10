@@ -19,3 +19,8 @@ cover: css/images/fix.jpg
 也可以用downgrade工具,没用过就不说它了
 3.背光灯问题
 /etc/modprobe.d/sony-laptop.conf 索尼背光灯设置文件
+4.制作启动盘
+直接用如下命令制作,deepin官网的也不行
+`df`查看启动U盘的设备号
+`sudo dd bs=4M if=deepin-desktop-community-1010-amd64.iso of=/dev/sdb status=progress && sync`
+
