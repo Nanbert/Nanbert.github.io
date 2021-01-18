@@ -23,3 +23,4 @@ cover: css/images/gcc.jpg
 **4.动态库编译和使用**
 `gcc -shared -fPIC -o libinc.so increase.c`-fPIC生成位置独立的代码,此类代码可以在不同进程间共享
 `gcc -lincrease -o main main.c`链接动态库
+有错误
