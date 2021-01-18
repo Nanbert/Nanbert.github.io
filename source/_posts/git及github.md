@@ -160,3 +160,6 @@ Tag采用三段式:v版本.里程碑.序号(v2.3.1)
 -refactor:重构
 -test:测试相关
 -docs:文档
+
+常见问题:
+1.推送要密码,改成ssh认证,在.git/config里修改remote地址,从仓库复制过去ssh地址,不用httpServer,因为它就是默认用密码登录,也可以从命令行修改
