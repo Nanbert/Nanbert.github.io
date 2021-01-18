@@ -38,4 +38,3 @@ $ hexo deploy
 
 More info: [Deployment](https://hexo.io/docs/deployment.html)
 
-南敬文20200205
