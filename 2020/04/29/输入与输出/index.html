@@ -119,7 +119,158 @@
     
 
     <div class="article-entry">
-      <p>1.scanf与printf<br>格式:<code>scanf(&quot;format_specifier&quot;,&amp;val)</code>与<code>printf(&quot;format_specifier&quot;,&amp;val)</code><br>例子:</p>
+      <p>1.操纵符</p>
+<table>
+<thead>
+<tr>
+<th align="center">操纵符</th>
+<th align="center">含义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">boolalpha</td>
+<td align="center">将true和false输出为字符串</td>
+</tr>
+<tr>
+<td align="center">*noboolalpha</td>
+<td align="center">将true和false输出为1,0</td>
+</tr>
+<tr>
+<td align="center">showbase</td>
+<td align="center">对整型值输出表示进制的前缀</td>
+</tr>
+<tr>
+<td align="center">*noshowbase</td>
+<td align="center">不生成表示进制的前缀</td>
+</tr>
+<tr>
+<td align="center">showpoint</td>
+<td align="center">对浮点值总是显示小数点</td>
+</tr>
+<tr>
+<td align="center">*noshowpoint</td>
+<td align="center">只有当浮点值包含小数部分时,显示小数点</td>
+</tr>
+<tr>
+<td align="center">showpos</td>
+<td align="center">对非负数显示+</td>
+</tr>
+<tr>
+<td align="center">*noshowpos</td>
+<td align="center">对非负数不显示+</td>
+</tr>
+<tr>
+<td align="center">uppercase</td>
+<td align="center">在十六进制中打印0X,在科学计数法中打印E</td>
+</tr>
+<tr>
+<td align="center">*uppercase</td>
+<td align="center">在十六进制中打印0x,在科学计数法中打印e</td>
+</tr>
+<tr>
+<td align="center">*dec</td>
+<td align="center">整型值显示为十进制</td>
+</tr>
+<tr>
+<td align="center">hex</td>
+<td align="center">整型值显示为十六进制</td>
+</tr>
+<tr>
+<td align="center">oct</td>
+<td align="center">整型值显示为十进制</td>
+</tr>
+<tr>
+<td align="center">left</td>
+<td align="center">左对齐,在值的右侧添加填充字符</td>
+</tr>
+<tr>
+<td align="center">right</td>
+<td align="center">右对齐,在值的左侧添加填充字符</td>
+</tr>
+<tr>
+<td align="center">internal</td>
+<td align="center">左对齐符号,右对齐值,在值和符号之间添加填充字符</td>
+</tr>
+<tr>
+<td align="center">fixed</td>
+<td align="center">浮点值显示为定点十进制</td>
+</tr>
+<tr>
+<td align="center">scientific</td>
+<td align="center">浮点值显示为科学计数法</td>
+</tr>
+<tr>
+<td align="center">hexfloat</td>
+<td align="center">浮点值显示为十六进制(c++11)</td>
+</tr>
+<tr>
+<td align="center">defaultfloat</td>
+<td align="center">重置浮点值显示为十进制(c++11)</td>
+</tr>
+<tr>
+<td align="center">unitbuf</td>
+<td align="center">每次输出操作后都刷新缓冲区</td>
+</tr>
+<tr>
+<td align="center">*nounitbuf</td>
+<td align="center">恢复正常的缓冲区刷新方式</td>
+</tr>
+<tr>
+<td align="center">*skipws</td>
+<td align="center">输入运算符跳过空白符</td>
+</tr>
+<tr>
+<td align="center">noskipws</td>
+<td align="center">输入运算符不跳过空白符</td>
+</tr>
+<tr>
+<td align="center">flush</td>
+<td align="center">刷新ostream缓冲区</td>
+</tr>
+<tr>
+<td align="center">ends</td>
+<td align="center">插入空字符,然后刷新ostream缓冲区</td>
+</tr>
+<tr>
+<td align="center">endl</td>
+<td align="center">插入换行符,然后刷新ostream缓冲区</td>
+</tr>
+<tr>
+<td align="center">setprecision([int])</td>
+<td align="center">在iomanip,接受一个int值,来设置精度,见详解</td>
+</tr>
+<tr>
+<td align="center">setfill([char])</td>
+<td align="center">在iomanip,用一个字符填充空白</td>
+</tr>
+<tr>
+<td align="center">setw([int])</td>
+<td align="center">在iomanip,指定值的最小宽度,注意它只影响接下来的那个值</td>
+</tr>
+<tr>
+<td align="center">setbase([int])</td>
+<td align="center">在iomanip,将整数输出为某进制</td>
+</tr>
+</tbody></table>
+<p>2.流对象的成员函数</p>
+<table>
+<thead>
+<tr>
+<th align="center">成员函数</th>
+<th align="center">含义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">precision()</td>
+<td align="center">返回当前精度值</td>
+</tr>
+<tr>
+<td align="center">precision(int)</td>
+<td align="center">将精度设置为此值,返回旧精度</td>
+</tr>
+</tbody></table>
+<p>2.精度<br>默认情况下,精度会控制打印的数字的总数。打印时,<font color=#FF0000>浮点值按当前精度舍入而非截断</font>,在执行scientific,fixed或hexfloat后,精度值控制的是小数点后面的数字位数</p>
+<p>1.scanf与printf<br>格式:<code>scanf(&quot;format_specifier&quot;,&amp;val)</code>与<code>printf(&quot;format_specifier&quot;,&amp;val)</code><br>例子:</p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">char</span> ch;</span><br><span class="line"><span class="keyword">double</span> d;</span><br><span class="line"><span class="built_in">scanf</span>(<span class="string">&quot;%c %lf&quot;</span>,&amp;ch,&amp;d);</span><br><span class="line"><span class="built_in">printf</span>(<span class="string">&quot;%c %lf&quot;</span>,ch,d);</span><br></pre></td></tr></table></figure>
 <p>|:-:|:-:|:-:|<br>|类型|格式|大小|<br>|int|%d|32bit|<br>|long|%ld|64bit|<br>|char|%c|16bit|<br>|float|%f|32bit|<br>|double|%lf|64bit|<br>2.float与double固定小数点后的位数输出</p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">float</span> a=<span class="number">8.333291</span>;</span><br><span class="line"><span class="built_in">printf</span>(<span class="string">&quot;%.03f&quot;</span>,a);<span class="comment">//小数点后面保留3位</span></span><br><span class="line"><span class="built_in">cout</span>.precision(<span class="number">3</span>);</span><br><span class="line"><span class="built_in">cout</span>&lt;&lt;fixed&lt;&lt;<span class="built_in">endl</span>;<span class="comment">//保留3位</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
