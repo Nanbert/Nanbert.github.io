@@ -4,7 +4,7 @@ date: 2021-03-31 22:50:40
 subtitle:
 categories:
 tags:
-cover: css/images/git.jpg
+cover: css/images/git2.jpg
 ---
 1.git预设置
 　`git config --global user.name "xxx"`
