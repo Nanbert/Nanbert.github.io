@@ -4,7 +4,7 @@ date: 2021-03-31 22:50:40
 subtitle:
 categories:
 tags:
-cover: css/images/git2.jpg
+cover: https://z3.ax1x.com/2021/04/03/cnhlon.jpg
 ---
 1.git预设置
 　`git config --global user.name "xxx"`
@@ -75,7 +75,7 @@ cover: css/images/git2.jpg
    `git reset --hard <commit_id>`注意此步骤会将commit_id后的commit删除,最好不用
 　　`git push origin HEAD --force`让服务器也回退到某版本(本地仓库已回退)
 11.git revert HEAD:回退到HEAD上一个版本,但是树结构往下走，只不过与父节点相同
-11.`git checkout -- [file]`(未git add的情况下):撤销某个工作目录下文件的修改,恢复为版本库中一模一样的版本,危险的命令,你的修改将不会保存
+11.`git checkout [file]`(未git add的情况下):撤销某个工作目录下文件的修改,恢复为版本库中一模一样的版本,危险的命令,你的修改将不会保存
 12.`git remote`远程仓库的使用
 　-v:显示简写对应的url
 　`show origin`:展示origin的具体信息
@@ -84,7 +84,7 @@ cover: css/images/git2.jpg
 13.`git push <remote-name> <branch-name>`
 　`--tags`:推送所有标签
 　使用git push <远程主机名(origin)> <本地分支名>:<远程分支名>
-　`git push --set-upstream <remote_name> <branch_name>`将远程分支作为当前分支的上游分支
+　`git push --set-upstream <remote_name> <branch_name>`将远程分支作为当前分支的上游分支,--unset-upstream,则是删除这种关联
 14.
 　git fetch:会抓取数据到本地数据库，但不会自动合并并修改当前工作
   git clone:会自动将其添加为远程仓库并默认以'origin'缩写,并自动跟踪远程master

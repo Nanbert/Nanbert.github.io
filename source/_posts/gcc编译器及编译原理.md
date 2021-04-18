@@ -4,7 +4,7 @@ date: 2020-12-19 17:25:41
 subtitle:
 categories:
 tags:
-cover: css/images/gcc.jpg
+cover: https://z3.ax1x.com/2021/04/03/cnh8J0.jpg
 ---
 **1.基本概念**
 **预处理:**`g++ -E main.cpp -o main.ii`,-E表示只进行预处理。预处理主要是处理各种宏的展开;添加行号和文件标识符,为编译器产生调试信息提供便利;删除注释;保留编译器用到的编译器指令等

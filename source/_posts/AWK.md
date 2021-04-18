@@ -4,7 +4,7 @@ date: 2021-01-24 17:08:06
 subtitle:
 categories:
 tags:
-cover: css/images/awk.png
+cover: https://z3.ax1x.com/2021/04/03/cnhJzT.png
 ---
 1.awk选项总结
 

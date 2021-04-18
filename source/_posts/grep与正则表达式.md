@@ -4,7 +4,7 @@ date: 2020-11-20 19:46:54
 subtitle:
 categories:
 tags:
-cover: css/images/regex.jpeg
+cover: https://z3.ax1x.com/2021/04/03/cnhQds.jpg
 ---
 <font size=4>**1.grep**</font>
 格式:`grep [options] [regex] [file...]`
