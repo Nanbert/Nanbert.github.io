@@ -58,7 +58,7 @@ o在可视模式中切换高亮区的活动端
 `:%normal A;`
 就是在每行后加;
 19.  
-一般模式下按*可以查找当前光标下的单词
+一般模式下按\*可以查找当前光标下的单词
 20.  
 可以在命令模式中执行shell命令，只要在命令前加!,这只适合执行一次
 21.  
@@ -104,7 +104,7 @@ ctrl+o也可以跳转到上次的位置
 |""|无名寄存器|
 |"0|复制专用寄存器|
 |"(a-z)|自定义寄存器|
-|"_|黑洞寄存器|  
+|"\_|黑洞寄存器|  
   
 　　在插入模式下可以用ctrl+r+上寄存器名来粘贴，此时没有"号
 32.  
@@ -120,3 +120,14 @@ ctrl+o也可以跳转到上次的位置
 dG会删除光标之后的所有内容
 37.
 H,M,L,分别是移动到屏幕行的顶,中,尾
+38.
+按键映射
+
+|递归|非递归|模式|
+|:-:|:-:|:-:|
+|:map|:noremap|normal,visual,operator-pending|
+|:nmap|:nnoremap|normal|
+|:xmap|:xnoremap|visual|
+|:cmap|:cnoremap|command-line|
+|:omap|:onoremap|operator-pending|
+|:imap|:inoremap|insert|
