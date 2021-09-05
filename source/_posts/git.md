@@ -6,13 +6,16 @@ categories:
 tags:
 cover: https://z3.ax1x.com/2021/04/03/cnhlon.jpg
 ---
-1.git预设置
+1.git预设置(~/.gitconfig)
 　`git config --global user.name "xxx"`
 　`git config --global user.email "xx.com"`
 　`git config --list`检查已有配置信息
 　`git config --global core.editor vim`配置默认编辑器
 　`git config --global alias.comi commit`命令的别名
 　`git config --global credential.helper cache`设置无密码推送
+　`git config --global alias.st "status"`设置status的别名为st
+　`git config --global alias.st "status"`设置status的别名为st
+　`git config --global --replace-all alias.lg  "log --pretty=format:'%C(auto) %h | %ai | %Cred %an %Cgreen %s'"`推荐设置log的别名
 2.git 初始化
 　`git init`初始化仓库，并建立.git子目录
 3.`git status`
@@ -35,7 +38,7 @@ cover: https://z3.ax1x.com/2021/04/03/cnhlon.jpg
 　--cached:只删除缓存区,保留工作目录
 8.`git mv`移动文件
 　等价于'mv file1 file2;git rm file1;git add README'
-9.`git log`显示提交记录
+9.`git log`显示提交记录(git shortlog 显示简短的记录)
 　-p:显示每次提交的差异
   -(n):显示最近n次提交
   --since,--after:仅显示指定时间之后的提交
@@ -51,6 +54,7 @@ cover: https://z3.ax1x.com/2021/04/03/cnhlon.jpg
   --name-status:显示增删改的文件清单
   --name-only:仅在提交信息后显示以修改的文件清单
   --pretty=format:"<格式>":指定格式输出
+  <格式>有如下：
 
   |选项|说明|
   | :-: | :-: |
@@ -81,6 +85,7 @@ cover: https://z3.ax1x.com/2021/04/03/cnhlon.jpg
 　`show origin`:展示origin的具体信息
 　`rename o1 o2`:重命名某个远程
 　`rm xx`:移除某个远程
+　`add xx`:增加某个远程
 13.`git push <remote-name> <branch-name>`
 　`--tags`:推送所有标签
 　使用git push <远程主机名(origin)> <本地分支名>:<远程分支名>
@@ -107,6 +112,8 @@ cover: https://z3.ax1x.com/2021/04/03/cnhlon.jpg
 4.`git log --oneline --decorate --graph --all`查看分叉历史
 5.`git merge xxbranch`合并指定分支到当前分支,如果当前分支可以沿着一条线走下去则会有'fast-forward提示'
 　`git merge --abort`取消当前合并,重建合并前状态
+　`git merge --no-commit xxbranch`合并到本地文件,之后需要手动commit,xxbranch仍是新节点的父节点
+　`git merge --squash xxbranch`生成本地diff,patch,手动提交后,与xxbranch不构成父子节点
 6.`git checkout -b serverfix origin/serverfix`跟踪远程库其他分支等价于`git checkout --track orighin/serverfix`
 7.`git push origin --delete xxx` 删除远程分支
 8.git branch 选项
@@ -165,3 +172,4 @@ Tag采用三段式:v版本.里程碑.序号(v2.3.1)
 1.推送要密码,改成ssh认证,在.git/config里修改remote地址,从仓库复制过去ssh地址,不用httpServer,因为它就是默认用密码登录,也可以从命令行修改
 2.仓库中所有文件的sha1值在.git目录中的objects文件夹下，想要根据sha1值查看文件内容，可以用`git cat-file -p [sha1值]`注意，objects中只有两个数字的文件夹是该文件夹下所有文件内容的sha1值的前两位，所以要拼接一下，当然你如果用命令知道它的完整sha1值就不用拼接了
 3.`gitjk`有用的命令，可以查看如何撤销上个命令,可以从网上下载该工具，需要npm
+4.`git log --tags --simplify-by-decoration --pretty="format:%ci %d"`通过log来看tag,并且加上了日期
