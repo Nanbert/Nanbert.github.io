@@ -34,13 +34,28 @@ sudo pppoeconf:启用设置
 快捷键:
 	ctrl+a:命令行首部
 	ctrl+e:命令行尾部
+	ctrl+f:前移一个字符
+	ctrl+b:后移一个字符
+	ctrl+l:等价于clear
+	alt+f:前移一个字
+	alt+b:后移一个字
+	alt+t:光标位置的字和其前面的字互换
+	alt+l:从光标到字尾转换成小写字母
+	alt+u:从光标到字尾转换成大写字母
+	alt+d:剪切从光标到字尾的文本
+	alt+Backspace:剪切从光标到字首的文本
 	ctrl+k:删除光标后的字符
+	ctrl+d:删除光标上的字符
+	ctrl+t:交换光标处和它的前面字符
     ctrl+u:删除光标钱的字符
     ctrl+s:锁定屏幕
     ctrl+q:解锁
+    ctrl+y:粘贴剪切的文本
+    ctrl+k:剪切从光标到行尾的文本
+    ctrl+u:剪切从光标到行首的文本
 	ctrl+r:搜索词,再次按该组合键可以循环搜索,回车选中,ctrl+G不做任何操作返回终端
 	!$:重新使用上一个命令中的最后一项(`alt+.`可以跳转上几次)
-	!!:重用上个命令(sudo !!一般这么用)
+	!number:重复历史表中第number行命令
 9.   
 单独命令间:
  ";":一直执行无论成功与否
@@ -123,7 +138,7 @@ plymouth更换主题,主题文件夹：/usr/share/plymouth/themes/,设置文件�
 `dmesg` 查看内核打印信息
 `lsmod` 显示已加载的模块
 已加载的模块会在/sys/module/下建立对应文件夹
-`sudo rmmod *.ko`卸载模块
+`sudo rmmod x.ko`卸载模块
 24.  
 `mknod /dev/demo_drv c 252　0`生成字符设备的对应节点,/dev/demo_drv代表节点位置名称,c代表字符设备,252为主设备号,0为次设备号
 主设备号代表一类设备，次设备号代表同一类设备的不同个体，每个次设备号都有一个不同设备节点
@@ -132,7 +147,7 @@ plymouth更换主题,主题文件夹：/usr/share/plymouth/themes/,设置文件�
 　a.`fdisk -l`查看可挂载磁盘
 　b.`df -h`查看已挂载的磁盘
 　c.`blkid`获取目标磁盘的uuid和属性
-　d.`vi /etc/fstab`添加开机mount,格式:UUID=***** /home/nanbert/disk ext4 defaults 1 1  
+　d.`vi /etc/fstab`添加开机mount,格式:UUID=xx /home/nanbert/disk ext4 defaults 1 1 
 26. 
 手机USB线wifi共享：
 　a.`ip addr show`查看USB网络借口
@@ -161,6 +176,30 @@ plymouth更换主题,主题文件夹：/usr/share/plymouth/themes/,设置文件�
 举例:`find src -name \*.c -print | xargs grep -n -- --help`
 38.chmod命令
 chmod [ugoa][+=-][rwxst] 文件名表
+也可以用数字设置,对应如下:
+chmod 777 文件名
+
+|Oct|Bin|File Mode|
+|:-:|:-:|:-:|
+|0|000|---|
+|1|001|--x|
+|2|010|-w-|
+|3|011|-wx|
+|4|100|r--|
+|5|101|r-x|
+|6|110|rw-|
+|7|111|rwx|
+
+三个特殊权限:
+a.setuid
+`chmod u+s program`
+当应用到一个可执行文件时，它把有效用户 ID 从真正的用户（实际运行程序的用户）设置成程序所有者的 ID。这种操作通常会应用到 一些由超级用户所拥有的程序。当一个普通用户运行一个程序，这个程序由根用户(root) 所有，并且设置了 setuid 位，这个程序运行时具有超级用户的特权，这样程序就可以 访问普通用户禁止访问的文件和目录。
+b.setgid
+`chmod r+s dir`
+把有效用户组 ID 从真正的 用户组 ID 更改为文件所有者的组 ID。如果设置了一个目录的 setgid 位，则目录中新创建的文件 具有这个目录用户组的所有权，而不是文件创建者所属用户组的所有权。对于共享目录来说， 当一个普通用户组中的成员，需要访问共享目录中的所有文件，而不管文件所有者的主用户组时， 那么设置 setgid 位很有用处。
+c.sticky位
+`chmod +t dir`
+在 Linux 中，会忽略文件的 sticky 位，但是如果一个目录设置了 sticky 位， 那么它能阻止用户删除或重命名文件，除非用户是这个目录的所有者，或者是文件所有者，或是 超级用户。这个经常用来控制访问共享目录，比方说/tmp。
 39.umask命令
 例子:掩码值:022
 　　二进制: 000 010 010
@@ -197,7 +236,7 @@ day:1到31之间的任何整数
 month:1到12之间任何整数
 week:1到7之间任何整数,
 command:执行的命令
-(*)代表所有可能值
+(\*)代表所有可能值
 (,)一个列表范围
 (-)表示一个整数范围
 (/)指定时间间隔的频率,比如"0-23/2"表示每两小时执行
@@ -206,7 +245,7 @@ command:执行的命令
 `crontab -ir`删除crontab文件前提醒用户
 43.run-parts一个接一个运行同一目录下的脚本
 `run-parts<directory-path>`
-`run-parts --list --regex  '^s.*sh$' <directory> `
+`run-parts --list --regex  '^s.\*sh$' <directory> `
 44.ffmpeg
 裁剪:`ffmpeg -i xx.mp4 -vcodec copy -acodec copy -ss 00:00:00 -to 01:18:08 output.mp4`
 合并:
@@ -251,6 +290,27 @@ It's you,Assole!
 47.
 `whatis <command>`会给出命令简短的说明
 48.
-`rm !(*.csv)`删除除了csv结尾的所有文件(貌似只有bash支持，zsh不支持)
+`rm !(\*.csv)`删除除了csv结尾的所有文件(貌似只有bash支持，zsh不支持)
 49.
-'mkdir {2007..2009}_0{1..9}{A,B}'创建一系列文件夹
+`mkdir {2007..2009}\_0{1..9}{A,B}`创建一系列文件夹,这其实是花括号展开
+50.
+`apropos <some word>`在man手册里搜索关键字
+`info <command>`man手册的另一种排版，有点鸡肋
+51.
+标准错误的重定向
+`ls <no exist> 2>error.txt`
+标准错误和标准输出重定向同一个文件
+`ls -l xx >info.txt 2>&1`等价于`ls -l xx &> info.txt`
+52.
+env 或 printenv打印当前环境变量
+set打印当前环境变量并按字母排列
+alias查看别名,上面的不可以查看
+53.
+格式化并为某个分区重建文件系统,以sdb1为例:`mkfs -t vfat /dev/sdb1`注意是分区而不是设备,所以是sdb1而非sdb
+54.
+从现有文件创建映像文件`genisoimage -o cd-rom.iso -R -J ~/cd-rom-files`
+55.
+清除一张CD-ROM
+`wodim dev=/dev/cdrw blank=fast`
+写入一个映像文件进CD-ROM
+`wodim dev=/dev/cdrw image.iso`
