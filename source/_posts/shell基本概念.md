@@ -21,6 +21,7 @@ cover:
 * 删除变量: **unset name**
   
 ### 字符串变量
+字符串与变量展开有密切联系,可以参考那节
 1) 单引号
 * 单引号变量var='test',只能原样输出,不能解释变量
 * 单引号中不能出现一个单引号,转义也不行
@@ -41,7 +42,15 @@ name="this is my name";
 echo ${name:1:4} #输出his
 echo ${name::4} #输出this
 ```
-
+6) 大小写
+```bash
+declare -u upper
+declare -l lower
+#upper将会强制转成SL
+upper="sl"
+#lower将会强制转成sl
+lower="SL"
+```
 ### 数组
 bash只支持以为数组,不支持多维数组
 * 定义数组: **array_name=(li wang xiang zhang)** (小括号做边界、使用空格分离)
@@ -63,24 +72,48 @@ echo ${array_name[@]} #输出"li zhang"输出数组所有元素,没有元素的�
 |:-:|:-:|
 |`$0`| 代表执行的文件名|
 |`$n`| 代表传入的第n个参数|
-|`$#`|参数个数|
+|`$#`|参数个数,不包括程序名本身|
 |`$`|以一个单字符串显示所有向脚本传递的参数。即为"$1 $2...$n"|
-|`$@`|除$0的所有参数列表|
-|`$*`|除$0的所有参数列表(与上面的区别有待研究)|
+|`$@`|展开成一个从 1 开始的位置参数列表。当它被用双引号引
+起来的时候，展开成一个由双引号引起来的字符串，包含了
+所有的位置参数，每个位置参数由 shell 变量 IFS 的第一个
+字符（默认为一个空格）分隔开。|
+|`$*`|展开成一个从 1 开始的位置参数列表。当它被用双引号引
+起来的时候，它把每一个位置参数展开成一个由双引号引起
+来的分开的字符串。|
 |`$$`| 该脚本进程ID|
 |`$!`| 后台运行的最后一个进程ID|
 |`$?`|上个调用(最后命令)返回值,0表示没有错误|
 
+有个**shift**命令可以方便处理命令行参数,每次执行该命令的时候,变量$2会移动到$1,变量$3会移动到变量$2,以此类推,$#值也会减1。例子:
+```bash
+count=1
+while [[ $# -gt 0 ]];
+do
+	echo "Argument $count = $1"
+	count=$((count + 1))
+	shift
+done
+```
+
 ### 运算符
 
-####算数运算
+#### 算数运算
  * `+ - * /`
  * 加法运算
      * `bash val=$(expr 2 + 2)` 这么写乘号要加转义,空格也是必须
      * `val=$[2+2]` (4个空格不是必要的,不同于条件判断)
-     * `val=$((2+2))`
-	
-####数字关系运算符
+     * `val=$((2+2))`(4个空格不是必要的)
+
+bash支持任意进制
+|表示法|描述|
+|number|默认10进制|
+|0number|8进制|
+|0xnumber|16进制|
+|base#number|base进制|
+在双括号中会被解释成数字,否则默认为字符串
+
+#### 数字关系运算符
 关系运算符只支持数字,不支持字符串,除非字符串是数字
 
 |符号|意义|
@@ -92,7 +125,7 @@ echo ${array_name[@]} #输出"li zhang"输出数组所有元素,没有元素的�
 |`-ge`|大于等于号|
 |`-le`|小于等于号|
 
-####字符串运算符
+#### 字符串运算符
 
 |符号|意义|
 |:-:|:-:|
@@ -102,7 +135,7 @@ echo ${array_name[@]} #输出"li zhang"输出数组所有元素,没有元素的�
 |**-n**|字符串长度不为0返回true,`[-n $b]`|
 |**$**|不为空返回true,`[$a]`|
 
-####逻辑运算符
+#### 逻辑运算符
 
 |符号|意义|
 |:-:|:-:|
@@ -110,22 +143,239 @@ echo ${array_name[@]} #输出"li zhang"输出数组所有元素,没有元素的�
 |**&&**|与运算,`[[ $a -lt 20 ]] && [[$b -gt 100 ]]`|
 |**||**|或运算,`[[ $a -lt 20 ]] || [[$b -gt 100 ]]`,`[[ $a -lt 20 || $b -gt 100 ]]`|
 
-####文件运算符
+逻辑判断的括号
+1.`[]`:中括号旁边和运算符两边必须添加空格(可以使用，等价于test命令,本文不讲test命令,不推荐)
+2.`[[]]`:中括号旁边和运算符两边必须添加空格(字符串验证时，推荐)
+3.`(())`:中括号旁边和运算符两边必须添加空格(数字验证时，推荐)
+4.`[[]]和(())`分别是针对数学表达式和字符串表达式的加强版
+5.`[]`基本舍弃的原因，它与**&&、||、<和>**不兼容,会报错,它只能用-ne等等这些,例如下面是等价的
+`if [[ $a != 1 && $a !=2 ]]`,`if [ $a -ne 1 ] && [ $a != 2 ]`,`if [ $a -ne 1 -a $a !=2 ]`
+6.双括号支持以下额外的符号(没列全,C语言能用的都能用,包括?:)
+
+|符号|描述|
+|:-:|:-:|
+|val++|后增|
+|val--|后减|
+|++val|前增|
+|--val|前减|
+|!|逻辑求反|
+|~|位求反|
+|**|幂运算|
+|<<|左位移|
+|>>|右位移|
+|&|布尔和|
+|`|`|布尔或|
+|`||`|逻辑或|
+|&&|逻辑与|
+|=~|用于字符串的模式匹配|
+|==|用于字符串的类型匹配(通配符等),例子`if [[ $FILE == foo.* ]]`|
+
+
+#### 文件运算符
 file是代表文件名的字符串
 
 |符号|意义|
 |:-:|:-:|
+|$file1 -ef $file2|拥有相同的索引号返回True(硬连接)|
+|$file1 -nt $file2|file1新于file2返回true|
+|$file1 -ot $file2|file1早于file2返回true|
 |`[-b $file]`|是块设备文件返回true|
 |`[-c $file]`|是字符备文件返回true|
 |`[-d $file]`|是目录返回true|
 |`[-f $file]`|是普通文件返回true|
 |`[-g $file]`|设置了SGID位文件返回true|
+|`[-G $file]`|由有效组ID拥有返回true|
+|`[-L $file]`|是符号链接返回true|
 |`[-k $file]`|设置了stick位文件返回true|
 |`[-p $file]`|是有名管道文件返回true|
 |`[-u $file]`|设置了SUID位文件返回true|
+|`[-O $file]`|由有效用户ID拥有返回true|
 |`[-r $file]`|是可读文件返回true|
 |`[-w $file]`|是可写文件返回true|
 |`[-x $file]`|是可执行文件返回true|
 |`[-s $file]`|非空文件返回true|
+|`[-S $file]`|是一个网络Socket返回true|
 |`[-e $file]`|文件存在返回true|
+|`[-t $fd]`|fd是一个定向到终端/从终端定向的文件描述符。这可以被用来判断是否重定向了标准输入/错误|
 
+### 输出
+**echo**只用于字符串,自动添加换行符号`echo nanbert male 66.1234`
+**printf**不自动加换行符号,例:`printf "%-10s %-8s %-4.2f\n" nanbert male 66.1234`
+
+### 流程控制
+#### if
+```bash
+if condition
+then 
+	command1
+	...
+elif condition
+then
+	command2
+	...
+else
+	command3
+	...
+fi
+```
+#### for
+```bash
+for var in item1 item2 ... itemN
+do 
+	command1
+	...
+done
+#等价于c语言
+for (( expression1;expression2; expression3 ));do
+	commands
+done
+```
+如果省略in，默认处置位置参数
+#### while
+```bash
+while condition
+do 
+	command1
+	...
+done
+#无限循环
+while :
+do
+	command
+done
+```
+#### until
+```bash
+until condition
+do 
+	command1
+	...
+done
+```
+#### case
+Shell case匹配一个值与一个模式,用两个分号表示break
+```bash
+case value in
+	pattern1)
+		command1
+		...
+		commandN
+		;;
+	pattern2)
+		command1
+		...
+		commandN
+		;;
+esac
+```
+
+循环都支持**continue**和**break**
+
+### 定义函数
+* 函数定义
+```bash
+function fun(){
+	action;
+	[return int;]
+}
+#等价于下面
+fun1(){
+	action;
+	[return int;]
+}
+```
+* 参数传递
+函数中直接使用特殊变量来获取参数,可以加上{}
+```bash
+funWithParam(){
+    echo "第一个参数为 $1 !"
+    echo "第二个参数为 $2 !"
+    echo "第十个参数为 $10 !"
+    echo "第十个参数为 ${10} !"
+    echo "第十一个参数为 ${11} !"
+    echo "参数总数有 $# 个!"
+    echo "作为一个字符串输出所有参数 $* !"}
+funWithParam 1 2 3 4 5 6 7 8 9 34 73
+echo $?  \# 判断执行是否成功
+```
+* 函数返回值
+    * 返回值是可选的
+	* return只能为**return [0-255]**,可通过$?获取该值
+	* 如果不加return,则最后一条语句的执行状态为返回值,0为成功
+	* 如果用反引号执行函数,结果是函数内的所有输出而非返回值
+
+### 读取外部输入
+`read arg`从键盘读取输入并赋值给arg
+
+|选项|说明|
+|:-:|:-:|
+|-a array|把输入赋值到数组array中|
+|-d delimiter|用字符串delimiter中的第一个字符指示输入结束,而不是一个换行符|
+|-e|使用readline来处理输入|
+|-n num|读取num个输入字符,而不是整行|
+|-p prompt|为输入显示提示信息,使用字符串prompt|
+|-r |Raw mode,不把反斜杠解释为转义字符|
+|-s |Silent mode,不会在屏幕上显示输入的字符。输入密码的时候很有用|
+|-t seconds|超过时间，终止输入,read会非0状态退出|
+|-u fd|使用文件描述符fd中的输入,而不是标准输入|
+
+IFS是字段分割符,默认为空格,tab,换行符。可以自行改变。
+read不应该使用管道线来接受赋值，如下是错误的:
+```bash
+echo "$file_info" | IFS=":" read user pw uid gid name home shell
+```
+而应该这么写
+```bash
+IFS=":" read user pw uid gid name home shell <<< "$file_info"
+```
+这是因为管道线会开个子进程,子进程变量的变化不会影响父进程
+
+### 包含其他shell文件
+* `. filepath/filename`
+* `source filepath/filename`
+
+### 颜色标识
+```bash
+printf  "\033[32m SUCCESS: yay \033[0m\n";
+printf  "\033[33m WARNING: hmm \033[0m\n";
+printf  "\033[31m ERROR: fubar \033[0m\n";
+```
+具体内容有待研究
+
+### 长句换行
+在shell中为避免一个语句过长,可以使用"\"进行换行,注意"\"前加一个空格,之后无空格直接换行。
+
+### 退出脚本
+`exit [num]`num为0表示执行成功,可以不加num
+`set -e 或 set +e`set -e表示从当前位置开始,如果出现任何错误都将触发exit。相反,set +e表示不管出现任何错误继续执行脚本
+
+### 调试
+-n表示检查有无语法错误,-x表示调试
+
+### 变量展开
+
+|操作符|意义|
+|:-:|:-:|
+|`:${parameter:=word}`|如果parameter没有设置或者为空,展开的结果是word的值,并且word的值会赋给parameter;否则展开为parameter的值|
+|`${parameter:-word}`|如果parameter没有设置或者为空,展开的结果是word的值,否则是parameter的值|
+| `${parameter:?word}` |如果parameter没有设置或者为空,会带有错误的推出,否则是parameter的值|
+| `${parameter:+word}` |如果parameter没有设置或者为空,展开为空,否则是word的值;不管如何parameter值不会变|
+|`${parameter#pattern}`|pattern是通配符模式,会从parameter开头开始最短匹配pattern,删除匹配中的部分,留下剩余部分,注意是开头不是从左到右第一次的意思,即第一个字符一定要匹配上|
+|`${parameter##pattern}`|pattern是通配符模式,会从parameter开头开始最长匹配pattern,删除匹配中的部分,留下剩余部分,注意是开头不是从左到右第一次的意思,即第一个字符一定要匹配上|
+|`${parameter%pattern}`|pattern是通配符模式,会从parameter结尾开始最短匹配pattern,删除匹配中的部分,留下剩余部分,注意是结尾不是从右到左第一次的意思,即最后一个字符一定要匹配上|
+|`${parameter%%pattern}`|pattern是通配符模式,会从parameter结尾开始最长匹配pattern,删除匹配中的部分,留下剩余部分,注意是结尾不是从右到左第一次的意思,即最后一个字符一定要匹配上|
+|`${parameter/pattern/string}`|在parameter中找到匹配通配符pattern的文本,用string替换,只替换第一次匹配到的|
+|`${parameter//pattern/string}`|在parameter中找到匹配通配符pattern的文本,用string替换,替换所有匹配到的|
+|`${parameter/#pattern/string}`|在parameter中找到匹配通配符pattern的文本,用string替换,只能从parameter开头开始匹配,注意是开头不是从左到右第一次的意思,即第一个字符一定要匹配上|
+|`${parameter/%pattern/string}`|在parameter中找到匹配通配符pattern的文本,用string替换,只能从parameter结尾开始匹配,注意是结尾不是从右到左第一次的意思,即最后一个字符一定要匹配上|
+|`${parameter,,}`|把parameter全部展开成小写字母|
+|`${parameter,}`|把parameter首字母展开成小写字母|
+|`${parameter^^}`|把parameter全部展开成大写字母|
+|`${parameter^}`|把parameter首字母展开成大写字母|
+
+
+`${!prefix*}`等价于`${!prefix@}`这种展开会返回以prefix开头的已有变量名(而不是变量的值)
+字符串的长度和切片其实也是一种展开
+
+### Tips
+**<<**和**<<-**的区别在于,<<-会忽略接下来输入的tab建,一般用于格式化脚本,便于读代码

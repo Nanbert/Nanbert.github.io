@@ -314,3 +314,5 @@ alias查看别名,上面的不可以查看
 `wodim dev=/dev/cdrw blank=fast`
 写入一个映像文件进CD-ROM
 `wodim dev=/dev/cdrw image.iso`
+56.
+`basename [pathString]`会去除路径,给出文件名本身
