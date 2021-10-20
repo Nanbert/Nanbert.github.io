@@ -438,3 +438,4 @@ ls -l > pipe1 &
 sleep 5
 cat<pipe1
 ```
+* 子shell的全局环境变量改变并不会影响父shell,甚至用export也不行

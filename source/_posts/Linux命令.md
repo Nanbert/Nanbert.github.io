@@ -79,6 +79,7 @@ export相当于把局部变量扩展至全局
 |6|游戏娱乐,如屏幕保护程序|
 |7|其他方面|
 |8|系统管理员命令|
+|9|内核例程|
 `-k <pattern>`在文档中搜索某个关键字,
 13. 
 后台运行
@@ -89,6 +90,7 @@ export相当于把局部变量扩展至全局
   2.不能跨文件系统创建硬链接，硬链接不能连接目录
   3.硬链接的inode号完全相同，指向同一文件，软连接则有不同的inode号，并且新文件类型为专有软链接类型，其指向的文件内容存储着实际文件的路径
   4.硬链接指向的文件当链接数减为0时，才真正删除，软链接若实际文件删除，则软链接失效。
+  `readlink -f filename`可以显示链接的原始指向位置
 15.`nslookup github.global.ssl.fastly.Net`
 `nslookup github.com`
 查到的域名加到/etc/hosts里可以加快访问速度 
@@ -282,7 +284,7 @@ It's you,Assole!
 45.
 `type <command>`识别命令,有以下几种
 　a.可执行命令，给出路径
-　b.shell自身的命令(builtins)
+　b.shell自身的命令(builtins),内建命令不会产生子进程,代价更小
 　c.一个shell函数
 　d.别名命令
 46.
@@ -302,8 +304,8 @@ It's you,Assole!
 标准错误和标准输出重定向同一个文件
 `ls -l xx >info.txt 2>&1`等价于`ls -l xx &> info.txt`
 52.
-env 或 printenv打印当前环境变量
-set打印当前环境变量并按字母排列
+env 或 printenv打印当前环境变量(全局变量)
+set打印当前环境变量并按字母排列(包括局部变量、全局变量、用户定义变量)
 alias查看别名,上面的不可以查看
 53.
 格式化并为某个分区重建文件系统,以sdb1为例:`mkfs -t vfat /dev/sdb1`注意是分区而不是设备,所以是sdb1而非sdb
@@ -316,3 +318,9 @@ alias查看别名,上面的不可以查看
 `wodim dev=/dev/cdrw image.iso`
 56.
 `basename [pathString]`会去除路径,给出文件名本身
+57.
+`ps -f --forest`可以显示当前shell的进程关系
+58.coproc(这就是协程?)
+`coproc [job_name(可选)] [command]`等价于`( command )&`
+即生成后台子shell，并在子shell中执行命令。command本身可以是小括号命令集(嵌套子shell)或大括号命令集
+
