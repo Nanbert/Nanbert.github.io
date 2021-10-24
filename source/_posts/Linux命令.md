@@ -172,9 +172,11 @@ tee:从Stdin读取数据，并同时输出到Stdout和文件
 `systemctl start atd.service`启动服务
 `at <时间点>`时间点格式举例:19:33、3pm+7 days、20:00 tomorrow
 之后进入交互界面,输入命令,ctrl+D退出
-`at -l`查看列表
+`at -l 或者 atq`查看列表
 `at -c 任务号`查看任务内容
-`at -r 任务号`取消任务
+`at -r 任务号 或者 atrm 任务号`取消任务
+`at -f 脚本文件`不进入交互,直接运行某个脚本
+`-M`忽略产生的任何输出
 /etc/at.deny,文件中的用户不能执行at(系统默认存在)
 /etc/at.allow,默认不存在,只要存在的用户才能执行
 42.crontab服务定时任务计划
@@ -195,6 +197,9 @@ command:执行的命令
 `crontab -l`显示crontab文件
 `crontab -r`删除crontab文件
 `crontab -ir`删除crontab文件前提醒用户
+如果对时间精读要求不高,可以把脚本复制到/etc/cron.daily等目录下
+anacron是对该程序的一个补充,它会自动运行crontab原本应该运行但由于关机等原因造成的程序,但它只会处理位于/etc/cron.daily、/etc/cron.weekly、/etc/cron.monthly下的脚本文件,它的配置文件位于/etc/anacrontab
+anacron是自动运行的?(有待研究)
 43.run-parts一个接一个运行同一目录下的脚本
 `run-parts<directory-path>`
 `run-parts --list --regex  '^s.\*sh$' <directory> `
@@ -264,3 +269,25 @@ alias查看别名,上面的不可以查看
 58.coproc(这就是协程?)
 `coproc [job_name(可选)] [command]`等价于`( command )&`
 即生成后台子shell，并在子shell中执行命令。command本身可以是小括号命令集(嵌套子shell)或大括号命令集
+59.lsof列出打开的文件描述符
+-p:指定进程ID
+-d:指定要显示的文件描述符编号
+`lsof -a -p $$ -d 0,1,2`显示当前进程0,1,2的文件描述符信息,信息含义如下:
+* COMMAND 正在运行的命令名的前 9 个字符
+* PID 进程的 PID
+* USER 进程属主的登录名
+* FD 文件描述符号以及访问类型（r 代表读，w 代表写，u 代表读写）
+* TYPE 文件的类型（CHR 代表字符型，BLK 代表块型，DIR 代表目录，REG 代表常规文件）
+* DEVICE 设备的设备号（主设备号和从设备号）
+* SIZE 如果有的话，表示文件的大小
+* NODE 本地文件的节点号
+* NAME 文件名
+60.mktemp创建临时文件命令
+mktemp可以用来创建临时文件,成功会输出文件路径
+`mktemp [module]`不指定[module]会在/tmp中创建唯一临时文件,有用户有读写权限(不使用umask值),若指定[module],则会在当前文件夹下产生模板临时文件(会用任意字符替换模板值中的X),如`mktemp test.XXX`可能会在当前文件夹下产生文件test.UGH
+* -t:强制在/tmp下创建临时文件
+* -d:创建临时目录
+61.nice以某个优先级来运行某个程序
+`nice -[num] [command]`,num值越大,优先级越低,可以通过"ps -o ni"查看优先级,只能降低,不能提高优先级,
+62.renice调整某个程序优先级
+`renice -[num] -p [process id]`普通用户只能降低优先级,root可以任意调整

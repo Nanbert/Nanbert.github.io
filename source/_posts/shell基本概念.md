@@ -82,9 +82,7 @@ echo ${array_name[*]}
 起来的时候，展开成一个由双引号引起来的字符串，包含了
 所有的位置参数，每个位置参数由 shell 变量 IFS 的第一个
 字符（默认为一个空格）分隔开。|
-|`$*`|展开成一个从 1 开始的位置参数列表。当它被用双引号引
-起来的时候，它把每一个位置参数展开成一个由双引号引起
-来的分开的字符串。|
+|`$*`|把所有参数当成一个大字符串|
 |`$$`| 该脚本进程ID|
 |`$!`| 后台运行的最后一个进程ID|
 |`$?`|上个调用(最后命令)返回值,0表示没有错误|
@@ -99,6 +97,8 @@ do
 	shift
 done
 ```
+[getopt和getopts两个命令经常被用来处理传递的参数](#jumpopt)
+
 
 ### 运算符
 
@@ -276,8 +276,8 @@ case value in
 esac
 ```
 
-循环都支持**continue**和**break**
-
+循环都支持**continue**和**break**,`break n`则可以指定跳出n层循环,n默认为1
+,continue也支持数字。
 ### 定义函数
 * 函数定义
 ```bash
@@ -326,7 +326,9 @@ echo $?  # 判断执行是否成功
 |-t seconds|超过时间，终止输入,read会非0状态退出|
 |-u fd|使用文件描述符fd中的输入,而不是标准输入|
 
-IFS是字段分割符,默认为空格,tab,换行符。可以自行改变。
+IFS是字段分割符,默认为空格,tab,换行符。可以自行改变。如下:
+`IFS=:`改成冒号
+`IFS=$'\n':;"`改成换行符、冒号、分号和双引号
 read不应该使用管道线来接受赋值，如下是错误的:
 ```bash
 echo "$file_info" | IFS=":" read user pw uid gid name home shell
@@ -406,16 +408,96 @@ while read attr links owner group size date time filename;do
 	EOF
 done < <(ls -l | tail -n +2)
 ```
+<span id = "jumpopt"></span>
+### getopt和getopts
+
+#### getopt
+格式:`getopt [options] optstring parameters`,例:
+`getopt ab:cd -a -b test1 -cd test2 test3`该命令会产生如下输出:
+`-a -b test1 -c -d -- test2 test3`,optstring定义了四个有效项字母:a、b、c和d。冒号(:)表示b选项需要个参数值,它会将-cd选项分成两个单独选项,插入'--'来分隔额外的参数,如果提供'-cde'由于e不在optstring中,会报错**getopt: invalid option -- e**,但还会输出结果,可以加-q选项忽略报错结果。
+在脚本中经常与set的'--'选项来使用,来把getopt的输出转成当前脚本的输入参数,示例如下:
+```bash
+#!/bin/bash
+# Extract command line options & values with getopt
+#
+set -- $(getopt -q ab:cd "$@")
+#
+echo
+while [ -n "$1" ]
+do
+    case "$1" in
+    -a) echo "Found the -a option" ;;
+    -b) param="$2"
+        echo "Found the -b option, with parameter value $param"
+        shift ;;
+    -c) echo "Found the -c option" ;;
+    --) shift
+        break ;;
+    *) echo "$1 is not an option";;
+    esac
+    shift
+done
+#
+count=1
+for param in "$@"
+do
+    echo "Parameter #$count: $param"
+    count=$[ $count + 1 ]
+done
+#
+```
+
+#### getopts
+格式:`getopts optstring variable`,这里variable为命令行上检测到的第一个参数(getopts会去除'-',这点与getopt不同),处理完所有参数后,它会返回一个大于0的退出状态码。可以用":optstring"格式来忽略未识别选项的错误信息。会用到两个环境变量,如果选项用到一个参数值,OPTARG会保存该值,OPTIND环境变量保存了参数列表中getopts正在处理的参数位置。
+getopts可以识别双引号内的带括号参数值,而getopt不可以。getopts将命令行上找到的所有未定义选项统一输成问号,getopt遇到未识别的非选项值时,会结束识别,即使后面有正确的选项。可以用以下脚本自行测试getopts的行为:
+```bash
+echo
+while getopts :ab:cd opt
+do
+    case "$opt" in
+        a) echo "Found the -a option"  ;;
+        b) echo "Found the -b option, with value $OPTARG" ;;
+        c) echo "Found the -c option"  ;;
+        d) echo "Found the -d option"  ;;
+        *) echo "Unknown option: $opt" ;;
+    esac
+done
+#
+shift $[ $OPTIND - 1 ]
+#
+echo
+count=1
+for param in "$@"
+do
+    echo "Parameter $count: $param"
+    count=$[ $count + 1 ]
+done
+```
 
 ### Tips
 * **<<**和**<<-**的区别在于,<<-会忽略接下来输入的tab建,一般用于格式化脚本,便于读代码
 * 组命令--`{ command1;command2;command3  }`,子shell--`(command1;command2;command3)`一般配合管道符
-* 进程替换,可以用来解决子进程问题
 * trap命令
-`trap "命令" "信号"`当脚本遇到信号前执行的命令,信号有:SIGEXIT、SIGQUIT(CTRL-C)
+`trap "命令" "信号"`当脚本遇到信号前执行的命令
 ```bash
 trap "echo I am ignoring you" SIGINT SIGTERM
 ```
+常见信号有:
+
+|编号|英文名|含义|
+|:-:|:-:|:-:|
+|1|SIGHUP|挂起进程|
+|2|SIGINT|终止进程|
+|3|SIGQUIT|停止进程|
+|9|SIGKILL|无条件终止进程|
+|15|SIGTERM|尽可能终止进程|
+|17|SIGSTOP|无条件停止进程,但不是终止进程|
+|18|IGTSTP|停止或暂停进程,但不终止进程|
+|19|SIGCONT|继续运行停止的进程|
+
+    * tap除了捕获信号外,还会捕获脚本退出:`trap "echo Goodbye..." EXIT`,不管正常还是非正常,都会打印Goodbye
+    * `trap -- SIGINT`取消某个信号的设置
+	* `trap -`恢复信号的默认行为
 * wait命令
 `wait $pid`等待子进程
 ```bash
@@ -439,3 +521,17 @@ sleep 5
 cat<pipe1
 ```
 * 子shell的全局环境变量改变并不会影响父shell,甚至用export也不行
+* 命令替换`$(command)`,子shell`(command)`两个是不同概念
+* 文件描述符与exec
+    * 配合exec可以使标准输入输出永久重定向:`exec 2>testerror`重定向标准错误至文件。
+    * exec可以创建文件描述:`exec 3>testxx;echo hello>&3`这可以用来恢复正常的输入输出,如下:
+```bash
+exec 3>&1
+exec 1>test14out
+echo "这会输入到test14out"
+exec 1>&3
+echo "这会输入到屏幕"
+```
+    * exec创建读写描述符:`exec 3<>testfile`,这要特别小心,任何读或写都会从文件指针的上次位置开始
+    * exec关闭文件描述符:`exec 3>&-`
+	* lsof命令可以查看已经打开的文件描述符,见Linux命令博客
