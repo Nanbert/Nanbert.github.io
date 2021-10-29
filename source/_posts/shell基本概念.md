@@ -12,7 +12,7 @@ cover:
 
 ### 变量
 * 创建普通变量: **name="test"** (=两边不可有空格)
-* 创建函数体中的局部变量: ** local name="test"**
+* 创建函数体中的局部变量: ** local name="test"**,函数体及整个脚本中的变量默认都是全局变量,函数体内外皆可访问和改变,函数体内的变量最好用这个加以限制
 * 使用变量: **echo $name 或者 echo $(name)** 使用时要加$,重新赋值时不需要
 * 只读变量: **name="only_read" -> readonly name**
 * 删除变量: **unset name**
@@ -69,6 +69,7 @@ echo ${array_name[*]}
 * 删除数组不能通过赋空值,只能通过unset,unset还能删除某个元素(这样后面元素往前补)
 * 没有指明数组下标的访问或赋值皆指向第一个值
 * 最新版本bash支持关联数组`declare -A colors;colors["red"]="red"`
+* [函数与数组](#funAndArr)
 
 ### 参数传递的相关特殊变量
 
@@ -310,6 +311,7 @@ echo $?  # 判断执行是否成功
 	* return只能为**return [0-255]**,可通过$?获取该值
 	* 如果不加return,则最后一条语句的执行状态为返回值,0为成功
 	* 如果用反引号执行函数,结果是函数内的所有输出而非返回值
+* [函数与数组](#funAndArr)
 
 ### 读取外部输入
 `read arg`从键盘读取输入并赋值给arg
@@ -521,7 +523,7 @@ sleep 5
 cat<pipe1
 ```
 * 子shell的全局环境变量改变并不会影响父shell,甚至用export也不行
-* 命令替换`$(command)`,子shell`(command)`两个是不同概念
+* 命令替换`$(command)`,子shell`(command)`两个是不同概念,命令替换会开个子shell
 * 文件描述符与exec
     * 配合exec可以使标准输入输出永久重定向:`exec 2>testerror`重定向标准错误至文件。
     * exec可以创建文件描述:`exec 3>testxx;echo hello>&3`这可以用来恢复正常的输入输出,如下:
@@ -535,3 +537,19 @@ echo "这会输入到屏幕"
     * exec创建读写描述符:`exec 3<>testfile`,这要特别小心,任何读或写都会从文件指针的上次位置开始
     * exec关闭文件描述符:`exec 3>&-`
 	* lsof命令可以查看已经打开的文件描述符,见Linux命令博客
+
+<span id = "funAndArr"></span>
+* 函数与数组
+将数组变量当作但个参数传递的话,它不会其作用,只会传递第一个值,可以借鉴以下例子:
+```bash
+#!/bin/bash
+# array variable to function test
+function testit {
+    local newarray
+    newarray=`echo "$@"`
+    echo "The new array value is: ${newarray[*]}"
+}
+myarray=(1 2 3 4 5)
+echo "The original array is ${myarray[*]}"
+testit ${myarray[*]}
+```
