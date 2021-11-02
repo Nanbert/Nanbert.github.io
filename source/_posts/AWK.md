@@ -13,6 +13,9 @@ cover: https://z3.ax1x.com/2021/04/03/cnhJzT.png
 |-F|改变字段分割符,默认为空格|
 |-f|跟随脚本中的文件名|
 |-v|跟随var=value,作用域在BEGIN之前|
+|-mf [N]|指定处理的数据文件中最大字段数|
+|-mr [N]|指定处理的数据文件中最大行数|
+|-W keyword|指定gawk的兼容模式或警告等级|
 
 2.awk内置变量
 
