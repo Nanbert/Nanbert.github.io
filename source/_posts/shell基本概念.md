@@ -238,7 +238,7 @@ for (( expression1;expression2; expression3 ));do
 	commands
 done
 ```
-如果省略in，默认处置位置参数
+如果省略in，默认处理位置参数
 #### while
 ```bash
 while condition
@@ -478,7 +478,7 @@ done
 
 ### Tips
 * **<<**和**<<-**的区别在于,<<-会忽略接下来输入的tab建,一般用于格式化脚本,便于读代码
-* 组命令--`{ command1;command2;command3  }`,子shell--`(command1;command2;command3)`一般配合管道符
+* 组命令(在当前shell执行)--`{ command1;command2;command3  }`,子shell--`(command1;command2;command3)`一般配合管道符
 * trap命令
 `trap "命令" "信号"`当脚本遇到信号前执行的命令
 ```bash
@@ -523,7 +523,7 @@ sleep 5
 cat<pipe1
 ```
 * 子shell的全局环境变量改变并不会影响父shell,甚至用export也不行
-* 命令替换`$(command)`,子shell`(command)`两个是不同概念,命令替换会开个子shell
+* 命令替换`$(command)`,子shell`(command)`两个是不同概念,命令替换会开个子shell(貌似都会开子shell)
 * 文件描述符与exec
     * 配合exec可以使标准输入输出永久重定向:`exec 2>testerror`重定向标准错误至文件。
     * exec可以创建文件描述:`exec 3>testxx;echo hello>&3`这可以用来恢复正常的输入输出,如下:
@@ -553,3 +553,26 @@ myarray=(1 2 3 4 5)
 echo "The original array is ${myarray[*]}"
 testit ${myarray[*]}
 ```
+* 预处理替换优先级
+a.shell替换:文件通配符
+b.变量替换
+c.命令替换,如下示例:  
+
+* shell元字符汇总
+  
+|符号|意义|
+|:-:|:-:|
+|空格、制表符| 命令行参数的分隔符|
+|回车| 执行键入的命令|
+|&lt; > &brvbar;| 重定向与管道|
+|; |多个命令分隔符|
+|& |后台运行|
+|$ |引用shell的变量|
+|\`| 命令替换,`\\`代表反斜线自身,`\``代表反撇号自身|
+|\* [] ?| 文件通配符,不匹配\*和/|
+|()| 用于定义shell函数或子shell中执行命令|
+|\\| 转义字符取消元字符特殊含义，若不用于元字符跟不加一样|
+|" "| 其中的内容除$和\`外取消元字符的特殊含义|
+|' '| 取消所有元字符特殊含义|
+
+* RANDOM是个内建的随机值
