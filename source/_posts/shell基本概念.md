@@ -4,7 +4,7 @@ date: 2021-10-15 20:10:51
 subtitle:
 categories:
 tags:
-cover:
+cover: https://z3.ax1x.com/2021/11/13/IyR7zd.jpg
 ---
 ### 注释
 * 单行注释: \#

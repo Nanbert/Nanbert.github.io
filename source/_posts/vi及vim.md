@@ -4,7 +4,7 @@ date: 2019-07-18 16:53:33
 subtitle:
 categories: 文本处理
 tags: 命令
-cover:
+cover: https://z3.ax1x.com/2021/11/13/IyfJun.png
 ---
 1.  
 vi:

@@ -4,7 +4,7 @@ date: 2021-10-20 20:41:40
 subtitle:
 categories:
 tags:
-cover:
+cover: https://z3.ax1x.com/2021/11/13/IyRbQA.jpg
 ---
 ## 用户
 ### /etc/passwd文件
