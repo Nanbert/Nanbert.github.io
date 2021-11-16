@@ -86,6 +86,7 @@ cover: https://z3.ax1x.com/2021/11/13/Iy7Yz8.jpg
 　`rename o1 o2`:重命名某个远程
 　`rm xx`:移除某个远程
 　`add xx`:增加某个远程
+  `prune origin`:删除本地在远程服务器上不存在的分支
 13.`git push <remote-name> <branch-name>`
 　`--tags`:推送所有标签
 　使用git push <远程主机名(origin)> <本地分支名>:<远程分支名>
