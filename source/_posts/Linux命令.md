@@ -291,3 +291,5 @@ mktemp可以用来创建临时文件,成功会输出文件路径
 `nice -[num] [command]`,num值越大,优先级越低,可以通过"ps -o ni"查看优先级,只能降低,不能提高优先级,
 62.renice调整某个程序优先级
 `renice -[num] -p [process id]`普通用户只能降低优先级,root可以任意调整
+63.neofetch
+显示arch linux系统信息
