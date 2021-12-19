@@ -293,3 +293,5 @@ mktemp可以用来创建临时文件,成功会输出文件路径
 `renice -[num] -p [process id]`普通用户只能降低优先级,root可以任意调整
 63.neofetch
 显示arch linux系统信息
+64.ntpd
+`sudo ntpd -qg`可以校准时间
