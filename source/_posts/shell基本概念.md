@@ -31,7 +31,7 @@ cover: https://z3.ax1x.com/2021/11/13/IyR7zd.jpg
 * `name="this is""my name";name="this is my name";name="this"is"my name"`等效
 
 4) 获取字符串长度
-* `name="test";echo ${&#35;name};`输出为4
+* `name="test";echo ${#name};`输出为4
   
 5) 提取子字符串
 ```bash

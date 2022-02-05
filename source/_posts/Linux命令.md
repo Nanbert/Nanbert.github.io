@@ -295,3 +295,5 @@ mktemp可以用来创建临时文件,成功会输出文件路径
 显示arch linux系统信息
 64.ntpd
 `sudo ntpd -qg`可以校准时间
+65.readlink输出文件的绝对路径
+readlink -f [fileName]
