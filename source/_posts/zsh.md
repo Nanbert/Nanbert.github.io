@@ -8,7 +8,8 @@ cover: https://s4.ax1x.com/2022/02/03/HEjd6e.jpg
 ---
 
 ### 变量定义
-Zsh的变量除了哈希表以外，都直接赋值使用,包括整数、浮点数、字符串、数组、哈希表
+Zsh的变量除了哈希表以外，都直接赋值使用,包括整数(64位带符号)、浮点数(64位带符号)、字符串、数组、哈希表
+* `$+var`,判断变量是否定义,未定义返回0,否则为1
 
 ### 字符串变量
 1) 获取字符串长度
@@ -36,6 +37,8 @@ echo ${str%%d*} #输出abc
 echo $str[(i)cd]
 #从右往左找cd字符串,找不到返回0
 echo $str[(I)cd]
+#从第二个位置开始找
+echo ${str[(in:2:)cd]}
 ```
 6) 遍历字符
 ```
@@ -133,15 +136,18 @@ echo ${str[(ws:--:)3]}#cc
 ```
 * 转成数组
 ```
+array=()${=str})#默认按空格分隔,可以设置IFS环境变量设置,也可以按以下方法
 str="1:2::4"
+
+#可以是多个字符,如**s/::/**,以**::**为分隔,同时也可以写成**.::.**,不必一定
+#使用**/**,可以用任意符号
 str_array=(${(s/:/)str})
-echo $str_array #1 2 4
-echo $str_array[2]
-echo $str_array[3]
+echo $str_array #1 2 4 #忽略空字符串
 # 保留其中的空字符串
 str_array=("${(@s/:/)str}")
 echo $str_array[3]#该值为空
 echo $str_array[4]
+str+=(1234)#字符串直接变成一个包含两个元素的数组
 ```
 14) 读取文件内容到字符串
 ```
@@ -257,6 +263,486 @@ print -P '%B%F{red}abc'
 |(#l)aBc| 和 c 忽略大小写，但 B 必须大写 的 aBc|aBC|
 |(#a1)abc|最多错（多或缺也算）一个字符的 abc|a2c 或 ab 或 abcd|
 
+### 数组变量
+1) 数组定义
+```
+array=(a "bb cc" dd)
+echo $array #打印所有元素在一行
+print -l $array #每行输出一个元素
+```
+2) 元素读写
+```
+echo $array[3]
+echo $array[-1]
+echo $#array #获取长度
+array[3]=some
+array[3]=() #删除元素
+array+=eeee #添加元素
+unset array #删除整个数组
+```
+3) 数组拼接
+```
+array1+=(e f g)
+array1+=($array2) #小括号必须加,不加的话,则array2视为一个字符串
+```
+4) 字符串与数组
+5) 数组遍历
+```
+for i ($array1){
+	echo $i
+}
+#同时遍历两个数组
+for i ($array1 $array2){
+	echo $i
+}
+```
+6) 切片访问
+同字符串访问
+7) 元素查找
+同字符串查找
+8) 元素排序
+```
+echo ${(o)array} #升序排列
+echo ${(O)array} #降序排列
+echo ${(oi)array} #大小写不敏感升序排列
+echo ${(on)array} #按数字升序排列
+echo ${(Oa)array} #反转数组元素
+```
+9) 去重
+```
+echo ${(u)array}
+```
+10) 构造连续字符或数值数组
+```
+array=(aa{bb,cc,11}) && echo $array #aabb aacc aa11
+array=(aa{1..3}) && echo $array #aa1 aa2 aa3
+array=(aa{15..19..2}) && echo $array #aa15 aa17 aa19
+array=(aa{19..15..2}) && echo $array #aa19 aa17 aa15
+array=(aa{01..03}) && echo $array #aa01 aa02 aa03
+array=(aa{a..c}) && echo $array #aaa aab aac
+array=(aa{Y..c}) && echo $array #ASCII码顺序
+```
+11)字符串构造数组
+见字符串转数组
+12)从文件构造数组
+```
+# f 的功能是将字符串以换行符分隔成数组
+# 双引号不可省略，不然会变成一个字符串，引号也可以加在 ${ } 上
+array=(${(f)"$(<test.txt)"})
+print -l $array
+#a
+#bb
+#ccc
+#dddd
+# 不加引号的效果
+array=(${(f)$(<test.txt)})
+print -l $array
+#a bb ccc dddd
+
+# 从文件构造数组，并将每行按分隔符 : 分隔后输出所有列
+for i (${(f)"$(<test.txt)"}) {
+    array=(${(s.:.)i})
+    echo $array[1,-1]
+}
+```
+13)从文件列表构造数组
+```
+array=(/usr/bin/vim*)
+print -l $array
+#/usr/bin/vim
+#/usr/bin/vimdiff
+#/usr/bin/vimtutor
+
+# 要比 ls /usr/bin/[a-b]?? | wc -l 快很多
+array=(/usr/bin/[a-b]??) && print $#array
+```
+14)数组交集差集
+```
+# 两个数组的交集，只输出两个数组都有的元素,如果有重复元素不会去重
+echo ${array1:*array2}
+# 两个数组的差集，只输出 array1 中有，而 array2 中没有的元素
+echo ${array1:|array2}
+```
+15)数组交叉合并
+```
+# 从 array1 取一个，再从 array2 取一个，以此类推，一个数组取完了就结束
+echo ${array1:^array2}
+# 如果用 :^^，只有一个数组取完了的话，继续从头取，直到第二个数组也取完了
+% echo ${array1:^^array2}
+```
+16)对数组中的字符串进行统一处理
+```
+# :t 是取字符串中的文件名，可以用在数组上，取所有元素的文件名
+print -l ${array:t}
+# :e 是取扩展名，如果没有没有扩展名，结果数组中不会添加空字符串
+print -l ${array:e}
+# 字符串替换等操作也可以对数组使用，替换所有字符串
+print -l ${array/a/j}
+# :# 是排除匹配到的元素，类似 grep -v
+print ${array:#a*}
+# 前边加 (M)，是反转后边的效果，即只输出匹配到的元素，类似 grep
+print ${(M)array:#a*}
+# 多个操作可以同时进行，(U) 是把字符串转成大写字母
+print ${(UM)array:#a*}
+
+# 截断或对齐数组中的字符串
+array=(abc bcde cdefg defghi)
+
+# 只取每个字符串的最后两个字符
+echo ${(l:2:)array}
+bc de fg hi
+
+# 用空格补全字符串并且右对齐
+print -l ${(l:7:)array}
+    abc
+   bcde
+  cdefg
+ defghi
+
+# 用指定字符补全
+print -l ${(l:7::0:)array}
+0000abc
+000bcde
+00cdefg
+0defghi
+
+# 用指定字符补全，第二个字符只用一次
+print -l ${(l:7::0::1:)array}
+0001abc
+001bcde
+01cdefg
+1defghi
+
+# 左对齐
+print -l ${(r:7::0::1:)array}
+abc1000
+bcde100
+cdefg10
+defghi1
+```
+### 字典变量
+1) 定义
+```
+typeset -A table
+# 先声明,或者用 local，二者功能是一样的
+local -A table
+
+# 赋值的语法和数组一样，但顺序依次是键、值、键、值
+table=(k1 v1 k2 v2)
+#可以声明赋值一块,local -A table=(k1 v1 k2 v2)
+
+# 直接用 echo 只能输出值
+echo $table #v1 v2
+
+# 使用 (kv) 同时输出键和值，(kv) 会把键和值都放到同一个数组里
+% echo ${(kv)table} #k1 v1 k2 v2
+
+# 哈希表的大小是键值对的数量
+echo $#table
+```
+2) 读写
+```
+echo $table[k2]
+table[k2]="v2"
+# 删除元素的方法和数组不同，引号不能省略
+unset "table[k1]"
+```
+3)哈希表拼接
+```
+# 追加元素的方法和数组一样
+table+=(k4 v4 k5 v5)
+# 拼接哈希表，要展开成数组再追加
+table1+=(${(kv)table2})
+```
+4)哈希表遍历
+```
+# 只遍历值
+for i ($table) {
+echo $i
+}
+# 只遍历键
+for i (${(k)table}) {
+echo $i
+}
+# 同时遍历键和值
+for k v (${(kv)table}) {
+echo "$k -> $v"
+}
+```
+5)键是否存在
+```
+(($+table[k1]))
+```
+6)元素排序
+和数组类似,增加k、v两个选项
+```
+# 只对值排序
+echo ${(o)table}
+
+# 只对键排序
+echo ${(ok)table}
+
+# 键值放在一起排序
+echo ${(okv)table}
+```
+7) 从字符串、文件构造哈希表
+```
+str="k1 v1 k2 v2"
+local -A table=(${=str})
+#从文件构造和数组类似
+```
+8) 对哈希表的每个元素统一处理
+可参见数组,同时增加kv两个选项
+```
+#值转成大写
+print ${(U)table}
+#键转成大写
+print ${(Uk)table}
+#键值转成大写
+print ${(Ukv)table}
+# 排除匹配到的值
+echo ${table:#v1}
+# 只输出匹配到的键
+echo ${(Mk)table:#k[1-2]}
+```
+
+###数值类型
+zsh通常不指定数值是整形还是浮点型,通常直接赋值，**虽然默认为字符串**,但作数值计算时自动判断,但可以如下指明类型,同时在双小括号里做c语言的任何符号计算,同时括号内变量可以不需要加$符号(貌似是zsh的一般特性,适用于许多其他场合)
+```
+integer i=123
+float f=12.56
+#(t)用于输出变量类型
+echo ${(t)i} #integer
+echo ${(t)f} #float
+# 注意一旦指定了变量类型，类型就不会变了，除非再重新指定其他类型，或者用 unset 删除掉 
+# 如果把浮点数赋值给整数变量，会取整
+i=12.34
+echo $i #会输出12
+```
+* 数学函数
+zsh/mathfunc模块包含数学函数
+```
+zmodload -i zsh/mathfunc
+echo $((sin(0)+ceil(14.4)))
+```
+**函数列表**
+
+|函数名|功能|
+|:-:|:-:|
+|abs|取绝对值|
+|ceil|向上取整|
+|floor|向下取整|
+|int|截断取整|
+|float|转换成浮点数|
+|sqrt|开平方|
+|cbrt|开立方|
+|log|自然对数|
+|log10|常用对数|
+|rand48|随机数|
+
+还有:acos、acosh、asin、asinh、atan、atanh、cos、cosh、erf、erfc、exp、 expm1、fabs、gamma、j0、j1、lgamma、log1p、logb、sin、sinh、tan、 tanh、y0、y1、ilogb、signgam、copysign、fmod、hypot、nextafter、jn、 yn、ldexp、scalb
+
+### 变量修饰语
+**一般两种格式:**
+a.`${(x)var}` var是变量名,x是一个或多个字母,
+b.`${var:x}` var是变量名,x是一个或多个字母,或其他符号
+**注意:加了修饰语的变量依然是变量,可以当普通变量处理,可以嵌套使用$符号后不可以有空格**
+
+|修饰符|举例|说明|
+|:-|`echo ${var:-abc}`|如果变量有值,则输出原值,如果变量不存在、为空字符串、空数组等,则输出abc|
+|-|`echo ${var-abc}`|如果变量有值,则输出原值,如果变量不存在,则输出abc|
+|:=|`echo ${var:=abc}`|如果变量有值,则输出原值,如果变量不存在、为空字符串、空数组等,则输出abc并且赋值给var|
+|::=|`echo ${var::=123}`|不管有没有值，村不存在，都输出123，并且重新赋值|
+|:?|`echo ${var:?error}`|var没有值或不存在,则直接报错,否则输出原值|
+|:+|`echo ${var:+123}`|如果var有值,则输出123,否则输出空|
+|(F)|`echo ${(F)array}`|把数组中的元素以换行符拼接成字符串,不加任何修饰的话则是空格拼接|
+|(j:x:)|`echo ${(j:-=:)array}`|把数组中的元素以-=两个字符连接|
+|(s:x:)|`echo ${(s:==:)str}`|把字符串中的字符以==两个字符为分隔符分成数组|
+|(t)|`echo ${(t)var}`|输出变量的类型:integer float scalar array association|
+|(P)|`var=abc abc=123 echo ${(P)var}`|多重替换,输出123|
+|[#n]|`echo $(([#16] 255))`|以n进制显示十进制整数|
+|n#|`echo $((16#ff))`|显示n进制整数为十进制|
+
+### 函数
+与bash基本一致,增加了`unfunction fun`删除某个函数的功能,还有就是规避了`$*`和`$@`的区别,zsh推荐只用`$*`
+
+### 替代find和ls
+需要开启扩展通配符:setopt EXTENDED_GLOB
+**通配符修饰语列表**
+
+|名称|含义|使用样例或补充说明|
+|:-:|:-:|:-:|
+|/|目录||
+|F|非空|/F(非空目录) /^F(空目录)|
+|.|普通文件||
+|@|符号链接||
+|=|socket文件||
+|p|FIFO 文件||
+|\*|可执行的普通文件||
+|%|设备文件||
+|%b|块设备文件||
+|%c|字符设备文件||
+|r|文件拥有着有读权限||
+|w|文件拥有着有写权限||
+|x|文件拥有着有执行权限||
+|A|文件拥有组用户有读权限||
+|I|文件拥有组用户有写权限||
+|E|文件拥有组用户有执行权限||
+|R|任何用户都有读权限||
+|W|任何用户都有写权限||
+|X|任何用户都有执行权限||
+|s|设置了setuid的文件||
+|S|设置了setgid的文件||
+|t|设置了粘滞位（sticky bit）的文件||
+|f|符合指定的权限|f0644 f4755 f700|
+|e||暂无|
+|+|大于某个数|通常跟数字,与其他配合使用|
+|d|指定设备号||
+|l|硬连接个数|l-2（小于 2） l+3（大于 3）|
+|U|当前用户拥有||
+|G|当前用户所在组拥有||
+|u|指定用户 id 拥有|u1000|
+|g|指定用户组 id 拥有|g1000|
+|a|指定文件的 atime|访问时间,默认单位是天,可跟单位M(月)、w(周)、h(小时)、m(分钟)、s(秒)、+(指定时间之前)、-(指定时间之内)|
+|m|指定文件的 mtime|修改时间,可跟单位、+-,`print -l *(.mm+1)`|
+|c|指定文件的 ctime|文件状态属性修改时间,可跟单位、+-,`print -l *(.cm+1)`|
+|L|指定文件大小|默认单位是字节,单位有k、m和p(512字节的块),也可以大写,`print -l *(.Lm-1)`|
+|^|取反|/^F|
+|-|小于某个数|通常跟数字,与其他配合使用|
+|M||暂无|
+|T||暂无|
+|N|如果没匹配到，返回空而不报错|
+|D|包含隐藏文件（. 开头）|
+|n|按数值大小排序|下文有说明|
+|o|递增排序|下文有说明|
+|O|递减排序|下文有说明|
+|[n]|只取第 n 个文件|.[5]|
+|[n1,n2]|取第 n1 到 n2 个文件|/[5,10]|
+|:X||暂无|
+
+1)文件排序
+可供排序的因子:n(文件名),L(大小),I(硬连接数),a(atime),m(mtime),c(ctime),d(所在目录深度,从深到浅)
+```
+# 按文件名排序，同一目录下的文件和目录名会一起排，而不是先排目录再排文件
+#**/*,指当前目录和下一层目录
+print -l **/*(.on)
+bb.txt
+cc/aa.txt
+cc/dd.txt
+zz.txt
+
+# 按文件的目录深度逆序排，d 是从深往浅排，O 是逆序
+print -l **/*(.Od)
+zz.txt
+bb.txt
+cc/dd.txt
+cc/aa.txt
+
+# 先按文件名排序，然后再按大小排序，这样大小相同的文件依然是按文件名排的
+print -l **/*(.onoL)
+bb.txt
+cc/aa.txt
+cc/dd.txt
+cc.txt
+```
+2)组合使用
+类型和类型之间要用逗号个开,逗号前后内容互不干扰(取反^只影响到逗号之前的内容)`print -l *(/m-2,.Lm-3oL,@D)`
+3)批量重命名zmv
+```
+# 使用前需要先加载进来
+autoload -U zmv
+
+# 将所有 txt 文件扩展名改成 conf
+# 参数要用单引号扩起来，$1 代表第一个参数中括号中的内容
+ zmv '(*).txt' '$1.conf'
+
+# 如果加了 -W 参数，zmv 会自动识别文件名中需要保留的部分
+ zmv -W '*.txt' '*.conf'
+
+# 调整文件名各部分的前后顺序
+zmv '(*).(*).txt' '$2.$1.txt'
+# 加 -n 预览而不实际运行
+zmv -n '(*).(*).txt' '$2.$1.txt'
+mv -- a.b.txt b.a.txt
+
+# 0 1 2 ... 前添加 0，以便和 10 11 12 ... 宽度一致
+zmv '([0-9]).(*)' '0$1.$2'
+# 去掉开头的一个 0
+zmv '(0)(*)' '$2'
+
+# 文件整理到目录
+zmv '(*) - (*) - (*).txt' '$1/$2 - $3.txt'
+
+# 转换大小写
+zmv '(*).txt' '${(U)1}.txt'
+zmv '(*).txt' '${(L)1}.txt'
+```
+4) 不展开通配符
+```
+calc() {
+    zmodload zsh/mathfunc
+    echo $(($*))
+}
+calc 12+12
+calc 12*12 #会报错
+noglob calc 12*12 #可以
+```
+### local和typeset 
+local和typeset基本一样(除了不能用-f和-g这两个选项)
+
+|选项|含义|举例|
+|:-:|:-:|:-:|
+|-l|强制字符串内容为小写|`local -l str=abcABC`|
+|-u|强制字符串内容为大写|`local -u str=abcABC`|
+|-x|设置为环境变量|`export str=abc`等价于`local -x str=abc`|
+|-r|只读|`local -r strl=abc`等价于`readonly str1=abc`|
+|-U|设置数组不包含重复元素|`local -U array=(aa bb aa cc)`|
+|-Z n|设置整数位数|不够用0不全,超过会被截断|
+|-i n|设置整数为其他进制显示|支持2-36|
+|`local {i,j,k}=123`|赋值多个变量为同一个值||
+|-T|绑定字符串和数组|`local -T DIR dir`,DIR为字符串,dir为数组,以冒号连接,主要用于path变量|
+|-p|显示变量的定义方式|显示脚本如何定义该变量的|
+
+### 双引号问题
+zsh不需要像bash那样频繁加双引号来避免错误。
+zsh需要加双引号的场景:
+1)像这样的包含字符或者特殊符号的字符串 `"aa bb \t \n *"` 出现在代码中时，两边要加双引号
+2)在用`$()`调用命令时，如果希望结果按一个字符串处理，需要加上双引
+3)如果想将数组当单个字符串处理，需要加双引号，`array=(a b); print -l "$array"`
+4)其他的原本不是单个字符串的东西，需要转成单个字符串的场景，要加双引号
+其余通常不加,其中典型场景:
+1)任何情况下，字符串变量的两边都不需要加双引号，无论里边的内容多么特殊，或者变量存不存在，都没有关系，如`$str`
+2)如果不转换类型（比如数组转成字符串），任何变量的两边都不需要加双引号
+3)`$1 $2 $*`这些参数（其实它们也都是单个字符串），都不需要加双引号，无论内容是什么，或者参数是否存在。
+
+### mapfile读写文件
+```
+zmodload zsh/mapfile
+
+# 这样就可以创建文件并写入内容，如果文件存在则会被覆盖
+mapfile[test.txt]="ab cd"
+cat test.txt
+#ab cd
+
+# 判断文件是否存在
+(($+mapfile[test.txt])) && echo good
+#good
+
+# 读取文件
+echo $mapfile[test.txt]
+#ab cd
+
+# 删除文件
+unset "mapfile[test.txt]"
+
+# 遍历文件
+for i (${(k)mapfile}) {
+echo $i
+}
+#test1.txt
+#test2.txt
+```
+
 ### 循环语句
 ```
 while [some condition]{
@@ -334,3 +820,131 @@ select i (aa bb cc){
 }
 ```
 无论语句1是否出错,都执行语句2
+
+### socket模块
+```
+# 监听连接端=======
+# 首先要加载 socket 模块
+zmodload zsh/net/socket
+
+zsocket -l test.sock
+listenfd=$REPLY
+# 此处阻塞等待连接
+zsocket -a $listenfd
+# 连接建立完成
+fd=$REPLY
+# 然后 $fd 就可读可写
+cat <&$fd
+
+# 发起连接端==========
+zmodload zsh/net/socket
+zsocket test.sock
+fd=$REPLY
+echo good >&$fd
+
+# 关闭监听端========
+exec {listenfd}>&-
+exec {fd}>&-
+rm test.sock
+
+# 关闭连接端======
+exec {fd}>&-
+```
+
+### TCP模块
+```
+# 监听连接端=======
+# 首先要加载 tcp 模块
+zmodload zsh/net/tcp
+
+ztcp -l 1234
+listenfd=$REPLY
+# 此处阻塞等待连接
+ztcp -a $listenfd
+# 连接建立完成
+fd=$REPLY
+
+# 然后 $fd 就可读可写
+cat <&$fd
+
+# 发起连接端===========
+# 首先要加载 tcp 模块
+zmodload zsh/net/tcp
+
+ztcp 127.0.0.1 1234
+# 连接建立完成
+fd=$REPLY
+
+# 然后 $fd 就可读可写
+echo good >&$fd
+
+# 关闭发起连接端===============
+# fd 是之前存放 fd 号的变量
+% ztcp -c $fd
+
+# 关闭监听连接端=============
+% ztcp -c $listenfd
+% ztcp -c $fd
+```
+接受端例子:
+```
+#!/bin/zsh
+
+zmodload zsh/net/tcp
+
+(($+1)) || {
+    echo "Usage: ${0:t} port"
+    exit 1
+}
+
+ztcp -l $1
+listenfd=$REPLY
+
+[[ $listenfd == <-> ]] || exit 1
+
+while ((1)) {
+    ztcp -a $listenfd
+    fd=$REPLY
+    [[ $fd == <-> ]] || continue
+
+    cat <&$fd
+    ztcp -c $fd
+}
+```
+发送端例子:
+```
+#!/bin/zsh
+
+zmodload zsh/net/tcp
+
+(($# >= 2)) || {
+    echo "Usage: ${0:t} [hostname] port message"
+    exit 1
+}
+
+if [[ $1 == <0-65535> ]] {
+    ztcp 127.0.0.1 $1
+} else {
+    ztcp $1 $2
+    shift
+}
+
+fd=$REPLY
+[[ "$fd" == <-> ]] || exit 1
+
+echo ${*[2,-1]} >&$fd
+ztcp -c $fd
+```
+### TRAPINT
+该函数名,捕获任意信号?有待研究,如下的代码竟然捕捉到SIGINT信号
+```
+#!/bin/zsh
+
+# SIGINT 是 2 信号，ctrl + c 会触发
+TRAPINT() {
+    # 处理一些退出前的善后工作
+    sleep 333
+}
+
+sleep 1000
+```
