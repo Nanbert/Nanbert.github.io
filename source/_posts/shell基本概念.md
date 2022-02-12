@@ -213,6 +213,7 @@ file是代表文件名的字符串
 ### 流程控制
 #### if
 ```bash
+#then后必须有语句,空语句可以用:
 if condition
 then 
 	command1
