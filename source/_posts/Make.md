@@ -4,7 +4,7 @@ date: 2020-01-17 12:45:15
 subtitle:
 categories:
 tags:
-cover:
+index_img:
 ---
 
 1.make中遇到的第一条规则是最终目标  

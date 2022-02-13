@@ -4,7 +4,8 @@ date: 2021-01-24 17:08:06
 subtitle:
 categories:
 tags:
-cover: https://z3.ax1x.com/2021/11/13/Iy56Ds.jpg
+index_img: https://z3.ax1x.com/2021/11/13/Iy56Ds.jpg
+banner_img: https://z3.ax1x.com/2021/11/13/Iy56Ds.jpg
 ---
 1.awk选项总结
 

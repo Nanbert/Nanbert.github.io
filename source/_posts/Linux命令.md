@@ -4,7 +4,7 @@ date: 2019-07-18 16:15:42
 subtitle:
 categories: Linux
 tags: 命令
-cover:
+index_img:
 ---
 
 1.  

@@ -4,7 +4,7 @@ date: 2019-07-18 17:14:17
 subtitle:
 categories: C++
 tags:
-cover:
+index_img:
 ---
 1.  
 八进制整型常量以"0"开头如:0123

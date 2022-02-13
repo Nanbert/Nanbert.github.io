@@ -4,7 +4,7 @@ date: 2019-11-18 16:09:14
 subtitle:
 categories:
 tags:
-cover:
+index_img:
 ---
 1.  
 启动关闭用'systemctl'命令

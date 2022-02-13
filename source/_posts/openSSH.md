@@ -4,7 +4,8 @@ date: 2020-12-21 20:30:23
 subtitle:
 categories:
 tags:
-cover: https://z3.ax1x.com/2021/04/03/cnhnsg.png
+index_img: https://z3.ax1x.com/2021/04/03/cnhnsg.png
+banner_img: https://z3.ax1x.com/2021/04/03/cnhnsg.png
 ---
 1.登录服务器
 `ssh <user>@<hostname>`hostname是主机名,可以是域名,也可能是IP地址,不指定<user>@时,默认为客户端的当前用户名

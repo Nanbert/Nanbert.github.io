@@ -4,7 +4,7 @@ date: 2019-07-18 16:28:04
 subtitle:
 categories: Linux
 tags: 文件
-cover:
+index_img:
 ---
 1.  
 /etc/resolv.conf:加快网速的

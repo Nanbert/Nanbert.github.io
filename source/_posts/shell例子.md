@@ -4,7 +4,7 @@ date: 2019-07-20 17:04:05
 subtitle:
 categories: Linux
 tags:
-cover:
+index_img:
 ---
 * 追加信息于文件
 `cat - >> filename`

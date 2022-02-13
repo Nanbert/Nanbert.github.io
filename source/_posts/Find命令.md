@@ -4,7 +4,8 @@ date: 2020-11-18 18:40:05
 subtitle:
 categories:
 tags:
-cover: https://z3.ax1x.com/2021/04/03/cnhGWV.jpg
+index_img: https://z3.ax1x.com/2021/04/03/cnhGWV.jpg
+banner_img: https://z3.ax1x.com/2021/04/03/cnhGWV.jpg
 ---
 1.**格式** 
 find <范围> <条件> <动作>

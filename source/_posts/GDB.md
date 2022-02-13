@@ -4,7 +4,8 @@ date: 2020-01-16 11:47:33
 subtitle:
 categories:
 tags:
-cover: https://z3.ax1x.com/2021/11/13/Iy7JRf.png
+index_img: https://z3.ax1x.com/2021/11/13/Iy7JRf.png
+banner_img: https://z3.ax1x.com/2021/11/13/Iy7JRf.png
 ---
 
 1.编译文件时要加上-g选项

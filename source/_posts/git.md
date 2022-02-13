@@ -4,7 +4,8 @@ date: 2021-03-31 22:50:40
 subtitle:
 categories:
 tags:
-cover: https://z3.ax1x.com/2021/11/13/Iy7Yz8.jpg
+index_img: https://z3.ax1x.com/2021/11/13/Iy7Yz8.jpg
+banner_img: https://z3.ax1x.com/2021/11/13/Iy7Yz8.jpg
 ---
 1.git预设置(~/.gitconfig)
 　`git config --global user.name "xxx"`

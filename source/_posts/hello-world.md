@@ -1,6 +1,7 @@
 ---
 title: Hello World
-cover: https://s2.ax1x.com/2019/07/20/Zz6QN8.jpg
+index_img: https://s2.ax1x.com/2019/07/20/Zz6QN8.jpg
+banner_img: https://s2.ax1x.com/2019/07/20/Zz6QN8.jpg
 ---
 Welcome to [Hexo](https://hexo.io/)! This is your very first post. Check [documentation](https://hexo.io/docs/) for more info. If you get any problems when using Hexo, you can find the answer in [troubleshooting](https://hexo.io/docs/troubleshooting.html) or you can ask me on [GitHub](https://github.com/hexojs/hexo/issues).
 

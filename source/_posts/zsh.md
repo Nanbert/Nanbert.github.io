@@ -4,23 +4,24 @@ date: 2022-02-03 19:54:32
 subtitle:
 categories:
 tags:
-cover: https://s4.ax1x.com/2022/02/03/HEjd6e.jpg
+index_img: https://s4.ax1x.com/2022/02/03/HEjd6e.jpg
+banner_img: https://s4.ax1x.com/2022/02/03/HEjd6e.jpg
 ---
 
 ### 变量定义
-Zsh的变量除了哈希表以外，都直接赋值使用,包括整数(64位带符号)、浮点数(64位带符号)、字符串、数组、哈希表
-* `$+var`,判断变量是否定义,未定义返回0,否则为1
+Zsh的变量除了哈希表以外，都直接赋值使用,包括整数(64位带符号)、浮点数(64位带符号)、字符串、数组、哈希表,`$+var`,判断变量是否定义,未定义返回0,否则为1
 
 ### 字符串变量
 1) 获取字符串长度
-* `str=abcde echo $#str`
+`str=abcde echo $#str`
 2) 字符串拼接
-* `str2+=$str1;str3=$str1$str2`
+`str2+=$str1;str3=$str1$str2`
+<span id = "slice"></span>
 3) 字符串切片
 字符位置从1开始算,bash风格的则从0开始算
-* `echo $str[2,4]`
+`echo $str[2,4]`
 4) 字符串截断
-```
+```bash
 str=abcdeabcde
 #删除左端匹配到的内容,最小匹配
 echo ${str#*b} #输出cdeabcde
@@ -31,8 +32,9 @@ echo ${str##*b} #输出cde
 #删除右端匹配到的内容,最大匹配
 echo ${str%%d*} #输出abc
 ```
+<span id = "find"></span>
 5) 字符串查找
-```
+```bash
 #从左往右找cd字符串,找不到返回数组大小+1
 echo $str[(i)cd]
 #从右往左找cd字符串,找不到返回0
@@ -41,13 +43,13 @@ echo $str[(I)cd]
 echo ${str[(in:2:)cd]}
 ```
 6) 遍历字符
-```
+```bash
 for i ({1..$#str}){
 	echo $str[i]
 }
 ```
 7) 字符串替换
-```
+```bash
 str=abcabc
 #只替换找到第一个
 echo ${str/bc/ef} #aefabc
@@ -78,20 +80,15 @@ str[2,4]=
 str[1]=k
 str[2,4]=sjkg #可以不一一对应
 ```
-8) 判断字符串是否存在
-```
-(($+str)) && echo good
-#[[ "$str" == "" ]]只能判断内容是否为空,而不是未定义
-```
-9) 字符串是否匹配
-```
+8) 字符串是否匹配
+```bash
 #是否包含
 [[ $str1 == *$str2* ]] && echo good
 #正则匹配
 [[ $str =~ 'c[0-9]' ]]
 ```
-10) 大小写转换
-```
+9) 大小写转换
+```bash
 #转成大写
 echo ${(U)str}
 echo ${str:u}
@@ -101,30 +98,26 @@ echo ${str:l}
 #首字母大写
 echo ${(C)str}
 ```
-11) 目录文件名截取
-```
+10) 目录文件名截取
+```bash
 filepath=/a/b/c.x
-
 # :h 是取目录名，即最后一个 / 之前的部分，如果没有 / 则为 .
 echo ${filepath:h} #/a/b
-
 # :t 是取文件名，即最后一个 / 之后的部分，如果没有 / 则为字符串本身
 echo ${filepath:t} #c.x
-
 # :e 是取文件扩展名，即文件名中最后一个点之后的部分，如果没有点则为空
 echo ${filepath:e} #x
-
 # :r 是去掉末尾扩展名的路径
 echo ${filepath:r} #/a/b/c
 ```
-12) 相对路径转绝对路径
-```
+11) 相对路径转绝对路径
+```bash
 #功能相当于$(readlink -f $filepath)
 filepath1=a.txt
 echo ${filepath1:A}
 ```
-13) 分割字符串
-```
+12) 分割字符串
+```bash
 # 使用空格作为分隔符，多个空格也只算一个分隔符
 str='aa bb cc dd'
 echo ${str[(w)2]}#bb
@@ -134,8 +127,10 @@ str='aa--bb--cc'
 # 如果分隔符是 : 就用别的字符作为左右界，比如 ws.:.
 echo ${str[(ws:--:)3]}#cc
 ```
+
+<span id = "arrAndStr"></span>
 * 转成数组
-```
+```bash
 array=()${=str})#默认按空格分隔,可以设置IFS环境变量设置,也可以按以下方法
 str="1:2::4"
 
@@ -149,8 +144,8 @@ echo $str_array[3]#该值为空
 echo $str_array[4]
 str+=(1234)#字符串直接变成一个包含两个元素的数组
 ```
-14) 读取文件内容到字符串
-```
+13) 读取文件内容到字符串
+```bash
 # 比用 str=$(cat filename) 性能好很多
 str=$(<filename)
 
@@ -167,10 +162,11 @@ echo ${"$(<test.txt)"[(f)2]}
 # 输出包含 “ang” 的第一行
 echo ${"$(<test.txt)"[(fr)*ang*]}
 ```
-15) 读取进程输出到字符串
-就是把$(<filename)换城$(cmd)
+14) 读取进程输出到字符串
+就是把\$(<filename)换城\$(cmd)
+
 ### 条件语句
-```
+```bash
 if [some condition]{
 } elif{
 } else{
@@ -247,9 +243,10 @@ print -P '%B%F{red}abc'
 |<-50>|0和50之间的整数|
 |<100->|大于100的整数|
 |-|任意正整数和0|
-|([a-c]|<1-100>)|a和c之间的一个字符或者1和100之间的整数|
+|([a-c]\|<1-100>)|a和c之间的一个字符或者1和100之间的整数|
 
-加强版,要支持需要加上`setopt EXTENDED_GLOB`
+**加强版,要支持需要加上`setopt EXTENDED_GLOB`**
+
 |通配符|含义|匹配的样式|
 |:-:|:-:|:-:|
 |^abc|除了 abc 外的任意字符串|aaa|
@@ -265,13 +262,13 @@ print -P '%B%F{red}abc'
 
 ### 数组变量
 1) 数组定义
-```
+```bash
 array=(a "bb cc" dd)
 echo $array #打印所有元素在一行
 print -l $array #每行输出一个元素
 ```
 2) 元素读写
-```
+```bash
 echo $array[3]
 echo $array[-1]
 echo $#array #获取长度
@@ -281,11 +278,11 @@ array+=eeee #添加元素
 unset array #删除整个数组
 ```
 3) 数组拼接
-```
+```bash
 array1+=(e f g)
 array1+=($array2) #小括号必须加,不加的话,则array2视为一个字符串
 ```
-4) 字符串与数组
+4) [字符串与数组](#arrAndStr)
 5) 数组遍历
 ```
 for i ($array1){
@@ -296,12 +293,10 @@ for i ($array1 $array2){
 	echo $i
 }
 ```
-6) 切片访问
-同字符串访问
-7) 元素查找
-同字符串查找
+6) [切片访问](#slice)
+7) [元素查找](#find)
 8) 元素排序
-```
+```bash
 echo ${(o)array} #升序排列
 echo ${(O)array} #降序排列
 echo ${(oi)array} #大小写不敏感升序排列
@@ -309,11 +304,11 @@ echo ${(on)array} #按数字升序排列
 echo ${(Oa)array} #反转数组元素
 ```
 9) 去重
-```
+```bash
 echo ${(u)array}
 ```
 10) 构造连续字符或数值数组
-```
+```bash
 array=(aa{bb,cc,11}) && echo $array #aabb aacc aa11
 array=(aa{1..3}) && echo $array #aa1 aa2 aa3
 array=(aa{15..19..2}) && echo $array #aa15 aa17 aa19
@@ -322,10 +317,8 @@ array=(aa{01..03}) && echo $array #aa01 aa02 aa03
 array=(aa{a..c}) && echo $array #aaa aab aac
 array=(aa{Y..c}) && echo $array #ASCII码顺序
 ```
-11)字符串构造数组
-见字符串转数组
-12)从文件构造数组
-```
+11) 从文件构造数组
+```bash
 # f 的功能是将字符串以换行符分隔成数组
 # 双引号不可省略，不然会变成一个字符串，引号也可以加在 ${ } 上
 array=(${(f)"$(<test.txt)"})
@@ -345,8 +338,8 @@ for i (${(f)"$(<test.txt)"}) {
     echo $array[1,-1]
 }
 ```
-13)从文件列表构造数组
-```
+12) 从文件列表构造数组
+```bash
 array=(/usr/bin/vim*)
 print -l $array
 #/usr/bin/vim
@@ -356,22 +349,22 @@ print -l $array
 # 要比 ls /usr/bin/[a-b]?? | wc -l 快很多
 array=(/usr/bin/[a-b]??) && print $#array
 ```
-14)数组交集差集
-```
+13) 数组交集差集
+```bash
 # 两个数组的交集，只输出两个数组都有的元素,如果有重复元素不会去重
 echo ${array1:*array2}
 # 两个数组的差集，只输出 array1 中有，而 array2 中没有的元素
 echo ${array1:|array2}
 ```
-15)数组交叉合并
-```
+14) 数组交叉合并
+```bash
 # 从 array1 取一个，再从 array2 取一个，以此类推，一个数组取完了就结束
 echo ${array1:^array2}
 # 如果用 :^^，只有一个数组取完了的话，继续从头取，直到第二个数组也取完了
 % echo ${array1:^^array2}
 ```
-16)对数组中的字符串进行统一处理
-```
+15) 对数组中的字符串进行统一处理
+```bash
 # :t 是取字符串中的文件名，可以用在数组上，取所有元素的文件名
 print -l ${array:t}
 # :e 是取扩展名，如果没有没有扩展名，结果数组中不会添加空字符串
@@ -422,7 +415,7 @@ defghi1
 ```
 ### 字典变量
 1) 定义
-```
+```bash
 typeset -A table
 # 先声明,或者用 local，二者功能是一样的
 local -A table
@@ -441,21 +434,21 @@ echo $table #v1 v2
 echo $#table
 ```
 2) 读写
-```
+```bash
 echo $table[k2]
 table[k2]="v2"
 # 删除元素的方法和数组不同，引号不能省略
 unset "table[k1]"
 ```
-3)哈希表拼接
-```
+3) 哈希表拼接
+```bash
 # 追加元素的方法和数组一样
 table+=(k4 v4 k5 v5)
 # 拼接哈希表，要展开成数组再追加
 table1+=(${(kv)table2})
 ```
-4)哈希表遍历
-```
+4) 哈希表遍历
+```bash
 # 只遍历值
 for i ($table) {
 echo $i
@@ -469,13 +462,13 @@ for k v (${(kv)table}) {
 echo "$k -> $v"
 }
 ```
-5)键是否存在
-```
+5) 键是否存在
+```bash
 (($+table[k1]))
 ```
-6)元素排序
+6) 元素排序
 和数组类似,增加k、v两个选项
-```
+```bash
 # 只对值排序
 echo ${(o)table}
 
@@ -486,14 +479,14 @@ echo ${(ok)table}
 echo ${(okv)table}
 ```
 7) 从字符串、文件构造哈希表
-```
+```bash
 str="k1 v1 k2 v2"
 local -A table=(${=str})
 #从文件构造和数组类似
 ```
 8) 对哈希表的每个元素统一处理
 可参见数组,同时增加kv两个选项
-```
+```bash
 #值转成大写
 print ${(U)table}
 #键转成大写
@@ -506,9 +499,9 @@ echo ${table:#v1}
 echo ${(Mk)table:#k[1-2]}
 ```
 
-###数值类型
+### 数值类型
 zsh通常不指定数值是整形还是浮点型,通常直接赋值，**虽然默认为字符串**,但作数值计算时自动判断,但可以如下指明类型,同时在双小括号里做c语言的任何符号计算,同时括号内变量可以不需要加$符号(貌似是zsh的一般特性,适用于许多其他场合)
-```
+```bash
 integer i=123
 float f=12.56
 #(t)用于输出变量类型
@@ -544,11 +537,13 @@ echo $((sin(0)+ceil(14.4)))
 
 ### 变量修饰语
 **一般两种格式:**
-a.`${(x)var}` var是变量名,x是一个或多个字母,
-b.`${var:x}` var是变量名,x是一个或多个字母,或其他符号
-**注意:加了修饰语的变量依然是变量,可以当普通变量处理,可以嵌套使用$符号后不可以有空格**
+* `${(x)var}` var是变量名,x是一个或多个字母,
+* `${var:x}` var是变量名,x是一个或多个字母,或其他符号
+
+**注意:加了修饰语的变量依然是变量,可以当普通变量处理,可以嵌套使用,$符号后不可以有空格**
 
 |修饰符|举例|说明|
+|:-:|:-:|:-:|
 |:-|`echo ${var:-abc}`|如果变量有值,则输出原值,如果变量不存在、为空字符串、空数组等,则输出abc|
 |-|`echo ${var-abc}`|如果变量有值,则输出原值,如果变量不存在,则输出abc|
 |:=|`echo ${var:=abc}`|如果变量有值,则输出原值,如果变量不存在、为空字符串、空数组等,则输出abc并且赋值给var|
@@ -556,10 +551,10 @@ b.`${var:x}` var是变量名,x是一个或多个字母,或其他符号
 |:?|`echo ${var:?error}`|var没有值或不存在,则直接报错,否则输出原值|
 |:+|`echo ${var:+123}`|如果var有值,则输出123,否则输出空|
 |(F)|`echo ${(F)array}`|把数组中的元素以换行符拼接成字符串,不加任何修饰的话则是空格拼接|
-|(j:x:)|`echo ${(j:-=:)array}`|把数组中的元素以-=两个字符连接|
-|(s:x:)|`echo ${(s:==:)str}`|把字符串中的字符以==两个字符为分隔符分成数组|
+|(j/x/)|`echo ${(j/-=/)array}`|把数组中的元素以-=两个字符连接|
+|(s/x/)|`echo ${(s/==/)str}`|把字符串中的字符以==两个字符为分隔符分成数组|
 |(t)|`echo ${(t)var}`|输出变量的类型:integer float scalar array association|
-|(P)|`var=abc abc=123 echo ${(P)var}`|多重替换,输出123|
+|`(P)`|`var=abc abc=123 echo ${(P)var}`|多重替换,输出123|
 |[#n]|`echo $(([#16] 255))`|以n进制显示十进制整数|
 |n#|`echo $((16#ff))`|显示n进制整数为十进制|
 
@@ -620,9 +615,10 @@ b.`${var:x}` var是变量名,x是一个或多个字母,或其他符号
 |[n1,n2]|取第 n1 到 n2 个文件|/[5,10]|
 |:X||暂无|
 
-1)文件排序
+1) 文件排序
+
 可供排序的因子:n(文件名),L(大小),I(硬连接数),a(atime),m(mtime),c(ctime),d(所在目录深度,从深到浅)
-```
+```bash
 # 按文件名排序，同一目录下的文件和目录名会一起排，而不是先排目录再排文件
 #**/*,指当前目录和子目录
 print -l **/*(.on)
@@ -645,10 +641,14 @@ cc/aa.txt
 cc/dd.txt
 cc.txt
 ```
-2)组合使用
-类型和类型之间要用逗号个开,逗号前后内容互不干扰(取反^只影响到逗号之前的内容)`print -l *(/m-2,.Lm-3oL,@D)`
-3)批量重命名zmv
-```
+2) 组合使用
+
+	类型和类型之间要用逗号个开,逗号前后内容互不干扰(取反^只影响到逗号之前的内容)
+
+	`print -l *(/m-2,.Lm-3oL,@D)`
+
+3) 批量重命名zmv
+```bash
 # 使用前需要先加载进来
 autoload -U zmv
 
@@ -678,7 +678,7 @@ zmv '(*).txt' '${(U)1}.txt'
 zmv '(*).txt' '${(L)1}.txt'
 ```
 4) 不展开通配符
-```
+```bash
 calc() {
     zmodload zsh/mathfunc
     echo $(($*))
@@ -706,17 +706,18 @@ local和typeset基本一样(除了不能用-f和-g这两个选项)
 ### 双引号问题
 zsh不需要像bash那样频繁加双引号来避免错误。
 zsh需要加双引号的场景:
-1)像这样的包含字符或者特殊符号的字符串 `"aa bb \t \n *"` 出现在代码中时，两边要加双引号
-2)在用`$()`调用命令时，如果希望结果按一个字符串处理，需要加上双引
-3)如果想将数组当单个字符串处理，需要加双引号，`array=(a b); print -l "$array"`
-4)其他的原本不是单个字符串的东西，需要转成单个字符串的场景，要加双引号
+1) 像这样的包含字符或者特殊符号的字符串 `"aa bb \t \n *"` 出现在代码中时，两边要加双引号
+2) 在用`$()`调用命令时，如果希望结果按一个字符串处理，需要加上双引
+3) 如果想将数组当单个字符串处理，需要加双引号，`array=(a b); print -l "$array"`
+4) 其他的原本不是单个字符串的东西，需要转成单个字符串的场景，要加双引号
+
 其余通常不加,其中典型场景:
-1)任何情况下，字符串变量的两边都不需要加双引号，无论里边的内容多么特殊，或者变量存不存在，都没有关系，如`$str`
-2)如果不转换类型（比如数组转成字符串），任何变量的两边都不需要加双引号
-3)`$1 $2 $*`这些参数（其实它们也都是单个字符串），都不需要加双引号，无论内容是什么，或者参数是否存在。
+1) 任何情况下，字符串变量的两边都不需要加双引号，无论里边的内容多么特殊，或者变量存不存在，都没有关系，如`$str`
+2) 如果不转换类型（比如数组转成字符串），任何变量的两边都不需要加双引号
+3) `$1 $2 $*`这些参数（其实它们也都是单个字符串），都不需要加双引号，无论内容是什么，或者参数是否存在。
 
 ### mapfile读写文件
-```
+```bash
 zmodload zsh/mapfile
 
 # 这样就可以创建文件并写入内容，如果文件存在则会被覆盖
@@ -744,7 +745,7 @@ echo $i
 ```
 
 ### 循环语句
-```
+```bash
 while [some condition]{
 	break/continue
 }
@@ -754,7 +755,7 @@ until [some condition]{
 	break/continue
 }
 ```
-```
+```bash
 #样例
 for i (aa bb cc){
 	echo $i
@@ -777,7 +778,7 @@ repeat 5{
 ```
 
 ### 分支语句
-```
+```bash
 case $i {
 	(a)
 	echo 1
@@ -804,7 +805,7 @@ case $i {
 ```
 
 ### 用户输入选择语句
-```
+```bash
 select i (aa bb cc){
 	echo $i
 }
@@ -812,7 +813,7 @@ select i (aa bb cc){
 必须加break,否则会一直让用户选择
 
 ### 异常处理语句
-```
+```bash
 {
 	语句1
 } always{
@@ -822,7 +823,7 @@ select i (aa bb cc){
 无论语句1是否出错,都执行语句2
 
 ### socket模块
-```
+```bash
 # 监听连接端=======
 # 首先要加载 socket 模块
 zmodload zsh/net/socket
@@ -852,7 +853,7 @@ exec {fd}>&-
 ```
 
 ### TCP模块
-```
+```bash
 # 监听连接端=======
 # 首先要加载 tcp 模块
 zmodload zsh/net/tcp
@@ -887,7 +888,7 @@ echo good >&$fd
 % ztcp -c $fd
 ```
 接受端例子:
-```
+```bash
 #!/bin/zsh
 
 zmodload zsh/net/tcp
@@ -912,7 +913,7 @@ while ((1)) {
 }
 ```
 发送端例子:
-```
+```bash
 #!/bin/zsh
 
 zmodload zsh/net/tcp
@@ -948,7 +949,7 @@ ztcp -c $fd
 |`strftime -r "%Y-%m-%d %H:%M:%S (%u)" "2017-09-01 10:10:58 (5)"`|上述的反操作|
 
 ### gdbm模块--存在文件里的哈希表
-```
+```bash
 % zmodload zsh/db/gdbm
 
 # 声明数据库文件对应的哈希表
@@ -980,19 +981,19 @@ zuntie -u sampledb
 
 ### sched-->计划调度命令
 zmodload zsh/sched
-`sched +5 ls`5秒后运行ls
-`sched`列出已有任务
-`sched -n`去除第n个待运行命令
+* `sched +5 ls`5秒后运行ls
+* `sched`列出已有任务
+* `sched -n`去除第n个待运行命令
 
 ### 模块简介
 可以用man zshmodules查看模块功能
-zsh/system:底层文件读写
-zsh/pcre:正则表达式库
-zsh/stat:内部stat，取代stat
-zsh/zftp:内部ftp客户端
-zsh/zprof:性能追踪工具
-zsh/zpty:操作pty的命令
-zsh/zselect:select系统调用的封装
+* zsh/system:底层文件读写
+* zsh/pcre:正则表达式库
+* zsh/stat:内部stat，取代stat
+* zsh/zftp:内部ftp客户端
+* zsh/zprof:性能追踪工具
+* zsh/zpty:操作pty的命令
+* zsh/zselect:select系统调用的封装
 
 ### TRAPINT
 该函数名,捕获任意信号?有待研究,如下的代码竟然捕捉到SIGINT信号
@@ -1053,4 +1054,4 @@ sleep 1000
 |`echo a*b`|`echo "a*b"`|Zsh 默认配置中，通配符如果匹配不到文件会报错|
 |`if true; then :; fi`|`if true {}`|Zsh 中不需要使用 : 作为空语句|
 |`[ "$var" == value ]`|`[[ $var == value ]]`|Zsh 中的 [ ] 里不支持 ==，一律用 [[ ]]|
-|`ls \| tee file \| less`|`ls >file \| less`|Zsh 中不需要用 tee 即可实现相同功能|
+`ls \| tee file \| less`|`ls >file \| less`|Zsh 中不需要用 tee 即可实现相同功能|
