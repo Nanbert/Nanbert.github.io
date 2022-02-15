@@ -59,3 +59,9 @@ j.如果找不到镜像,重装下列包
 `如果标志出来,收不到任何无线网`重装`wpa_supplicant`
 7.wps界面不显示中文
 卸载,用yay重装wps-office-cn版本,提示你可选依赖，装上所有可选依赖
+8.
+gdm进不去,重装gtk,gdm,gnome,xorg,gnome相关的全部删除
+9.yay包降级
+在wiki上找到那个包,在右边点击View Changes,选择想要的版本,点击下载,然后进入下载的解压缩文件,输入命令makepkg,sudo pacman -U xx.tar*
+10.自动挂载手机
+安装`gvfs-mtp`和`gvfs-gphoto2`
