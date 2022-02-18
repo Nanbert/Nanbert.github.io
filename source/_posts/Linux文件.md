@@ -46,3 +46,7 @@ index_img:
 里面是库文件所在目录，配置完用`ldconfig`更新一下
 18./usr/share/doc目录下为各个安装软件的文档
 19./usr/share/dict下竟然存了个英文字典
+20.修改用户头像
+/var/lib/AccountsService/users/[userName]
+默认icons文件位置在/usr/share/pixmaps/faces/
+头像尺寸方形才不缺失
