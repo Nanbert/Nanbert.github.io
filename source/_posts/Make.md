@@ -7,12 +7,17 @@ tags:
 index_img:
 ---
 
+### 引用其它的Makefile
+`include <filename>`
+make会在当前目录寻找,接着在以下目录下找:
+* 如果make执行时，有 -I 或 --include-dir 参数，那么make就会在这个参数所指定的目录下去寻找。
+* 如果目录 <prefix>/include （一般是： /usr/local/bin 或 /usr/include ）存在的话，make也会去找。
 2.变量相关  
 　a.内置变量
 
 |变量类型|特殊变量|含义|用例或说明|
 |:-:|:-:|:-:|:-:|
-|特殊变量|`VPATH`|寻找依赖的路径|`VPATH = src:../headers`|
+|特殊变量|`VPATH`|寻找依赖的路径,以冒号为分隔符,当前目录永远最优先|`VPATH = src:../headers`|
 |特殊变量|.DIRSEPSTR|路径分隔符一般是斜杠||
 |特殊变量|.MAKEDIR|调用make的绝对路径名||
 |特殊变量|.NULL|空字符串||
@@ -61,11 +66,11 @@ bar:=$(foo:%.o=%.c)
 　`变量:+ "后缀"`
 　h.取部分
 　`$(VARIABLE:<option>)`,option有3个选项d(仅取路径)、b(文件名,不包括扩展)、f(文件名,包括扩展)
-3.关键字vpath
-　用法一: vpath <pattern> <directories>;符合模式的在指定文件夹搜索
-　用法二: vpath <pattern>;清除对应模式搜索目录
-　用法三: vpath;清除所有搜索目录
-***注意:都必须包含%,意思是包含一个以上的匹配字符***
+### 关键字vpath
+* 用法一:`vpath <pattern> <directories>`符合模式的在指定文件夹搜索
+* 用法二:`vpath <pattern>`清除对应模式搜索目录
+* 用法三:`vpath`清除所有搜索目录
+***注意:<pattern>都必须包含%,意思是包含一个以上的匹配字符***
 　f.局部作用的变量:
 ```bash
 prog: CFLAGS = -g
@@ -77,8 +82,9 @@ prog: CFLAGS = -g
 		$(gcc) $(CFLAGS) bar.c
 ```
 不管全局的$(CFLAGS)的值是什么,prog目标及其所引发的所有规则中(prog.o foo.o bar.o),$(CFLAGS)的值都是-gl
-4.伪目标:`.PHONY`
-　-伪目标并不是文件，只是个标签
+4.伪目标
+用`.PHONY`指明伪目标
+　-伪目标并不是文件，只是个标签,最终不产生文件
 　-只有显式地指名才能使其生效
 　-最终目标可以是伪目标,一个用法如下,使一个make文件生成多个目标:
 ```bash
@@ -91,7 +97,8 @@ prog2: prog2.o
 prog3: prog3.o sort.o utils.o
 	gcc -o prog3 prog3.o sort.o utils.o
 ```
-5.静态模式:更方便定义多目标`<targets>: <target-pattern>: <prereq-patterns>`
+### 静态模式:更方便定义多目标
+`<targets>: <target-pattern>: <prereq-patterns>`
 例子:
 ```bash
 objects = foo.o bar.o
@@ -106,23 +113,37 @@ foo.o: foo.c
 bar.o: bar.c
 	$(gcc) -c $(CFLAGS) bar.c -o bar.o
 ```
-6.gcc -MM选项可以为.c源文件自动生成依赖
-7.make默认会显示命令,在命令前加@可以阻止输出
-8.要想前一个命令影响后一个命令要以‘;’分隔,不能分行写,
-9.在命令前加上"-",则命令都会被认为成功执行,如`-mkdir dir`,这样可以避免目录已存在的错误而终止规则
-10.嵌套make  
+6.gcc -MM选项
+该选项可以为.c源文件自动生成依赖的非标准库的头文件,按习惯称为.d文件
+可以用以下模式规则来产生.d文件
+```bash
+%.d: %.c
+    @set -e; rm -f $@; \
+    $(CC) -M $(CPPFLAGS) $< > $@.$$$$; \
+    sed 's,\($*\)\.o[ :]*,\1.o $@ : ,g' < $@.$$$$ > $@; \
+    rm -f $@.$$$$
+```
+然后用include
+```bash
+sources = foo.c bar.c
+include $(sources:.c=.d)
+```
+### `@`关键字
+make默认会显示命令,在命令前加@可以阻止输出,例如
+`@echo 正在编译XXX模块`
+### 嵌套make  
 ```bash
 subsystem:
 	cd subdir && $(MAKE) #也可以这么写$(MAKE) -C subdir
 ```
 　要想传递变量给嵌套的make,使用export,不想传递使用unexport
 　其中`SHELL`和`MAKEFLAGS`总会影响下层make,但-C、-f、-h、-o、-W几个参数并不往下传递
-11.定义命令包(即命令集)
+### 定义命令包(即命令集)
 例子:
 ```bash
 define run-yacc
-	mkdir dir
-	mv dir newdir
+mkdir dir
+mv dir newdir
 endef
 crap: 
 	$(run-yacc)
@@ -216,11 +237,11 @@ foo=$(call reverse,a,b)
 |-q|--question|寻找目标,如果目标存在,什么也不输出,也不执行编译.如果目标不存在,打印一条出错信息|
 |-B|--always-make|认为所有目标都需要更新(重编译)|
 |-W <file>|--what-if=<file>;--assume-new=<file>;--new-file=<file>|make会根据规则推导来运行依赖于这个文件的命令|
-|-C||指定makefile文件目录|
+|-C||指定makefile文件目录,-w会被自动打开|
 |-e|--environment-overrides|指定环境变量值,覆盖makefile文件中定义的变量值|
 |-i|--ignore-errors|在执行时忽略所有的错误|
 |-I <dir>|--include-dir=<dir>|指定一个包含makefile文件的搜索目标|
-|-k|--keep-going|出错也不停止,目标失败,依赖于其上的就不会执行|
+|-k|--keep-going|出错也不停止,执行其它目标,失败的目标,依赖于其上的就不会执行|
 |-o <file>|--old-file=<file>;--assume-old=<file>|不生成指定的<file>,即使这个目标的依赖文件比他新|
 |-l <load>|--load-average [=<load>];--max-load[=<load>]|指定make运行命令的负载|
 |-p|--print-database|输出makefile文件中所有数据,包括所有的规则和变量|
@@ -259,3 +280,10 @@ foolib(hack.o): hack.o
 * make中遇到的第一条规则是最终目标  
 * 和bash一样用空格和"\"进行换行
 * 命令总是以tab键开头,其余不是命令
+* `MAKEFILES`最好不用该环境变量,该变量类似于include动作,但其中文件中的目标不会起作用,最好置为空,以免引入未考虑到的东西,莫名奇妙出现问题时,可以查看该变量
+* 要想前面命令作用于后面命令,需要写在同一行上,用分号分隔,如下:
+```bash
+exec:
+	cd /home/nanbert;pwd
+```
+* 可以在命令前加`-`,来忽略该命令可能执行失败,这也可用于include
