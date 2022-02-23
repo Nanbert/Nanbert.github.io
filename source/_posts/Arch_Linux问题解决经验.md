@@ -67,3 +67,4 @@ gdm进不去,重装gtk,gdm,gnome,xorg,gnome相关的全部删除
 安装`gvfs-mtp`和`gvfs-gphoto2`
 11.gnome的压缩软件->file-roller
 12.lantern缺少的依赖->'libappindicator-gtk2/3'
+13.ubuntu虚拟机安装增强功能需要`build-essential gcc make perl linux-image-xx-generic`
