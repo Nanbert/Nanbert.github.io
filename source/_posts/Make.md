@@ -42,6 +42,7 @@ make会在当前目录寻找,接着在以下目录下找:
 |特殊变量|`CXX`|C++语言编译程序,默认命令是g++||
 |特殊变量|`CPP`|C程序的预处理器,默认命令是$(CC) -E||
 |系统变量|`MAKELEVEL`|当前Makefile的调用层数,从0开始||
+|系统变量|`MAKECMDGOALS`|存放那个你命令行中所指定的终极目标的列表,没有指定则为空||
 |自动变量|`$@`|目标集|它代表一个量,遍历目标集,一般与依赖集相匹配|
 |自动变量|`$%`|目标集|仅当目标是函数库文件时,表示规则中的目标成员名,foo.a(bar.o),$%就是bar.o,$@就是foo.a|
 |自动变量|`$<`|依赖集|它代表一个量,遍历目标集,一般用于目标集相匹配|
@@ -166,24 +167,25 @@ else
 	<text-if-false>
 endif
 ```
-13.函数
-　a.调用语法:`$(<function> <arguments>)`,参数间用','分隔
-　b.字符串函数
+### 函数
+* 调用语法:`$(<function> <arguments>)`,参数间用','分隔
+* 字符串函数
 
 |函数|功能|返回|
 |:-:|:-:|:-:|
 |`$(subst <from>,<to>,<text>)`|把字符串<text>中的<from>换成<to>|`被替换过的字符串`|
-|`$(patsubst <pattern>,<replacement>,<text>)`|查找<text>中的单词符合<pattern>,替换<replacement>|被替换后的字符串|
+|`$(patsubst <pattern>,<replacement>,<text>)`|查找<text>中的单词(以空格、Tab、回车、换行)符合<pattern>,替换<replacement>|被替换后的字符串|
 |`$(strip <string>)`|去掉<string>中开头和结尾的空字符|去掉空字符的字符串|
 |`$(findstring <find>,<in>)`|在字符串<in>中查找<find>|如果找到,返回<find>,否则返回空字符串|
-|`$(filter <pattern...>,<text>)`|以<pattern>模式过滤<text>字符串中的字符串,可以有多个模式,以空格分割|返回符合<pattern>的字符串|
-|`$(filter-out <pattern...>,<text>)`|以<pattern>模式过滤<text>字符串中的字符串,可以有多个模式,以空格分割|返回不符合<pattern>的字符串|
+|`$(filter <pattern...>,<text>)`|以<pattern>模式过滤<text>字符串中的单词(以空格等作为分隔符),可以有多个模式,模式间以空格分割|返回符合<pattern>的字符串|
+|`$(filter-out <pattern...>,<text>)`|以<pattern>模式过滤<text>字符串中的单词(以空格等作为分隔符),可以有多个模式,模式间以空格分割|返回不符合<pattern>的字符串|
 |`$(sort <list>)`|给字符串<list>中的单词升序|返回排序后的字符串(会去掉相同的单词)|
 |`$(word <n>,<text>)`|取字符串<text>中的第<n>个单词|返回该单词,如果n过大,则返回空字符串|
 |`$(wordlist <n>,<m>,<text>)`|取第<n>-第<m>个单词|返回那些单词|
 |`$(words <text>)`|统计<text>中的单词数|返回个数|
+|`$(firstword <text>)`|返回字符串<text>中第一个单词|返回第一个单词|
 
-　c.文件名函数
+* 文件名函数
 
 |格式|例子|返回值|
 |:-:|:-:|:-:|
@@ -195,25 +197,26 @@ endif
 |`$(addprefix <prefix>,<names...>)`|`$(addprefix src/,foo bar)`|`src/foo src/bar`|
 |`$(join <list1>,<list2>)`|`$(join aaa bbb,111 222 333)`|`aaa111 bbb222`|
 
-　d.foreach函数
+* foreach函数
+格式:`$(foreach <var>,<list>,<text>)`
 ```bash
 names:= a b c d
-	files:= $(foreach n,$(names),$(n).o)
+files:= $(foreach n,$(names),$(n).o)
+#$(files)的值是‘a.o b.o c.o d.o’
 ```
-　$(files)的值是‘a.o b.o c.o d.o’
-　e.if函数
-　`$(if <condition>,<then-part>,<else-part>)`,<condition>若返回为非空,则执行<then-part>,其是整个函数的返回值
-　f.call函数
+* if函数
+`$(if <condition>,<then-part>,<else-part>)`,<condition>若返回为非空,则执行<then-part>,其是整个函数的返回值
+* call函数
 `$(call <expression>,<parm1>,<parm2>,<parm3>...)`;<expression>中$(1),$(2)等,会被参数<parm1>、<parm2>等代替
 ```bash
 reverse=$(2) $(1)
 foo=$(call reverse,a,b)
 ```
 此时foo的值就是'b a'
-  g.shell函数
-  `files:=$(shell echo *.c)`
-  h.origin函数
-  `$(origin <variable>)`:告知变量来源情况
+ * shell函数
+`files:=$(shell echo *.c)`
+* origin函数
+`$(origin <variable>)`:告知变量来源情况
 
 |返回值|含义|
 |:-:|:-:|
@@ -225,7 +228,32 @@ foo=$(call reverse,a,b)
 |automatic|命令运行中的自动化变量|
 |command line|命令行定义|
 
- 14.一些常用伪目标命名
+* error函数和warning函数
+`$(error <text ...>)`
+`$(warning <text ...>)`
+error函数产生一个致命的错误,<text ...>是错误信息
+warning函数只是输出警告信息,make会继续执行
+```bash
+ifdef ERROR_001
+	#运行到下面的会出错跳出脚本
+    $(error error is $(ERROR_001))
+endif
+```
+```bash
+#这里并不会出错跳出脚本
+ERR = $(error found an error!)
+
+.PHONY: err
+#这里才会跳出
+err: $(ERR)
+```
+
+### make的退出码
+* 0:表示成功执行
+* 1:表示出错
+* 2:如果你使用了make的“-q”选项，并且make使得一些目标不需要更新，那么返回2。
+
+### 一些常用伪目标命名
 
 |名称|含义|
 |:-:|:-:|
@@ -238,30 +266,34 @@ foo=$(call reverse,a,b)
 |tags|这个伪目标的功能用于更新所有的目标,以备完整地重新编译|
 |check、test|一般用来测试makefile文件流程|
 
-15.make选项参数
+### make选项参数
 
 |短选项|长选项|含义|
 |:-:|:-:|:-:|
-|-n|--just-print、--dry-run、--recon|不管目标更不更新,只打印命令,不执行|
-|-t|--touch|把目标文件时间更新,但不更改目标文件,假装编译文件|
-|-q|--question|寻找目标,如果目标存在,什么也不输出,也不执行编译.如果目标不存在,打印一条出错信息|
-|-B|--always-make|认为所有目标都需要更新(重编译)|
-|-W <file>|--what-if=<file>;--assume-new=<file>;--new-file=<file>|make会根据规则推导来运行依赖于这个文件的命令|
-|-C||指定makefile文件目录,-w会被自动打开|
+|-b,-m||忽略其他版本make兼容性|
+|-B|--always-make|认为所有目标都更新(重编译)|
+|-C <dir>|--directory=<dir>|指定读取makefile的目录。如果有多个“-C”参数，make的解释是后面的路径以前面的作为相对路径，并以最后的目录作为被指定目录。如：“make -C ~hchen/test -C prog”等价于“make -C ~hchen/test/prog”|
+|-d||相当于`-debug=a`|
 |-e|--environment-overrides|指定环境变量值,覆盖makefile文件中定义的变量值|
+|-f|--file、--makefile|指定某个makefile文件|
 |-i|--ignore-errors|在执行时忽略所有的错误|
 |-I <dir>|--include-dir=<dir>|指定一个包含makefile文件的搜索目标|
+|-j <jobsnum>|--jobs=<jobsnum>|指同时运行的命令数,如果没有这个参数,能运行多少就多少,只有最后一个-j选项有效|
 |-k|--keep-going|出错也不停止,执行其它目标,失败的目标,依赖于其上的就不会执行|
-|-o <file>|--old-file=<file>;--assume-old=<file>|不生成指定的<file>,即使这个目标的依赖文件比他新|
 |-l <load>|--load-average [=<load>];--max-load[=<load>]|指定make运行命令的负载|
+|-n|--just-print、--dry-run、--recon|不管目标更不更新,只打印命令,不执行|
+|-o <file>|--old-file=<file>;--assume-old=<file>|不生成指定的<file>,即使这个目标的依赖文件比他新|
 |-p|--print-database|输出makefile文件中所有数据,包括所有的规则和变量|
+|-q|--question|寻找目标,如果目标存在,什么也不输出,也不执行编译,返回0.如果目标不存在,打印一条出错信息,返回2|
 |-r|--no-builtin-rules|禁止使用任何隐式规则|
 |-R|--no-builtin-variables|禁止使用任作用于变量上的何隐式规则|
 |-s|--silent;--quiet|命令运行时不显示命令的输出|
 |-S|--no-keep-going;--stop|取消-k选项的作用|
+|-t|--touch|把目标文件时间更新,但不更改目标文件,假装编译文件|
 |-w|--print-directory|输出运行makefile文件之前之后的信息,跟踪嵌套make时很有用|
-|长|--no-print-directory|禁止-w选项|
-|长|--warn-undefined-variables|警告未定义的变量|
+|-W <file>|--what-if=<file>;--assume-new=<file>;--new-file=<file>|假定目标<file>;需要更新，如果和“-n”选项使用，那么这个参数会输出该目标更新时的运行动作。如果没有“-n”那么就像运行UNIX的“touch”命令一样，使得<file>;的修改时间为当前时间。|
+||--no-print-directory|禁止-w选项|
+||--warn-undefined-variables|警告未定义的变量|
 
 --debug <options>,options可以是以下:
 a:也就是all,输出所有的调试信息
@@ -270,6 +302,9 @@ v:也就是verbose,输出的信息包括哪一个makefile文件被解析,不需�
 i:也就是implicit,输出所有的隐含规则
 j:也就是jobs,输出执行规则中命令的详细信息,如PID、返回码等
 m:也就是makefile文件,输出make,读取makefile,更新makefile文件,并执行makefile文件的信息
+* 常用组合
+`make -qp`只输出信息而不执行
+`make -p -f /dev/null`查看makefile前的预设变量和规则
 16.隐含规则  
 　a.C程序隐含规则:<n>.o的目标的依赖目标会是:<n>.c,命令是`$(CC) -c $(CPPFLAGS)$(CFLAGS)`
 　b.C++程序隐含规则:<n>.o的目标的依赖目标是:<n>.cc或<n>.C,命令是`$(CXX) -c  $(CPPFLAGS)$(CXXFLAGS)`
