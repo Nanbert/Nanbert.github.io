@@ -23,6 +23,7 @@ banner_img: https://z3.ax1x.com/2021/04/03/cnhQds.jpg
 |-r|递归对某个目录的所有文件|
 |-I|等价于-binary-files=without-match,不匹配二进制|
 |-exclude-dir=[目录路径]|跳过某个目录|
+|--binary-files=without-match|二进制文件不匹配|
 
 <font size=4>**2.正则表达式**</font>
 **正则表达式的元字**
