@@ -82,6 +82,23 @@ ${#array_name[1]}
 * 最新版本bash支持关联数组`declare -A colors;colors["red"]="red"`
 * [函数与数组](#funAndArr)
 * 取切片`echo ${array:0:3}`
+* 遍历数组
+```bash
+#方法1
+for(( i=0;i<${#array[@]};i++)) do
+echo ${array[i]};
+done;
+#方法2
+for element in ${array[@]}
+do
+echo $element
+done
+#方法3
+for i in "${!arr[@]}";
+do
+    printf "%s\t%s\n" "$i" "${arr[$i]}"
+done
+```
 
 ### 参数传递的相关特殊变量
 
