@@ -287,3 +287,5 @@ anacron是自动运行的?(有待研究)
  `readlink -f [fileName]`
 - truncate
 `truncate -s 5 test.txt`截断test.txt，只保留5个字符
+- nm
+nm作用于目标文件，统计标识符有大用
