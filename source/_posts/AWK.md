@@ -189,13 +189,36 @@ printf格式控制符(每一个格式说明符都以%开始,以转换字符结�
 |%10.3s|January|`|       Jan|`|
 |%-10.3s|January|`|Jan      |`|
 |%%|January|%|
-- 管道的奇怪用法
+### 管道的奇怪用法(好好理解到底啥是管道)
 ```bash
 {
 	#注意sort命令用引号括起来,当成字符串
 	print xx | "sort -t'\t' +1rn"
 	#上面的管道名就是"sort -t'\t' +1rn"
 	close("sort -t'\t' +1rn")
+}
+```
+假设有以下文件
+```
+France	211	55	Europe
+Japan	144	120	Asia
+Germany	96	61	Europe
+England	94	56	Europe
+USSR	8649	275	Asia
+Canada	3852	25	North America
+China	3705	1032	Asia
+USA	3615	237	North America
+Brazil	3286	134	South America
+India	1267	746	Asia
+Mexico	762	78	North America
+```
+以下程序会简单排序
+```bash
+# prep1 - prepare countries by continent and pop. den.
+BEGIN { FS = "\t" }
+{ 
+	printf("%s:%s:%d:%d:%.1f\n",
+	$4, $1, $3, $2, 1000*$3/$2) | "sort -t: -k 1,1 -k 5rn"
 }
 ```
 
@@ -257,6 +280,30 @@ for (i = 1; i <= nf; i++)
 printf("%s%s", $fld[i], i < nf ? " " : "\n")
 }
 ' $*
+```
+```bash
+#交互式awk脚本
+BEGIN {
+	maxnum = ARGC > 1 ? ARGV[1] : 10
+	# default size is 10
+	ARGV[1] = "-"# read standard input subsequently
+	srand()# reset rand from time of day
+	do {
+		n1 = randint(maxnum)
+		n2 = randint(maxnum)
+		printf("%g + %g = ? ", n1, n2)
+		while ((input = getline) > 0)
+			if ($0 == n1 + n2) {
+				print "Right!"
+				break
+			} else if ($0 == "") {
+				print n1 + n2
+				break
+			} else
+				printf("wrong, try again: ")
+		} while (input > 0)
+}
+function randint(n) { return int(rand()*n)+1 }
 ```
 - 去除字符串`gsub(/"([^"]|\\")*"/, "", line)`
 - 去除正则表达式`gsub(/\/([^\/]|\\\/)+\//, "", line)`
