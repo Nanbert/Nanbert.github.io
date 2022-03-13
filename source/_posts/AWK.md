@@ -63,7 +63,6 @@ banner_img: https://z3.ax1x.com/2021/11/13/Iy56Ds.jpg
 |substr(s,p,n)|返回字符串s中从位置p开始最大长度为n的子串。如果没有给出n,返回从p开始剩余的字符串。|
 |tolower(s)|将字符串s中的所有大写字符转换为小写,并返回新串|
 |toupper(s)|将字符串s中的小写字符转换为大写,并返回新串|
-
 ### 模式汇总
 
 |格式|含义|
@@ -87,12 +86,16 @@ banner_img: https://z3.ax1x.com/2021/11/13/Iy56Ds.jpg
 
 |序列|意义|
 |:-:|:-:|
+|`\a`|报警字符|
 |`\b`|退格|
 |`\f`|换页|
 |`\n`|换行|
 |`\r`|回车|
 |`\t`|制表符|
+|`\v`|垂直制表符|
 |`\ddd`|八进制数ddd, ddd含有1到3个数字,每个数字的值在0到7 之间|
+|`\xbex`|十六进制|
+
 ### 数组
 awk中的数组不需要声明定义,都是关联数组
 - 赋值一个数组`array[0]=1;array[1]=2`
@@ -115,13 +118,13 @@ function name(patameter-list){
 	statements
 }
 ```
-6.awk处理多行记录,主要改变分隔符
+### awk处理多行记录,主要改变分隔符
 `BEGIN { FS="\n";RS=""}`,RS代表空行
-7.`awk 'script' x=1 test1 x=2 test2`,awk可以这样传递变量
-9.BEGIN与END
+### `awk 'script' x=1 test1 x=2 test2`,awk可以这样传递变量
+### BEGIN与END
 特殊的模式BEGIN在第一个输入文件的第一行之前被匹配,END在最后一个输入文件的最后一行被处理之后匹配。
-10.next与exit
-next使awk抓取下一行,exit会使awk执行END,如果已经在END,则结束程序
+### next与exit
+next使awk抓取下一行,并返回到脚本底部;exit会使awk执行END,如果已经在END,则结束程序
 ### 输入分隔符
 内建变量 FS 的默认值是 " ", 也就是一个空格符. 当 FS 具有这个特定值时, 输入字段按照 空格和 (或) 制表符分割, 前导的空格与制表符会被丢弃, 所以下面三行数据中, 其每一行的第 1 个字段都相同:
 ```bash
@@ -146,7 +149,7 @@ FS = "|"
 |print expression,expression,...\>filename|输出至filename|
 |print expression,expression,...\>filename|追加到filename,不覆盖之前内容|
 |print expression,expression,... | command|输出作为命令command标准输入|
-|close(filename),close(command)|断开print与filename(或command)之间的连接|
+|close(filename),close(command)|断开print与filename(或command)之间的连接,同一命令想要两次之间毫无关联,必须先close|
 |system(command)|执行command;函数的返回值是command的退出状态|
 
 printf主要可以指定格式,以上都能用printf替换,如:`printf(format,expression,expression,...) > filename`末尾不会自动添加换行符
@@ -155,12 +158,16 @@ printf格式控制符(每一个格式说明符都以%开始,以转换字符结�
 |字符|表达式将被打印成|
 |c|ASCII 字符|
 |d|十进制整数|
-|e|[-]d.ddddddE[+-]dd|
+|e|[-]d.dddddde[+-]dd|
+|E|[-]d.ddddddE[+-]dd|
 |f|[-]ddd.dddddd|
-|g|照 e 或 f 进行转换, 选择较短的那个, 无意义的零会被抑制|
-|o|无符号八进制数|
+|g|照e或f进行转换, 选择较短的那个, 无意义的零会被抑制|
+|G|照E或f进行转换, 选择较短的那个, 无意义的零会被抑制|
+|i|十进制|
+|O|无符号八进制数|
 |s|字符串|
 |x|无符号十六进制数|
+|X|无符号十六进制数,字母大写|
 |%|打印一个百分号 %, 不会有参数被吸收|
 
 |修饰符|含义|
