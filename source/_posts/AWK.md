@@ -7,6 +7,10 @@ tags:
 index_img: https://z3.ax1x.com/2021/11/13/Iy56Ds.jpg
 banner_img: https://z3.ax1x.com/2021/11/13/Iy56Ds.jpg
 ---
+### 语法
+`awk [-v var=value] [-F re] [--] 'pattern n{action}' var=value files`
+`awk [-v var=value] [-F re] [--] -f scriptfile [file] var=value files`
+**注:**-v指定的变量定义在BEGIN之前,BEGIN过程中不能访问有关文件或命令行的任何变量(除了环境变量)
 ### awk选项总结
 
 |options|describe
@@ -24,10 +28,15 @@ banner_img: https://z3.ax1x.com/2021/11/13/Iy56Ds.jpg
 |:-:|:-:|
 |ARGV|命令行参数的数组,不包括脚本本身(-f选项也不包括),下标从0开始(一般为awk),一般大于0的下标都是输入的文件名,最后一个是ARGC-1|
 |ARGC|ARGV数组个数|
+|ARGIND|当前输入文件在ARGV的索引值|
+|CONVFMT|用于数字的字符串转换格式(%.6g)|
 |ENVIRON|环境变量数组,下标是环境变量名|
 |FILENAME|当前输入文件名称|
 |FNR|当前输入文件的记录(行)个数|
 |FS|字段分隔符,最好在BEGIN的时候定义|
+|ERRNO|当getline或close失败时的描述信息|
+|FIELDWIDTHS|见该小结|
+|IGNORECASE|如果不为0,模式匹配不区分大小写|
 |NF|每段记录(即行)的字段数(即单词)|
 |NR|行号|
 |OFMT|数值的输出格式,默认为"%.6g"|
@@ -35,8 +44,9 @@ banner_img: https://z3.ax1x.com/2021/11/13/Iy56Ds.jpg
 |ORS|输出的记录分割符,默认为"\n"|
 |RLENGTH|被函数match匹配的字符串长度|
 |RS|记录分隔符|
+|RT|如果RS为正则表达式，RT则代表当前行所匹配的值|
 |RSTART|被函数match匹配的字符串的开始|
-|SUBSEP|下标分割符|
+|SUBSEP|下标分割符(\034)|
 |$0|整行内容|
 
 ### awk内置函数
@@ -54,6 +64,7 @@ banner_img: https://z3.ax1x.com/2021/11/13/Iy56Ds.jpg
 |srand(x)|建立rand()的新的种子数。如果没有指定种子数,就用当天的时间。返回旧的种子值|
 |字符串函数|描述|
 |gsub(r,s,t)|在字符串t中用字符串s替换和正则表达式r匹配的所有字符串。返回替换的个数。如果没有给出t,默认$0|
+|gensub(r,s,h,t)|如果h以g或G开始的字符串，则对于在t中的r,用s进行全局替换。否则，h是一个数据：替换第h次出现的r.该函数返回新值，t本身不会改变，t默认为$0|
 |sprintf(fmt,expr-list)|根据格式字符串fmt返回格式化后的expr-list,fmt格式见printf那里|
 |index(s,t)|返回子串t在字符串s中的位置,如果没有指定s,则返回0|
 |length(s)|返回字符串s的长度,当没有给出s时,返回$0的长度|
@@ -61,6 +72,8 @@ banner_img: https://z3.ax1x.com/2021/11/13/Iy56Ds.jpg
 |spllit(s,a,sep)|使用字段分隔符sep将字符串s分解到数组a的元素中,返回元素个数。如果没有给出sep,则使用FS。数组分割和字段分隔采用相同的方式|
 |sub(r,s,t)|在字符串t中用s替换正则表达式r的首次匹配。如果成功则返回1,否则返回0,,如果没有给出t,默认为$0|
 |substr(s,p,n)|返回字符串s中从位置p开始最大长度为n的子串。如果没有给出n,返回从p开始剩余的字符串。|
+|systime()|返回用秒表示的天的当前的时间,从UNIX元年开始算|
+|strftime(format,timestamp)|依照format格式化timestamp。timestamp默认为当前|
 |tolower(s)|将字符串s中的所有大写字符转换为小写,并返回新串|
 |toupper(s)|将字符串s中的小写字符转换为大写,并返回新串|
 ### 模式汇总
@@ -100,6 +113,7 @@ banner_img: https://z3.ax1x.com/2021/11/13/Iy56Ds.jpg
 awk中的数组不需要声明定义,都是关联数组
 - 赋值一个数组`array[0]=1;array[1]=2`
 - 删除一个元素`delete array[subscript]`
+- 删除一个数组`delete array`
 - `i in a`如果a[i]存在,则表达式为1,否则为0
 - 遍历数组
 ```bash
@@ -125,6 +139,8 @@ function name(patameter-list){
 特殊的模式BEGIN在第一个输入文件的第一行之前被匹配,END在最后一个输入文件的最后一行被处理之后匹配。
 ### next与exit
 next使awk抓取下一行,并返回到脚本底部;exit会使awk执行END,如果已经在END,则结束程序
+### nextfile
+nextfile语句和next类似，但它是更高层次上的操作。当执行nextfile时，当前的数据文件将被放弃，操作从脚本顶端开始，并使用下一个文件的第一个记录。
 ### 输入分隔符
 内建变量 FS 的默认值是 " ", 也就是一个空格符. 当 FS 具有这个特定值时, 输入字段按照 空格和 (或) 制表符分割, 前导的空格与制表符会被丢弃, 所以下面三行数据中, 其每一行的第 1 个字段都相同:
 ```bash
@@ -140,6 +156,10 @@ field1 field2
 FS = "|"
 把 | 变成字段分隔符
 <font color=#FF0000>不管FS的值是什么,换行符总是多行记录的字段分隔符之一 </font>,如果RS被设置成""(即空行为记录分割符),则默认的字段分隔符就是空格,制表及换行;如果FS是\n,则换行符既是唯一分隔符
+#### FIELDWIDTHS
+该变量可以用来分隔出现在固定宽度列中的数据。这些数据可能或不可能由空白字符来风格字段的值  
+`FIELDWIDTHS= "5 6 8 3"`
+这里的记录有4个字段：$1有5个字符宽度，$2有6个字符的宽度等等。为FS指定一个值将恢复常规机制。通常使用FS=FS恢复，无需保存到额外变量中。
 ### print与printf
 
 |格式|含义|
@@ -150,13 +170,14 @@ FS = "|"
 |print expression,expression,...\>filename|追加到filename,不覆盖之前内容|
 |print expression,expression,... | command|输出作为命令command标准输入|
 |close(filename),close(command)|断开print与filename(或command)之间的连接,同一命令想要两次之间毫无关联,必须先close|
+|fflush(filename/cmd)|刷新缓存|
 |system(command)|执行command;函数的返回值是command的退出状态|
 
 printf主要可以指定格式,以上都能用printf替换,如:`printf(format,expression,expression,...) > filename`末尾不会自动添加换行符
 printf格式控制符(每一个格式说明符都以%开始,以转换字符结束)
 
 |字符|表达式将被打印成|
-|c|ASCII 字符|
+|C|ASCII 字符|
 |d|十进制整数|
 |e|[-]d.dddddde[+-]dd|
 |E|[-]d.ddddddE[+-]dd|
@@ -266,7 +287,9 @@ a.将每一行的字段逆序打印
 - awk的圆括号用法有点异样:`(r1)(r2)`若匹配xy,其中x匹配r1,y匹配r2。
   举例:`(Asian|European|North American) (male|female) (black|blue)bird`12种组合
 ### shell中包含awk
-  见例子1
+ - 见例子1
+### awk程序搜索路径
+ awk允许你指定一个名为AWKPATH的环境变量，它定义了awk程序的文件搜索路径，默认路径为:/usr/local/share/awk。当前路径永远最优先,如果文件名包含`/`将不执行查找
 ### 例子
 ```bash
 # field -打印每个文件的指定字段顺序
