@@ -8,8 +8,82 @@ index_img: /img/curl.png
 banner_img: /img/curl.png
 ---
 ## HTTP
-HTTP/2和HTTP/3的头部通常会被curl压缩发送，但是-v选项总是把它们解压成HTTP/1.1的样子
-### 代理
+- HTTP/2和HTTP/3的头部通常会被curl压缩发送，但是-v选项总是把它们解压成HTTP/1.1的样子
+- HTTP默认端口：80，HTTPS默认端口：443
+- HTTP有4种方法：GET，POST，HEAD，PUT
+- curl默认的HTTP/1.1
+## 返回码
+- 1XX：瞬态响应，更多内容即将发生
+- 2XX：成功
+- 3XX：重定向
+  - 301:永久重定向，当一个url第一次返回该值时，重定向的内容将被浏览器缓存，下次该url不起作用，直接访问重定向内容(浏览器总是使用GET，即使第一次访问时用的是POST),curl永远不会缓存
+  - 302:暂时重定向，不会缓存,重定向总是使用GET
+  - 303:同302,但是更接近于间接访问的概念
+  - 307:暂时重定向，不会缓存，区别在于它会保持第一次访问的方法
+  - 308:永久重定向，区别在于它会保持第一次访问的方法
+- 4XX：服务器无法提供或不会提供要求的内容
+  - 401:服务器需要一个认证，通常包含头`WWW-Authenticate:`,包含了服务器支持的认证方法(Basic)
+  - 407:代理服务器需要一个认证，通常包含头`Proxy-Authenticate:`,包含了代理支持的认证方法
+- 5XX：服务器出现问题
+### GET
+通过URL来形成HTTP头
+**request例子**：
+```bash
+GET / HTTP/1.1
+User-agent: curl/2000
+Host: example.com
+```
+**response例子**
+```bash
+HTTP/1.1 200 OK
+Server: example-server/1.1
+Content-Length: 5
+Content-Type: plain/text
+
+hello
+```
+### Transfer-Encoding: chunked
+有时response可能没有Content-Length，而是**Transfer-Encoding: chunked**，这只有HTTP1.1服务才有，它表示内容是一系列的块，每块开头有显示该块的十六进制大小，结束时，也会有表示结束的0块。curl会自动解码
+### Content-Encoding: gzip
+body是经过压缩的,curl会自动解压
+### Expect:100-continue
+很少有服务器支持这一特性，且HTTP/2及以上支持在没关闭连接的情况下停止持续传输,这使得该特性无意义。(该特性到底是啥不懂)post时，curl会默认
+### 透明压缩
+过于老式，不常用，可以使用--tr-encoding来使用，前提是服务器支持
+### Etag
+服务器通过**Etag**来标识一个资源的版本，这样便于客户判断是否资源更新
+### Multipart formposts
+这对应html中form的enctype=multiparg/form-data,可以通过-F选项指定form:
+`curl -F person=anonymous -F secret=@file.txt http://example.com/submit.cgi`
+**Header内容：**
+```bash
+POST /submit.cgi HTTP/1.1
+Host: example.com
+User-Agent: curl/7.46.0
+Accept: */*
+Content-Length: 313
+Expect: 100-continue
+Content-Type: multipart/form-data; boundary=------------------------d74496d66958873e
+```
+**Body内容：**
+```bash
+--------------------------d74496d66958873e
+Content-Disposition: form-data; name="person"
+
+anonymous
+--------------------------d74496d66958873e
+Content-Disposition: form-data; name="secret"; filename="file.txt"
+Content-Type: text/plain
+
+contents of the file
+--------------------------d74496d66958873e--
+```
+html的form表单中enctype默认为`application/x-www-form-urlencoded`,此时只需要-d选项即可
+### 重定向
+- 有时服务器不会直接返回内容，而是告诉你该资源所在位置，此时响应中包含关键字`Location:`
+- 有时重定向会指向不同主机，此时用户名密码或证书等可能无法使用，无论如何信任的话，可以使用--location-trusted
+- 浏览器支持更多的重定向方式，curl不支持他们，比如html里meta元素，javascript的动态重定向
+## 代理
 - HTTP代理为了安全，使用**CONNECT**方法
 - HTTP代理可以代理FTP,此时curl将认为就是HTTP,FTP所有特性无效
 - MITM代理可以监控加密的流量
@@ -84,7 +158,10 @@ curl支持许多选项，不是可选项内容的都是URLs，可以支持多个
 2) "$XDG_CONFIG_HOME/.curlrc"
 3) "$HOME/.curlrc"
 ## 选项
-
+### --anyauth
+curl首先不使用认证，如果服务器需要，curl将会尝试使用认证
+### --basic
+使用Basic认证方法，默认的认证方法
 ### -C/--continue-at [num/-]
 指明从num byte offset开始继续下载或`-`curl根据已有的下载文件确定从哪开始继续下载。
 **例1**:`curl --continue-at 100 ftp://example.com/bigfile`
@@ -113,8 +190,28 @@ TLS中ciphers,除非你知道你在干啥，否则慎用。
 ### --compressed
 http/https,请求服务器提供压缩版本的内容，curl会在数据到达后自动解压，这只是加快传输速度，注意不能和另一个--tr-encoding混用，因为两者采用不同压缩
 ### -d/--data [string or num]
-发送的数据
+发送的数据,simple POST,一下两种方式等价
+```bash
+curl -d 'name=admin&shoesize=12' http://example.com/
+curl -d name=admin -d shoesize=12 http://example.com/
+#从某个文件读取
+curl -d @filename http://example.com
+```
+从文件中读取时，会去除回车和换行，如果不想这样见--data-binary
 ### --data-binary
+该选项从文件读取时，不会去除回车和换行
+### --data-raw
+-d选项的补充，主要是为了下面的情况:
+`curl --data-raw '@string' https://example.com`
+### --data-urlencode
+把post内容使用url的安全编码(即把空格和一些不安全字符使用%xx%编码)，接受以下形式(只对内容进行编码):
+- content
+- =content
+- name=content
+- @filename
+- name@filename
+### --digest
+digest的认证方式
 ### --dns-interface
 指定dns走的网卡？
 ### --dns-ipv4-addr
@@ -123,21 +220,55 @@ http/https,请求服务器提供压缩版本的内容，curl会在数据到达�
 指定ipv6的dns服务器
 ### --dns-servers
 指定一个dns服务器
+### --etag-save [etagSavedFile]
+把该资源的Etag保存到某文件中
+### --etag-compare [etagFile]
+与本地文件中保存Etag做对比，只下载更新的，可以与--etag-save连用，达到自动更新的目的
+`curl --etag-compare etag.txt --etag-save etag.txt https://example.com/file -o output`
 ### -f/--fail
+一般http返回4xx码时，curl也会认为是成功的一次传输，如果启用该选项，如果是4xx，curl将以22退出
 ### -F
+http的方法将是POST
 ### --fail-early
+### --fail-with-body
+同--fail
 ### --ftp-port
+### -G/--get
+当指定-d等选项时，默认为post方法，此选项可以强制转成get，所有数据都追加在url末尾，以`?`分割
 ### -h/--help
 ### -H [header content]
 自定义头部内容
 `curl -H "Host: www.example.com" http://localhost/`
+### --http0.9
+该版本非常不成熟，响应只有body，没有header,使用该选项是告诉curl接受该种响应
+### --http1.0
+尝试使用http1.0
+### --http1.1
+尝试使用http1.1
+### --http2
+尝试使用http2
+### --http2-prior-knowledge
+### --http3
+尝试使用http3
+### -I
+HTTP方法将是HEAD
+### --ignore-content-length
+忽略头部的Content-Length信息（早期数据不可以超过2g,content-length可能是负的），直接接受数据
 ### --interface [ip addr or some interface]
 指定哪个网络接口来传输流量，或者使用哪个原始ip地址（前提你有多个ip）这个不影响dns的接口，dns接口可用--dns-interface
 ### -J/--remote-header-name
 HTTP头可能提供`Content-Disposition:`,这其中包含了建议的文件名，这个选项使用该文件名作为输出，如果该内容存在，会覆盖-O选项。
 - 它只会保留文件名部分，忽略目录
 - CURL不会帮你解码，可能是个URL原码格式的文件名（浏览器会解码）
-
+### --json
+该选项是为了更好的post json格式的内容，等价于下面三个选项
+```bash
+--data [jsonformat]
+--header "Content-Type: application/json"
+--header "Accept: application/json"
+```
+注意多次使用该选项时，curl只是简单的字符串拼接，并不会帮你合并，所以应该像下面这样使用：
+`curl --json @json.txt --json ", "end": "true"}' https://example.com/`
 ### -k/--insecure
 tls/ssh协议中，curl会跳过检查known_hosts文件及本地安全证书，直接信任
 ### -K/--config
@@ -155,9 +286,12 @@ curl默认会保持无流量的tcp连接长达60s,这可以更改时间，单位
 指定cert健，见--cert
 ### --key-type
 见--cert
-### -L/--location
 ### --limit-rate <num>
 参数是个数字，默认单位是byte，可以跟K/M/G，整个过程的平均速度将不超过这个值,也同样适用于上传速率
+### -L/--location
+如果返回重定向，则继续访问重定向的地址。默认最多50个。curl默认不会访问重定向的内容,
+### --location-trusted
+永远信任重定向的任何主机，默认是不信任，因为，可能重定向不同主机
 ### --local-port [num or range]
 通常不需要指定本地端口，但有时只有某些端口是开放的，指定curl的本地端口，可以指定一个范围，因为一个可能被占用了,最好不要指定1024以下的端口
 ### -m/--max-time [num]
@@ -169,6 +303,8 @@ smtp中指定收件人
 ### --manual
 ### --max-filesize [num]
 单位是byte，如果curl在传输开始可以获得将要下载的内容大小，该选项才会起作用，如果超过该大小，curl将会自动放弃。
+### --max-redirs [num]
+指定最多重定向次数，默认50个
 ### -n/--netrc
 读取`~/.netrc`配置文件，该文件存储用户名密码，例子如下
 ```bash
@@ -178,6 +314,8 @@ login nanbert
 password xxx 
 macdef xxx #该选项curl不支持，会忽略
 ```
+### --negotiate
+negotiate的认证方式
 ### -netrc-file [path]
 不读默认`~/.netrc`文件，而是具体某个文件
 ### --netrc-optional
@@ -188,10 +326,18 @@ macdef xxx #该选项curl不支持，会忽略
 ### --noproxy
 不使用全局环境变量代理
 ### --no-verbose
+### --ntlm
+ntlm的认证方式
 ### -o
 输出到某个文件，一个该选项对应一个url,想要指明多个，必须声明多个-o
 ### -O/--remote-name
 把结果输出到使用远程服务器的原始文件名,一个该选项对应一个url,想要指明多个，必须声明多个-O
+### --post301
+返回301重定向时，保持初始的方法
+### --post302
+返回302重定向时，保持初始的方法
+### --post303
+返回303重定向时，保持初始的方法
 ### -p/--proxytunnel
 使用隧道对代理加密
 `curl -p -x http://proxy.example.com:80 ftp://ftp.example.com/file.txt`
@@ -202,7 +348,7 @@ TLS协议中，Certifiate pinning中直接指定sha256值
 ### --proxy1.0 [ip addr]
 指定代理，和`--x`一样，只是使用HTTP/1.0
 ### --proxy-anyauth
-任意一种代理用户名认证方式,根据代理服务器要求自动匹配
+任意一种代理用户名认证方式,根据代理服务器要求自动匹配或者不使用认证
 ### --proxy-digest
 一种代理用户名认证方式
 ### --proxy-header
@@ -212,10 +358,13 @@ TLS协议中，Certifiate pinning中直接指定sha256值
 一种代理用户名认证方式
 ### --proxy-ntlm
 一种代理用户名认证方式
-### --range [num1-num2]
-只下num1 byte offset至num2 byte offset的内容
+### -r/--range [num1-num2,num3-,0-num3,...]
+只下num1 byte offset至num2 byte offset的内容,服务器可以选择性的实现该功能，也就是说，即使你这么请求，服务器也可能返回全部内容
 ### --remote-name-all
 所有结果均输出保存到服务器上的原始文件名
+### --remote-time
+使得下载到本地的文件的时间戳和远程服务器文件的时间戳一样，常和-z -o选项搭配  
+`curl -z file.html -o file.html --remote-time https://example.com/file.html`
 ### --resolve [host name:port:ip address]
 dns重定向，这会保存到curl的cache中
 `curl --resolve example.com:80:127.0.0.1 http://example.com/`
@@ -237,7 +386,7 @@ dns重定向，这会保存到curl的cache中
 ### --ssl-reqd
 强制ssl加密(FTP,IMAP,POP3,SMTP)
 ### --raw
-禁用内容或传输编码的所有内部http解码，而是使用未经修改的原始数据
+禁用内容或传输编码的所有内部http解码，而是使用未经修改的原始数据,这经常用在curl为一个代理的情况
 ### --retry [num]
 curl会在发生transient error时，会重新尝试num次，默认失败一次就不会尝试，transient error包括以下：超时，FTP 4XX返回码，http5xx返回码
 ### --retry-all-errors
@@ -285,7 +434,12 @@ TLS的特性，可以在命令行中直接使用用户名和密码
 化学选项：-v/--verbose,--trace和--trace-ascii
 这个选项会帮助化学选项所输出内容之前加高精度的时间。
 ### -u/--user
-指定用户名和密码，冒号分隔`user:passwd`,这种明文，最好不用，协议层方面使用https和ftps等，如果非要使用明文见选项`--digest`,`--negotiate`,`--ntlm`,或者直接通过配置文件###1禁用。
+指定用户名和密码，冒号分隔`user:passwd`,这种明文，最好不用，协议层方面使用https和ftps等，如果非要使用明文,可以选择选项`--digest`,`--negotiate`,`--ntlm`,或者直接通过配置文件###1禁用。
+```bash
+curl --digest --user daniel:secret http://example.com/
+curl --negotiate --user daniel:secret http://example.com/
+curl --ntlm --user daniel:secret http://example.com/
+```
 ### -U/--proxy-user [user:passwd]
 指定代理的用户名和密码
 `curl -U daniel:secr3t -x myproxy:80 http://example.com`
@@ -373,6 +527,13 @@ curl --socks5-ostname proxy.example.com http://www.example.com/
 ### --xattr
 
 ### -Z/--parallel
+### -z/--time-cond [time stamp/file]
+对下载的内容做时间限制(可早，可晚)，时间格式可以是常见的格式，或者指定比某个本地文件新
+```bash
+curl -z "Jan 10, 2017" https://example.com/file -O#只下载比该时间戳新的
+curl --time-cond "Sun, 12 Sep 2004 15:05:58 -0700" https://www.example.org/file.html#只下载比该时间早的
+curl -z file.html https://example.com/file.html -O#比file.html新的
+```
 ### -:
 ### -#/--progress-bar
 当内容重定向时，进度条是默认打开的,该选项会展示一种简单的进度条，有时进度条无法估计时间
@@ -561,6 +722,3 @@ TLS属于third-party,你可以通过--version查看，如果你feature中有Mult
 SSL2(1995)->SSL3->TLS1.0(1999)->TLS1.1(2006)->TLS1.2(2008)->TLS1.3(2018)
 ### CA的存储
 一般都是内建的，但你也可以用--cacert指定路径（一定要是PEM格式），或者设置CURL-CA_BUNDLE环境变量
-## 上传
-### POST
-### multipart formpost
