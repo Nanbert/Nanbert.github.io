@@ -10,8 +10,8 @@ banner_img: /img/curl.png
 ## HTTP
 - HTTP/2和HTTP/3的头部通常会被curl压缩发送，但是-v选项总是把它们解压成HTTP/1.1的样子
 - HTTP默认端口：80，HTTPS默认端口：443
-- HTTP有4种方法：GET，POST，HEAD，PUT
-- curl默认的HTTP/1.1
+- HTTP有4种方法：GET，POST，HEAD，PUT,OPTIONS
+- curl默认的http版本为HTTP/1.1,默认的https版本为HTTP/2
 ## 返回码
 - 1XX：瞬态响应，更多内容即将发生
 - 2XX：成功
@@ -83,6 +83,14 @@ html的form表单中enctype默认为`application/x-www-form-urlencoded`,此时�
 - 有时服务器不会直接返回内容，而是告诉你该资源所在位置，此时响应中包含关键字`Location:`
 - 有时重定向会指向不同主机，此时用户名密码或证书等可能无法使用，无论如何信任的话，可以使用--location-trusted
 - 浏览器支持更多的重定向方式，curl不支持他们，比如html里meta元素，javascript的动态重定向
+### Set-Cookie
+cookie设置的一个头
+### Upgrade
+强制升级http版本的头，过老的服务器可能会出错
+### Alt-Svc
+响应体中的头，告诉客户还有哪些主机可以获得同样资源,只能在https中使用，并且这是使用http3的唯一方法（截至2019）
+### http3
+http3是实验版本，是为了适应QUIC协议（一个基于UDP的可靠安全的协议），只能通过https,curl没有针对http3连结失败时作自动降级处理，而是直接返回错误
 ## 代理
 - HTTP代理为了安全，使用**CONNECT**方法
 - HTTP代理可以代理FTP,此时curl将认为就是HTTP,FTP所有特性无效
@@ -158,10 +166,18 @@ curl支持许多选项，不是可选项内容的都是URLs，可以支持多个
 2) "$XDG_CONFIG_HOME/.curlrc"
 3) "$HOME/.curlrc"
 ## 选项
+### -A/--user-agent
+指明`User-Agent:`的值
+### --alt-svc [cacheFile]
+会尝试cacheFile定义中的可获得同样资源的主机地址，如果server响应并更新了`Alt-Svc:`,则也会自动更新到cacheFile中。
 ### --anyauth
 curl首先不使用认证，如果服务器需要，curl将会尝试使用认证
 ### --basic
 使用Basic认证方法，默认的认证方法
+### -b [cookiesFile]
+从文件中读取cookie，-c选项是写cookie
+### -c [cookieFile]
+写入cookie到一个文件中
 ### -C/--continue-at [num/-]
 指明从num byte offset开始继续下载或`-`curl根据已有的下载文件确定从哪开始继续下载。
 **例1**:`curl --continue-at 100 ftp://example.com/bigfile`
@@ -220,6 +236,9 @@ digest的认证方式
 指定ipv6的dns服务器
 ### --dns-servers
 指定一个dns服务器
+### -e/--referer
+当在浏览器中，从一个页面，点击另一个页面，会形成一个`Referer:`的头，它说明是从哪个网站进去的，例如：
+`curl --referer http://comes-from.example.com https://www.example.com/`
 ### --etag-save [etagSavedFile]
 把该资源的Etag保存到某文件中
 ### --etag-compare [etagFile]
@@ -237,8 +256,15 @@ http的方法将是POST
 当指定-d等选项时，默认为post方法，此选项可以强制转成get，所有数据都追加在url末尾，以`?`分割
 ### -h/--help
 ### -H [header content]
-自定义头部内容
+- 自定义头部内容
 `curl -H "Host: www.example.com" http://localhost/`
+- 去除curl自动形成的头，只要不给值就行：
+`curl -H "User-Agent:" http://example.com/`
+- 去除所有头
+`curl -H "Empty;" http://example.com`
+### --hsts [hstsFile]
+HSTS是一个严格的传输安全协议，它保护https不被降级和中间cookie注入，整个过程中不能使用明文。该选项使curl读入某个server的HSTS缓存,然后自动更新，并且自动转换http为https:
+`curl --hsts hsts.txt https://example.com`
 ### --http0.9
 该版本非常不成熟，响应只有body，没有header,使用该选项是告诉curl接受该种响应
 ### --http1.0
@@ -248,6 +274,7 @@ http的方法将是POST
 ### --http2
 尝试使用http2
 ### --http2-prior-knowledge
+前提你确定已经知道服务器支持http2了，这个加快negotiate的速度
 ### --http3
 尝试使用http3
 ### -I
@@ -256,6 +283,9 @@ HTTP方法将是HEAD
 忽略头部的Content-Length信息（早期数据不可以超过2g,content-length可能是负的），直接接受数据
 ### --interface [ip addr or some interface]
 指定哪个网络接口来传输流量，或者使用哪个原始ip地址（前提你有多个ip）这个不影响dns的接口，dns接口可用--dns-interface
+### -j/--junk-session-cookies
+模拟浏览器重新打开，一个新的会话cookie
+`curl -j -b cookies.txt http://example.com/`
 ### -J/--remote-header-name
 HTTP头可能提供`Content-Disposition:`,这其中包含了建议的文件名，这个选项使用该文件名作为输出，如果该内容存在，会覆盖-O选项。
 - 它只会保留文件名部分，忽略目录
@@ -332,6 +362,8 @@ ntlm的认证方式
 输出到某个文件，一个该选项对应一个url,想要指明多个，必须声明多个-o
 ### -O/--remote-name
 把结果输出到使用远程服务器的原始文件名,一个该选项对应一个url,想要指明多个，必须声明多个-O
+### --path-as-is
+在url指定路径时，如果出现`/../`或`/./`,curl会替换它们，再发送给服务器，比如`/hello/sir/../`变成`/hello/`,`/hello/./sir`变成`/hello/sir/`,而该选项会保留`..`和`.`
 ### --post301
 返回301重定向时，保持初始的方法
 ### --post302
@@ -389,6 +421,11 @@ dns重定向，这会保存到curl的cache中
 禁用内容或传输编码的所有内部http解码，而是使用未经修改的原始数据,这经常用在curl为一个代理的情况
 ### --retry [num]
 curl会在发生transient error时，会重新尝试num次，默认失败一次就不会尝试，transient error包括以下：超时，FTP 4XX返回码，http5xx返回码
+### --request-target
+获取的资源路径，这个一般直接写在url中，但这配合OPTIONS方法，有个特殊用法：
+`curl -X OPTIONS --request-target "*" http://example.com/`
+会形成下面的头：
+`OPTIONS * HTTP/1.1`
 ### --retry-all-errors
 有时你确定一个服务器是好的，出现任何错误都想重试，该选项就可以帮你
 ### --retry-connrefused
@@ -505,7 +542,8 @@ HTTP/2和HTTP/3协议头是压缩的，但在此选项下会展开和HTTP/1.1一
 |`%{url}`|命令行中指定url|
 |`%{url_effective}`|真实有效的url|
 |`%{urlnum}`|url的编号，从0开始计数|
-
+### -X/--request
+指定http的方法，一般curl会根据选项自动判断，无需特地指定该选项，错误的方法可能使得curl行为怪异
 ### -x/--proxy [ip addr]
 - 指定代理，默认scheme为http,默认端口为1080
 `curl -x 192.168.0.1:8080 http://example.com/`
