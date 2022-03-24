@@ -12,7 +12,7 @@ banner_img: /img/curl.png
 - HTTP默认端口：80，HTTPS默认端口：443
 - HTTP有4种方法：GET，POST，HEAD，PUT,OPTIONS
 - curl默认的http版本为HTTP/1.1,默认的https版本为HTTP/2
-## 返回码
+### 返回码
 - 1XX：瞬态响应，更多内容即将发生
 - 2XX：成功
 - 3XX：重定向
@@ -105,8 +105,11 @@ http3是实验版本，是为了适应QUIC协议（一个基于UDP的可靠安�
   ```
   - ALL_PROXY:所有url都走该代理
   - NO_PROXY:某些url不走该代理，用`,`分隔多个url，等效于--noproxy
-## curl支持的协议
-curl -V查看
+## FTP
+- FTP协议使用两个tcp连接，一个用来建立认证，并进入到正确的文件夹内(控制连接)，一个用来传输文件，curl默认是被动连接（即客户端发送PASV或EPSV命令给服务器,服务器新开个端口，curl用该端口连接传输）,主动连接见-P，被动连接见--ftp-pasv
+- curl传输文件时有三种方法(见--ftp-method)：
+- FTPS的默认端口是990,可以通过`scheme:ftps://`指定，抑或使用`--ssl,--ssl-reqd`
+- FTPS无法推广的原因是，FTP的第二个连接是新建的tcp连接，防火墙和其他网络工具检查辨别是FTP传输并采取一些规则或设置应用到该连接,但如果加密，防火墙等就无法判断，并无法应用一些规则
 ## URLs(URIs)
 需要注意的是现代浏览器的地址栏里支持IRIs,一个URLs的超集(更强大，支持空白字符等等)
 ### Scheme
@@ -159,6 +162,8 @@ curl支持许多选项，不是可选项内容的都是URLs，可以支持多个
 - -o选项里面可以通过`#[num]`来代表globbing内容,num从1开始编号
   - `curl "http://{one,two}.example.com" -o "file_#1.txt"`
   - `curl "http://{site,host}.host[1-5].example.com" -o "subdir/#1_#2"`
+globbing有时还可以用于-T选项，上传多个文件:
+`curl -T 'image[1-99].jpg' ftp://ftp.example.com/upload/`
 ## curl
 ### 配置文件curlrc
 按以下优先级读取文件：
@@ -172,10 +177,12 @@ curl支持许多选项，不是可选项内容的都是URLs，可以支持多个
 会尝试cacheFile定义中的可获得同样资源的主机地址，如果server响应并更新了`Alt-Svc:`,则也会自动更新到cacheFile中。
 ### --anyauth
 curl首先不使用认证，如果服务器需要，curl将会尝试使用认证
-### --basic
-使用Basic认证方法，默认的认证方法
+### -B
+以二进制形式传输，curl默认就是二进制
 ### -b [cookiesFile]
 从文件中读取cookie，-c选项是写cookie
+### --basic
+使用Basic认证方法，默认的认证方法
 ### -c [cookieFile]
 写入cookie到一个文件中
 ### -C/--continue-at [num/-]
@@ -251,7 +258,26 @@ http的方法将是POST
 ### --fail-early
 ### --fail-with-body
 同--fail
-### --ftp-port
+### --ftp-method [multicwd/nocwd/singlecwd]
+- multicwd(curl默认方法)：`curl --ftp-method multicwd ftp://example.com/one/two/three/file.txt`
+等价于
+```bash
+CWD one < 250 OK. Current directory is /one CWD two < 250 OK. Current directory is /one/two CWD three < 250 OK. Current directory is /one/two/three RETR file.txt
+```
+- nocwd(并不符合标准):`curl --ftp-method nocwd ftp://example.com/one/two/three/file.txt`
+等价于
+```bash
+RETR one/two/three/file.txt
+```
+- singlecwd(服务器不一定支持):`curl --ftp-method singlecwd ftp://example.com/one/two/three/file.txt`
+等价于
+```bash
+CWD one/two/three < 250 OK. Current directory is /one/two/three RETR file.txt
+```
+### --ftp-pasv
+curl默认就是ftp被动连接，这个选项是重新设置为被动连接
+### --ftp-skip-pasv-ip
+有时服务器对于PASV被动建立连接命令会故意返回一个错的ip地址，此时该选项可以忽略该地址，使用控制连接的地址
 ### -G/--get
 当指定-d等选项时，默认为post方法，此选项可以强制转成get，所有数据都追加在url末尾，以`?`分割
 ### -h/--help
@@ -316,10 +342,12 @@ curl默认会保持无流量的tcp连接长达60s,这可以更改时间，单位
 指定cert健，见--cert
 ### --key-type
 见--cert
-### --limit-rate <num>
-参数是个数字，默认单位是byte，可以跟K/M/G，整个过程的平均速度将不超过这个值,也同样适用于上传速率
+### -l/--list-only
+FTP协议中相当与使用NLST命令，可能不会list符号链接和目录
 ### -L/--location
 如果返回重定向，则继续访问重定向的地址。默认最多50个。curl默认不会访问重定向的内容,
+### --limit-rate <num>
+参数是个数字，默认单位是byte，可以跟K/M/G，整个过程的平均速度将不超过这个值,也同样适用于上传速率
 ### --location-trusted
 永远信任重定向的任何主机，默认是不信任，因为，可能重定向不同主机
 ### --local-port [num or range]
@@ -351,6 +379,10 @@ negotiate的认证方式
 ### --netrc-optional
 这与`--netrc`区别在于，使得默认配置内容是可选的,不是强制的
 ### --next
+### --no-eprt
+ftp协议中禁止使用命令EPRT，该命令比PORT更新
+### --no-epsv
+ftp协议中进制使用命令EPSV，该命令比PASV更新
 ### --no-keepalive
 默认curl会保持tcp(无流量)连接60s,这个会关闭该功能
 ### --noproxy
@@ -364,6 +396,9 @@ ntlm的认证方式
 把结果输出到使用远程服务器的原始文件名,一个该选项对应一个url,想要指明多个，必须声明多个-O
 ### --path-as-is
 在url指定路径时，如果出现`/../`或`/./`,curl会替换它们，再发送给服务器，比如`/hello/sir/../`变成`/hello/`,`/hello/./sir`变成`/hello/sir/`,而该选项会保留`..`和`.`
+### -P/--ftp-port [ip/-]
+这其实是使用命令PORT或EPRT，即服务器建立新连接到客户,但经常不指定一个确切的port,直接使用`-`,总是为，信息来时的地址，如下：  
+`curl -P - ftp://example.com/foobar.txt`
 ### --post301
 返回301重定向时，保持初始的方法
 ### --post302
@@ -390,6 +425,13 @@ TLS协议中，Certifiate pinning中直接指定sha256值
 一种代理用户名认证方式
 ### --proxy-ntlm
 一种代理用户名认证方式
+### -Q/--quote [ftp cmd]
+发送命令给ftp服务器
+- 在传输之前发送NOOP命令`curl -Q NOOP ftp://example.com/file`
+- 在传输之后发送NOOP命令`curl -Q -NOOP ftp://example.com/file`
+- 不知什么时候发`curl -Q +NOOP ftp://example.com/file`
+发送的命令发生错误时会导致curl退出，有时可以在命令前加`*`，忽略可能发送错误，如：
+`curl -Q "-*DELE file" ftp://example.com/moo`
 ### -r/--range [num1-num2,num3-,0-num3,...]
 只下num1 byte offset至num2 byte offset的内容,服务器可以选择性的实现该功能，也就是说，即使你这么请求，服务器也可能返回全部内容
 ### --remote-name-all
@@ -482,6 +524,8 @@ curl --ntlm --user daniel:secret http://example.com/
 `curl -U daniel:secr3t -x myproxy:80 http://example.com`
 ### --upload-file
 指定上传内容文件，用于smtp
+### --use-ascii
+使用ascii传输，而不是二进制
 ### -v/--verbose
 该选项会使curl显示更多的内容，具体格式如下：
 - `*`后面跟解释性内容
