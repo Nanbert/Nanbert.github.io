@@ -289,3 +289,32 @@ anacron是自动运行的?(有待研究)
 `truncate -s 5 test.txt`截断test.txt，只保留5个字符
 - nm
 nm作用于目标文件，统计标识符有大用
+- parallel
+parallel用法复杂，建议读man
+**用法:**
+  - cmd | parallel [options] 'somecmd',parallel会默认把每行的内容,插到命令末尾
+  - parallel [options] 'cmd' ::: [parameter1 list] ::: [parameter2 list]...
+强大的xargs的升级版（这只是个人感觉啊）
+
+|选项|含义|
+|:-:|:-:|
+|-j/--jobs [num]|同时运行num个任务|
+|--C/--colsep [regep]|参数分隔符号|
+|--header|忽略第一行|
+|--results [file]|保存输出内容到某文件，还会输出到标准输出|
+|--keep-order|并行有时会不按输出行的顺序，这个保持顺序|
+|--tag|在每个结果开头，输出参数内容|
+|--slf/--sshloginfile [hostnames]|使用远程机当算力|
+|--sshlogin|登录远程机|
+|--nonall|不传递参数，只传递命令给远程机|
+|-N[num]|分配给远程多少个参数|
+
+|特殊变量名|含义|
+|:-:|:-:|
+|`{}`|一行的内容|
+|`{/}`|相当于对当前行运行basename|
+|`{#}`|任务号，从1开始编号|
+
+**例子：**
+- `seq 0 2 100 | parallel "echo {}^2 | bc"`
+- `seq 1000 | parallel -N100 --pipe --slf hostnames "paste -sd+ | bc" | paste -sd+|bc`并行算1-1000的和，一个核算一百个参数
