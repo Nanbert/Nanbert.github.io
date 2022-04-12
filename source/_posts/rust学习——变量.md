@@ -172,6 +172,20 @@ for (i,v) in array.iter.enumerate(){
 	println!("第{}个元素是{}",i+1,v);
 }
 ```
+- 由于数组本身类型包含长度，所以泛型需要使用const泛型(一般直接使用数组切片即可，不需要这么烦):
+```rust
+fn display_array<T: std::fmt::Debug, const N: usize>(arr: [T; N]) {
+    println!("{:?}", arr);
+}
+fn main() {
+    let arr: [i32; 3] = [1, 2, 3];
+    display_array(arr);
+
+    let arr: [i32; 2] = [1, 2];
+    display_array(arr);
+}
+```
+其中N就是泛型，usize表示它基于值类型usize
 ## trick
 - 数字字面量可插入下划线提高可读性：`const MAX_POINTS: u32 = 100_000;`
 - 数字字面量也可以用下划线表面类型：`let a=23_u32`
