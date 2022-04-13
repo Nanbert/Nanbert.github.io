@@ -186,6 +186,82 @@ fn main() {
 }
 ```
 其中N就是泛型，usize表示它基于值类型usize
+## 类型转换
+### as转换
+- as转换不具有传递性，`e as U1 as U2`合法，但是`e as U2`可能不合法
+- 只能用在数值类型或字符
+- 常用：
+```rust
+let a = 3.1 as i8;
+let b = 100_i8 as i32;
+let c =  'a' as u8;
+```
+- 内存地址与指针的转换
+```rust
+let mut values: [i32; 2] = [1, 2];
+let p1: *mut i32 = values.as_mut_ptr();
+let first_address = p1 as usize; // 将p1内存地址转换为一个整数
+let second_address = first_address + 4; // 4 == std::mem::size_of::<i32>()，i32类型占用4个字节，因此将内存地址 + 4
+let p2 = second_address as *mut i32; // 访问该地址指向的下一个整数p2
+unsafe {
+    *p2 += 1;
+}
+assert_eq!(values[1], 3);
+```
+### TryInto
+- TryInto相较于as提供了错误捕获
+- 只能用在数值类型或字符
+```rust
+let b: i16 = 1500;
+
+let b_: u8 = match b.try_into() {
+	Ok(b1) => b1,
+	Err(e) => {
+		println!("{:?}", e.to_string());
+		0
+	}
+};
+```
+### 强制类型转换
+- rust可能进行隐式强制转换，但这不适用于特征，如T可以强制转换U,不代表impl T可以强制转换为impl U,但方法可以
+#### 点操作符
+- rust可能在点操作时，自动进行类型转换
+- 假设类型有个T,T有个方法foo,它有接收器(self、&self、&mut self)，当使用T的一个实例value,进行value.foo()操作时，rust会按照以下优先级匹配:
+  1) 首先，编译器检查他是否可以直接调用T::foo(value),称为值方法调用
+  2) 编译器会尝试`<&T>::foo(value)`和`<&mut T>::foo(value)`,称为引用方法调用
+  3) 编译器尝试解引用,这里使用Deref特征,若`T:Deref<Target = U>`(T可以被解引用为U)，则会使用U类型进行尝试
+  4) 若还不行，且T是个定长类型，编译器将会转为不定长类型，如`[i32;2]`转为`[i32]`
+### unsafe的强制转换
+- `mem::transmute<T,U>`将类型T直接转换成类型U,只要他们字节数相同
+- `mem::transmute_copy<T,U>`从T中拷贝出U类型所需的字节数，然后转换成U
+- 应用举例:
+  - 将裸指针转变成函数指针:
+  ```rust
+	fn foo() -> i32 {
+		0
+	}
+
+	let pointer = foo as *const ();
+	let function = unsafe { 
+		// 将裸指针转换为函数指针
+		std::mem::transmute::<*const (), fn() -> i32>(pointer) 
+	};
+	assert_eq!(function(), 0);
+  ```
+  - 延长生命周期，或缩短一个静态生命周期寿命
+  ```rust
+	struct R<'a>(&'a i32);
+
+	// 将 'b 生命周期延长至 'static 生命周期
+	unsafe fn extend_lifetime<'b>(r: R<'b>) -> R<'static> {
+		std::mem::transmute::<R<'b>, R<'static>>(r)
+	}
+
+	// 将 'static 生命周期缩短至 'c 生命周期
+	unsafe fn shorten_invariant_lifetime<'b, 'c>(r: &'b mut R<'static>) -> &'b mut R<'c> {
+		std::mem::transmute::<&'b mut R<'static>, &'b mut R<'c>>(r)
+	}
+  ```
 ## trick
 - 数字字面量可插入下划线提高可读性：`const MAX_POINTS: u32 = 100_000;`
 - 数字字面量也可以用下划线表面类型：`let a=23_u32`
