@@ -6,7 +6,112 @@ categories:
 tags:
 cover:
 ---
+## Package(项目)、Crate(包)和Module(模块)
+- Package项目:包含独立的Cargo.toml文件，包含多个包，但只能包含一个库类型的包，可以包含多个二进制可执行类型的包
+- Crate包:是个独立的可编译单元，编译后会生成一个可执行文件或一个库,是一个模块树
+### cargo new到底干了啥
+- 不加任何选项，cargo为我们创建了一个名称是`my-project`的package,同时创建了Cargo.toml,虽然该文件没有提到`src/main.rs`为程序的入口，但Cargo有个惯例:**src/main.rs是二进制包的根文件，该二进制包的包名跟所属Package相同，这里都是my-project**,所有代码执行都从该文件中的main函数开始
+- 与`src/main.rs`一样，如果一个Package包含src/lib.rs,意味这包含一个库类型的同名包，该包的根文件为`src/lib.rs`
+### rust工程项目结构
+```rust
+├── Cargo.toml
+├── Cargo.lock
+├── src
+│   ├── main.rs
+│   ├── lib.rs
+│   └── bin
+│       └── main1.rs
+│       └── main2.rs
+├── tests
+│   └── some_integration_tests.rs
+├── benches
+│   └── simple_bench.rs
+└── examples
+    └── simple_example.rs
+```
+- 唯一库包：`src/lib.rs`
+- 默认二进制包：`src/main.rs`，编译后生成的可执行文件与Package同名
+- 其余二进制包：`src/bin/main1.rs...`它们会生成与文件同名的二进制可执行文件
+- 集成测试文件：tests目录
+- 基准性能测试文件:benches目录
+- 项目示例：examples目录
+### 包根crate root
+src/main.rs和src/lib.rs被成为包根，这是由于两个文件的内容形成了一个模块**crate**，假设lib.rs的内容如下：
+```rust
+mod front_of_house {
+    mod hosting {
+        fn add_to_waitlist() {}
+    }
+}
 
+pub fn eat_at_restaurant() {
+    // 绝对路径
+    crate::front_of_house::hosting::add_to_waitlist();
+
+    // 相对路径
+    front_of_house::hosting::add_to_waitlist();
+}
+```
+则模块树则如下:
+```shell
+crate
+ └── eat_at_restaurant
+ └── front_of_house
+     ├── hosting
+     │   ├── add_to_waitlist
+     │   └── seat_at_table
+     └── serving
+         ├── take_order
+         ├── serve_order
+         └── take_payment
+```
+### 模块
+- 父模块完全无法访问子模块的私有项，但是子模块却可以访问父模块，爷爷。。。的模块私有项
+- 绝对路径，从包根开始以crate(`/`)为开头
+- 相对路径，从当前模块开始以self(`.`),super(`..`),或当前模块标识符开头
+### 模块与文件分离
+src/lib.rs:
+```rust
+mod front_of_house {
+    mod hosting {
+        fn add_to_waitlist() {}
+    }
+}
+
+pub fn eat_at_restaurant() {
+    // 绝对路径
+    crate::front_of_house::hosting::add_to_waitlist();
+
+    // 相对路径
+    front_of_house::hosting::add_to_waitlist();
+}
+```
+与下面其实等价：
+src/front_of_house.rs:
+```rust
+pub mod hosting{
+	pub fn add_to_waitlist(){}
+}
+```
+src/lib.rs
+```rust
+mod front_of_house;
+
+pub use crate::front_of_house::hosting;
+
+pub fn eat_at_restaurant() {
+    hosting::add_to_waitlist();
+    hosting::add_to_waitlist();
+    hosting::add_to_waitlist();
+}
+```
+**注意：**`mod front_of_house`把该文件中模块内容加载进来，我们可以认为模块front_of_house的定义还在src/lib.rs,只不过具体内容在src/front_of_house.rs
+### 模块可见性
+- `pub`可见性无限制
+- `pub(crate)`表示在当前包可见
+- `pub(self)`在当前模块可见
+- `pub(super)`在父模块可见
+- `pub(in <path>)`表示在某个路径代表的模块中可见，其中path必须是父模块或祖先模块
 ## 常用命令
 - 创建项目:`cargo new <项目名>`
 - 编译并运行项目：`cargo run`

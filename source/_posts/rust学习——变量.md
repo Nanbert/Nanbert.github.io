@@ -57,6 +57,7 @@ fn forever() ->!{
 ## 结构体
 - 结构体不支持结构体内部某个字段标记为可变，只能结构体的实例可以标记为可变
 - 结构体必须有名称
+- 在模块中，结构体本身设置为pub,字段不指明仍为私有，不可见
 ### 定义
 ```rust
 struct User {
@@ -141,6 +142,7 @@ fn main() {
 ## 枚举
 - 任何类型的数据都可以放入枚举成员中
 - 枚举也可以通过`impl`定义自己的函数
+- 枚举在模块中，若枚举本身pub,则所有类型都可见，这点与结构体不同
 ```bash
 enum Message {
     Quit,
@@ -155,6 +157,30 @@ fn main() {
     let m3 = Message::ChangeColor(255,255,0);
 }
 ```
+### Result
+#### 定义
+```rust
+enum Result<T, E> {
+    Ok(T),
+    Err(E),
+}
+```
+#### unwrap和expect
+- unwrap如果成功，就将Ok(T)中的值取出来，如果失败就直接panic
+- expect和unwrap类似，但遇到错误可以自定义提示信息
+#### 错误传播`?`
+- 一个例子理解：
+```rust
+let mut f = File::open("hello.txt")?;
+//等价于
+let mut f = match f {
+	Ok(file) => file,
+	//向上传播
+	Err(e) => return Err(e),
+};
+```
+- 可以链式调用
+- 可以应用于Option
 ## 数组
 - 可以直接赋值，自动推断类型与数组长度
 - 完整定义
