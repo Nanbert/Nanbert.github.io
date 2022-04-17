@@ -61,7 +61,7 @@ s/a/b/
 |:-:|:-:|
 |n|1到512之间的一个数字,表示对文本模式中指定模式第n次出现的情况进行替换|
 |g|对模式空间的所有出现的情况进行全局更改|
-|p|打印模式空间的内容|
+|p|打印模式空间的内容,可以加感叹号，表示不打印|
 |W <file>|将模式空间的内容写到文件file中|
 
 #### 替换部分的元字符
@@ -171,4 +171,29 @@ s/d/b/
 ```
 一旦一个替换被执行，控制就到脚本末尾
 ### 一些例子
+- `sed '52q;d' file`打印52行，效率高
 - `cat jane.txt | tr '[A-Z]' '[a-z]' | tr ';.?\047,():"-' ' '|tr ' ' '\012' | grep -v '^ *$' | sort | uniq -c | sort -n`:统计单词数,首先大写替换为小写，然后替换标点为空格,再替换空格为换行,去空行,排序，计数，再排序。
+- `sed 'G' file`在每行后添加个空行
+- `sed -n "$!N;/^(.*)n1$/!P;D' test.txt`删除文件中连续且重复的行
+- `sed '/^$/d;G'`保证每一行后都有个空行，会删除连续空行，并添加空行
+- `sed 'n;d' test.txt`删除偶数行
+- `sed '/regex/{x;p;x}' test.txt`匹配regex之前添加空行
+- `sed '/regex/G' test.txt`匹配regex之后添加空行
+- `sed '/regex/{x;p;x;G;}' test.txt`之前之后都添加空行
+- `sed 'n;n;n;n;G'`每5行添加一个空行或`sed '0~5G' text.txt`
+- `sed '=' test.txt | sed 'N;s/s*ns*/t/'`给每一行添加行号，以制表符分隔
+- `sed '/./=' test.txt | sed '/./N; s/s*ns*/t/'`为非空行添加行号
+- `sed -n '$=' test.txt`统计行数
+- `sed 's/^[[:blank:]]*|[[:blank:]]*$//' test.txt`删除行首和行尾空白
+- `sed '1!G;h;$!d' test.txt`反转每一行的顺序(类似tac)
+- `sed '/n/!G;s/(.)(.*n)/&21/;//D;s/.//'`反转每一行的字母顺序(类似rev)
+- `sed -e ':a' -e 's/([0-9])([0-9]{3})($|,)/1,2/;ta' test.txt`给数字串加逗号或`sed -e ':a' -e 's/(.*[0-9])([0-9]{3})/1,2/;ta' test.txt`
+- `sed 'q' test.txt`打印文件第一行
+- `sed -n 'N;P' file`打印奇数行
+- `sed -n '/regex/{n;p}' test.txt` 打印匹配那一行的后一行
+- `sed -n '/regex/{=;x;1!p;g;$!N;p;D;}; h' test.txt`  打印匹配“regex”那一行的前后一行，并且打印匹配行的行号(类似grep -A1 -B1)
+- `sed -n '/^.{65}/p' test.txt`打印长于65个字符的行
+- `sed '/^$/N;/n$/D' test.txt`压缩连续空行(类似于cat -s)
+- `sed '/./,$!d'`删除文件开头的空行
+- `sed ':a;/^n*$/{$d;N;ba}' test.txt`删除文件结尾空行
+

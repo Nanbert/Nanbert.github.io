@@ -9,7 +9,7 @@ banner_img: https://z3.ax1x.com/2021/11/13/IyR7zd.jpg
 ---
 ### 注释
 * 单行注释: \#
-* 多行注释:  :<<EOF ... EOF或者 :<<! ... !
+* 多行注释:  `:<<EOF ... EOF`或者 `:<<! ... !`
 
 ### 变量
 * 创建普通变量: **name="test"** (=两边不可有空格)
@@ -98,6 +98,20 @@ for i in "${!arr[@]}";
 do
     printf "%s\t%s\n" "$i" "${arr[$i]}"
 done
+```
+### 环境变量
+#### FUNCNAME
+该环境变量是个数组，存储当前位置函数调用的堆栈，当只有主程序时，个数为0,当存在调用函数时，第一个总是当前函数名，最后一个为main表示主程序
+#### BASH_SOURCE
+是一个数组，不过它的第一个元素是当前脚本名称，然后是source它的脚本，依次类推，常用如下
+```bash
+# 如果脚本是被source的话
+if [ -n "$BASH_SOURCE" -a "$BASH_SOURCE" != "$0" ]
+then
+    do_something
+else # Otherwise, run directly in the shell
+    do_other
+fi
 ```
 
 ### 参数传递的相关特殊变量
@@ -532,9 +546,11 @@ set 指令可根据不同的需求来设置当前所使用 shell 的执行方式
 |-o [option]|特殊属性有很多,见下面|
 
 **option属性**
-- pipefail:管道流水线中有一个失败，则返回失败值，从右往左数起
+- pipefail:管道流水线中有一个失败，则返回失败值，从右往左数起(默认只返回最后一个命令的退出码)
+- noclobber:防止>重定向操作符覆盖已有内容，你可以使用`command >| file`强制覆盖
 
 ### Tips
+* 
 * **<<**和**<<-**的区别在于,<<-会忽略接下来输入的tab建,一般用于格式化脚本,便于读代码
 * 组命令(在当前shell执行)--`{ command1;command2;command3  }`,子shell--`(command1;command2;command3)`一般配合管道符
 * trap命令
@@ -634,6 +650,8 @@ c.命令替换,如下示例:
 |' '| 取消所有元字符特殊含义|
 
 * RANDOM是个内建的随机值
+* `<<<`
+here-string语法，允许直接传递字符串给标准输入
 * eval
 eval 的功能是将字符串作为代码来执行。看上去好像很简单，但实际涉及很复杂的内容，主要是符号转义导致的语义问题。
 ```

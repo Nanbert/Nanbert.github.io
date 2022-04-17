@@ -20,23 +20,31 @@ banner_img: /img/linuxCmd.jpeg
   |ctrl+l|等价于clear|
   |alt+f|前移一个字|
   |alt+b|后移一个字|
+  |alt+c|单词首字符大写|
   |alt+t|光标位置的字和其前面的字互换|
   |alt+l|从光标到字尾转换成小写字母|
   |alt+u|从光标到字尾转换成大写字母|
   |alt+d|剪切从光标到字尾的文本|
+  |alt+#|注释当前的命令|
+  |alt+.|插入上一个命令的最后一个参数|
   |alt+Backspace|剪切从光标到字首的文本|
   |ctrl+k|删除光标后的字符|
   |ctrl+d|删除光标上的字符|
   |ctrl+t|交换光标处和它的前面字符|
-  |ctrl+u|删除光标钱的字符|
   |ctrl+s|锁定屏幕|
   |ctrl+q|解锁|
+  |ctrl+h|删除左侧字符|
+  |ctrl+w|删除上一个单词|
   |ctrl+y|粘贴剪切的文本|
   |ctrl+k|剪切从光标到行尾的文本|
   |ctrl+u|剪切从光标到行首的文本|
+  |ctrl+v|输入特殊字符|
   |ctrl+r|搜索词,再次按该组合键可以循环搜索,回车选中,ctrl+G不做任何操作返回终端|
+  |ctrl+x ctrl+e|在文本编辑器中快速打开当前命令,退出编辑器后，自动执行|
+  |set -o vi |设置vi风格|
   |!$|重新使用上一个命令中的最后一项(最好用`alt+.`可以跳转上几次)|
   |!number|重复历史表中第number行命令|
+  |!!|执行上一个命令(常用于忘加sudo`sudo !!`)|
 - 命令间连接
   - ";":一直执行无论成功与否
   - "&&":前面的命令执行成功才能执行后面
@@ -318,3 +326,18 @@ parallel用法复杂，建议读man
 **例子：**
 - `seq 0 2 100 | parallel "echo {}^2 | bc"`
 - `seq 1000 | parallel -N100 --pipe --slf hostnames "paste -sd+ | bc" | paste -sd+|bc`并行算1-1000的和，一个核算一百个参数
+- history
+任何匹配HISTIGNORE环境变量的命令不会被记录,以`:`分割多个模式
+1) `unset HISTFILE`当前会话下不记录命令行历史
+2) 设置HISTIGNORE为`HISTIGNORE="[&:\t]"`在命令前加空格会使当前命令不被记录到历史,并且`&`表示上一次执行的命令，就是重复命令只记录一次
+3) `HISTFILE=~/docs/shell_history.txt`更改历史记录文件
+4) `HISTTIMEFORMAT="%Y-%m-%d %H:%M:%S"`在每条记录前加时间戳
+5) 显示执行最多的10个命令
+```bash
+ history |
+    sed 's/^ \+//;s/  / /' |
+    cut -d' ' -f2- |
+    awk '{ count[$0]++ } END { for (i in count) print count[i], i }' |
+    sort -rn |
+    head -10
+```
