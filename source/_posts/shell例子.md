@@ -59,6 +59,24 @@ while IFS= read -rn1 c; do
 done <<< "$str"
 ```
 -n1表示一次读一个字符
+- 获取一个字符的ascll
+`printf '%02x' "+"`
+- 获取最后一个参数
+`echo ${@: -1}`或`echo ${!#}`
+- 遍历参数
+`for arg in "$@"`等价于`for arg`
+## 函数特殊用法
+- 测试文件是否存在函数
+`function fileExists() [[ -f $1 ]]`
+- 测试是否及偶数
+`function isEven() (( $1 % 2 == 0 ))`
+- 使用小括号
+会fork个子进程，对环境的修改不会印象外面，不需要恢复现场
+```bash
+function name() ( 
+... 
+)
+```
 ## 文件描述符与重定向
 bash启动时，文件描述符表如下所示：
 ![](/img/file_descriptor.png)
@@ -85,6 +103,20 @@ sed 's|http://||' <<EOF
 http://url1.com
 http://url2.com
 http://url3.com
+EOF
+```
+```bash
+while read line2; do
+    let b++
+    echo ??$line2??
+done << EOF
+`grep -v 1 /tmp/test.txt`
+EOF
+```
+如果MARKER用引号括起来，那么变量是不会展开的：
+```bash
+cat<<"EOF"
+hello, $USER #USER不会展开
 EOF
 ```
 ### exec

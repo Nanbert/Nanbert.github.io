@@ -133,4 +133,9 @@ fn main() {
     println!("{:?}", r);
 }
 ```
-
+## deref特征
+- 在表达式中必须显式的解引用，并且不会发生递归的解引用，当指明时，有几层就解几层,并且本质上是`*y`=>`*(y.deref())`
+- 隐式的解引用，会递归，直到类型匹配
+- 当 T: Deref<Target=U>，可以将 &T 转换成 &U
+- 当 T: DerefMut<Target=U>，可以将 &mut T 转换成 &mut U
+- 当 T: Deref<Target=U>，可以将 &mut T 转换成 &U
