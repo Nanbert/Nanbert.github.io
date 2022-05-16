@@ -6,6 +6,15 @@ categories:
 tags:
 cover:
 ---
+## 输入
+### 从标准输入读取
+```rust
+    let mut index = String::new();
+    // 读取控制台的输出
+    io::stdin()
+        .read_line(&mut index)
+        .expect("Failed to read line");
+```
 
 ## 常用宏
 - print!:将格式化文本输出到标准输出，不带换行符

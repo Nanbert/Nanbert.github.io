@@ -139,3 +139,38 @@ fn main() {
 - 当 T: Deref<Target=U>，可以将 &T 转换成 &U
 - 当 T: DerefMut<Target=U>，可以将 &mut T 转换成 &mut U
 - 当 T: Deref<Target=U>，可以将 &mut T 转换成 &U
+## cfg!
+### debug_assertions
+`if cfg!(debug_assertions)`debug模式下为true
+
+## 常用编译器属性标记
+- `#![allow(unused_variables)]`
+- `#[allow(dead_code)]`
+## 有用冷门宏
+### unimplemented!()
+告诉编译器该函数尚未实现，还有todo!(),如下：
+```rust
+#[allow(dead_code)]
+fn read(f: &mut File, save_to: &mut Vec<u8>) -> ! {
+    unimplemented!()
+}
+```
+### dbg!()
+接受一个表达式，并取走所有权，然后打印文件名，行号等debug信息
+```rust
+#[derive(Debug)]
+struct Rectangle {
+    width: u32,
+    height: u32,
+}
+
+fn main() {
+    let scale = 2;
+    let rect1 = Rectangle {
+        width: dbg!(30 * scale),
+        height: 50,
+    };
+
+    dbg!(&rect1);
+}
+```

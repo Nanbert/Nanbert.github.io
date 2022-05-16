@@ -18,6 +18,7 @@ cover:
 ### String->&str
 - 取引用`&s`
 - `s.as_str()`
+- 取个新的切片：`let slice= &s[0..len]`
 ## String的常用操作
 ### 追加
 改变原本字符
@@ -77,3 +78,23 @@ for b in "中国人".bytes() {
     println!("{}", b);
 }
 ```
+## 常用方法
+### str.lines()
+以`\n`或`\r\n`分隔字符串，返回一个迭代器
+### split()
+你懂的，返回一个迭代器
+### trim()
+你懂的，去除首尾空白字符
+### parse()
+类型转换
+```rust
+let four: u32="4".parse().unwrap();
+let four = "4".parse::<u32>();
+```
+### clone()
+String类型的深拷贝
+## 取消转义
+双引号之间若还有转义字符，会被转义，若想取消转义，有以下方法：
+- `let raw_str=r"Escapes don't work here: \x3F \u{211D}"`
+- 若包含双引号可以：` let quotes = r#"And then I said: "There is no escape!""#;`
+- 若还是有歧义继续加`#`:`let longer_delimiter = r###"A string with "# in it. And even "##!"###`

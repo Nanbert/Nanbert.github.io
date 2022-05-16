@@ -14,20 +14,33 @@ cover:
 - 与`src/main.rs`一样，如果一个Package包含src/lib.rs,意味这包含一个库类型的同名包，该包的根文件为`src/lib.rs`
 ### rust工程项目结构
 ```rust
-├── Cargo.toml
+.
 ├── Cargo.lock
-├── src
-│   ├── main.rs
+├── Cargo.toml
+├── src/
 │   ├── lib.rs
-│   └── bin
-│       └── main1.rs
-│       └── main2.rs
-├── tests
-│   └── some_integration_tests.rs
-├── benches
-│   └── simple_bench.rs
-└── examples
-    └── simple_example.rs
+│   ├── main.rs
+│   └── bin/
+│       ├── named-executable.rs
+│       ├── another-executable.rs
+│       └── multi-file-executable/
+│           ├── main.rs
+│           └── some_module.rs
+├── benches/
+│   ├── large-input.rs
+│   └── multi-file-bench/
+│       ├── main.rs
+│       └── bench_module.rs
+├── examples/
+│   ├── simple.rs
+│   └── multi-file-example/
+│       ├── main.rs
+│       └── ex_module.rs
+└── tests/
+    ├── some-integration-tests.rs
+    └── multi-file-test/
+        ├── main.rs
+        └── test_module.rs
 ```
 - 唯一库包：`src/lib.rs`
 - 默认二进制包：`src/main.rs`，编译后生成的可执行文件与Package同名
@@ -141,6 +154,59 @@ replace-with = 'ustc'
 registry = "git://mirrors.ustc.edu.cn/crates.io-index"
 ```
 ## Cargo.lock
-- 功能作用：根据toml文件生成的项目依赖详细清单
+- 功能作用：根据toml文件生成的项目依赖详细清单,锁住构建时的版本信息
 - 该不该上传git：一个可运行项目就上传，一个依赖库则添加到`.gitignore`
+## cargo命令
+### 更新依赖
+- 更新所有依赖:`cargo update`
+- 只更新`regex`:`cargo update-p regex`
+### 测试`cargo test`
+- 功能：他会在`src/`底下寻找单元测试，也会在`tests/`目录下寻找集成测试,同时还会编译`examples/`下的示例文件，以及文档中的示例
+## cargo缓存
+- 构建时，cargo会将已下载的依赖放在`CARGO_HOME`目录下，默认是`$HOME/.cargo/`
+### 文件
+- config.toml:全局配置文件
+- credentials.toml:提供私有化登陆证书，用于package注册中心，例如crates.io
+- .crates.toml,.crates2.json:包含了cargo install安装包的package信息
+### 目录
+- bin:包含了通过cargo install或rustup下载的包编译出的可执行文件。
+- git存储了`Git`的资源文件
+  - git/db:当一个包依赖某个git仓库时，Cargo会将该仓库克隆到git/db目录下，如果未来需要还会对其进行更新
+  - git/checkouts:若指定了git源和commit，那相应的仓库就会从git/db中checkout到该目录下，因此同一个仓库的不同checkout共存成为了可能性
+- registry:包含了注册中心（如crates.io）的元数据和packages
+  - registry/index:一个git仓库，包含了注册中心的所有可用包的元数据（版本、依赖等）
+  - registry/cache:保存了已下载的依赖，以gzip的压缩格式，后缀名`.crate`
+  - registry/src:若一个已下载的`.crate`档案被一个package所需要，该档案会被解压到`registry/src`文件夹下，最终rustc在其中找到所需要的.rs文件
+### ci的考虑
+应该保留缓存下列目录：
+- bin
+- registry/index
+- registry/cache
+- git/db
+## 构建缓存-target目录
+- target目录结构取决于是否使用--target标志为特定的平台构建，不使用则使用宿主机架构
+- target下的每个子目录包含了相应的发布配置profile的构建结果，release和debug是自带的profile，见下表
 
+|目录|描述|
+|:-:|:-:|
+|target/debug/|包含了 dev profile 的构建输出(cargo build 或 cargo build --debug)|
+|target/release/|release profile 的构建输出，cargo build --release|
+|target/foo/|自定义 foo profile 的构建输出，cargo build --profile=foo|
+
+出于历史原因：
+- dev和test profile的构建结果都放在debug下
+- release和bench profile则放在release目录下
+### 常见目录说明
+
+|目录|描述|
+|:-:|:-:|
+|target/debug/|包含编译后的输出，例如二进制可执行文件、库对象|
+|target/debug/examples/|包含示例对象|
+|target/doc/|包含cargo doc生成的文档|
+|target/package/|cargo package或cargo publish生成的输出|
+|target/debug/deps|依赖和其他输出成果|
+|target/debug/incremental|rustc增量编译的输出，该缓存可以用于提升后续的编译速度|
+|target/debug/build/|构建脚本的输出|
+
+### 依赖信息文件
+每个编译成果旁边有个依赖信息文件，文件后缀是`.d`。类似Makefile
