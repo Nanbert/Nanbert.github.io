@@ -71,22 +71,6 @@ pub struct BigY;
 - `cargo doc`直接生成HTML文件，放在target/doc目录下
 - `cargo doc --open`在浏览器中查看
 
-## tips
-- rust中无法直接为外部类型实现外部特征，可以使用`newtype`:
-```rust
-struct Array(Vec<i32>);
-
-use std::fmt;
-impl fmt::Display for Array {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        write!(f, "数组是：{:?}", self.0)
-    }
-}
-fn main() {
-    let arr = Array(vec![1, 2, 3]);
-    println!("{}", arr);
-}
-```
 ## 生命周期初认识
 rust会分析所有引用的生命周期,来提高安全性
 ### 函数中的生命周期
@@ -139,6 +123,10 @@ fn main() {
 - 当 T: Deref<Target=U>，可以将 &T 转换成 &U
 - 当 T: DerefMut<Target=U>，可以将 &mut T 转换成 &mut U
 - 当 T: Deref<Target=U>，可以将 &mut T 转换成 &U
+## 方法中的self
+- 在impl中`$self`是`self:&Self`的简写
+- Self指代被实现方法或特征的结构体类型，self指代此类型的实例
+
 ## cfg!
 ### debug_assertions
 `if cfg!(debug_assertions)`debug模式下为true

@@ -17,7 +17,7 @@ for _ in 0..10{
 }
 ```
 ## loop
-- loop也是一个表达式
+- loop也是一个表达式(见break示例)
 ## break
 - break可以单独使用，也可以带一个返回值，有些类似return
 ```rust

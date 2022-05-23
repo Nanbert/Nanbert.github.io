@@ -12,6 +12,7 @@ cover:
 - `X|Y`用来表示逻辑或
 - match本身也是表达式可以用来赋值
 - match匹配不成功是不会发生所有权的转移
+- `_`不会取走所得权
 
 ### 格式
 ```rust
@@ -61,7 +62,12 @@ if let Some(3) = v {
 `let Some(x) = some_option_value;`会编译出错，因为没覆盖None  
 `if let Some(x) = some_option_value{}`应该这样，但是x的作用域仅限花括号内
 ### while let匹配
-和if let类似
+和if let类似,一个十分有用的例子：
+```rust
+while let Some(top) = stack.pop() {
+    println!("{}", top);
+}
+```
 ### matches!宏
 该宏将一个表达式跟模式进行匹配，然后返回true或false  
 `v.iter().filter(|x| x == MyEnum::Foo);`：无法编译通过，无法将x直接跟一个枚举成员进行比较,应该如下：
@@ -115,7 +121,8 @@ match msg {
 ```
 上例可以这么理解通过在`3..=7`之前指定`id_variable @`,我们捕获了任何匹配此范围的值并同时将该值绑定到变量id_variable
 ### 前绑定后结构
-- 下例字段都是基本形没发生所有权转移，所以这么用
+- 下例字段都是基本形没发生所有权转移，所以这么用,没有copy特性的用起来还挺蛋疼
+- 可以在绑定新变量的同时，对目标进行解构
 ```rust
     let p @ Point {x: px, y: py } = Point {x: 10, y: 23};
     println!("x: {}, y: {}", px, py);
@@ -135,3 +142,4 @@ fn main() {
 ```
 ## tips
 - 使用下划线开头可以使编译器忽略未使用的变量
+- 可以使用序列

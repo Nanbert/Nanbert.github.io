@@ -166,30 +166,6 @@ fn main() {
     let m3 = Message::ChangeColor(255,255,0);
 }
 ```
-### Result
-#### 定义
-```rust
-enum Result<T, E> {
-    Ok(T),
-    Err(E),
-}
-```
-#### unwrap和expect
-- unwrap如果成功，就将Ok(T)中的值取出来，如果失败就直接panic
-- expect和unwrap类似，但遇到错误可以自定义提示信息
-#### 错误传播`?`
-- 一个例子理解：
-```rust
-let mut f = File::open("hello.txt")?;
-//等价于
-let mut f = match f {
-	Ok(file) => file,
-	//向上传播
-	Err(e) => return Err(e),
-};
-```
-- 可以链式调用
-- 可以应用于Option
 ## 数组
 - 可以直接赋值，自动推断类型与数组长度
 - 完整定义
@@ -266,37 +242,6 @@ let b_: u8 = match b.try_into() {
   2) 编译器会尝试`<&T>::foo(value)`和`<&mut T>::foo(value)`,称为引用方法调用
   3) 编译器尝试解引用,这里使用Deref特征,若`T:Deref<Target = U>`(T可以被解引用为U)，则会使用U类型进行尝试
   4) 若还不行，且T是个定长类型，编译器将会转为不定长类型，如`[i32;2]`转为`[i32]`
-### unsafe的强制转换
-- `mem::transmute<T,U>`将类型T直接转换成类型U,只要他们字节数相同
-- `mem::transmute_copy<T,U>`从T中拷贝出U类型所需的字节数，然后转换成U
-- 应用举例:
-  - 将裸指针转变成函数指针:
-  ```rust
-	fn foo() -> i32 {
-		0
-	}
-
-	let pointer = foo as *const ();
-	let function = unsafe { 
-		// 将裸指针转换为函数指针
-		std::mem::transmute::<*const (), fn() -> i32>(pointer) 
-	};
-	assert_eq!(function(), 0);
-  ```
-  - 延长生命周期，或缩短一个静态生命周期寿命
-  ```rust
-	struct R<'a>(&'a i32);
-
-	// 将 'b 生命周期延长至 'static 生命周期
-	unsafe fn extend_lifetime<'b>(r: R<'b>) -> R<'static> {
-		std::mem::transmute::<R<'b>, R<'static>>(r)
-	}
-
-	// 将 'static 生命周期缩短至 'c 生命周期
-	unsafe fn shorten_invariant_lifetime<'b, 'c>(r: &'b mut R<'static>) -> &'b mut R<'c> {
-		std::mem::transmute::<&'b mut R<'static>, &'b mut R<'c>>(r)
-	}
-  ```
 ## trick
 - 数字字面量可插入下划线提高可读性：`const MAX_POINTS: u32 = 100_000;`
 - 数字字面量也可以用下划线表面类型：`let a=23_u32`

@@ -341,3 +341,4 @@ parallel用法复杂，建议读man
     sort -rn |
     head -10
 ```
+- 使用python快速搭建web服务器`python3 -m http.server 8080`
