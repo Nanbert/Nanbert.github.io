@@ -330,3 +330,10 @@ fn main() {
     println!("{}", arr);
 }
 ```
+### Sized特征
+使用泛型时，编译器会为泛型自动加上约束Sized,即编译时就知道其大小,可以手动使用`?Sized`特征表示不定大小（str,[T],dyn Trait）,如下：
+```rust
+fn generic<T: ?Sized>(t: &T) {
+    // --snip--
+}
+```

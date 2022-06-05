@@ -98,3 +98,10 @@ String类型的深拷贝
 - `let raw_str=r"Escapes don't work here: \x3F \u{211D}"`
 - 若包含双引号可以：` let quotes = r#"And then I said: "There is no escape!""#;`
 - 若还是有歧义继续加`#`:`let longer_delimiter = r###"A string with "# in it. And even "##!"###`
+## Box<str>
+&str包含了内存位置及长度信息，而str是不定长类型，Box<str>要想正常使用，也需要包含这些信息，通常如下：`let s1:Box<str> = "hello".into()`
+## 通过Box::leak转成static生命周期
+```rust
+let mut s = String::new();
+Box::leak(s.into_boxed_str())
+```

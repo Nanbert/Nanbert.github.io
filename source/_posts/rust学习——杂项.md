@@ -70,61 +70,44 @@ pub struct BigY;
 ### 命令
 - `cargo doc`直接生成HTML文件，放在target/doc目录下
 - `cargo doc --open`在浏览器中查看
-
-## 生命周期初认识
-rust会分析所有引用的生命周期,来提高安全性
-### 函数中的生命周期
-函数的返回值如果是一个引用类型，那么它的生命周期只会来源于：
-- 函数参数的生命周期
-- 函数体中的某个新建引用的生命周期
-第二种情况明显是错误，典型的悬垂引用
-### 使用说明
-- 格式：`fn func<'a> (para1: &'a type,para2: &'a type)-> &'a type{}`
-- 说明：**在通过函数签名指定生命周期参数时，我们并没有改变传入引用或者返回引用的真实生命周期，而是告诉编译器当不满足此约束条件时，就拒绝编译通过。**
-- 含义：当传递具体值时，'a的生命周期等于para1和para2(取两个参数的交集)，返回的生命周期也等于'a,若不满足条件就报错
-### 结构体中的生命周期
-- 格式：
-```rust
-struct ImportantExcerpt<'a> {
-    part: &'a str,
-}
-```
-- 含义：结构体ImportantExcerpt所引用的字符串str必须比改结构体活得长
-### 三条默认添加生命周期规则
-函数或方法中，参数的生命周期被称为输入生命周期，返回值的生命周期被称为输出生命周期。rust有以下三条规则:
-- 每一个引用参数都会获得独自的生命周期  
-`fn foo(a:& i32,y:& i32)`编译器自动转成`foo<'a, 'b>(x: &'a i32, y: &'b i32)`
-- 若只有一个输入生命周期(函数参数中只有一个引用类型)，那么该生命周期会被赋给所有的输出生命周期，也就是所有返回值的生命周期都等于该输入生命周期  
-`fn foo(x: &i32) -> &i32`会转为`fn foo<'a>(x: &'a i32) -> &'a i32`
-- 若存在多个输入生命周期，且其中一个是 &self 或 &mut self，则 &self 的生命周期被赋给所有的输出生命周期
-### 生命周期约束
-- `'a:'b`：a的生命周期大于等于b
-- `T:'a`：类型T必须比a生命周期大
-## 再借用
-可变引用和不可变引用不能同时存在(即作用域不重叠)，但再借用可以避免，如下
+## 函数中mut位置
+- `fn do1(c: String) {}`：表示实参会将所有权传递给c
+- `fn do2(c: &String) {}`：表示实参的不可变引用（指针）传递给c，实参需带& 声明
+- `fn do3(c: &mut String) {}`：表示实参可变引用（指针）传递给c，实参需带let mut声明，且传入需带&mut
+- `fn do4(mut c: String) {}`：表示实参会将所有权传递给c，且在函数体内c是可读可写的，实参无需mut声明
+- `fn do5(mut c: &mut String) {}`：表示实参可变引用指向的值传递给c，且c在函数体内部是可读可写的，实参需带let mut声明，且传入需带&mut
+ 一句话总结：在函数参数中，冒号左边的部分，如：mut c，这个 mut 是对函数体内部有效；冒号右边的部分，如：&mut String，这个&mut是针对外部实参传入时的形式（声明）说明。
+例子:
 ```rust
 fn main() {
-    let mut p = Point { x: 0, y: 0 };
-    let r = &mut p;
-    // reborrow! 此时对`r`的再借用不会导致跟上面的借用冲突
-    let rr: &Point = &*r;
+    let d1 = "str".to_string();
+    do1(d1);
 
-    // 再借用`rr`最后一次使用发生在这里，在它的生命周期中，我们并没有使用原来的借用`r`，因此不会报错
-    println!("{:?}", rr);
+    let d2 = "str".to_string();
+    do2(&d2);
 
-    // 再借用结束后，才去使用原来的借用`r`
-    r.move_to(10, 10);
-    println!("{:?}", r);
+    let mut d3 = "str".to_string();
+    do3(&mut d3);
+
+    let d4 = "str".to_string();
+    do4(d4);
+
+    let mut d5 = "str".to_string();
+    do5(&mut d5);
 }
+
+fn do1(c: String) {}
+
+fn do2(c: &String) {}
+
+fn do3(c: &mut String) {}
+
+fn do4(mut c: String) {}
+
+fn do5(mut c: &mut String) {}
 ```
-## deref特征
-- 在表达式中必须显式的解引用，并且不会发生递归的解引用，当指明时，有几层就解几层,并且本质上是`*y`=>`*(y.deref())`
-- 隐式的解引用，会递归，直到类型匹配
-- 当 T: Deref<Target=U>，可以将 &T 转换成 &U
-- 当 T: DerefMut<Target=U>，可以将 &mut T 转换成 &mut U
-- 当 T: Deref<Target=U>，可以将 &mut T 转换成 &U
 ## 方法中的self
-- 在impl中`$self`是`self:&Self`的简写
+- 在impl中`&self`是`self:&Self`的简写
 - Self指代被实现方法或特征的结构体类型，self指代此类型的实例
 
 ## cfg!

@@ -242,7 +242,46 @@ let b_: u8 = match b.try_into() {
   2) 编译器会尝试`<&T>::foo(value)`和`<&mut T>::foo(value)`,称为引用方法调用
   3) 编译器尝试解引用,这里使用Deref特征,若`T:Deref<Target = U>`(T可以被解引用为U)，则会使用U类型进行尝试
   4) 若还不行，且T是个定长类型，编译器将会转为不定长类型，如`[i32;2]`转为`[i32]`
+### 使用std::mem::transmute
+见标准库那博文
+### 枚举与整数的转换
+直接例子：
+```rust
+use std::convert::TryFrom;
+use std::convert::TryInto;
+enum MyEnum {
+    A = 1,
+    B,
+    C,
+}
+impl TryFrom<i32> for MyEnum {
+    type Error = ();
+
+    fn try_from(v: i32) -> Result<Self, Self::Error> {
+        match v {
+            x if x == MyEnum::A as i32 => Ok(MyEnum::A),
+            x if x == MyEnum::B as i32 => Ok(MyEnum::B),
+            x if x == MyEnum::C as i32 => Ok(MyEnum::C),
+            _ => Err(()),
+        }
+    }
+}
+fn main() {
+    let x = MyEnum::C as i32;
+
+    match x.try_into() {
+        Ok(MyEnum::A) => println!("a"),
+        Ok(MyEnum::B) => println!("b"),
+        Ok(MyEnum::C) => println!("c"),
+        Err(_) => eprintln!("unknown number"),
+    }
+}
+```
+## 类型别名-type
+类型别名不是一个独立的全新类型，而是一个类型的别名，可以用来简化。
+`type Thunk = Box<dyn Fn() + Send + 'static>;`
 ## trick
 - 数字字面量可插入下划线提高可读性：`const MAX_POINTS: u32 = 100_000;`
 - 数字字面量也可以用下划线表面类型：`let a=23_u32`
 - 获得类型的大小:std::mem::size_of_val(&x)
+
