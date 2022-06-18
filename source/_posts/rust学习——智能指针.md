@@ -67,6 +67,7 @@ Rc用于单线程，Arc用于多线程，都是通过引用计数，允许一个
 - 这两个可以在拥有不可变引用的同时修改目标数据。
 - Cell和RefCell的区别在于，Cell<T>使用于T实现了Copy的情况,
 - 这个只是跳过编译阶段的检查（貌似就这个功能），运行阶段如果违反（可变引用与不可变引用同时存在）该报错还报错
+- 常和Rc一起用，类似于多线程的Arc和MUtex结合
 - `use std::cell::Cell`,`use std::cell::RefCell`
 ### 定义
 - `let c = Cell::new("hello")`
@@ -105,3 +106,8 @@ fn main() {
 ### from_mut解决借用冲突
 - `Cell::from_mut`,将`&mut T`转为`&Cell<T>`
 - `Cell::as_slice_of_cells`,将`&Cell<[T]>`转为`&[Cell<T>]`
+## Weak与循环引用
+- 它无法阻止所引用的内存值被释放掉，不增加计数
+- weak是个弱引用，不保证引用关系依然存在，如果不存在返回None
+- Rc<T>调用downgrade转换成Weak<T>
+- Weak<T>可调用upgrade转成Option<Rc<T>>
