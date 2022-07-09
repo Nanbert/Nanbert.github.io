@@ -65,6 +65,25 @@ done <<< "$str"
 `echo ${@: -1}`或`echo ${!#}`
 - 遍历参数
 `for arg in "$@"`等价于`for arg`
+- 路径中含空格：
+  - 非递归：
+```bash
+for i in *.mp3;
+do
+	echo "$i"
+done
+```
+  - 递归：
+```bash
+OLDIFS="$IFS"
+filelist=$(find -name '*.mp3' -print0|xargs --null ls)&&IFS=$'\n'
+for i in $filelist;
+do
+	IFS="$OLDIFS"
+	echo "$i"
+done
+```
+**注意，IFS必须单引号，filelist的变量是必须的,不能写在for后面,要即时还原IFS**
 ## 函数特殊用法
 - 测试文件是否存在函数
 `function fileExists() [[ -f $1 ]]`
