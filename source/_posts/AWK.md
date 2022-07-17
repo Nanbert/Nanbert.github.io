@@ -4,8 +4,8 @@ date: 2021-01-24 17:08:06
 subtitle:
 categories:
 tags:
-index_img: https://z3.ax1x.com/2021/11/13/Iy56Ds.jpg
-banner_img: https://z3.ax1x.com/2021/11/13/Iy56Ds.jpg
+index_img: /img/awk.jpg
+banner_img: /img/awk.jpg
 ---
 ### 语法
 `awk [-v var=value] [-F re] [--] 'pattern n{action}' var=value files`

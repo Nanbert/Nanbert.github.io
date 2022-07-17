@@ -257,7 +257,7 @@ anacron是自动运行的?(有待研究)
 - env 或 printenv打印当前环境变量(全局变量)
 - set打印当前环境变量并按字母排列(包括局部变量、全局变量、用户定义变量)
 - alias查看别名,上面的不可以查看
-- `ps -f --forest`可以显示当前shell的进程关系
+- `ps -f --forest` 可以显示当前shell的进程关系
 - coproc(这就是协程?)
   `coproc [job_name(可选)] [command]`等价于`( command )&`
   即生成后台子shell，并在子shell中执行命令。command本身可以是小括号命令集(嵌套子shell)或大括号命令集
@@ -321,7 +321,7 @@ parallel用法复杂，建议读man
 |:-:|:-:|
 |`{}`|一行的内容|
 |`{/}`|相当于对当前行运行basename|
-|`{#}`|任务号，从1开始编号|
+|`{井}`|任务号，从1开始编号|
 
 **例子：**
 - `seq 0 2 100 | parallel "echo {}^2 | bc"`

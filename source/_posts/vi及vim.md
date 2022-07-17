@@ -4,8 +4,8 @@ date: 2019-07-18 16:53:33
 subtitle:
 categories: 文本处理
 tags: 命令
-index_img: https://z3.ax1x.com/2021/11/13/IyfJun.png
-banner_img: https://z3.ax1x.com/2021/11/13/IyfJun.png
+index_img: /img/vim.png
+banner_img: /img/vim.png
 ---
 1.  
 vi:

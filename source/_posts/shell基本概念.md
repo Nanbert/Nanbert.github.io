@@ -4,8 +4,8 @@ date: 2021-10-15 20:10:51
 subtitle:
 categories:
 tags:
-index_img: https://z3.ax1x.com/2021/11/13/IyR7zd.jpg
-banner_img: https://z3.ax1x.com/2021/11/13/IyR7zd.jpg
+index_img: /img/bash.jpg
+banner_img: /img/bash.jpg
 ---
 ### 注释
 * 单行注释: \#

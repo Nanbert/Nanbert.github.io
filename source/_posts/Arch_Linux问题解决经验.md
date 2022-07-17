@@ -4,8 +4,8 @@ date: 2020-12-31 14:59:37
 subtitle:
 categories:
 tags:
-index_img: https://z3.ax1x.com/2021/04/03/cnh3iq.jpg
-banner_img: https://z3.ax1x.com/2021/04/03/cnh3iq.jpg
+index_img: /img/fix.jpg
+banner_img: /img/fix.jpg
 ---
 1.广通无线网卡问题
 `lspci`查看那个shit一样的网卡名字"BCM43142"

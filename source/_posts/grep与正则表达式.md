@@ -4,8 +4,8 @@ date: 2020-11-20 19:46:54
 subtitle:
 categories:
 tags:
-index_img: https://z3.ax1x.com/2021/04/03/cnhQds.jpg
-banner_img: https://z3.ax1x.com/2021/04/03/cnhQds.jpg
+index_img: /img/regex.jpg
+banner_img: /img/regex.jpg
 ---
 # grep
 格式:`grep [options] [regex] [file...]`

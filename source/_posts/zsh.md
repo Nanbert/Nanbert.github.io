@@ -4,8 +4,8 @@ date: 2022-02-03 19:54:32
 subtitle:
 categories:
 tags:
-index_img: https://s4.ax1x.com/2022/02/03/HEjd6e.jpg
-banner_img: https://s4.ax1x.com/2022/02/03/HEjd6e.jpg
+index_img: /img/zsh.png
+banner_img: /img/zsh.png
 ---
 
 ### 变量定义
