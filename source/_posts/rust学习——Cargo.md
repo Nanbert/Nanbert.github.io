@@ -4,7 +4,8 @@ date: 2022-04-09 18:01:07
 subtitle:
 categories:
 tags:
-cover:
+index_img: /img/rust.png
+banner_img: /img/rust.png
 ---
 ## Package(项目)、Crate(包)和Module(模块)
 - Package项目:包含独立的Cargo.toml文件，包含多个包，但只能包含一个库类型的包，可以包含多个二进制可执行类型的包

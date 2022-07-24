@@ -4,8 +4,8 @@ date: 2020-01-17 12:45:15
 subtitle:
 categories:
 tags:
-index_img: /img/makefile.png
-banner_img: /img/makefile.png
+index_img: /img/makeFile.png
+banner_img: /img/makeFile.png
 ---
 
 ### 引用其它的Makefile

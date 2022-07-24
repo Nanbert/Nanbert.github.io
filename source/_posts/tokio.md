@@ -4,7 +4,8 @@ date: 2022-06-27 21:04:09
 subtitle:
 categories:
 tags:
-cover:
+index_img: /img/tokio.png
+banner_img: /img/tokio.png
 ---
 ## 不适用场景
 - 并行运行CPU密集型的任务（并行计算）

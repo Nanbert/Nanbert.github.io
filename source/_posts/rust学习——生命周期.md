@@ -4,7 +4,8 @@ date: 2022-05-26 12:40:30
 subtitle:
 categories:
 tags:
-cover:
+index_img: /img/rust.png
+banner_img: /img/rust.png
 ---
 ## 生命周期几个注意点
 - 在存在多个**引用**时，编译器有时会无法自动推导生命周期，此时就需要我们手动去标注，通过为参数标注合适的生命周期来帮助编译器进行借用检查分析

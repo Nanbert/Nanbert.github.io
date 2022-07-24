@@ -4,7 +4,8 @@ date: 2022-04-10 04:21:11
 subtitle:
 categories:
 tags:
-cover:
+index_img: /img/rust.png
+banner_img: /img/rust.png
 ---
 ## 字符串的性质
 - rust的字符是Unicode类型，因此字符占据4个字节，但是字符串（无论String还是&str）是UTF-8编码，也就是字符串中的字符所占的字节数是变化的(1-4)

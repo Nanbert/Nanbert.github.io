@@ -4,7 +4,8 @@ date: 2022-04-11 17:33:59
 subtitle:
 categories:
 tags:
-cover:
+index_img: /img/rust.png
+banner_img: /img/rust.png
 ---
 ## match
 - match的匹配必须要穷举所有可能，用`_`来代表未列出的所有可能

@@ -4,7 +4,8 @@ date: 2022-04-11 02:54:17
 subtitle:
 categories:
 tags:
-cover:
+index_img: /img/rust.png
+banner_img: /img/rust.png
 ---
 ## if
 - if语句块是表达式

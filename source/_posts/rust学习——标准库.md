@@ -4,7 +4,8 @@ date: 2022-05-19 13:37:35
 subtitle:
 categories:
 tags:
-cover:
+index_img: /img/rust.png
+banner_img: /img/rust.png
 ---
 ## Vec
 ### 两种初始化

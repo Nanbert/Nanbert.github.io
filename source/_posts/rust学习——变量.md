@@ -4,7 +4,8 @@ date: 2022-04-09 19:20:58
 subtitle:
 categories:
 tags:
-cover:
+index_img: /img/rust.png
+banner_img: /img/rust.png
 ---
 ## 常量
 - 常量值的类型必须标注

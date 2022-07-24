@@ -4,7 +4,8 @@ date: 2022-05-15 12:21:42
 subtitle:
 categories:
 tags:
-cover:
+index_img: /img/rust.png
+banner_img: /img/rust.png
 ---
 ## 定义
 获取变量的引用，称之为借用  

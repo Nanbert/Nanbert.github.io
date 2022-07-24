@@ -4,7 +4,8 @@ date: 2022-05-22 12:49:51
 subtitle:
 categories:
 tags:
-cover:
+index_img: /img/rust.png
+banner_img: /img/rust.png
 ---
 ## Result
 ### 定义
