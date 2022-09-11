@@ -342,3 +342,8 @@ parallel用法复杂，建议读man
     head -10
 ```
 - 使用python快速搭建web服务器`python3 -m http.server 8080`
+- Linux性能分析火焰图
+![](/img/flameLinux1.jpg)
+![](/img/flameLinux2.jpg)
+![](/img/flameLinux3.jpg)
+![](/img/flameLinux4.jpg)
