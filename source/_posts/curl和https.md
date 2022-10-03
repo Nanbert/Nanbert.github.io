@@ -27,6 +27,7 @@ banner_img: /img/curl.png
 - 5XX：服务器出现问题
 ### GET
 通过URL来形成HTTP头
+![](/img/httpRequest.png)
 **request例子**：
 ```bash
 GET / HTTP/1.1
@@ -91,7 +92,7 @@ cookie设置的一个头
 响应体中的头，告诉客户还有哪些主机可以获得同样资源,只能在https中使用，并且这是使用http3的唯一方法（截至2019）
 ### http3
 http3是实验版本，是为了适应QUIC协议（一个基于UDP的可靠安全的协议），只能通过https,curl没有针对http3连结失败时作自动降级处理，而是直接返回错误
-## 代理
+## 代理(就是web缓存服务器)
 - HTTP代理为了安全，使用**CONNECT**方法
 - HTTP代理可以代理FTP,此时curl将认为就是HTTP,FTP所有特性无效
 - MITM代理可以监控加密的流量
