@@ -53,3 +53,114 @@ ps:从以上可以看出指针从左至右结合，
 c++无符号右移高位都补0
 11.
 `auto dp = vector<vector<int>>(length, vector<int>(length));`可以这样声明数组
+## 技巧
+### 使用初始化列表比较大小
+**差：**`small = min(x,min(y,z));`
+**好：**`small = min({x,y,z,k});`
+### 解构
+```C++
+pair<int,int> cur = {1,2};
+auto [x,y] = cur;
+```
+### debug宏
+```C++
+#definde deb(x) cout<< #x << " = " << x
+int ten = 10;
+deb(ten); //prints "ten = 10"
+```
+### 支持多参数的debug宏
+```C++
+#define deb(...) logger(#__VA_ARGS__, __VA_ARGS__)
+template<typename ...Args>
+void logger(string vars, Args&&... values) {
+    cout << vars << " = ";
+    string delim = "";
+    (..., (cout << delim << values, delim = ", "));
+}
+
+int xx = 3, yy = 10, xxyy = 103;
+deb(xx); // prints "xx = 3"
+deb(xx, yy, xxyy); // prints "xx, yy, xxyy = 3, 10, 103"
+```
+### 读写容器和多变量
+```C++
+template <typename... T>
+void read(T &...args) {
+    ((cin >> args), ...);
+}
+
+template <typename... T>
+void write(string delimiter, T &&...args) {
+    ((cout << args << delimiter), ...);
+}
+
+template <typename T>
+void readContainer(T &t) {
+    for (auto &e : t) {
+        read(e);
+    }
+}
+
+template <typename T>
+void writeContainer(string delimiter, T &t) {
+    for (const auto &e : t) {
+        write(delimiter, e);
+    }
+    write("\n");
+}
+// Question: read three space seprated integers and print them in different lines.
+	int x, y, z;
+	read(x, y, z);
+	write("\n", x, y, z);
+
+// even works with variable data types :)
+	int n;
+	string s;
+	read(n, s);
+	write(" ", s, "has length", n, "\n");
+
+// Question: read an array of `N` integers and print it to the output console.
+	int N;
+	read(N);
+	vector<int> arr(N);
+	readContainer(arr);
+	writeContainer(" ", arr); // output: arr[0] arr[1] arr[2] ... arr[N - 1]
+	writeContainer("\n", arr);
+	/**
+	* output:
+	* arr[0]
+	* arr[1]
+	* arr[2]
+	* ...
+	* ...
+	* ...
+	* arr[N - 1]
+	*/
+```
+### debug函数
+```C++
+template<typename ...T>
+void printer(T&&... args) {
+    ((cout << args << " "), ...);
+}
+
+int age = 25;
+string name = "Rachit";
+printer("I am", name, ',', age, "years old");
+// ^ This prints the following
+// I am Rachit, 25 years old
+template<typename F>
+auto debug_func(const F& func) {
+    return [func](auto &&...args) { // forward reference
+        cout << "input = ";
+        printer(args...);
+        auto res = func(forward<decltype(args)>(args)...);
+        cout << "res = " << res << endl;
+        return res;
+    };
+}
+
+debug_func(pow)(2, 3);
+// ^ this automatically prints
+// input = 2 3 res = 8
+```
