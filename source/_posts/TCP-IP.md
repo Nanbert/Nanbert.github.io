@@ -4,7 +4,8 @@ date: 2022-10-03 10:52:48
 subtitle:
 categories:
 tags:
-cover:
+banner_img: /img/TCP_IP.png
+index_img: /img/TCP_IP.png
 ---
 
 # UDP存在的意义
