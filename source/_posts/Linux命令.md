@@ -240,6 +240,7 @@ anacron是自动运行的?(有待研究)
   ```
   - 静音:`ffmpeg -i 10.mp4 -af "volume=0" 10Silent.mp4`
   - 静音一部分:`ffmpeg -i 10.mp4 -af "volume=enable='between(t,0,8)':volume=0" 10Silent.mp4`
+  - 一边播放一边保存流媒体:`ffmpeg -i host/input.m3u8 -c copy out.mkv -c copy -f matroska - | ffplay - `
 - `type <command>`识别命令,有以下几种
   - 可执行命令，给出路径
   - shell自身的命令(builtins),内建命令不会产生子进程,代价更小
