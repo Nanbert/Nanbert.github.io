@@ -164,3 +164,33 @@ debug_func(pow)(2, 3);
 // ^ this automatically prints
 // input = 2 3 res = 8
 ```
+## variant(c++17)
+代替联合体union，类型安全(切换类型前会自动析构)，见![variant](https://en.cppreference.com/w/cpp/utility/variant)
+- 构造：`std::variant<int, float> tmp`
+- 获取类型个数：`std::variant_size_v<decltype(tmp)> // 2`
+- 获取下标：`tmp = 3.2; tmp.index() // 1`
+- 判断当前值类型：`hold_alternative<float> tmp // true`
+- 获取当前值类型：`static_assert(std::is_same_v<int, variant_alternative_t<0, tmp>>) // int`
+### 获取值
+例子：
+```C
+std::variant<int, float, std::string> tmp;
+tmp = "hi";
+std::get<int>(tmp); // throw exception
+int* s = std::get_if<int>(tmp); // no throw, but return null
+string g = std::get<std::string>(tmp); //success
+```
+### 默认构造
+默认第一个类型的构造函数，第一个类型必须有构造函数，可以用monostate来作第一个参数，类似空指针
+## span(c++20)
+span(std::string_view类似)是对数组的引用，可以对C风格的数组引用，可以使用vector的部分风格，例如下
+```C
+void read(span<int> r) // read into the range of integers r
+{
+    cout<<r.size()<<endl;//100
+}
+
+int a[100];
+read(a);        // better: let the compiler figure out the number of elements
+```
+

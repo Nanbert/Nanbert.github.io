@@ -132,3 +132,5 @@ H,M,L,分别是移动到屏幕行的顶,中,尾
 |:cmap|:cnoremap|command-line|
 |:omap|:onoremap|operator-pending|
 |:imap|:inoremap|insert|
+39.
+在.vim/bundle/YouCompleteMe/.ycm_extra_conf.py配置c++20
