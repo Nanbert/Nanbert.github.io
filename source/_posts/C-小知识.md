@@ -193,4 +193,58 @@ void read(span<int> r) // read into the range of integers r
 int a[100];
 read(a);        // better: let the compiler figure out the number of elements
 ```
+## string_view和span<char>
+string_view只读，span<char>可变
+## [[maybe_unused]]
+可以使用该attribute，声明条件用到的参数
+`Value* find(const set<Value>& s, const Value& v, [[maybe_unused]] Hint hint)`
+## zstring或not_null<zstring>来表明C字符串
+`int length(const char* p)`=>`int length(zstring p)`
+`int length(not_null<zstring>)`
+## 不变参数用模板
+```C
+int sum(...)
+{
+    // ...
+    while (/*...*/)
+        result += va_arg(list, int); // BAD, assumes it will be passed ints
+    // ...
+}
 
+sum(3, 2); // ok
+sum(3.14159, 2.71828); // BAD, undefined
+
+template<class ...Args>
+auto sum(Args... args) // GOOD, and much more flexible
+{
+    return (... + args); // note: C++17 "fold expression"
+}
+
+sum(3, 2); // ok: 5
+sum(3.14159, 2.71828); // ok: ~5.85987
+```
+## 原始指针只表示内存地址，owner表示所有权
+```C++
+template<typename T>
+class X2 {
+public:
+    owner<T*> p;  // OK: p is owning
+    T* q;         // OK: q is not owning
+    // ...
+};
+```
+## C和C++互相调用
+- 从C++调用C:
+    - in C:
+    double sqrt(double);
+    - in C++:
+    extern "C" double sqrt(double);
+    sqrt(2);
+- 从C调用C++:
+    - in C:
+    X call_f(struct Y*, int);
+    - in C++:
+    extern "C" X call_f(Y* p, int i)
+    {
+    return p->f(i);   // possibly a virtual function call
+    }
