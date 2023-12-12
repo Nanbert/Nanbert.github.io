@@ -1,11 +1,4 @@
-.DS_Store
-tags
-Thumbs.db
-db.json
 *.log
 node_modules/
 .deploy*/
-blog/
-package.json
-package-lock.json
 public/*
