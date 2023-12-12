@@ -4,6 +4,7 @@ Thumbs.db
 db.json
 *.log
 node_modules/
-public/
 .deploy*/
 blog/
+package.json
+package-lock.json
