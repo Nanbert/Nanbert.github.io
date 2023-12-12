@@ -8,3 +8,5 @@ node_modules/
 blog/
 package.json
 package-lock.json
+public/*
+!public/img
