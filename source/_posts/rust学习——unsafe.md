@@ -4,8 +4,8 @@ date: 2022-06-18 14:48:12
 subtitle:
 categories:
 tags:
-index_img: /img/rust.png
-banner_img: /img/rust.png
+index_img: /images/rust.png
+banner_img: /images/rust.png
 ---
 unsafe的主要功能提供以下五个标题功能，不能关闭rust的任何其他安全检查（会关闭内存安全方面的检查）,unsafe也只应该用于这5方面，其他尽可能用安全代码
 ## 裸指针

@@ -4,8 +4,8 @@ date: 2022-06-05 10:07:21
 subtitle:
 categories:
 tags:
-index_img: /img/rust.png
-banner_img: /img/rust.png
+index_img: /images/rust.png
+banner_img: /images/rust.png
 ---
 ## deref特征
 - 在表达式中必须显式的解引用，并且不会发生递归的解引用，当指明时，有几层就解几层,并且本质上是`*y`=>`*(y.deref())`,y.deref()返回一个引用，返回值会产生所有权问题

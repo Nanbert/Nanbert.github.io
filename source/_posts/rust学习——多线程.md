@@ -4,8 +4,8 @@ date: 2022-06-04 11:27:09
 subtitle:
 categories:
 tags:
-index_img: /img/rust.png
-banner_img: /img/rust.png
+index_img: /images/rust.png
+banner_img: /images/rust.png
 ---
 ## thread::spawn创建线程
 - 线程内部的代码使用闭包来执行

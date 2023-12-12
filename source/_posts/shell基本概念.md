@@ -4,8 +4,8 @@ date: 2021-10-15 20:10:51
 subtitle:
 categories:
 tags:
-index_img: /img/bash.jpg
-banner_img: /img/bash.jpg
+index_img: /images/bash.jpg
+banner_img: /images/bash.jpg
 ---
 ### 注释
 * 单行注释: \#

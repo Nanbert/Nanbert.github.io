@@ -4,8 +4,8 @@ date: 2022-03-15 20:35:58
 subtitle:
 categories:
 tags:
-index_img: /img/curl.png
-banner_img: /img/curl.png
+index_img: /images/curl.png
+banner_img: /images/curl.png
 ---
 ## HTTP
 - HTTP/2和HTTP/3的头部通常会被curl压缩发送，但是-v选项总是把它们解压成HTTP/1.1的样子
@@ -27,7 +27,7 @@ banner_img: /img/curl.png
 - 5XX：服务器出现问题
 ### GET
 通过URL来形成HTTP头
-![](/img/httpRequest.png)
+![](/images/httpRequest.png)
 **request例子**：
 ```bash
 GET / HTTP/1.1

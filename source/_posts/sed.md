@@ -4,8 +4,8 @@ date: 2019-07-18 18:16:15
 subtitle:
 categories: 文本处理
 tags:
-index_img: /img/sed.jpeg
-banner_img: /img/sed.jpeg
+index_img: /images/sed.jpeg
+banner_img: /images/sed.jpeg
 ---
 ### sed作用原理
 sed首先将整个编辑脚本应用于第一个输入行(存在模式空间)，然后再读取第二个输入行。sed总是处理原始行的最新形式，所以生成的任何编辑动作都会作用于后续命令。

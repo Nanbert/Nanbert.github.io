@@ -4,8 +4,8 @@ date: 2022-06-03 18:10:58
 subtitle:
 categories:
 tags:
-index_img: /img/rust.png
-banner_img: /img/rust.png
+index_img: /images/rust.png
+banner_img: /images/rust.png
 ---
 ## 迭代器
 ### IntoIterator特征

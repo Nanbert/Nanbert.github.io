@@ -4,8 +4,8 @@ date: 2020-11-18 18:40:05
 subtitle:
 categories:
 tags:
-index_img: /img/find.jpg
-banner_img: /img/find.jpg
+index_img: /images/find.jpg
+banner_img: /images/find.jpg
 ---
 1.**格式** 
 find <范围> <条件> <动作>

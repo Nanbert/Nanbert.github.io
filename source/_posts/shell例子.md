@@ -4,8 +4,8 @@ date: 2019-07-20 17:04:05
 subtitle:
 categories: Linux
 tags:
-index_img: /img/shell_example.jpg
-banner_img: /img/shell_example.jpg
+index_img: /images/shell_example.jpg
+banner_img: /images/shell_example.jpg
 ---
 * 追加信息于文件
 `cat - >> filename`
@@ -99,7 +99,7 @@ function name() (
 ```
 ## 文件描述符与重定向
 bash启动时，文件描述符表如下所示：
-![](/img/file_descriptor.png)
+![](/images/file_descriptor.png)
 当bash执行命令时，他会fork一个子进程，它会继承父进程的描述符表
 ### 重定向命令到stdout
 - `command >file`到底发生了啥？
@@ -110,9 +110,9 @@ bash启动时，文件描述符表如下所示：
 `command &>file`等价于`command >file 2>&1`
 当只有一个重定向时，重定向位置可以任意放，甚至可以在命令的前面，但注意遇到多个重定向操作时,顺序很重要，会从左到右依次处理:  
 首先`>file`会发生如下：
-![](/img/file_descriptor1.png)
+![](/images/file_descriptor1.png)
 然后`2>&1`会发生如下：
-![](/img/file_descriptor2.png)
+![](/images/file_descriptor2.png)
 如果顺序错了，为节省流量,你自己想会发生啥吧
 ### 重定向stdin
 `command <file`Bash 在执行命令之前，打开文件file准备读入。如果打开文件出错，Bash 会直接返错，不会继续执行命令。相反如果打开成功，Bash 会使用打开的文件的文件描述符作为命令的标准输入

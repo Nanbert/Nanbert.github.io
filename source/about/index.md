@@ -1,8 +1,8 @@
 ---
 title: Nanbert Don De Niro -- 南伯湛
 date: 2023-12-12 12:48:50
-banner_img: /img/spike.jpg
-index_img: /img/spike.jpg
+banner_img: /images/spike.jpg
+index_img: /images/spike.jpg
 ---
 
 路漫漫其修远兮，吾将上下而求索

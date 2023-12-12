@@ -4,8 +4,8 @@ date: 2019-07-18 16:53:33
 subtitle:
 categories: 文本处理
 tags: 命令
-index_img: /img/vim.png
-banner_img: /img/vim.png
+index_img: /images/vim.png
+banner_img: /images/vim.png
 ---
 1.  
 vi:

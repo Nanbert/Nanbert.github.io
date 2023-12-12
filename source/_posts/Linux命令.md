@@ -4,8 +4,8 @@ date: 2019-07-18 16:15:42
 subtitle:
 categories: Linux
 tags: 命令
-index_img: /img/linuxCmd.jpeg
-banner_img: /img/linuxCmd.jpeg
+index_img: /images/linuxCmd.jpeg
+banner_img: /images/linuxCmd.jpeg
 ---
 - 同时对某个目录下多个文件操作用`{a,b}`
 - 搜索某个软件包 `sudo apt-cache search <关键字>`
@@ -344,7 +344,7 @@ parallel用法复杂，建议读man
 ```
 - 使用python快速搭建web服务器`python3 -m http.server 8080`
 - Linux性能分析火焰图
-![](/img/flameLinux1.jpg)
-![](/img/flameLinux2.jpg)
-![](/img/flameLinux3.jpg)
-![](/img/flameLinux4.jpg)
+![](/images/flameLinux1.jpg)
+![](/images/flameLinux2.jpg)
+![](/images/flameLinux3.jpg)
+![](/images/flameLinux4.jpg)

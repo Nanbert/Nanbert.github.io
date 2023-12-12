@@ -4,8 +4,8 @@ date: 2020-01-16 11:47:33
 subtitle:
 categories:
 tags:
-index_img: /img/gdb.png
-banner_img: /img/gdb.png
+index_img: /images/gdb.png
+banner_img: /images/gdb.png
 ---
 
 - 编译文件时要加上-g选项

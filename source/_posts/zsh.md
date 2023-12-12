@@ -4,8 +4,8 @@ date: 2022-02-03 19:54:32
 subtitle:
 categories:
 tags:
-index_img: /img/zsh.png
-banner_img: /img/zsh.png
+index_img: /images/zsh.png
+banner_img: /images/zsh.png
 ---
 
 ### 变量定义

@@ -4,8 +4,8 @@ date: 2022-04-13 21:48:13
 subtitle:
 categories:
 tags:
-index_img: /img/rust.png
-banner_img: /img/rust.png
+index_img: /images/rust.png
+banner_img: /images/rust.png
 ---
 
 ## 文档注释

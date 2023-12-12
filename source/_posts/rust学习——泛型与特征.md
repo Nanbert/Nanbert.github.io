@@ -4,8 +4,8 @@ date: 2022-05-21 14:14:14
 subtitle:
 categories:
 tags:
-index_img: /img/rust.png
-banner_img: /img/rust.png
+index_img: /images/rust.png
+banner_img: /images/rust.png
 ---
 ## 泛型
 - 泛型函数：`fn largest<T> (list:&[T]) -> T`

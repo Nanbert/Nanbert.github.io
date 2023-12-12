@@ -4,8 +4,8 @@ date: 2022-05-15 12:21:42
 subtitle:
 categories:
 tags:
-index_img: /img/rust.png
-banner_img: /img/rust.png
+index_img: /images/rust.png
+banner_img: /images/rust.png
 ---
 ## 定义
 获取变量的引用，称之为借用  
@@ -17,7 +17,7 @@ fn main() {
 }
 ```
 本质如下图所示：
-![](/img/rust_borrow.jpg)
+![](/images/rust_borrow.jpg)
 `&s1`创建了一个指向s1的引用，但是并不拥有它,所以引用离开作用域后，不会被丢弃
 ## 一些tips
 - 引用的作用域的结束位置为最后一次使用的位置

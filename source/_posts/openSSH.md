@@ -4,8 +4,8 @@ date: 2020-12-21 20:30:23
 subtitle:
 categories:
 tags:
-index_img: /img/openssh.png
-banner_img: /img/openssh.png
+index_img: /images/openssh.png
+banner_img: /images/openssh.png
 ---
 1.登录服务器
 `ssh <user>@<hostname>`hostname是主机名,可以是域名,也可能是IP地址,不指定<user>@时,默认为客户端的当前用户名

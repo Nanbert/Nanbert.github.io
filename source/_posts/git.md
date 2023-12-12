@@ -4,8 +4,8 @@ date: 2021-03-31 22:50:40
 subtitle:
 categories:
 tags:
-index_img: /img/git.jpg
-banner_img: /img/git.jpg
+index_img: /images/git.jpg
+banner_img: /images/git.jpg
 ---
 # git预设置(~/.gitconfig)
 - `git config --global user.name "xxx"`

@@ -4,8 +4,8 @@ date: 2022-06-18 19:04:00
 subtitle:
 categories:
 tags:
-index_img: /img/rust.png
-banner_img: /img/rust.png
+index_img: /images/rust.png
+banner_img: /images/rust.png
 ---
 ## 介绍
 lib型的项目会生产出以下代码，这就是一个基本的test demo

@@ -4,8 +4,8 @@ date: 2020-12-31 14:59:37
 subtitle:
 categories:
 tags:
-index_img: /img/fix.jpg
-banner_img: /img/fix.jpg
+index_img: /images/fix.jpg
+banner_img: /images/fix.jpg
 ---
 1.广通无线网卡问题
 `lspci`查看那个shit一样的网卡名字"BCM43142"

@@ -4,8 +4,8 @@ date: 2021-10-20 20:41:40
 subtitle:
 categories:
 tags:
-index_img: /img/file_permission.jpg
-banner_img: /img/file_permission.jpg
+index_img: /images/file_permission.jpg
+banner_img: /images/file_permission.jpg
 ---
 ## 用户
 ### /etc/passwd文件

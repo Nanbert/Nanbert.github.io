@@ -4,8 +4,8 @@ date: 2020-11-20 19:46:54
 subtitle:
 categories:
 tags:
-index_img: /img/regex.jpg
-banner_img: /img/regex.jpg
+index_img: /images/regex.jpg
+banner_img: /images/regex.jpg
 ---
 # grep
 格式:`grep [options] [regex] [file...]`

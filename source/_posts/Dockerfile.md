@@ -4,8 +4,8 @@ date: 2022-04-04 10:33:38
 subtitle:
 categories:
 tags:
-banner_img: /img/dockerfile.jpg
-index_img: /img/dockerfile.jpg
+banner_img: /images/dockerfile.jpg
+index_img: /images/dockerfile.jpg
 ---
 ## 简介
 Dockerfile是一个文本文件，其内包含了一条条指令，**每条指令构建一层**

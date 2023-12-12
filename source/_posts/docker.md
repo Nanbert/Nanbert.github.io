@@ -4,8 +4,8 @@ date: 2022-04-04 03:51:08
 subtitle:
 categories:
 tags:
-index_img: /img/docker.png
-banner_img: /img/docker.png
+index_img: /images/docker.png
+banner_img: /images/docker.png
 ---
 ## 各个文件位置
 - 本地资源的默认总目录：`/var/lib/docker/`,**迁移**docker就是复制该文件夹，**重置**就是删除该文件夹

@@ -4,12 +4,12 @@ date: 2022-10-03 10:52:48
 subtitle:
 categories:
 tags:
-banner_img: /img/TCP_IP.png
-index_img: /img/TCP_IP.png
+banner_img: /images/TCP_IP.png
+index_img: /images/TCP_IP.png
 ---
 
 # UDP存在的意义
-![](/img/UDP.png)
+![](/images/UDP.png)
 - 无需建立连接，不会引入建立连接的时延
 - 无连接状态，tcp需要维护接发缓存、拥塞控制参数、序号及确认号的参数
 - 分组首部更小
@@ -18,7 +18,7 @@ index_img: /img/TCP_IP.png
 - 发送方对UDP报文段中的所有16比特字进行累加，溢出将回卷，并取反得到校验和。
 - 接收方将所有16比特字(包括校验和)进行累加,无错即得到全1
 # TCP
-![](/img/TCP.png)
+![](/images/TCP.png)
 ## 涉及概念
 - ACK:肯定确认,在TCP头部中表示当前对确认字段中的值是有效的,明显第一次握手时，该值置为0
 - NAK:否定确儿（TCP中没有，只需确认最后一次接收到的分组即可）
@@ -37,12 +37,12 @@ index_img: /img/TCP_IP.png
 ## 流量控制
 - rwnd(接受窗口)=RcvBuffer-[LastByteRcvd-LastByteRead]
 ## 三次握手
-![](/img/handshake.png)
+![](/images/handshake.png)
 - 第一次：SYN为1,ACK为0,随机初始化一个seq(client_isn)
 - 第二次：SYN为1,ACK为1,随机初始化一个seq(server_isn),并设置确认号ack(client_isn+1)，此时服务器可能分配缓存和变量（此时分配会受到SYN洪泛攻击）
 - 第三次：SYN为1,ACK为1,客户分配缓存和变量，并可以携带有效数据
 ## 四次挥手
-![](/img/byebye.png)
+![](/images/byebye.png)
 - 第一次(假设客户端先手)：FIN为1，ACK=0,随机一个seq,此时不发送有效数据，仍然可以接受数据
 - 第二次：ACK=1,ackNum为seq+1,此时服务器仍然可以发送数据
 - 第三次：FIN为1，ACK=0,随机一个seq，此时服务器不发送有效数据
@@ -54,7 +54,7 @@ index_img: /img/TCP_IP.png
 - TCP的拥塞控制：每个RTT内cwnd线性增加1个MSS，出现3个冗余ACK时，cwnd减半（加性增、乘性减）
 # IP
 ## ipv4
-![](/img/IP.png)
+![](/images/IP.png)
 ### 关键字段
 - 版本号：4比特，定义是ipv4还是ipv6
 - 首部长度：4比特，定义首部长度
@@ -68,7 +68,7 @@ index_img: /img/TCP_IP.png
 - 选项：很少使用，ipv6中就没有
 - 有效数据
 ### 数据报分片
-![](/img/IP_fra.png)
+![](/images/IP_fra.png)
 - 之前提到过，一个链路层帧能承载的最大数据量叫做**最大传送单元（MTU）**
 - 广域网和局域网可能MTU不同所以要分片
 - 分片的重组放在端系统中，路由器不负责重组
@@ -83,19 +83,19 @@ index_img: /img/TCP_IP.png
 ### DHCP动态主机配置协议
 性质：基于UDP的应用层协议,默认端口67
 作用： 除了分配IP地址外，DHCP还允许获取其他信息子网掩码，默认网关（第一跳路由器），本地DNS服务器地址
-![](/img/DHCP.png)
+![](/images/DHCP.png)
 ### 网络地址转换-NAT
 - 会改写IP地址和端口号
-![](/img/NAT.png)
+![](/images/NAT.png)
 ## ipv6
-![](/img/IPV6.png)
+![](/images/IPV6.png)
 - 版本：显然设为6
 - 流量类型：与ipv4服务类型类似
 - 流标签：标识一条数据报的流，还未完全确定
 - 有效载荷长度
 - 跳限制：计数为0丢弃
 ### ipv4->ipv6:隧道
-![](/img/tunneling.png)
+![](/images/tunneling.png)
 ## 通用转发和SDN
 - OpenFLow标准
 - SDN

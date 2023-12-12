@@ -4,8 +4,8 @@ date: 2022-06-20 21:00:58
 subtitle:
 categories:
 tags:
-index_img: /img/rust.png
-banner_img: /img/rust.png
+index_img: /images/rust.png
+banner_img: /images/rust.png
 ---
 ## 基本知识与背景
 - 异步编程是一个并发编程模型，允许我们同时并发运行大量的任务，却仅仅需要几个甚至一个os线程或cpu核心
