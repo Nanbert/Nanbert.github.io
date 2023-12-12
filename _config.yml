@@ -102,7 +102,7 @@ theme: fluid
 ## Docs: https://hexo.io/docs/one-command-deployment
 deploy:
   type: git
-  repository: https://github.com/Nanbert/Nanbert.github.io
+  repository: git@github.com:Nanbert/Nanbert.github.io.git
   branch: master
 tags: /tags
 categories: /categories
