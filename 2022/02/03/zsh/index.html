@@ -1,0 +1,1519 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/images/favicon.png">
+  <link rel="icon" href="/images/favicon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Nanbert">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="变量定义Zsh的变量除了哈希表以外，都直接赋值使用,包括整数(64位带符号)、浮点数(64位带符号)、字符串、数组、哈希表,$+var,判断变量是否定义,未定义返回0,否则为1 字符串变量 获取字符串长度str&#x3D;abcde echo $#str 字符串拼接str2+&#x3D;$str1;str3&#x3D;$str1$str2 字符串切片字符位置从1开始算,bash风格的则从0开始算echo $str[2,4] 字">
+<meta property="og:type" content="article">
+<meta property="og:title" content="zsh">
+<meta property="og:url" content="http://example.com/2022/02/03/zsh/index.html">
+<meta property="og:site_name" content="Nanbert&#39;s blog">
+<meta property="og:description" content="变量定义Zsh的变量除了哈希表以外，都直接赋值使用,包括整数(64位带符号)、浮点数(64位带符号)、字符串、数组、哈希表,$+var,判断变量是否定义,未定义返回0,否则为1 字符串变量 获取字符串长度str&#x3D;abcde echo $#str 字符串拼接str2+&#x3D;$str1;str3&#x3D;$str1$str2 字符串切片字符位置从1开始算,bash风格的则从0开始算echo $str[2,4] 字">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/images/zsh.png">
+<meta property="article:published_time" content="2022-02-03T11:54:32.000Z">
+<meta property="article:modified_time" content="2023-12-12T06:06:27.745Z">
+<meta property="article:author" content="Nanbert">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://example.com/images/zsh.png">
+  
+  
+  
+  <title>zsh - Nanbert&#39;s blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.6","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/images/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.0.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Nanbert</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/images/zsh.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="zsh"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2022-02-03 19:54" pubdate>
+          2022年2月3日 晚上
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          5.2k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          44 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">zsh</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h3 id="变量定义"><a href="#变量定义" class="headerlink" title="变量定义"></a>变量定义</h3><p>Zsh的变量除了哈希表以外，都直接赋值使用,包括整数(64位带符号)、浮点数(64位带符号)、字符串、数组、哈希表,<code>$+var</code>,判断变量是否定义,未定义返回0,否则为1</p>
+<h3 id="字符串变量"><a href="#字符串变量" class="headerlink" title="字符串变量"></a>字符串变量</h3><ol>
+<li>获取字符串长度<br><code>str=abcde echo $#str</code></li>
+<li>字符串拼接<br><code>str2+=$str1;str3=$str1$str2</code><br><span id = "slice"></span></li>
+<li>字符串切片<br>字符位置从1开始算,bash风格的则从0开始算<br><code>echo $str[2,4]</code></li>
+<li>字符串截断<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs bash">str=abcdeabcde<br><span class="hljs-comment">#删除左端匹配到的内容,最小匹配</span><br><span class="hljs-built_in">echo</span> <span class="hljs-variable">$&#123;str#*b&#125;</span> <span class="hljs-comment">#输出cdeabcde</span><br><span class="hljs-comment">#删除右端匹配到的内容,最小匹配</span><br><span class="hljs-built_in">echo</span> <span class="hljs-variable">$&#123;str%d*&#125;</span> <span class="hljs-comment">#输出abcdeabc</span><br><span class="hljs-comment">#删除左端匹配到的内容,最大匹配</span><br><span class="hljs-built_in">echo</span> <span class="hljs-variable">$&#123;str##*b&#125;</span> <span class="hljs-comment">#输出cde</span><br><span class="hljs-comment">#删除右端匹配到的内容,最大匹配</span><br><span class="hljs-built_in">echo</span> <span class="hljs-variable">$&#123;str%%d*&#125;</span> <span class="hljs-comment">#输出abc</span><br></code></pre></td></tr></table></figure>
+<span id = "find"></span></li>
+<li>字符串查找<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-comment">#从左往右找cd字符串,找不到返回数组大小+1</span><br><span class="hljs-built_in">echo</span> <span class="hljs-variable">$str</span>[(i)<span class="hljs-built_in">cd</span>]<br><span class="hljs-comment">#从右往左找cd字符串,找不到返回0</span><br><span class="hljs-built_in">echo</span> <span class="hljs-variable">$str</span>[(I)<span class="hljs-built_in">cd</span>]<br><span class="hljs-comment">#从第二个位置开始找</span><br><span class="hljs-built_in">echo</span> <span class="hljs-variable">$&#123;str[(in:2:)cd]&#125;</span><br></code></pre></td></tr></table></figure></li>
+<li>遍历字符<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-keyword">for</span> i (&#123;1..<span class="hljs-variable">$#str</span>&#125;)&#123;<br>	<span class="hljs-built_in">echo</span> <span class="hljs-variable">$str</span>[i]<br>&#125;<br></code></pre></td></tr></table></figure></li>
+<li>字符串替换<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><code class="hljs bash">str=abcabc<br><span class="hljs-comment">#只替换找到第一个</span><br><span class="hljs-built_in">echo</span> <span class="hljs-variable">$&#123;str/bc/ef&#125;</span> <span class="hljs-comment">#aefabc</span><br><span class="hljs-comment">#只删除找到第一个</span><br><span class="hljs-built_in">echo</span> <span class="hljs-variable">$&#123;str/bc&#125;</span> <span class="hljs-comment">#aabc</span><br><span class="hljs-comment">#上面两个的所有版本</span><br><span class="hljs-built_in">echo</span> <span class="hljs-variable">$&#123;str//bc/ef&#125;</span><br><span class="hljs-built_in">echo</span> <span class="hljs-variable">$&#123;str//bc&#125;</span><br><br>str=abcABCabcABCabc<br><br><span class="hljs-comment"># /# 只从字符串开头开始匹配，$&#123;str/#abc&#125; 也同理</span><br><span class="hljs-built_in">echo</span> <span class="hljs-variable">$&#123;str/#abc/123&#125;</span> <span class="hljs-comment">#123ABCabcABCabc</span><br><br><span class="hljs-comment"># /% 只从字符串结尾开始匹配，echo $&#123;str/%abc&#125; 也同理</span><br><span class="hljs-built_in">echo</span> <span class="hljs-variable">$&#123;str/%abc/123&#125;</span> <span class="hljs-comment">#abcABCabcABC123</span><br><br>str=abc<br><span class="hljs-comment"># 如果匹配到了则输出空字符串</span><br><span class="hljs-built_in">echo</span> <span class="hljs-variable">$&#123;str:#ab*&#125;</span><br><br><span class="hljs-comment"># 如果匹配不到，则输出原字符串</span><br><span class="hljs-built_in">echo</span> <span class="hljs-variable">$&#123;str:#ab&#125;</span><br><br><span class="hljs-comment">#按位置删除字符和替换字符,就是指定位置赋值</span><br>str[1]=<br>str[2,4]=<br>str[1]=k<br>str[2,4]=sjkg <span class="hljs-comment">#可以不一一对应</span><br></code></pre></td></tr></table></figure></li>
+<li>字符串是否匹配<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-comment">#是否包含</span><br>[[ <span class="hljs-variable">$str1</span> == *<span class="hljs-variable">$str2</span>* ]] &amp;&amp; <span class="hljs-built_in">echo</span> good<br><span class="hljs-comment">#正则匹配</span><br>[[ <span class="hljs-variable">$str</span> =~ <span class="hljs-string">&#x27;c[0-9]&#x27;</span> ]]<br></code></pre></td></tr></table></figure></li>
+<li>大小写转换<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-comment">#转成大写</span><br><span class="hljs-built_in">echo</span> <span class="hljs-variable">$&#123;(U)str&#125;</span><br><span class="hljs-built_in">echo</span> <span class="hljs-variable">$&#123;str:u&#125;</span><br><span class="hljs-comment">#转成小写</span><br><span class="hljs-built_in">echo</span> <span class="hljs-variable">$&#123;(L)str&#125;</span><br><span class="hljs-built_in">echo</span> <span class="hljs-variable">$&#123;str:l&#125;</span><br><span class="hljs-comment">#首字母大写</span><br><span class="hljs-built_in">echo</span> <span class="hljs-variable">$&#123;(C)str&#125;</span><br></code></pre></td></tr></table></figure></li>
+<li>目录文件名截取<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs bash">filepath=/a/b/c.x<br><span class="hljs-comment"># :h 是取目录名，即最后一个 / 之前的部分，如果没有 / 则为 .</span><br><span class="hljs-built_in">echo</span> <span class="hljs-variable">$&#123;filepath:h&#125;</span> <span class="hljs-comment">#/a/b</span><br><span class="hljs-comment"># :t 是取文件名，即最后一个 / 之后的部分，如果没有 / 则为字符串本身</span><br><span class="hljs-built_in">echo</span> <span class="hljs-variable">$&#123;filepath:t&#125;</span> <span class="hljs-comment">#c.x</span><br><span class="hljs-comment"># :e 是取文件扩展名，即文件名中最后一个点之后的部分，如果没有点则为空</span><br><span class="hljs-built_in">echo</span> <span class="hljs-variable">$&#123;filepath:e&#125;</span> <span class="hljs-comment">#x</span><br><span class="hljs-comment"># :r 是去掉末尾扩展名的路径</span><br><span class="hljs-built_in">echo</span> <span class="hljs-variable">$&#123;filepath:r&#125;</span> <span class="hljs-comment">#/a/b/c</span><br></code></pre></td></tr></table></figure></li>
+<li>相对路径转绝对路径<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-comment">#功能相当于$(readlink -f $filepath)</span><br>filepath1=a.txt<br><span class="hljs-built_in">echo</span> <span class="hljs-variable">$&#123;filepath1:A&#125;</span><br></code></pre></td></tr></table></figure></li>
+<li>分割字符串<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-comment"># 使用空格作为分隔符，多个空格也只算一个分隔符</span><br>str=<span class="hljs-string">&#x27;aa bb cc dd&#x27;</span><br><span class="hljs-built_in">echo</span> <span class="hljs-variable">$&#123;str[(w)2]&#125;</span><span class="hljs-comment">#bb</span><br><br><span class="hljs-comment"># 指定分隔符</span><br>str=<span class="hljs-string">&#x27;aa--bb--cc&#x27;</span><br><span class="hljs-comment"># 如果分隔符是 : 就用别的字符作为左右界，比如 ws.:.</span><br><span class="hljs-built_in">echo</span> <span class="hljs-variable">$&#123;str[(ws:--:)3]&#125;</span><span class="hljs-comment">#cc</span><br></code></pre></td></tr></table></figure></li>
+</ol>
+<p><span id = "arrAndStr"></span></p>
+<ul>
+<li>转成数组<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs bash">array=()<span class="hljs-variable">$&#123;=str&#125;</span>)<span class="hljs-comment">#默认按空格分隔,可以设置IFS环境变量设置,也可以按以下方法</span><br>str=<span class="hljs-string">&quot;1:2::4&quot;</span><br><br><span class="hljs-comment">#可以是多个字符,如**s/::/**,以**::**为分隔,同时也可以写成**.::.**,不必一定</span><br><span class="hljs-comment">#使用**/**,可以用任意符号</span><br>str_array=(<span class="hljs-variable">$&#123;(s/:/)str&#125;</span>)<br><span class="hljs-built_in">echo</span> <span class="hljs-variable">$str_array</span> <span class="hljs-comment">#1 2 4 #忽略空字符串</span><br><span class="hljs-comment"># 保留其中的空字符串</span><br>str_array=(<span class="hljs-string">&quot;<span class="hljs-variable">$&#123;(@s/:/)str&#125;</span>&quot;</span>)<br><span class="hljs-built_in">echo</span> <span class="hljs-variable">$str_array</span>[3]<span class="hljs-comment">#该值为空</span><br><span class="hljs-built_in">echo</span> <span class="hljs-variable">$str_array</span>[4]<br>str+=(1234)<span class="hljs-comment">#字符串直接变成一个包含两个元素的数组</span><br></code></pre></td></tr></table></figure></li>
+</ul>
+<ol start="13">
+<li>读取文件内容到字符串<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-comment"># 比用 str=$(cat filename) 性能好很多</span><br>str=$(&lt;filename)<br><br><span class="hljs-comment"># 比用 cat filename 性能好很多，引号不能省略</span><br><span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;<span class="hljs-subst">$(&lt;filename)</span>&quot;</span><br><br><span class="hljs-comment"># 遍历每行，引号不能省略</span><br><span class="hljs-keyword">for</span> i (<span class="hljs-variable">$&#123;(f)&quot;$(&lt;filename)&quot;&#125;</span>) &#123;<br>    <span class="hljs-built_in">echo</span> <span class="hljs-variable">$i</span><br>&#125;<br><span class="hljs-comment"># 小文件或者需要频繁调用时，尽量不要用 sed</span><br><span class="hljs-comment">#输出第2行</span><br><span class="hljs-built_in">echo</span> <span class="hljs-variable">$&#123;&quot;$(&lt;test.txt)&quot;[(f)2]&#125;</span><br><span class="hljs-comment"># 输出包含 “ang” 的第一行</span><br><span class="hljs-built_in">echo</span> <span class="hljs-variable">$&#123;&quot;$(&lt;test.txt)&quot;[(fr)*ang*]&#125;</span><br></code></pre></td></tr></table></figure></li>
+<li>读取进程输出到字符串<br>就是把$(&lt;filename)换城$(cmd)</li>
+</ol>
+<h3 id="条件语句"><a href="#条件语句" class="headerlink" title="条件语句"></a>条件语句</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-keyword">if</span> [some condition]&#123;<br>&#125; <span class="hljs-keyword">elif</span>&#123;<br>&#125; <span class="hljs-keyword">else</span>&#123;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h3 id="print和printf"><a href="#print和printf" class="headerlink" title="print和printf"></a>print和printf</h3><p>zsh支持print和printf,<code>print -</code>再按tab健就可以查看所有选项,<code>printf %</code>再按tab键就可以查看所有格式化的东西</p>
+<p>print支持的选项</p>
+<table>
+<thead>
+<tr>
+<th align="center">选项</th>
+<th align="center">功能</th>
+<th align="center">参数</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">-C</td>
+<td align="center">按列输出</td>
+<td align="center">列数</td>
+</tr>
+<tr>
+<td align="center">-D</td>
+<td align="center">替换路径成带~的版本</td>
+<td align="center">无</td>
+</tr>
+<tr>
+<td align="center">-N</td>
+<td align="center">使用\x00(null)作为字符串的间隔,默认是空格</td>
+<td align="center">无</td>
+</tr>
+<tr>
+<td align="center">-O</td>
+<td align="center">降序排列</td>
+<td align="center">无</td>
+</tr>
+<tr>
+<td align="center">-P</td>
+<td align="center">输出颜色和特殊样式</td>
+<td align="center">无</td>
+</tr>
+<tr>
+<td align="center">-R</td>
+<td align="center">模拟echo命令</td>
+<td align="center">无</td>
+</tr>
+<tr>
+<td align="center">-S</td>
+<td align="center">放命令放入了历史命令文件(要加引号)</td>
+<td align="center">无</td>
+</tr>
+<tr>
+<td align="center">-X</td>
+<td align="center">替换所有tab为空格</td>
+<td align="center">tab对应空格数</td>
+</tr>
+<tr>
+<td align="center">-a</td>
+<td align="center">和-c&#x2F;-C一起使用时,改为从左到右</td>
+<td align="center">无</td>
+</tr>
+<tr>
+<td align="center">-b</td>
+<td align="center">识别出bindkey转义字符串</td>
+<td align="center">无</td>
+</tr>
+<tr>
+<td align="center">-c</td>
+<td align="center">按列输出(自动决定列数)</td>
+<td align="center">无</td>
+</tr>
+<tr>
+<td align="center">-f</td>
+<td align="center">同printf</td>
+<td align="center">无</td>
+</tr>
+<tr>
+<td align="center">-i</td>
+<td align="center">和-o&#x2F;-O一起使用时,大小写不敏感排序</td>
+<td align="center">无</td>
+</tr>
+<tr>
+<td align="center">-l</td>
+<td align="center">使用换行符作为字符串分隔符</td>
+<td align="center">无</td>
+</tr>
+<tr>
+<td align="center">-m</td>
+<td align="center">只输出匹配的字符串</td>
+<td align="center">匹配模式字符串</td>
+</tr>
+<tr>
+<td align="center">-n</td>
+<td align="center">不自动添加最后的换行符</td>
+<td align="center">无</td>
+</tr>
+<tr>
+<td align="center">-o</td>
+<td align="center">升序排列</td>
+<td align="center">无</td>
+</tr>
+<tr>
+<td align="center">-r</td>
+<td align="center">不处理转义字符</td>
+<td align="center">无</td>
+</tr>
+<tr>
+<td align="center">-s</td>
+<td align="center">放命令放入历史命令文件(不要加引号)</td>
+<td align="center">无</td>
+</tr>
+<tr>
+<td align="center">-u</td>
+<td align="center">指定fd输出</td>
+<td align="center">fd号</td>
+</tr>
+<tr>
+<td align="center">-v</td>
+<td align="center">把内容保存到变量</td>
+<td align="center">变量名</td>
+</tr>
+<tr>
+<td align="center">-x</td>
+<td align="center">替换行首的tab为空格</td>
+<td align="center">tab对应空格数</td>
+</tr>
+<tr>
+<td align="center">-z</td>
+<td align="center">把内容放置到命令行编辑区</td>
+<td align="center">无</td>
+</tr>
+</tbody></table>
+<ul>
+<li>颜色<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><code class="hljs routeros"><span class="hljs-comment"># %B 加粗 %b 取消加粗</span><br><span class="hljs-comment"># %F&#123;red&#125; 前景色 %f 取消前景色</span><br><span class="hljs-comment"># %K&#123;red&#125; 背景色 %k 取消背景色</span><br><span class="hljs-comment"># %U 下滑线 %u 取消下滑线</span><br><span class="hljs-comment"># %S 反色 %s 取消反色</span><br><span class="hljs-comment">#</span><br><span class="hljs-comment"># black or 0  red     or 1</span><br><span class="hljs-comment"># green or 2  yellow  or 3</span><br><span class="hljs-comment"># blue  or 4  magenta or 5</span><br><span class="hljs-comment"># cyan  or 6  white   or 7</span><br><br><span class="hljs-comment"># 显示加粗的红色 abc</span><br><span class="hljs-built_in">print</span> -P <span class="hljs-string">&#x27;%B%F&#123;red&#125;abc&#x27;</span><br><br><span class="hljs-comment"># 没覆盖到的功能可以用原始的转义符号，可读性比较差</span><br><span class="hljs-comment"># 4[0-7] 背景色</span><br><span class="hljs-comment"># 3[0-7] 前景色</span><br><span class="hljs-comment"># 0m 正常 1m 加粗 2m 变灰 3m 斜体 4m 下滑钱 5m 闪烁 6m 快速闪烁 7m 反色</span><br><br><span class="hljs-comment"># 显示闪烁的红底绿字 abc</span><br>% <span class="hljs-built_in">print</span> <span class="hljs-string">&quot;\033[41;32;5mabc\033[0m&quot;</span><br></code></pre></td></tr></table></figure></li>
+</ul>
+<h3 id="通配符"><a href="#通配符" class="headerlink" title="通配符"></a>通配符</h3><table>
+<thead>
+<tr>
+<th align="center">通配符</th>
+<th align="center">含义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">*</td>
+<td align="center">任意数量的字符</td>
+</tr>
+<tr>
+<td align="center">?</td>
+<td align="center">任意一个字符</td>
+</tr>
+<tr>
+<td align="center">[abcd]</td>
+<td align="center">abcd中的任意一个字符</td>
+</tr>
+<tr>
+<td align="center">[^abcd]</td>
+<td align="center">除abcd中的任意一个字符</td>
+</tr>
+<tr>
+<td align="center">[a-c]</td>
+<td align="center">a和c之间的一个字符</td>
+</tr>
+<tr>
+<td align="center">[a-cB-Dxyz]</td>
+<td align="center">a和c之间、B和D之间以及xyz中的一个字符</td>
+</tr>
+<tr>
+<td align="center">&lt;1-100&gt;</td>
+<td align="center">1和100之间的整数</td>
+</tr>
+<tr>
+<td align="center">&lt;-50&gt;</td>
+<td align="center">0和50之间的整数</td>
+</tr>
+<tr>
+<td align="center">&lt;100-&gt;</td>
+<td align="center">大于100的整数</td>
+</tr>
+<tr>
+<td align="center">-</td>
+<td align="center">任意正整数和0</td>
+</tr>
+<tr>
+<td align="center">([a-c]|&lt;1-100&gt;)</td>
+<td align="center">a和c之间的一个字符或者1和100之间的整数</td>
+</tr>
+</tbody></table>
+<p><strong>加强版,要支持需要加上<code>setopt EXTENDED_GLOB</code></strong></p>
+<table>
+<thead>
+<tr>
+<th align="center">通配符</th>
+<th align="center">含义</th>
+<th align="center">匹配的样式</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">^abc</td>
+<td align="center">除了 abc 外的任意字符串</td>
+<td align="center">aaa</td>
+</tr>
+<tr>
+<td align="center">abc^abc</td>
+<td align="center">以 abc 开头，但后边不是 abc 的字符串</td>
+<td align="center">abcabd</td>
+</tr>
+<tr>
+<td align="center">a*c~abc</td>
+<td align="center">符合 a*c 但不是 abc 的字符串</td>
+<td align="center">adc</td>
+</tr>
+<tr>
+<td align="center">a#</td>
+<td align="center">任意数量（包括 0）个 a</td>
+<td align="center">aaa</td>
+</tr>
+<tr>
+<td align="center">b##</td>
+<td align="center">一个或者多个b</td>
+<td align="center">b</td>
+</tr>
+<tr>
+<td align="center">(ab)##</td>
+<td align="center">一个或者多个ab</td>
+<td align="center">abab</td>
+</tr>
+<tr>
+<td align="center">(#i)abc</td>
+<td align="center">忽略大小写的abc</td>
+<td align="center">AbC</td>
+</tr>
+<tr>
+<td align="center">(#i)ab(#I)c</td>
+<td align="center">忽略大小写的 ab 接着 c</td>
+<td align="center">ABc</td>
+</tr>
+<tr>
+<td align="center">(#l)aBc</td>
+<td align="center">和 c 忽略大小写，但 B 必须大写 的 aBc</td>
+<td align="center">aBC</td>
+</tr>
+<tr>
+<td align="center">(#a1)abc</td>
+<td align="center">最多错（多或缺也算）一个字符的 abc</td>
+<td align="center">a2c 或 ab 或 abcd</td>
+</tr>
+</tbody></table>
+<h3 id="数组变量"><a href="#数组变量" class="headerlink" title="数组变量"></a>数组变量</h3><ol>
+<li>数组定义<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs bash">array=(a <span class="hljs-string">&quot;bb cc&quot;</span> <span class="hljs-built_in">dd</span>)<br><span class="hljs-built_in">echo</span> <span class="hljs-variable">$array</span> <span class="hljs-comment">#打印所有元素在一行</span><br><span class="hljs-built_in">print</span> -l <span class="hljs-variable">$array</span> <span class="hljs-comment">#每行输出一个元素</span><br></code></pre></td></tr></table></figure></li>
+<li>元素读写<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-built_in">echo</span> <span class="hljs-variable">$array</span>[3]<br><span class="hljs-built_in">echo</span> <span class="hljs-variable">$array</span>[-1]<br><span class="hljs-built_in">echo</span> <span class="hljs-variable">$#array</span> <span class="hljs-comment">#获取长度</span><br>array[3]=some<br>array[3]=() <span class="hljs-comment">#删除元素</span><br>array+=eeee <span class="hljs-comment">#添加元素</span><br><span class="hljs-built_in">unset</span> array <span class="hljs-comment">#删除整个数组</span><br></code></pre></td></tr></table></figure></li>
+<li>数组拼接<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs bash">array1+=(e f g)<br>array1+=(<span class="hljs-variable">$array2</span>) <span class="hljs-comment">#小括号必须加,不加的话,则array2视为一个字符串</span><br></code></pre></td></tr></table></figure></li>
+<li><a href="#arrAndStr">字符串与数组</a></li>
+<li>数组遍历<figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs nginx"><span class="hljs-attribute">for</span> i (<span class="hljs-variable">$array1</span>)&#123;<br>	<span class="hljs-attribute">echo</span> <span class="hljs-variable">$i</span><br>&#125;<br><span class="hljs-comment">#同时遍历两个数组</span><br>for i (<span class="hljs-variable">$array1</span> <span class="hljs-variable">$array2</span>)&#123;<br>	<span class="hljs-attribute">echo</span> <span class="hljs-variable">$i</span><br>&#125;<br></code></pre></td></tr></table></figure></li>
+<li><a href="#slice">切片访问</a></li>
+<li><a href="#find">元素查找</a></li>
+<li>元素排序<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-built_in">echo</span> <span class="hljs-variable">$&#123;(o)array&#125;</span> <span class="hljs-comment">#升序排列</span><br><span class="hljs-built_in">echo</span> <span class="hljs-variable">$&#123;(O)array&#125;</span> <span class="hljs-comment">#降序排列</span><br><span class="hljs-built_in">echo</span> <span class="hljs-variable">$&#123;(oi)array&#125;</span> <span class="hljs-comment">#大小写不敏感升序排列</span><br><span class="hljs-built_in">echo</span> <span class="hljs-variable">$&#123;(on)array&#125;</span> <span class="hljs-comment">#按数字升序排列</span><br><span class="hljs-built_in">echo</span> <span class="hljs-variable">$&#123;(Oa)array&#125;</span> <span class="hljs-comment">#反转数组元素</span><br></code></pre></td></tr></table></figure></li>
+<li>去重<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-built_in">echo</span> <span class="hljs-variable">$&#123;(u)array&#125;</span><br></code></pre></td></tr></table></figure></li>
+<li>构造连续字符或数值数组<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs bash">array=(aa&#123;bb,cc,11&#125;) &amp;&amp; <span class="hljs-built_in">echo</span> <span class="hljs-variable">$array</span> <span class="hljs-comment">#aabb aacc aa11</span><br>array=(aa&#123;1..3&#125;) &amp;&amp; <span class="hljs-built_in">echo</span> <span class="hljs-variable">$array</span> <span class="hljs-comment">#aa1 aa2 aa3</span><br>array=(aa&#123;15..19..2&#125;) &amp;&amp; <span class="hljs-built_in">echo</span> <span class="hljs-variable">$array</span> <span class="hljs-comment">#aa15 aa17 aa19</span><br>array=(aa&#123;19..15..2&#125;) &amp;&amp; <span class="hljs-built_in">echo</span> <span class="hljs-variable">$array</span> <span class="hljs-comment">#aa19 aa17 aa15</span><br>array=(aa&#123;01..03&#125;) &amp;&amp; <span class="hljs-built_in">echo</span> <span class="hljs-variable">$array</span> <span class="hljs-comment">#aa01 aa02 aa03</span><br>array=(aa&#123;a..c&#125;) &amp;&amp; <span class="hljs-built_in">echo</span> <span class="hljs-variable">$array</span> <span class="hljs-comment">#aaa aab aac</span><br>array=(aa&#123;Y..c&#125;) &amp;&amp; <span class="hljs-built_in">echo</span> <span class="hljs-variable">$array</span> <span class="hljs-comment">#ASCII码顺序</span><br></code></pre></td></tr></table></figure></li>
+<li>从文件构造数组<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-comment"># f 的功能是将字符串以换行符分隔成数组</span><br><span class="hljs-comment"># 双引号不可省略，不然会变成一个字符串，引号也可以加在 $&#123; &#125; 上</span><br>array=(<span class="hljs-variable">$&#123;(f)&quot;$(&lt;test.txt)&quot;&#125;</span>)<br><span class="hljs-built_in">print</span> -l <span class="hljs-variable">$array</span><br><span class="hljs-comment">#a</span><br><span class="hljs-comment">#bb</span><br><span class="hljs-comment">#ccc</span><br><span class="hljs-comment">#dddd</span><br><span class="hljs-comment"># 不加引号的效果</span><br>array=(<span class="hljs-variable">$&#123;(f)$(&lt;test.txt)&#125;</span>)<br><span class="hljs-built_in">print</span> -l <span class="hljs-variable">$array</span><br><span class="hljs-comment">#a bb ccc dddd</span><br><br><span class="hljs-comment"># 从文件构造数组，并将每行按分隔符 : 分隔后输出所有列</span><br><span class="hljs-keyword">for</span> i (<span class="hljs-variable">$&#123;(f)&quot;$(&lt;test.txt)&quot;&#125;</span>) &#123;<br>    array=(<span class="hljs-variable">$&#123;(s.:.)i&#125;</span>)<br>    <span class="hljs-built_in">echo</span> <span class="hljs-variable">$array</span>[1,-1]<br>&#125;<br></code></pre></td></tr></table></figure></li>
+<li>从文件列表构造数组<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs bash">array=(/usr/bin/vim*)<br><span class="hljs-built_in">print</span> -l <span class="hljs-variable">$array</span><br><span class="hljs-comment">#/usr/bin/vim</span><br><span class="hljs-comment">#/usr/bin/vimdiff</span><br><span class="hljs-comment">#/usr/bin/vimtutor</span><br><br><span class="hljs-comment"># 要比 ls /usr/bin/[a-b]?? | wc -l 快很多</span><br>array=(/usr/bin/[a-b]??) &amp;&amp; <span class="hljs-built_in">print</span> <span class="hljs-variable">$#array</span><br></code></pre></td></tr></table></figure></li>
+<li>数组交集差集<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-comment"># 两个数组的交集，只输出两个数组都有的元素,如果有重复元素不会去重</span><br><span class="hljs-built_in">echo</span> <span class="hljs-variable">$&#123;array1:*array2&#125;</span><br><span class="hljs-comment"># 两个数组的差集，只输出 array1 中有，而 array2 中没有的元素</span><br><span class="hljs-built_in">echo</span> <span class="hljs-variable">$&#123;array1:|array2&#125;</span><br></code></pre></td></tr></table></figure></li>
+<li>数组交叉合并<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-comment"># 从 array1 取一个，再从 array2 取一个，以此类推，一个数组取完了就结束</span><br><span class="hljs-built_in">echo</span> <span class="hljs-variable">$&#123;array1:^array2&#125;</span><br><span class="hljs-comment"># 如果用 :^^，只有一个数组取完了的话，继续从头取，直到第二个数组也取完了</span><br>% <span class="hljs-built_in">echo</span> <span class="hljs-variable">$&#123;array1:^^array2&#125;</span><br></code></pre></td></tr></table></figure></li>
+<li>对数组中的字符串进行统一处理<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-comment"># :t 是取字符串中的文件名，可以用在数组上，取所有元素的文件名</span><br><span class="hljs-built_in">print</span> -l <span class="hljs-variable">$&#123;array:t&#125;</span><br><span class="hljs-comment"># :e 是取扩展名，如果没有没有扩展名，结果数组中不会添加空字符串</span><br><span class="hljs-built_in">print</span> -l <span class="hljs-variable">$&#123;array:e&#125;</span><br><span class="hljs-comment"># 字符串替换等操作也可以对数组使用，替换所有字符串</span><br><span class="hljs-built_in">print</span> -l <span class="hljs-variable">$&#123;array/a/j&#125;</span><br><span class="hljs-comment"># :# 是排除匹配到的元素，类似 grep -v</span><br><span class="hljs-built_in">print</span> <span class="hljs-variable">$&#123;array:#a*&#125;</span><br><span class="hljs-comment"># 前边加 (M)，是反转后边的效果，即只输出匹配到的元素，类似 grep</span><br><span class="hljs-built_in">print</span> <span class="hljs-variable">$&#123;(M)array:#a*&#125;</span><br><span class="hljs-comment"># 多个操作可以同时进行，(U) 是把字符串转成大写字母</span><br><span class="hljs-built_in">print</span> <span class="hljs-variable">$&#123;(UM)array:#a*&#125;</span><br><br><span class="hljs-comment"># 截断或对齐数组中的字符串</span><br>array=(abc bcde cdefg defghi)<br><br><span class="hljs-comment"># 只取每个字符串的最后两个字符</span><br><span class="hljs-built_in">echo</span> <span class="hljs-variable">$&#123;(l:2:)array&#125;</span><br>bc de <span class="hljs-built_in">fg</span> hi<br><br><span class="hljs-comment"># 用空格补全字符串并且右对齐</span><br><span class="hljs-built_in">print</span> -l <span class="hljs-variable">$&#123;(l:7:)array&#125;</span><br>    abc<br>   bcde<br>  cdefg<br> defghi<br><br><span class="hljs-comment"># 用指定字符补全</span><br><span class="hljs-built_in">print</span> -l <span class="hljs-variable">$&#123;(l:7::0:)array&#125;</span><br>0000abc<br>000bcde<br>00cdefg<br>0defghi<br><br><span class="hljs-comment"># 用指定字符补全，第二个字符只用一次</span><br><span class="hljs-built_in">print</span> -l <span class="hljs-variable">$&#123;(l:7::0::1:)array&#125;</span><br>0001abc<br>001bcde<br>01cdefg<br>1defghi<br><br><span class="hljs-comment"># 左对齐</span><br><span class="hljs-built_in">print</span> -l <span class="hljs-variable">$&#123;(r:7::0::1:)array&#125;</span><br>abc1000<br>bcde100<br>cdefg10<br>defghi1<br></code></pre></td></tr></table></figure></li>
+</ol>
+<h3 id="字典变量"><a href="#字典变量" class="headerlink" title="字典变量"></a>字典变量</h3><ol>
+<li>定义<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-built_in">typeset</span> -A table<br><span class="hljs-comment"># 先声明,或者用 local，二者功能是一样的</span><br><span class="hljs-built_in">local</span> -A table<br><br><span class="hljs-comment"># 赋值的语法和数组一样，但顺序依次是键、值、键、值</span><br>table=(k1 v1 k2 v2)<br><span class="hljs-comment">#可以声明赋值一块,local -A table=(k1 v1 k2 v2)</span><br><br><span class="hljs-comment"># 直接用 echo 只能输出值</span><br><span class="hljs-built_in">echo</span> <span class="hljs-variable">$table</span> <span class="hljs-comment">#v1 v2</span><br><br><span class="hljs-comment"># 使用 (kv) 同时输出键和值，(kv) 会把键和值都放到同一个数组里</span><br>% <span class="hljs-built_in">echo</span> <span class="hljs-variable">$&#123;(kv)table&#125;</span> <span class="hljs-comment">#k1 v1 k2 v2</span><br><br><span class="hljs-comment"># 哈希表的大小是键值对的数量</span><br><span class="hljs-built_in">echo</span> <span class="hljs-variable">$#table</span><br></code></pre></td></tr></table></figure></li>
+<li>读写<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-built_in">echo</span> <span class="hljs-variable">$table</span>[k2]<br>table[k2]=<span class="hljs-string">&quot;v2&quot;</span><br><span class="hljs-comment"># 删除元素的方法和数组不同，引号不能省略</span><br><span class="hljs-built_in">unset</span> <span class="hljs-string">&quot;table[k1]&quot;</span><br></code></pre></td></tr></table></figure></li>
+<li>哈希表拼接<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-comment"># 追加元素的方法和数组一样</span><br>table+=(k4 v4 k5 v5)<br><span class="hljs-comment"># 拼接哈希表，要展开成数组再追加</span><br>table1+=(<span class="hljs-variable">$&#123;(kv)table2&#125;</span>)<br></code></pre></td></tr></table></figure></li>
+<li>哈希表遍历<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-comment"># 只遍历值</span><br><span class="hljs-keyword">for</span> i (<span class="hljs-variable">$table</span>) &#123;<br><span class="hljs-built_in">echo</span> <span class="hljs-variable">$i</span><br>&#125;<br><span class="hljs-comment"># 只遍历键</span><br><span class="hljs-keyword">for</span> i (<span class="hljs-variable">$&#123;(k)table&#125;</span>) &#123;<br><span class="hljs-built_in">echo</span> <span class="hljs-variable">$i</span><br>&#125;<br><span class="hljs-comment"># 同时遍历键和值</span><br><span class="hljs-keyword">for</span> k v (<span class="hljs-variable">$&#123;(kv)table&#125;</span>) &#123;<br><span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;<span class="hljs-variable">$k</span> -&gt; <span class="hljs-variable">$v</span>&quot;</span><br>&#125;<br></code></pre></td></tr></table></figure></li>
+<li>键是否存在<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">(($+table[k1]))<br></code></pre></td></tr></table></figure></li>
+<li>元素排序<br>和数组类似,增加k、v两个选项<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-comment"># 只对值排序</span><br><span class="hljs-built_in">echo</span> <span class="hljs-variable">$&#123;(o)table&#125;</span><br><br><span class="hljs-comment"># 只对键排序</span><br><span class="hljs-built_in">echo</span> <span class="hljs-variable">$&#123;(ok)table&#125;</span><br><br><span class="hljs-comment"># 键值放在一起排序</span><br><span class="hljs-built_in">echo</span> <span class="hljs-variable">$&#123;(okv)table&#125;</span><br></code></pre></td></tr></table></figure></li>
+<li>从字符串、文件构造哈希表<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs bash">str=<span class="hljs-string">&quot;k1 v1 k2 v2&quot;</span><br><span class="hljs-built_in">local</span> -A table=(<span class="hljs-variable">$&#123;=str&#125;</span>)<br><span class="hljs-comment">#从文件构造和数组类似</span><br></code></pre></td></tr></table></figure></li>
+<li>对哈希表的每个元素统一处理<br>可参见数组,同时增加kv两个选项<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-comment">#值转成大写</span><br><span class="hljs-built_in">print</span> <span class="hljs-variable">$&#123;(U)table&#125;</span><br><span class="hljs-comment">#键转成大写</span><br><span class="hljs-built_in">print</span> <span class="hljs-variable">$&#123;(Uk)table&#125;</span><br><span class="hljs-comment">#键值转成大写</span><br><span class="hljs-built_in">print</span> <span class="hljs-variable">$&#123;(Ukv)table&#125;</span><br><span class="hljs-comment"># 排除匹配到的值</span><br><span class="hljs-built_in">echo</span> <span class="hljs-variable">$&#123;table:#v1&#125;</span><br><span class="hljs-comment"># 只输出匹配到的键</span><br><span class="hljs-built_in">echo</span> <span class="hljs-variable">$&#123;(Mk)table:#k[1-2]&#125;</span><br></code></pre></td></tr></table></figure></li>
+</ol>
+<h3 id="数值类型"><a href="#数值类型" class="headerlink" title="数值类型"></a>数值类型</h3><p>zsh通常不指定数值是整形还是浮点型,通常直接赋值，<strong>虽然默认为字符串</strong>,但作数值计算时自动判断,但可以如下指明类型,同时在双小括号里做c语言的任何符号计算,同时括号内变量可以不需要加$符号(貌似是zsh的一般特性,适用于许多其他场合)</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-built_in">integer</span> i=123<br><span class="hljs-built_in">float</span> f=12.56<br><span class="hljs-comment">#(t)用于输出变量类型</span><br><span class="hljs-built_in">echo</span> <span class="hljs-variable">$&#123;(t)i&#125;</span> <span class="hljs-comment">#integer</span><br><span class="hljs-built_in">echo</span> <span class="hljs-variable">$&#123;(t)f&#125;</span> <span class="hljs-comment">#float</span><br><span class="hljs-comment"># 注意一旦指定了变量类型，类型就不会变了，除非再重新指定其他类型，或者用 unset 删除掉 </span><br><span class="hljs-comment"># 如果把浮点数赋值给整数变量，会取整</span><br>i=12.34<br><span class="hljs-built_in">echo</span> <span class="hljs-variable">$i</span> <span class="hljs-comment">#会输出12</span><br></code></pre></td></tr></table></figure>
+<ul>
+<li>数学函数<br>zsh&#x2F;mathfunc模块包含数学函数<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-built_in">zmodload</span> -i zsh/mathfunc<br><span class="hljs-built_in">echo</span> $((sin(<span class="hljs-number">0</span>)+ceil(<span class="hljs-number">14.4</span>)))<br></code></pre></td></tr></table></figure>
+<strong>函数列表</strong></li>
+</ul>
+<table>
+<thead>
+<tr>
+<th align="center">函数名</th>
+<th align="center">功能</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">abs</td>
+<td align="center">取绝对值</td>
+</tr>
+<tr>
+<td align="center">ceil</td>
+<td align="center">向上取整</td>
+</tr>
+<tr>
+<td align="center">floor</td>
+<td align="center">向下取整</td>
+</tr>
+<tr>
+<td align="center">int</td>
+<td align="center">截断取整</td>
+</tr>
+<tr>
+<td align="center">float</td>
+<td align="center">转换成浮点数</td>
+</tr>
+<tr>
+<td align="center">sqrt</td>
+<td align="center">开平方</td>
+</tr>
+<tr>
+<td align="center">cbrt</td>
+<td align="center">开立方</td>
+</tr>
+<tr>
+<td align="center">log</td>
+<td align="center">自然对数</td>
+</tr>
+<tr>
+<td align="center">log10</td>
+<td align="center">常用对数</td>
+</tr>
+<tr>
+<td align="center">rand48</td>
+<td align="center">随机数</td>
+</tr>
+</tbody></table>
+<p>还有:acos、acosh、asin、asinh、atan、atanh、cos、cosh、erf、erfc、exp、 expm1、fabs、gamma、j0、j1、lgamma、log1p、logb、sin、sinh、tan、 tanh、y0、y1、ilogb、signgam、copysign、fmod、hypot、nextafter、jn、 yn、ldexp、scalb</p>
+<h3 id="变量修饰语"><a href="#变量修饰语" class="headerlink" title="变量修饰语"></a>变量修饰语</h3><p><strong>一般两种格式:</strong></p>
+<ul>
+<li><code>$&#123;(x)var&#125;</code> var是变量名,x是一个或多个字母,</li>
+<li><code>$&#123;var:x&#125;</code> var是变量名,x是一个或多个字母,或其他符号</li>
+</ul>
+<p><strong>注意:加了修饰语的变量依然是变量,可以当普通变量处理,可以嵌套使用,$符号后不可以有空格</strong></p>
+<table>
+<thead>
+<tr>
+<th align="center">修饰符</th>
+<th align="center">举例</th>
+<th align="center">说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">:-</td>
+<td align="center"><code>echo $&#123;var:-abc&#125;</code></td>
+<td align="center">如果变量有值,则输出原值,如果变量不存在、为空字符串、空数组等,则输出abc</td>
+</tr>
+<tr>
+<td align="center">-</td>
+<td align="center"><code>echo $&#123;var-abc&#125;</code></td>
+<td align="center">如果变量有值,则输出原值,如果变量不存在,则输出abc</td>
+</tr>
+<tr>
+<td align="center">:&#x3D;</td>
+<td align="center"><code>echo $&#123;var:=abc&#125;</code></td>
+<td align="center">如果变量有值,则输出原值,如果变量不存在、为空字符串、空数组等,则输出abc并且赋值给var</td>
+</tr>
+<tr>
+<td align="center">::&#x3D;</td>
+<td align="center"><code>echo $&#123;var::=123&#125;</code></td>
+<td align="center">不管有没有值，村不存在，都输出123，并且重新赋值</td>
+</tr>
+<tr>
+<td align="center">:?</td>
+<td align="center"><code>echo $&#123;var:?error&#125;</code></td>
+<td align="center">var没有值或不存在,则直接报错,否则输出原值</td>
+</tr>
+<tr>
+<td align="center">:+</td>
+<td align="center"><code>echo $&#123;var:+123&#125;</code></td>
+<td align="center">如果var有值,则输出123,否则输出空</td>
+</tr>
+<tr>
+<td align="center">(F)</td>
+<td align="center"><code>echo $&#123;(F)array&#125;</code></td>
+<td align="center">把数组中的元素以换行符拼接成字符串,不加任何修饰的话则是空格拼接</td>
+</tr>
+<tr>
+<td align="center">(j&#x2F;x&#x2F;)</td>
+<td align="center"><code>echo $&#123;(j/-=/)array&#125;</code></td>
+<td align="center">把数组中的元素以-&#x3D;两个字符连接</td>
+</tr>
+<tr>
+<td align="center">(s&#x2F;x&#x2F;)</td>
+<td align="center"><code>echo $&#123;(s/==/)str&#125;</code></td>
+<td align="center">把字符串中的字符以&#x3D;&#x3D;两个字符为分隔符分成数组</td>
+</tr>
+<tr>
+<td align="center">(t)</td>
+<td align="center"><code>echo $&#123;(t)var&#125;</code></td>
+<td align="center">输出变量的类型:integer float scalar array association</td>
+</tr>
+<tr>
+<td align="center"><code>(P)</code></td>
+<td align="center"><code>var=abc abc=123 echo $&#123;(P)var&#125;</code></td>
+<td align="center">多重替换,输出123</td>
+</tr>
+<tr>
+<td align="center">[#n]</td>
+<td align="center"><code>echo $(([#16] 255))</code></td>
+<td align="center">以n进制显示十进制整数</td>
+</tr>
+<tr>
+<td align="center">n#</td>
+<td align="center"><code>echo $((16#ff))</code></td>
+<td align="center">显示n进制整数为十进制</td>
+</tr>
+</tbody></table>
+<h3 id="函数"><a href="#函数" class="headerlink" title="函数"></a>函数</h3><p>与bash基本一致,增加了<code>unfunction fun</code>删除某个函数的功能,还有就是规避了<code>$*</code>和<code>$@</code>的区别,zsh推荐只用<code>$*</code></p>
+<h3 id="替代find和ls"><a href="#替代find和ls" class="headerlink" title="替代find和ls"></a>替代find和ls</h3><p>需要开启扩展通配符:setopt EXTENDED_GLOB<br><strong>通配符修饰语列表</strong></p>
+<table>
+<thead>
+<tr>
+<th align="center">名称</th>
+<th align="center">含义</th>
+<th align="center">使用样例或补充说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">&#x2F;</td>
+<td align="center">目录</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center">F</td>
+<td align="center">非空</td>
+<td align="center">&#x2F;F(非空目录) &#x2F;^F(空目录)</td>
+</tr>
+<tr>
+<td align="center">.</td>
+<td align="center">普通文件</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center">@</td>
+<td align="center">符号链接</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center">&#x3D;</td>
+<td align="center">socket文件</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center">p</td>
+<td align="center">FIFO 文件</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center">*</td>
+<td align="center">可执行的普通文件</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center">%</td>
+<td align="center">设备文件</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center">%b</td>
+<td align="center">块设备文件</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center">%c</td>
+<td align="center">字符设备文件</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center">r</td>
+<td align="center">文件拥有着有读权限</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center">w</td>
+<td align="center">文件拥有着有写权限</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center">x</td>
+<td align="center">文件拥有着有执行权限</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center">A</td>
+<td align="center">文件拥有组用户有读权限</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center">I</td>
+<td align="center">文件拥有组用户有写权限</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center">E</td>
+<td align="center">文件拥有组用户有执行权限</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center">R</td>
+<td align="center">任何用户都有读权限</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center">W</td>
+<td align="center">任何用户都有写权限</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center">X</td>
+<td align="center">任何用户都有执行权限</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center">s</td>
+<td align="center">设置了setuid的文件</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center">S</td>
+<td align="center">设置了setgid的文件</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center">t</td>
+<td align="center">设置了粘滞位（sticky bit）的文件</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center">f</td>
+<td align="center">符合指定的权限</td>
+<td align="center">f0644 f4755 f700</td>
+</tr>
+<tr>
+<td align="center">e</td>
+<td align="center"></td>
+<td align="center">暂无</td>
+</tr>
+<tr>
+<td align="center">+</td>
+<td align="center">大于某个数</td>
+<td align="center">通常跟数字,与其他配合使用</td>
+</tr>
+<tr>
+<td align="center">d</td>
+<td align="center">指定设备号</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center">l</td>
+<td align="center">硬连接个数</td>
+<td align="center">l-2（小于 2） l+3（大于 3）</td>
+</tr>
+<tr>
+<td align="center">U</td>
+<td align="center">当前用户拥有</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center">G</td>
+<td align="center">当前用户所在组拥有</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center">u</td>
+<td align="center">指定用户 id 拥有</td>
+<td align="center">u1000</td>
+</tr>
+<tr>
+<td align="center">g</td>
+<td align="center">指定用户组 id 拥有</td>
+<td align="center">g1000</td>
+</tr>
+<tr>
+<td align="center">a</td>
+<td align="center">指定文件的 atime</td>
+<td align="center">访问时间,默认单位是天,可跟单位M(月)、w(周)、h(小时)、m(分钟)、s(秒)、+(指定时间之前)、-(指定时间之内)</td>
+</tr>
+<tr>
+<td align="center">m</td>
+<td align="center">指定文件的 mtime</td>
+<td align="center">修改时间,可跟单位、+-,<code>print -l *(.mm+1)</code></td>
+</tr>
+<tr>
+<td align="center">c</td>
+<td align="center">指定文件的 ctime</td>
+<td align="center">文件状态属性修改时间,可跟单位、+-,<code>print -l *(.cm+1)</code></td>
+</tr>
+<tr>
+<td align="center">L</td>
+<td align="center">指定文件大小</td>
+<td align="center">默认单位是字节,单位有k、m和p(512字节的块),也可以大写,<code>print -l *(.Lm-1)</code></td>
+</tr>
+<tr>
+<td align="center">^</td>
+<td align="center">取反</td>
+<td align="center">&#x2F;^F</td>
+</tr>
+<tr>
+<td align="center">-</td>
+<td align="center">小于某个数</td>
+<td align="center">通常跟数字,与其他配合使用</td>
+</tr>
+<tr>
+<td align="center">M</td>
+<td align="center"></td>
+<td align="center">暂无</td>
+</tr>
+<tr>
+<td align="center">T</td>
+<td align="center"></td>
+<td align="center">暂无</td>
+</tr>
+<tr>
+<td align="center">N</td>
+<td align="center">如果没匹配到，返回空而不报错</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center">D</td>
+<td align="center">包含隐藏文件（. 开头）</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center">n</td>
+<td align="center">按数值大小排序</td>
+<td align="center">下文有说明</td>
+</tr>
+<tr>
+<td align="center">o</td>
+<td align="center">递增排序</td>
+<td align="center">下文有说明</td>
+</tr>
+<tr>
+<td align="center">O</td>
+<td align="center">递减排序</td>
+<td align="center">下文有说明</td>
+</tr>
+<tr>
+<td align="center">[n]</td>
+<td align="center">只取第 n 个文件</td>
+<td align="center">.[5]</td>
+</tr>
+<tr>
+<td align="center">[n1,n2]</td>
+<td align="center">取第 n1 到 n2 个文件</td>
+<td align="center">&#x2F;[5,10]</td>
+</tr>
+<tr>
+<td align="center">:X</td>
+<td align="center"></td>
+<td align="center">暂无</td>
+</tr>
+</tbody></table>
+<ol>
+<li>文件排序</li>
+</ol>
+<p>可供排序的因子:n(文件名),L(大小),I(硬连接数),a(atime),m(mtime),c(ctime),d(所在目录深度,从深到浅)</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-comment"># 按文件名排序，同一目录下的文件和目录名会一起排，而不是先排目录再排文件</span><br><span class="hljs-comment">#**/*,指当前目录和子目录</span><br><span class="hljs-built_in">print</span> -l **/*(.on)<br>bb.txt<br>cc/aa.txt<br>cc/dd.txt<br>zz.txt<br><br><span class="hljs-comment"># 按文件的目录深度逆序排，d 是从深往浅排，O 是逆序</span><br><span class="hljs-built_in">print</span> -l **/*(.Od)<br>zz.txt<br>bb.txt<br>cc/dd.txt<br>cc/aa.txt<br><br><span class="hljs-comment"># 先按文件名排序，然后再按大小排序，这样大小相同的文件依然是按文件名排的</span><br><span class="hljs-built_in">print</span> -l **/*(.onoL)<br>bb.txt<br>cc/aa.txt<br>cc/dd.txt<br>cc.txt<br></code></pre></td></tr></table></figure>
+<ol start="2">
+<li><p>组合使用</p>
+<p> 类型和类型之间要用逗号个开,逗号前后内容互不干扰(取反^只影响到逗号之前的内容)</p>
+<p> <code>print -l *(/m-2,.Lm-3oL,@D)</code></p>
+</li>
+<li><p>批量重命名zmv</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-comment"># 使用前需要先加载进来</span><br><span class="hljs-built_in">autoload</span> -U zmv<br><br><span class="hljs-comment"># 将所有 txt 文件扩展名改成 conf</span><br><span class="hljs-comment"># 参数要用单引号扩起来，$1 代表第一个参数中括号中的内容</span><br> zmv <span class="hljs-string">&#x27;(*).txt&#x27;</span> <span class="hljs-string">&#x27;$1.conf&#x27;</span><br><br><span class="hljs-comment"># 如果加了 -W 参数，zmv 会自动识别文件名中需要保留的部分</span><br> zmv -W <span class="hljs-string">&#x27;*.txt&#x27;</span> <span class="hljs-string">&#x27;*.conf&#x27;</span><br><br><span class="hljs-comment"># 调整文件名各部分的前后顺序</span><br>zmv <span class="hljs-string">&#x27;(*).(*).txt&#x27;</span> <span class="hljs-string">&#x27;$2.$1.txt&#x27;</span><br><span class="hljs-comment"># 加 -n 预览而不实际运行</span><br>zmv -n <span class="hljs-string">&#x27;(*).(*).txt&#x27;</span> <span class="hljs-string">&#x27;$2.$1.txt&#x27;</span><br><span class="hljs-built_in">mv</span> -- a.b.txt b.a.txt<br><br><span class="hljs-comment"># 0 1 2 ... 前添加 0，以便和 10 11 12 ... 宽度一致</span><br>zmv <span class="hljs-string">&#x27;([0-9]).(*)&#x27;</span> <span class="hljs-string">&#x27;0$1.$2&#x27;</span><br><span class="hljs-comment"># 去掉开头的一个 0</span><br>zmv <span class="hljs-string">&#x27;(0)(*)&#x27;</span> <span class="hljs-string">&#x27;$2&#x27;</span><br><br><span class="hljs-comment"># 文件整理到目录</span><br>zmv <span class="hljs-string">&#x27;(*) - (*) - (*).txt&#x27;</span> <span class="hljs-string">&#x27;$1/$2 - $3.txt&#x27;</span><br><br><span class="hljs-comment"># 转换大小写</span><br>zmv <span class="hljs-string">&#x27;(*).txt&#x27;</span> <span class="hljs-string">&#x27;$&#123;(U)1&#125;.txt&#x27;</span><br>zmv <span class="hljs-string">&#x27;(*).txt&#x27;</span> <span class="hljs-string">&#x27;$&#123;(L)1&#125;.txt&#x27;</span><br></code></pre></td></tr></table></figure></li>
+<li><p>不展开通配符</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-function"><span class="hljs-title">calc</span></span>() &#123;<br>    <span class="hljs-built_in">zmodload</span> zsh/mathfunc<br>    <span class="hljs-built_in">echo</span> $(($*))<br>&#125;<br>calc 12+12<br>calc 12*12 <span class="hljs-comment">#会报错</span><br><span class="hljs-built_in">noglob</span> calc 12*12 <span class="hljs-comment">#可以</span><br></code></pre></td></tr></table></figure></li>
+</ol>
+<h3 id="local和typeset"><a href="#local和typeset" class="headerlink" title="local和typeset"></a>local和typeset</h3><p>local和typeset基本一样(除了不能用-f和-g这两个选项)</p>
+<table>
+<thead>
+<tr>
+<th align="center">选项</th>
+<th align="center">含义</th>
+<th align="center">举例</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">-l</td>
+<td align="center">强制字符串内容为小写</td>
+<td align="center"><code>local -l str=abcABC</code></td>
+</tr>
+<tr>
+<td align="center">-u</td>
+<td align="center">强制字符串内容为大写</td>
+<td align="center"><code>local -u str=abcABC</code></td>
+</tr>
+<tr>
+<td align="center">-x</td>
+<td align="center">设置为环境变量</td>
+<td align="center"><code>export str=abc</code>等价于<code>local -x str=abc</code></td>
+</tr>
+<tr>
+<td align="center">-r</td>
+<td align="center">只读</td>
+<td align="center"><code>local -r strl=abc</code>等价于<code>readonly str1=abc</code></td>
+</tr>
+<tr>
+<td align="center">-U</td>
+<td align="center">设置数组不包含重复元素</td>
+<td align="center"><code>local -U array=(aa bb aa cc)</code></td>
+</tr>
+<tr>
+<td align="center">-Z n</td>
+<td align="center">设置整数位数</td>
+<td align="center">不够用0不全,超过会被截断</td>
+</tr>
+<tr>
+<td align="center">-i n</td>
+<td align="center">设置整数为其他进制显示</td>
+<td align="center">支持2-36</td>
+</tr>
+<tr>
+<td align="center"><code>local &#123;i,j,k&#125;=123</code></td>
+<td align="center">赋值多个变量为同一个值</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center">-T</td>
+<td align="center">绑定字符串和数组</td>
+<td align="center"><code>local -T DIR dir</code>,DIR为字符串,dir为数组,以冒号连接,主要用于path变量</td>
+</tr>
+<tr>
+<td align="center">-p</td>
+<td align="center">显示变量的定义方式</td>
+<td align="center">显示脚本如何定义该变量的</td>
+</tr>
+</tbody></table>
+<h3 id="双引号问题"><a href="#双引号问题" class="headerlink" title="双引号问题"></a>双引号问题</h3><p>zsh不需要像bash那样频繁加双引号来避免错误。<br>zsh需要加双引号的场景:</p>
+<ol>
+<li>像这样的包含字符或者特殊符号的字符串 <code>&quot;aa bb \t \n *&quot;</code> 出现在代码中时，两边要加双引号</li>
+<li>在用<code>$()</code>调用命令时，如果希望结果按一个字符串处理，需要加上双引</li>
+<li>如果想将数组当单个字符串处理，需要加双引号，<code>array=(a b); print -l &quot;$array&quot;</code></li>
+<li>其他的原本不是单个字符串的东西，需要转成单个字符串的场景，要加双引号</li>
+</ol>
+<p>其余通常不加,其中典型场景:</p>
+<ol>
+<li>任何情况下，字符串变量的两边都不需要加双引号，无论里边的内容多么特殊，或者变量存不存在，都没有关系，如<code>$str</code></li>
+<li>如果不转换类型（比如数组转成字符串），任何变量的两边都不需要加双引号</li>
+<li><code>$1 $2 $*</code>这些参数（其实它们也都是单个字符串），都不需要加双引号，无论内容是什么，或者参数是否存在。</li>
+</ol>
+<h3 id="mapfile读写文件"><a href="#mapfile读写文件" class="headerlink" title="mapfile读写文件"></a>mapfile读写文件</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-built_in">zmodload</span> zsh/mapfile<br><br><span class="hljs-comment"># 这样就可以创建文件并写入内容，如果文件存在则会被覆盖</span><br><span class="hljs-built_in">mapfile</span>[test.txt]=<span class="hljs-string">&quot;ab cd&quot;</span><br><span class="hljs-built_in">cat</span> test.txt<br><span class="hljs-comment">#ab cd</span><br><br><span class="hljs-comment"># 判断文件是否存在</span><br>(($+mapfile[test.txt])) &amp;&amp; <span class="hljs-built_in">echo</span> good<br><span class="hljs-comment">#good</span><br><br><span class="hljs-comment"># 读取文件</span><br><span class="hljs-built_in">echo</span> <span class="hljs-variable">$mapfile</span>[test.txt]<br><span class="hljs-comment">#ab cd</span><br><br><span class="hljs-comment"># 删除文件</span><br><span class="hljs-built_in">unset</span> <span class="hljs-string">&quot;mapfile[test.txt]&quot;</span><br><br><span class="hljs-comment"># 遍历文件</span><br><span class="hljs-keyword">for</span> i (<span class="hljs-variable">$&#123;(k)mapfile&#125;</span>) &#123;<br><span class="hljs-built_in">echo</span> <span class="hljs-variable">$i</span><br>&#125;<br><span class="hljs-comment">#test1.txt</span><br><span class="hljs-comment">#test2.txt</span><br></code></pre></td></tr></table></figure>
+
+<h3 id="循环语句"><a href="#循环语句" class="headerlink" title="循环语句"></a>循环语句</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-keyword">while</span> [some condition]&#123;<br>	<span class="hljs-built_in">break</span>/continue<br>&#125;<br></code></pre></td></tr></table></figure>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs kotlin">until [some condition]&#123;<br>	<span class="hljs-keyword">break</span>/<span class="hljs-keyword">continue</span><br>&#125;<br></code></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-comment">#样例</span><br><span class="hljs-keyword">for</span> i (aa bb cc)&#123;<br>	<span class="hljs-built_in">echo</span> <span class="hljs-variable">$i</span><br>&#125;<br>array=(aa bb cc)<br><span class="hljs-keyword">for</span> i (<span class="hljs-variable">$array</span>) &#123;<br>	<span class="hljs-built_in">echo</span> <span class="hljs-variable">$i</span><br>&#125;<br><span class="hljs-keyword">for</span> ((i=<span class="hljs-number">0</span>; i &lt; <span class="hljs-number">10</span>; i++))&#123;<br>	<span class="hljs-built_in">echo</span> <span class="hljs-variable">$i</span><br>&#125;<br><span class="hljs-keyword">for</span> i (&#123;1..10&#125;)&#123;<br>	<span class="hljs-built_in">echo</span> <span class="hljs-variable">$i</span><br>&#125;<br></code></pre></td></tr></table></figure>
+<figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs nginx"><span class="hljs-attribute">repeat</span> <span class="hljs-number">5</span>&#123;<br>	<span class="hljs-attribute">echo</span> good<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h3 id="分支语句"><a href="#分支语句" class="headerlink" title="分支语句"></a>分支语句</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-keyword">case</span> <span class="hljs-variable">$i</span> &#123;<br>	(a)<br>	<span class="hljs-built_in">echo</span> 1<br>	;;<br><br>	(b)<br>	<span class="hljs-built_in">echo</span> 2<br>	<span class="hljs-comment">#继续执行下一个匹配的语句(不再进行匹配)</span><br>	;&amp;<br><br>	(c)<br>	<span class="hljs-built_in">echo</span> 3<br>	<span class="hljs-comment">#继续向下匹配，看是否有满足条件的分支</span><br>	;|<br><br>	(c)<br>	<span class="hljs-built_in">echo</span> 33<br>	;;<br><br>	(*)<br>	<span class="hljs-built_in">echo</span> oher<br>	;;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h3 id="用户输入选择语句"><a href="#用户输入选择语句" class="headerlink" title="用户输入选择语句"></a>用户输入选择语句</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-keyword">select</span> i (aa bb cc)&#123;<br>	<span class="hljs-built_in">echo</span> <span class="hljs-variable">$i</span><br>&#125;<br></code></pre></td></tr></table></figure>
+<p>必须加break,否则会一直让用户选择</p>
+<h3 id="异常处理语句"><a href="#异常处理语句" class="headerlink" title="异常处理语句"></a>异常处理语句</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs bash">&#123;<br>	语句1<br>&#125; always&#123;<br>	语句2<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>无论语句1是否出错,都执行语句2</p>
+<h3 id="socket模块"><a href="#socket模块" class="headerlink" title="socket模块"></a>socket模块</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-comment"># 监听连接端=======</span><br><span class="hljs-comment"># 首先要加载 socket 模块</span><br><span class="hljs-built_in">zmodload</span> zsh/net/socket<br><br><span class="hljs-built_in">zsocket</span> -l test.sock<br>listenfd=<span class="hljs-variable">$REPLY</span><br><span class="hljs-comment"># 此处阻塞等待连接</span><br><span class="hljs-built_in">zsocket</span> -a <span class="hljs-variable">$listenfd</span><br><span class="hljs-comment"># 连接建立完成</span><br>fd=<span class="hljs-variable">$REPLY</span><br><span class="hljs-comment"># 然后 $fd 就可读可写</span><br><span class="hljs-built_in">cat</span> &lt;&amp;<span class="hljs-variable">$fd</span><br><br><span class="hljs-comment"># 发起连接端==========</span><br><span class="hljs-built_in">zmodload</span> zsh/net/socket<br><span class="hljs-built_in">zsocket</span> test.sock<br>fd=<span class="hljs-variable">$REPLY</span><br><span class="hljs-built_in">echo</span> good &gt;&amp;<span class="hljs-variable">$fd</span><br><br><span class="hljs-comment"># 关闭监听端========</span><br><span class="hljs-built_in">exec</span> &#123;listenfd&#125;&gt;&amp;-<br><span class="hljs-built_in">exec</span> &#123;fd&#125;&gt;&amp;-<br><span class="hljs-built_in">rm</span> test.sock<br><br><span class="hljs-comment"># 关闭连接端======</span><br><span class="hljs-built_in">exec</span> &#123;fd&#125;&gt;&amp;-<br></code></pre></td></tr></table></figure>
+
+<h3 id="TCP模块"><a href="#TCP模块" class="headerlink" title="TCP模块"></a>TCP模块</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-comment"># 监听连接端=======</span><br><span class="hljs-comment"># 首先要加载 tcp 模块</span><br><span class="hljs-built_in">zmodload</span> zsh/net/tcp<br><br><span class="hljs-built_in">ztcp</span> -l 1234<br>listenfd=<span class="hljs-variable">$REPLY</span><br><span class="hljs-comment"># 此处阻塞等待连接</span><br><span class="hljs-built_in">ztcp</span> -a <span class="hljs-variable">$listenfd</span><br><span class="hljs-comment"># 连接建立完成</span><br>fd=<span class="hljs-variable">$REPLY</span><br><br><span class="hljs-comment"># 然后 $fd 就可读可写</span><br><span class="hljs-built_in">cat</span> &lt;&amp;<span class="hljs-variable">$fd</span><br><br><span class="hljs-comment"># 发起连接端===========</span><br><span class="hljs-comment"># 首先要加载 tcp 模块</span><br><span class="hljs-built_in">zmodload</span> zsh/net/tcp<br><br><span class="hljs-built_in">ztcp</span> 127.0.0.1 1234<br><span class="hljs-comment"># 连接建立完成</span><br>fd=<span class="hljs-variable">$REPLY</span><br><br><span class="hljs-comment"># 然后 $fd 就可读可写</span><br><span class="hljs-built_in">echo</span> good &gt;&amp;<span class="hljs-variable">$fd</span><br><br><span class="hljs-comment"># 关闭发起连接端===============</span><br><span class="hljs-comment"># fd 是之前存放 fd 号的变量</span><br>% <span class="hljs-built_in">ztcp</span> -c <span class="hljs-variable">$fd</span><br><br><span class="hljs-comment"># 关闭监听连接端=============</span><br>% <span class="hljs-built_in">ztcp</span> -c <span class="hljs-variable">$listenfd</span><br>% <span class="hljs-built_in">ztcp</span> -c <span class="hljs-variable">$fd</span><br></code></pre></td></tr></table></figure>
+<p>接受端例子:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-meta">#!/bin/zsh</span><br><br><span class="hljs-built_in">zmodload</span> zsh/net/tcp<br><br>(($+<span class="hljs-number">1</span>)) || &#123;<br>    <span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;Usage: <span class="hljs-variable">$&#123;0:t&#125;</span> port&quot;</span><br>    <span class="hljs-built_in">exit</span> 1<br>&#125;<br><br><span class="hljs-built_in">ztcp</span> -l <span class="hljs-variable">$1</span><br>listenfd=<span class="hljs-variable">$REPLY</span><br><br>[[ <span class="hljs-variable">$listenfd</span> == &lt;-&gt; ]] || <span class="hljs-built_in">exit</span> 1<br><br><span class="hljs-keyword">while</span> ((<span class="hljs-number">1</span>)) &#123;<br>    <span class="hljs-built_in">ztcp</span> -a <span class="hljs-variable">$listenfd</span><br>    fd=<span class="hljs-variable">$REPLY</span><br>    [[ <span class="hljs-variable">$fd</span> == &lt;-&gt; ]] || <span class="hljs-built_in">continue</span><br><br>    <span class="hljs-built_in">cat</span> &lt;&amp;<span class="hljs-variable">$fd</span><br>    <span class="hljs-built_in">ztcp</span> -c <span class="hljs-variable">$fd</span><br>&#125;<br></code></pre></td></tr></table></figure>
+<p>发送端例子:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-meta">#!/bin/zsh</span><br><br><span class="hljs-built_in">zmodload</span> zsh/net/tcp<br><br>((<span class="hljs-variable">$#</span> &gt;= <span class="hljs-number">2</span>)) || &#123;<br>    <span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;Usage: <span class="hljs-variable">$&#123;0:t&#125;</span> [hostname] port message&quot;</span><br>    <span class="hljs-built_in">exit</span> 1<br>&#125;<br><br><span class="hljs-keyword">if</span> [[ <span class="hljs-variable">$1</span> == &lt;0-65535&gt; ]] &#123;<br>    <span class="hljs-built_in">ztcp</span> 127.0.0.1 <span class="hljs-variable">$1</span><br>&#125; <span class="hljs-keyword">else</span> &#123;<br>    <span class="hljs-built_in">ztcp</span> <span class="hljs-variable">$1</span> <span class="hljs-variable">$2</span><br>    <span class="hljs-built_in">shift</span><br>&#125;<br><br>fd=<span class="hljs-variable">$REPLY</span><br>[[ <span class="hljs-string">&quot;<span class="hljs-variable">$fd</span>&quot;</span> == &lt;-&gt; ]] || <span class="hljs-built_in">exit</span> 1<br><br><span class="hljs-built_in">echo</span> <span class="hljs-variable">$&#123;*[2,-1]&#125;</span> &gt;&amp;<span class="hljs-variable">$fd</span><br><span class="hljs-built_in">ztcp</span> -c <span class="hljs-variable">$fd</span><br></code></pre></td></tr></table></figure>
+
+<h3 id="日期模块-zmodload-zsh-datetime"><a href="#日期模块-zmodload-zsh-datetime" class="headerlink" title="日期模块:zmodload zsh&#x2F;datetime"></a>日期模块:zmodload zsh&#x2F;datetime</h3><table>
+<thead>
+<tr>
+<th align="center">例子</th>
+<th align="center">含义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center"><code>echo $EPOCHSECONDS</code></td>
+<td align="center">从光标1970年到现在的秒数,等价于<code>date +%s</code></td>
+</tr>
+<tr>
+<td align="center"><code>echo $EPOCHREALTIME</code></td>
+<td align="center">输出高精度当前时间戳</td>
+</tr>
+<tr>
+<td align="center"><code>echo $epochtime</code></td>
+<td align="center">输出当前时间戳的秒和纳秒</td>
+</tr>
+<tr>
+<td align="center"><code>strftime &quot;%Y-%m-%d %H:%M:%S (%u)&quot; $EPOCHSECONDS</code></td>
+<td align="center">按指定格式输出</td>
+</tr>
+<tr>
+<td align="center"><code>strftime -s str &quot;%Y-%m-%d %H:%M:%S (%u)&quot; $EPOCHSECONDS</code></td>
+<td align="center">存到变量str中</td>
+</tr>
+<tr>
+<td align="center"><code>strftime -r &quot;%Y-%m-%d %H:%M:%S (%u)&quot; &quot;2017-09-01 10:10:58 (5)&quot;</code></td>
+<td align="center">上述的反操作</td>
+</tr>
+</tbody></table>
+<h3 id="gdbm模块–存在文件里的哈希表"><a href="#gdbm模块–存在文件里的哈希表" class="headerlink" title="gdbm模块–存在文件里的哈希表"></a>gdbm模块–存在文件里的哈希表</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><code class="hljs bash">% <span class="hljs-built_in">zmodload</span> zsh/db/gdbm<br><br><span class="hljs-comment"># 声明数据库文件对应的哈希表</span><br><span class="hljs-built_in">local</span> -A sampledb<br><span class="hljs-comment"># 创建数据库文件，文件名是 sample.gdbm，对应 sampledb 哈希表</span><br><span class="hljs-comment"># 如果该文件已经存在，则会继续使用该文件</span><br>ztie -d db/gdbm -f sample.gdbm sampledb<br><br><span class="hljs-comment"># 然后正常使用 sampledb 哈希表即可，数据会同步写入到数据库文件中</span><br>sampledb[k1]=v1<br>sampledb+=(k2 v2 k3 v3)<br><span class="hljs-built_in">echo</span> <span class="hljs-variable">$&#123;(kv)sampledb&#125;</span><br><span class="hljs-comment">#k1 v1 k2 v2 k3 v3</span><br><br><span class="hljs-comment"># 获取数据库文件路径</span><br>% zgdbmpath sampledb<br><span class="hljs-built_in">echo</span> <span class="hljs-variable">$REPLY</span><br><span class="hljs-comment">#/home/goreliu/sample.gdbm</span><br><br><span class="hljs-comment"># 释放数据库文件</span><br>zuntie -u sampledb<br><br><br><span class="hljs-comment"># 也可以用只读的方式加载数据库文件</span><br>ztie -r -d db/gdbm -f sample.gdbm sampledb<br><span class="hljs-comment"># 但这样的话，需要用 zuntie -u 释放数据库文件</span><br>zuntie -u sampledb<br></code></pre></td></tr></table></figure>
+
+<h3 id="sched–-计划调度命令"><a href="#sched–-计划调度命令" class="headerlink" title="sched–&gt;计划调度命令"></a>sched–&gt;计划调度命令</h3><p>zmodload zsh&#x2F;sched</p>
+<ul>
+<li><code>sched +5 ls</code>5秒后运行ls</li>
+<li><code>sched</code>列出已有任务</li>
+<li><code>sched -n</code>去除第n个待运行命令</li>
+</ul>
+<h3 id="模块简介"><a href="#模块简介" class="headerlink" title="模块简介"></a>模块简介</h3><p>可以用man zshmodules查看模块功能</p>
+<ul>
+<li>zsh&#x2F;system:底层文件读写</li>
+<li>zsh&#x2F;pcre:正则表达式库</li>
+<li>zsh&#x2F;stat:内部stat，取代stat</li>
+<li>zsh&#x2F;zftp:内部ftp客户端</li>
+<li>zsh&#x2F;zprof:性能追踪工具</li>
+<li>zsh&#x2F;zpty:操作pty的命令</li>
+<li>zsh&#x2F;zselect:select系统调用的封装</li>
+</ul>
+<h3 id="TRAPINT"><a href="#TRAPINT" class="headerlink" title="TRAPINT"></a>TRAPINT</h3><p>该函数名,捕获任意信号?有待研究,如下的代码竟然捕捉到SIGINT信号</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-meta">#!/bin/zsh</span><br><br><span class="hljs-comment"># SIGINT 是 2 信号，ctrl + c 会触发</span><br><span class="hljs-function"><span class="hljs-title">TRAPINT</span></span>() &#123;<br>    <span class="hljs-comment"># 处理一些退出前的善后工作</span><br>    <span class="hljs-built_in">sleep</span> 333<br>&#125;<br><br><span class="hljs-built_in">sleep</span> 1000<br></code></pre></td></tr></table></figure>
+<h3 id="代码风格"><a href="#代码风格" class="headerlink" title="代码风格"></a>代码风格</h3><ol>
+<li>统一使用4个空格来缩进</li>
+<li>非特殊场景,每行代码不超过100个字符</li>
+<li>在前一行尾部加一个空格和 \ 折行，折行后缩进一层（4 个空格）。</li>
+<li>如果缩进的是一个文本块，可以使用对齐缩进，也可以使用 4 个空格的固定缩进。</li>
+<li>如果是在 aa &amp;&amp; bb || cc、[[ ]] 或者 (( )) 中折行，&amp;&amp; || 放在下一行的行首。</li>
+<li>在缩进和对齐之外的场景，不允许出现逻辑上不必要的连续多个空格。</li>
+<li><ul>
+<li>&amp;&amp; | 等双元运算符左右要加一个空格。</li>
+</ul>
+</li>
+<li>! ~等一元运算符和作用对象之间不加空格。</li>
+<li>( ) 和 (( )) { } 内侧不加空格，[[ ]] 因为语法需要，内侧加一个空格。</li>
+<li><code>;</code>之前不加空格，之后加一个空格。</li>
+<li>定义函数时（以及在 (( )) 中调用函数时），函数名和 ( 之间不加空格。</li>
+<li>if while 等关键字和后边的内容之间加一个空格</li>
+<li>if<code>[[ ]] &#123;</code>等场景中，<code>&#123;</code>和前边的内容之间加一个空格。</li>
+<li>变量和<code>[ ]</code>之间不加空格，用<code>[ ]</code>取数组或者哈希表值时，<code>[ ]</code>内侧不加空格。</li>
+<li><code>&gt; &lt;</code>等重定向符号和文件或者文件描述符之间不加空格。</li>
+<li>非特殊场景，不允许出现超过两个连续空行。</li>
+<li>#!&#x2F;bin&#x2F;zsh 后加一个空行。</li>
+<li>if while 等语句块之后加一个空行。</li>
+<li>定义函数后加一个空行。</li>
+<li>逻辑关系不强的两行（或者两块）代码之间，根据逻辑关系强弱（自行判断），加一个或两个空行。</li>
+<li>在判断条件的场景，不使用<code>[ ]</code>，用<code>[[ ]]</code>代替。</li>
+<li>在数值计算的场景，使用<code>$(( ))</code>而不是<code>$[ ]</code>。</li>
+<li>使用数值时，两端不加引号。</li>
+<li>用<code>$var</code>取变量值时，两边不加双引号，除非需要将非字符串变量转换成字符串。</li>
+<li>在非必须场景，不需要加<code>$&#123;var&#125;</code>中的大括号。</li>
+<li>变量使用前要明确指明是局部变量（用 local 定义）还是全局变量（用 typeset -g 定义）。</li>
+<li>能用局部变量的地方全部使用局部变量（用 local 定义）。</li>
+<li>变量名中的单词可以使用下划线分隔或者驼峰风格，在不影响可读性的情况也可以使用全小写字母，但在同一个文件中要一致。</li>
+<li>字符串常量两端可以添加双引号或者单引号，但同一个文件中风格要一致。</li>
+<li>可以使用 name() 或者 function name() 定义函数，但同一个文件中风格要一致。</li>
+<li>非特殊场景，单个脚本文件不超过 1000 行。</li>
+</ol>
+<h3 id="bash和zsh的简明对比"><a href="#bash和zsh的简明对比" class="headerlink" title="bash和zsh的简明对比"></a>bash和zsh的简明对比</h3><table>
+<thead>
+<tr>
+<th align="center">bash</th>
+<th align="center">zsh</th>
+<th align="center">说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center"><code>&quot;$var&quot;</code></td>
+<td align="center"><code>$var</code></td>
+<td align="center">避免变量中有空格导致异常</td>
+</tr>
+<tr>
+<td align="center"><code>&quot;$@&quot;</code></td>
+<td align="center"><code>$*</code></td>
+<td align="center">避免变量中有空格导致异常</td>
+</tr>
+<tr>
+<td align="center"><code>&quot;$&#123;array[@]&#125;&quot;</code></td>
+<td align="center"><code>$array</code></td>
+<td align="center">取数组所有元素，@ 可改成 *</td>
+</tr>
+<tr>
+<td align="center">&#96;”$</td>
+<td align="center"></td>
+<td align="center"></td>
+</tr>
+</tbody></table>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>zsh</div>
+      <div>http://example.com/2022/02/03/zsh/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Nanbert</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2022年2月3日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2022/03/15/curl%E5%92%8Chttps/" title="curl和https">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">curl和https</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2021/10/21/%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F%E4%B8%8E%E5%AD%98%E5%82%A8/" title="文件系统与存储">
+                        <span class="hidden-mobile">文件系统与存储</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

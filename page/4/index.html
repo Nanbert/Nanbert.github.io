@@ -1,0 +1,737 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/images/favicon.png">
+  <link rel="icon" href="/images/favicon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Nanbert">
+  <meta name="keywords" content="">
+  
+    <meta property="og:type" content="website">
+<meta property="og:title" content="Nanbert&#39;s blog">
+<meta property="og:url" content="http://example.com/page/4/index.html">
+<meta property="og:site_name" content="Nanbert&#39;s blog">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:author" content="Nanbert">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  
+  <title>Nanbert&#39;s blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.6","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/images/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.0.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 100vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Nanbert</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/images/cover.jpg') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="不要怜悯自己，怜悯自己是卑劣的人做的事！"></span>
+          
+        </div>
+
+        
+      </div>
+
+      
+        <div class="scroll-down-bar">
+          <i class="iconfont icon-arrowdown"></i>
+        </div>
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      <div class="container nopadding-x-md">
+        <div id="board"
+          style="margin-top: 0">
+          
+          <div class="container">
+            <div class="row">
+              <div class="col-12 col-md-10 m-auto">
+                
+
+
+  <div class="row mx-auto index-card">
+    
+    
+      <div class="col-12 col-md-4 m-auto index-img">
+        <a href="/2022/03/22/%E6%96%87%E6%9C%AC%E5%A4%84%E7%90%86%E7%91%9E%E5%A3%AB%E5%86%9B%E5%88%80-%E6%89%A9%E5%B1%95/" target="_self">
+          <img src="/images/extend.jpg" srcset="/images/loading.gif" lazyload alt="文本处理瑞士军刀-扩展">
+        </a>
+      </div>
+    
+    <article class="col-12 col-md-8 mx-auto index-info">
+      <h2 class="index-header">
+        
+        <a href="/2022/03/22/%E6%96%87%E6%9C%AC%E5%A4%84%E7%90%86%E7%91%9E%E5%A3%AB%E5%86%9B%E5%88%80-%E6%89%A9%E5%B1%95/" target="_self">
+          文本处理瑞士军刀-扩展
+        </a>
+      </h2>
+
+      
+      <a class="index-excerpt " href="/2022/03/22/%E6%96%87%E6%9C%AC%E5%A4%84%E7%90%86%E7%91%9E%E5%A3%AB%E5%86%9B%E5%88%80-%E6%89%A9%E5%B1%95/" target="_self">
+        <div>
+          csvkit安装pip install csvkit csvlook使csv看起来更加人性化    选项 含义    -H csvlook默认第一行为头，该选项取消该默认，认为无头   -I 不区分类型，不为数字的可读性加逗号等等   in2csv转换xlsx为csv,默认为第一个表单    选项 含义    –names 打印所有表单名   –sheet [name] 转换指定的表单名   cs
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2022-03-22 16:41" pubdate>
+              2022-03-22
+            </time>
+          </div>
+        
+        
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+      <div class="col-12 col-md-4 m-auto index-img">
+        <a href="/2022/03/15/curl%E5%92%8Chttps/" target="_self">
+          <img src="/images/curl.png" srcset="/images/loading.gif" lazyload alt="curl和https">
+        </a>
+      </div>
+    
+    <article class="col-12 col-md-8 mx-auto index-info">
+      <h2 class="index-header">
+        
+        <a href="/2022/03/15/curl%E5%92%8Chttps/" target="_self">
+          curl和https
+        </a>
+      </h2>
+
+      
+      <a class="index-excerpt " href="/2022/03/15/curl%E5%92%8Chttps/" target="_self">
+        <div>
+          HTTP HTTP&#x2F;2和HTTP&#x2F;3的头部通常会被curl压缩发送，但是-v选项总是把它们解压成HTTP&#x2F;1.1的样子 HTTP默认端口：80，HTTPS默认端口：443 HTTP有4种方法：GET，POST，HEAD，PUT,OPTIONS curl默认的http版本为HTTP&#x2F;1.1,默认的https版本为HTTP&#x2F;2  返回码 1XX：瞬态响
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2022-03-15 20:35" pubdate>
+              2022-03-15
+            </time>
+          </div>
+        
+        
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+      <div class="col-12 col-md-4 m-auto index-img">
+        <a href="/2022/02/03/zsh/" target="_self">
+          <img src="/images/zsh.png" srcset="/images/loading.gif" lazyload alt="zsh">
+        </a>
+      </div>
+    
+    <article class="col-12 col-md-8 mx-auto index-info">
+      <h2 class="index-header">
+        
+        <a href="/2022/02/03/zsh/" target="_self">
+          zsh
+        </a>
+      </h2>
+
+      
+      <a class="index-excerpt " href="/2022/02/03/zsh/" target="_self">
+        <div>
+          变量定义Zsh的变量除了哈希表以外，都直接赋值使用,包括整数(64位带符号)、浮点数(64位带符号)、字符串、数组、哈希表,$+var,判断变量是否定义,未定义返回0,否则为1 字符串变量 获取字符串长度str=abcde echo $#str 字符串拼接str2+=$str1;str3=$str1$str2 字符串切片字符位置从1开始算,bash风格的则从0开始算echo $str[2,4] 字
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2022-02-03 19:54" pubdate>
+              2022-02-03
+            </time>
+          </div>
+        
+        
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+      <div class="col-12 col-md-4 m-auto index-img">
+        <a href="/2021/10/21/%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F%E4%B8%8E%E5%AD%98%E5%82%A8/" target="_self">
+          <img src="/images/filesystem.jpg" srcset="/images/loading.gif" lazyload alt="文件系统与存储">
+        </a>
+      </div>
+    
+    <article class="col-12 col-md-8 mx-auto index-info">
+      <h2 class="index-header">
+        
+        <a href="/2021/10/21/%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F%E4%B8%8E%E5%AD%98%E5%82%A8/" target="_self">
+          文件系统与存储
+        </a>
+      </h2>
+
+      
+      <a class="index-excerpt " href="/2021/10/21/%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F%E4%B8%8E%E5%AD%98%E5%82%A8/" target="_self">
+        <div>
+          原始磁盘-&gt;创建分区(划分磁盘)-&gt;在各个分区上创建文件系统-&gt;挂载文件系统 创建分区-&gt;fdisk和cfdiskcfdisk更加界面友好一点  查看当前系统所有设备fdisk -l 对某个设备进行分区fdisk [设备名]或cfdisk [设备名],注意设备名后面不加数字,加数字的都是该设备上的某分区,如:&#x2F;dev&#x2F;sda是设备,&#x2F;dev&#
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2021-10-21 21:06" pubdate>
+              2021-10-21
+            </time>
+          </div>
+        
+        
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+      <div class="col-12 col-md-4 m-auto index-img">
+        <a href="/2021/10/20/Linux%E6%96%87%E4%BB%B6%E6%9D%83%E9%99%90/" target="_self">
+          <img src="/images/file_permission.jpg" srcset="/images/loading.gif" lazyload alt="Linux文件权限">
+        </a>
+      </div>
+    
+    <article class="col-12 col-md-8 mx-auto index-info">
+      <h2 class="index-header">
+        
+        <a href="/2021/10/20/Linux%E6%96%87%E4%BB%B6%E6%9D%83%E9%99%90/" target="_self">
+          Linux文件权限
+        </a>
+      </h2>
+
+      
+      <a class="index-excerpt " href="/2021/10/20/Linux%E6%96%87%E4%BB%B6%E6%9D%83%E9%99%90/" target="_self">
+        <div>
+          用户&#x2F;etc&#x2F;passwd文件&#x2F;etc&#x2F;passwd包含了一些与用户有关的信息 以’:’分割符依次为以下内容  登陆用户名 用户账户的UID(数字形式) 用户账户的组ID(GID)(数字形式) 用户账户的文本描述(备注字段) 用户HOME目录位置 用户默认shellroot的UID为0,1000以下的UID为系统服务账户预留,普通用户为1000以后  &#x
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2021-10-20 20:41" pubdate>
+              2021-10-20
+            </time>
+          </div>
+        
+        
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+      <div class="col-12 col-md-4 m-auto index-img">
+        <a href="/2021/10/15/shell%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5/" target="_self">
+          <img src="/images/bash.jpg" srcset="/images/loading.gif" lazyload alt="shell基本概念">
+        </a>
+      </div>
+    
+    <article class="col-12 col-md-8 mx-auto index-info">
+      <h2 class="index-header">
+        
+        <a href="/2021/10/15/shell%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5/" target="_self">
+          shell基本概念
+        </a>
+      </h2>
+
+      
+      <a class="index-excerpt " href="/2021/10/15/shell%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5/" target="_self">
+        <div>
+          注释 单行注释: # 多行注释:  :&lt;&lt;EOF ... EOF或者 :&lt;&lt;! ... !  变量 创建普通变量: name&#x3D;”test” (&#x3D;两边不可有空格) 创建函数体中的局部变量: ** local name&#x3D;”test”**,函数体及整个脚本中的变量默认都是全局变量,函数体内外皆可访问和改变,函数体内的变量最好用这个加以限制,同时为了得
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2021-10-15 20:10" pubdate>
+              2021-10-15
+            </time>
+          </div>
+        
+        
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+      <div class="col-12 col-md-4 m-auto index-img">
+        <a href="/2021/03/31/git/" target="_self">
+          <img src="/images/git.jpg" srcset="/images/loading.gif" lazyload alt="git">
+        </a>
+      </div>
+    
+    <article class="col-12 col-md-8 mx-auto index-info">
+      <h2 class="index-header">
+        
+        <a href="/2021/03/31/git/" target="_self">
+          git
+        </a>
+      </h2>
+
+      
+      <a class="index-excerpt " href="/2021/03/31/git/" target="_self">
+        <div>
+          git预设置(~&#x2F;.gitconfig) git config --global user.name &quot;xxx&quot; git config --global user.email &quot;xx.com&quot; git config --list检查已有配置信息 git config --global core.editor vim配置默认编辑器 git confi
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2021-03-31 22:50" pubdate>
+              2021-03-31
+            </time>
+          </div>
+        
+        
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+      <div class="col-12 col-md-4 m-auto index-img">
+        <a href="/2021/03/11/%E8%BE%93%E5%85%A5%E8%BE%93%E5%87%BA%E6%B5%81/" target="_self">
+          <img src="/images/stream.jpg" srcset="/images/loading.gif" lazyload alt="输入输出流">
+        </a>
+      </div>
+    
+    <article class="col-12 col-md-8 mx-auto index-info">
+      <h2 class="index-header">
+        
+        <a href="/2021/03/11/%E8%BE%93%E5%85%A5%E8%BE%93%E5%87%BA%E6%B5%81/" target="_self">
+          输入输出流
+        </a>
+      </h2>
+
+      
+      <a class="index-excerpt " href="/2021/03/11/%E8%BE%93%E5%85%A5%E8%BE%93%E5%87%BA%E6%B5%81/" target="_self">
+        <div>
+          1.操纵符    操纵符 含义    boolalpha 将true和false输出为字符串   *noboolalpha 将true和false输出为1,0   showbase 对整型值输出表示进制的前缀   *noshowbase 不生成表示进制的前缀   showpoint 对浮点值总是显示小数点   *noshowpoint 只有当浮点值包含小数部分时,显示小数点   showpos 对
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2021-03-11 17:33" pubdate>
+              2021-03-11
+            </time>
+          </div>
+        
+        
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+      <div class="col-12 col-md-4 m-auto index-img">
+        <a href="/2021/01/24/AWK/" target="_self">
+          <img src="/images/awk.jpg" srcset="/images/loading.gif" lazyload alt="AWK">
+        </a>
+      </div>
+    
+    <article class="col-12 col-md-8 mx-auto index-info">
+      <h2 class="index-header">
+        
+        <a href="/2021/01/24/AWK/" target="_self">
+          AWK
+        </a>
+      </h2>
+
+      
+      <a class="index-excerpt " href="/2021/01/24/AWK/" target="_self">
+        <div>
+          语法awk [-v var=value] [-F re] [--] &#39;pattern n&#123;action&#125;&#39; var=value filesawk [-v var=value] [-F re] [--] -f scriptfile [file] var=value files注:-v指定的变量定义在BEGIN之前,BEGIN过程中不能访问有关文件或命令行的任何变量
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2021-01-24 17:08" pubdate>
+              2021-01-24
+            </time>
+          </div>
+        
+        
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+      <div class="col-12 col-md-4 m-auto index-img">
+        <a href="/2020/12/31/Arch_Linux%E9%97%AE%E9%A2%98%E8%A7%A3%E5%86%B3%E7%BB%8F%E9%AA%8C/" target="_self">
+          <img src="/images/fix.jpg" srcset="/images/loading.gif" lazyload alt="Arch Linux问题解决">
+        </a>
+      </div>
+    
+    <article class="col-12 col-md-8 mx-auto index-info">
+      <h2 class="index-header">
+        
+        <a href="/2020/12/31/Arch_Linux%E9%97%AE%E9%A2%98%E8%A7%A3%E5%86%B3%E7%BB%8F%E9%AA%8C/" target="_self">
+          Arch Linux问题解决
+        </a>
+      </h2>
+
+      
+      <a class="index-excerpt " href="/2020/12/31/Arch_Linux%E9%97%AE%E9%A2%98%E8%A7%A3%E5%86%B3%E7%BB%8F%E9%AA%8C/" target="_self">
+        <div>
+          1.广通无线网卡问题lspci查看那个shit一样的网卡名字”BCM43142”sudo pacman -S linux-headers装这个东西sudo pacman -S broadcom-wl-dkms安装这个屎样的驱动你可能会说,没网下个屁啊打开archwiki的package页面搜索包,点想要的包,在右边有个小字download from mirrors,点他下载离线包,sudo pac
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2020-12-31 14:59" pubdate>
+              2020-12-31
+            </time>
+          </div>
+        
+        
+        
+      </div>
+    </article>
+  </div>
+
+
+
+  <nav aria-label="navigation">
+    <span class="pagination" id="pagination">
+      <a class="extend prev" rel="prev" href="/page/3/#board"><i class="iconfont icon-arrowleft"></i></a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/#board">2</a><a class="page-number" href="/page/3/#board">3</a><span class="page-number current">4</span><a class="page-number" href="/page/5/#board">5</a><a class="page-number" href="/page/6/#board">6</a><a class="page-number" href="/page/7/#board">7</a><a class="extend next" rel="next" href="/page/5/#board"><i class="iconfont icon-arrowright"></i></a>
+    </span>
+  </nav>
+
+
+
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

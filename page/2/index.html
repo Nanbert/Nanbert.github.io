@@ -1,0 +1,737 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/images/favicon.png">
+  <link rel="icon" href="/images/favicon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Nanbert">
+  <meta name="keywords" content="">
+  
+    <meta property="og:type" content="website">
+<meta property="og:title" content="Nanbert&#39;s blog">
+<meta property="og:url" content="http://example.com/page/2/index.html">
+<meta property="og:site_name" content="Nanbert&#39;s blog">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:author" content="Nanbert">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  
+  <title>Nanbert&#39;s blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.6","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/images/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.0.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 100vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Nanbert</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/images/cover.jpg') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="不要怜悯自己，怜悯自己是卑劣的人做的事！"></span>
+          
+        </div>
+
+        
+      </div>
+
+      
+        <div class="scroll-down-bar">
+          <i class="iconfont icon-arrowdown"></i>
+        </div>
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      <div class="container nopadding-x-md">
+        <div id="board"
+          style="margin-top: 0">
+          
+          <div class="container">
+            <div class="row">
+              <div class="col-12 col-md-10 m-auto">
+                
+
+
+  <div class="row mx-auto index-card">
+    
+    
+      <div class="col-12 col-md-4 m-auto index-img">
+        <a href="/2022/06/18/rust%E5%AD%A6%E4%B9%A0%E2%80%94%E2%80%94%E6%B5%8B%E8%AF%95/" target="_self">
+          <img src="/images/rust.png" srcset="/images/loading.gif" lazyload alt="rust学习——测试">
+        </a>
+      </div>
+    
+    <article class="col-12 col-md-8 mx-auto index-info">
+      <h2 class="index-header">
+        
+        <a href="/2022/06/18/rust%E5%AD%A6%E4%B9%A0%E2%80%94%E2%80%94%E6%B5%8B%E8%AF%95/" target="_self">
+          rust学习——测试
+        </a>
+      </h2>
+
+      
+      <a class="index-excerpt " href="/2022/06/18/rust%E5%AD%A6%E4%B9%A0%E2%80%94%E2%80%94%E6%B5%8B%E8%AF%95/" target="_self">
+        <div>
+          介绍lib型的项目会生产出以下代码，这就是一个基本的test demo 1234567#[cfg(test)]mod tests &#123;    #[test]    fn it_works() &#123;        assert_eq!(2 + 2, 4);    &#125;&#125; 上面代码中的 #[cfg(test)] 标注(本质是条件编译)可以告诉 Rust 只有在 car
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2022-06-18 19:04" pubdate>
+              2022-06-18
+            </time>
+          </div>
+        
+        
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+      <div class="col-12 col-md-4 m-auto index-img">
+        <a href="/2022/06/18/rust%E5%AD%A6%E4%B9%A0%E2%80%94%E2%80%94unsafe/" target="_self">
+          <img src="/images/rust.png" srcset="/images/loading.gif" lazyload alt="rust学习——unsafe">
+        </a>
+      </div>
+    
+    <article class="col-12 col-md-8 mx-auto index-info">
+      <h2 class="index-header">
+        
+        <a href="/2022/06/18/rust%E5%AD%A6%E4%B9%A0%E2%80%94%E2%80%94unsafe/" target="_self">
+          rust学习——unsafe
+        </a>
+      </h2>
+
+      
+      <a class="index-excerpt " href="/2022/06/18/rust%E5%AD%A6%E4%B9%A0%E2%80%94%E2%80%94unsafe/" target="_self">
+        <div>
+          unsafe的主要功能提供以下五个标题功能，不能关闭rust的任何其他安全检查（会关闭内存安全方面的检查）,unsafe也只应该用于这5方面，其他尽可能用安全代码 裸指针 创建裸指针是安全的行为，而解引用裸指针才是不安全的行为  可以绕过 Rust 的借用规则，可以同时拥有一个数据的可变、不可变指针，甚至还能拥有多个可变的指针 并不能保证指向合法的内存 可以是 null 没有实现任何自动回收 标准
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2022-06-18 14:48" pubdate>
+              2022-06-18
+            </time>
+          </div>
+        
+        
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+      <div class="col-12 col-md-4 m-auto index-img">
+        <a href="/2022/06/05/rust%E5%AD%A6%E4%B9%A0%E2%80%94%E2%80%94%E6%99%BA%E8%83%BD%E6%8C%87%E9%92%88/" target="_self">
+          <img src="/images/rust.png" srcset="/images/loading.gif" lazyload alt="rust学习——智能指针">
+        </a>
+      </div>
+    
+    <article class="col-12 col-md-8 mx-auto index-info">
+      <h2 class="index-header">
+        
+        <a href="/2022/06/05/rust%E5%AD%A6%E4%B9%A0%E2%80%94%E2%80%94%E6%99%BA%E8%83%BD%E6%8C%87%E9%92%88/" target="_self">
+          rust学习——智能指针
+        </a>
+      </h2>
+
+      
+      <a class="index-excerpt " href="/2022/06/05/rust%E5%AD%A6%E4%B9%A0%E2%80%94%E2%80%94%E6%99%BA%E8%83%BD%E6%8C%87%E9%92%88/" target="_self">
+        <div>
+          deref特征 在表达式中必须显式的解引用，并且不会发生递归的解引用，当指明时，有几层就解几层,并且本质上是*y&#x3D;&gt;*(y.deref()),y.deref()返回一个引用，返回值会产生所有权问题 函数和方法中只有引用类型的实参才能触发自动解引用 隐式的解引用，会递归，直到类型匹配 当 T: Deref&lt;Target&#x3D;U&gt;，可以将 &amp;T 转换成 &am
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2022-06-05 10:07" pubdate>
+              2022-06-05
+            </time>
+          </div>
+        
+        
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+      <div class="col-12 col-md-4 m-auto index-img">
+        <a href="/2022/06/04/rust%E5%AD%A6%E4%B9%A0%E2%80%94%E2%80%94%E5%A4%9A%E7%BA%BF%E7%A8%8B/" target="_self">
+          <img src="/images/rust.png" srcset="/images/loading.gif" lazyload alt="rust学习——多线程">
+        </a>
+      </div>
+    
+    <article class="col-12 col-md-8 mx-auto index-info">
+      <h2 class="index-header">
+        
+        <a href="/2022/06/04/rust%E5%AD%A6%E4%B9%A0%E2%80%94%E2%80%94%E5%A4%9A%E7%BA%BF%E7%A8%8B/" target="_self">
+          rust学习——多线程
+        </a>
+      </h2>
+
+      
+      <a class="index-excerpt " href="/2022/06/04/rust%E5%AD%A6%E4%B9%A0%E2%80%94%E2%80%94%E5%A4%9A%E7%BA%BF%E7%A8%8B/" target="_self">
+        <div>
+          thread::spawn创建线程 线程内部的代码使用闭包来执行 main线程结束，子孙线程也会结束 如果父线程不是main线程，那么该子线程不会因为父线程的结束而结束123456let handle = thread::spawn(|| &#123;    for i in 1..5 &#123;        println!(&quot;hi number &#123;&#125; from
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2022-06-04 11:27" pubdate>
+              2022-06-04
+            </time>
+          </div>
+        
+        
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+      <div class="col-12 col-md-4 m-auto index-img">
+        <a href="/2022/06/03/rust%E5%AD%A6%E4%B9%A0%E2%80%94%E2%80%94%E9%97%AD%E5%8C%85%E4%B8%8E%E8%BF%AD%E4%BB%A3%E5%99%A8/" target="_self">
+          <img src="/images/rust.png" srcset="/images/loading.gif" lazyload alt="rust学习——闭包与迭代器">
+        </a>
+      </div>
+    
+    <article class="col-12 col-md-8 mx-auto index-info">
+      <h2 class="index-header">
+        
+        <a href="/2022/06/03/rust%E5%AD%A6%E4%B9%A0%E2%80%94%E2%80%94%E9%97%AD%E5%8C%85%E4%B8%8E%E8%BF%AD%E4%BB%A3%E5%99%A8/" target="_self">
+          rust学习——闭包与迭代器
+        </a>
+      </h2>
+
+      
+      <a class="index-excerpt " href="/2022/06/03/rust%E5%AD%A6%E4%B9%A0%E2%80%94%E2%80%94%E9%97%AD%E5%8C%85%E4%B8%8E%E8%BF%AD%E4%BB%A3%E5%99%A8/" target="_self">
+        <div>
+          迭代器IntoIterator特征对于数组的循环实质上是：for v in arr.into_iter()，一个编译器语法糖也可以使用IntoIterator::into_iter方法调用  into_iter会夺走所有权 iter是借用 iter_mut是可变借用  Iterator特征特征原型如下 1234567pub trait Iterator &#123;    type Item;
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2022-06-03 18:10" pubdate>
+              2022-06-03
+            </time>
+          </div>
+        
+        
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+      <div class="col-12 col-md-4 m-auto index-img">
+        <a href="/2022/05/26/rust%E5%AD%A6%E4%B9%A0%E2%80%94%E2%80%94%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F/" target="_self">
+          <img src="/images/rust.png" srcset="/images/loading.gif" lazyload alt="rust学习——生命周期">
+        </a>
+      </div>
+    
+    <article class="col-12 col-md-8 mx-auto index-info">
+      <h2 class="index-header">
+        
+        <a href="/2022/05/26/rust%E5%AD%A6%E4%B9%A0%E2%80%94%E2%80%94%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F/" target="_self">
+          rust学习——生命周期
+        </a>
+      </h2>
+
+      
+      <a class="index-excerpt " href="/2022/05/26/rust%E5%AD%A6%E4%B9%A0%E2%80%94%E2%80%94%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F/" target="_self">
+        <div>
+          生命周期几个注意点 在存在多个引用时，编译器有时会无法自动推导生命周期，此时就需要我们手动去标注，通过为参数标注合适的生命周期来帮助编译器进行借用检查分析 标记生命周期只是为了取悦编译器，让编译器不要难为我们  函数中的生命周期 函数参数的手动标注的生命周期表示：参数至少活得和&#39;a一样久，至于谁更久，无法得知 函数的返回值如果是一个引用类型，那么它的生命周期只会来源于： 函数参数的生命周期
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2022-05-26 12:40" pubdate>
+              2022-05-26
+            </time>
+          </div>
+        
+        
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+      <div class="col-12 col-md-4 m-auto index-img">
+        <a href="/2022/05/22/rust%E5%AD%A6%E4%B9%A0%E2%80%94%E2%80%94%E9%94%99%E8%AF%AF%E5%A4%84%E7%90%86/" target="_self">
+          <img src="/images/rust.png" srcset="/images/loading.gif" lazyload alt="rust学习——错误处理">
+        </a>
+      </div>
+    
+    <article class="col-12 col-md-8 mx-auto index-info">
+      <h2 class="index-header">
+        
+        <a href="/2022/05/22/rust%E5%AD%A6%E4%B9%A0%E2%80%94%E2%80%94%E9%94%99%E8%AF%AF%E5%A4%84%E7%90%86/" target="_self">
+          rust学习——错误处理
+        </a>
+      </h2>
+
+      
+      <a class="index-excerpt " href="/2022/05/22/rust%E5%AD%A6%E4%B9%A0%E2%80%94%E2%80%94%E9%94%99%E8%AF%AF%E5%A4%84%E7%90%86/" target="_self">
+        <div>
+          Result定义1234enum Result&lt;T, E&gt; &#123;    Ok(T),    Err(E),&#125; unwrap和expect unwrap如果成功，就将Ok(T)中的值取出来，如果失败就直接panic expect和unwrap类似，但遇到错误可以自定义提示信息  Option和Result组合器方法or()和and() s1.or(s2),若s1为som
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2022-05-22 12:49" pubdate>
+              2022-05-22
+            </time>
+          </div>
+        
+        
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+      <div class="col-12 col-md-4 m-auto index-img">
+        <a href="/2022/05/21/rust%E5%AD%A6%E4%B9%A0%E2%80%94%E2%80%94%E6%B3%9B%E5%9E%8B%E4%B8%8E%E7%89%B9%E5%BE%81/" target="_self">
+          <img src="/images/rust.png" srcset="/images/loading.gif" lazyload alt="rust学习——泛型与特征">
+        </a>
+      </div>
+    
+    <article class="col-12 col-md-8 mx-auto index-info">
+      <h2 class="index-header">
+        
+        <a href="/2022/05/21/rust%E5%AD%A6%E4%B9%A0%E2%80%94%E2%80%94%E6%B3%9B%E5%9E%8B%E4%B8%8E%E7%89%B9%E5%BE%81/" target="_self">
+          rust学习——泛型与特征
+        </a>
+      </h2>
+
+      
+      <a class="index-excerpt " href="/2022/05/21/rust%E5%AD%A6%E4%B9%A0%E2%80%94%E2%80%94%E6%B3%9B%E5%9E%8B%E4%B8%8E%E7%89%B9%E5%BE%81/" target="_self">
+        <div>
+          泛型 泛型函数：fn largest&lt;T&gt; (list:&amp;[T]) -&gt; T 泛型结构体：struct Point&lt;T&gt;&#123;&#125; 泛型枚举：enum Option&lt;T&gt;&#123;&#125; 泛型方法：impl&lt;T&gt; Point&lt;T&gt; 多重泛型：12345678910111213struct Point&l
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2022-05-21 14:14" pubdate>
+              2022-05-21
+            </time>
+          </div>
+        
+        
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+      <div class="col-12 col-md-4 m-auto index-img">
+        <a href="/2022/05/19/rust%E5%AD%A6%E4%B9%A0%E2%80%94%E2%80%94%E6%A0%87%E5%87%86%E5%BA%93/" target="_self">
+          <img src="/images/rust.png" srcset="/images/loading.gif" lazyload alt="rust学习——标准库">
+        </a>
+      </div>
+    
+    <article class="col-12 col-md-8 mx-auto index-info">
+      <h2 class="index-header">
+        
+        <a href="/2022/05/19/rust%E5%AD%A6%E4%B9%A0%E2%80%94%E2%80%94%E6%A0%87%E5%87%86%E5%BA%93/" target="_self">
+          rust学习——标准库
+        </a>
+      </h2>
+
+      
+      <a class="index-excerpt " href="/2022/05/19/rust%E5%AD%A6%E4%B9%A0%E2%80%94%E2%80%94%E6%A0%87%E5%87%86%E5%BA%93/" target="_self">
+        <div>
+          Vec两种初始化 let v = vec![1,2,3]; let mut v = Vec::new();v.push(1);  添加元素 v.push(1)  读取元素 下标：let third= &amp;v[2] get方法：1234match v.get(2) &#123;    Some(third) =&gt; println!(&quot;第三个元素是 &#123;&#125;&qu
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2022-05-19 13:37" pubdate>
+              2022-05-19
+            </time>
+          </div>
+        
+        
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+      <div class="col-12 col-md-4 m-auto index-img">
+        <a href="/2022/05/15/rust%E5%AD%A6%E4%B9%A0%E2%80%94%E2%80%94%E6%89%80%E6%9C%89%E6%9D%83%E5%8F%8A%E5%BC%95%E7%94%A8/" target="_self">
+          <img src="/images/rust.png" srcset="/images/loading.gif" lazyload alt="rust学习——所有权及引用">
+        </a>
+      </div>
+    
+    <article class="col-12 col-md-8 mx-auto index-info">
+      <h2 class="index-header">
+        
+        <a href="/2022/05/15/rust%E5%AD%A6%E4%B9%A0%E2%80%94%E2%80%94%E6%89%80%E6%9C%89%E6%9D%83%E5%8F%8A%E5%BC%95%E7%94%A8/" target="_self">
+          rust学习——所有权及引用
+        </a>
+      </h2>
+
+      
+      <a class="index-excerpt " href="/2022/05/15/rust%E5%AD%A6%E4%B9%A0%E2%80%94%E2%80%94%E6%89%80%E6%9C%89%E6%9D%83%E5%8F%8A%E5%BC%95%E7%94%A8/" target="_self">
+        <div>
+          定义获取变量的引用，称之为借用如下代码 1234fn main() &#123;    let s1 = String::from(&quot;hello&quot;);    let s=&amp;s1;&#125; 本质如下图所示：&amp;s1创建了一个指向s1的引用，但是并不拥有它,所以引用离开作用域后，不会被丢弃 一些tips 引用的作用域的结束位置为最后一次使用的位置 同一作用域，特定
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2022-05-15 12:21" pubdate>
+              2022-05-15
+            </time>
+          </div>
+        
+        
+        
+      </div>
+    </article>
+  </div>
+
+
+
+  <nav aria-label="navigation">
+    <span class="pagination" id="pagination">
+      <a class="extend prev" rel="prev" href="/"><i class="iconfont icon-arrowleft"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/#board">3</a><a class="page-number" href="/page/4/#board">4</a><span class="space">&hellip;</span><a class="page-number" href="/page/7/#board">7</a><a class="extend next" rel="next" href="/page/3/#board"><i class="iconfont icon-arrowright"></i></a>
+    </span>
+  </nav>
+
+
+
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

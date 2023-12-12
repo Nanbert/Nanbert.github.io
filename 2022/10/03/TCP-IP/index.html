@@ -1,0 +1,715 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/images/favicon.png">
+  <link rel="icon" href="/images/favicon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Nanbert">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="UDP存在的意义  无需建立连接，不会引入建立连接的时延 无连接状态，tcp需要维护接发缓存、拥塞控制参数、序号及确认号的参数 分组首部更小 无拥塞控制，对于不希望过分延迟报文段的传送并且容忍数据丢失的场景适用  校验和的计算 发送方对UDP报文段中的所有16比特字进行累加，溢出将回卷，并取反得到校验和。 接收方将所有16比特字(包括校验和)进行累加,无错即得到全1  TCP 涉及概念 ACK:肯">
+<meta property="og:type" content="article">
+<meta property="og:title" content="TCP&#x2F;IP">
+<meta property="og:url" content="http://example.com/2022/10/03/TCP-IP/index.html">
+<meta property="og:site_name" content="Nanbert&#39;s blog">
+<meta property="og:description" content="UDP存在的意义  无需建立连接，不会引入建立连接的时延 无连接状态，tcp需要维护接发缓存、拥塞控制参数、序号及确认号的参数 分组首部更小 无拥塞控制，对于不希望过分延迟报文段的传送并且容忍数据丢失的场景适用  校验和的计算 发送方对UDP报文段中的所有16比特字进行累加，溢出将回卷，并取反得到校验和。 接收方将所有16比特字(包括校验和)进行累加,无错即得到全1  TCP 涉及概念 ACK:肯">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/images/TCP_IP.png">
+<meta property="article:published_time" content="2022-10-03T02:52:48.000Z">
+<meta property="article:modified_time" content="2023-12-12T06:06:27.745Z">
+<meta property="article:author" content="Nanbert">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://example.com/images/TCP_IP.png">
+  
+  
+  
+  <title>TCP/IP - Nanbert&#39;s blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.6","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/images/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.0.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Nanbert</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/images/TCP_IP.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="TCP/IP"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2022-10-03 10:52" pubdate>
+          2022年10月3日 上午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          1.2k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          10 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">TCP/IP</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="UDP存在的意义"><a href="#UDP存在的意义" class="headerlink" title="UDP存在的意义"></a>UDP存在的意义</h1><p><img src="/images/UDP.png" srcset="/images/loading.gif" lazyload></p>
+<ul>
+<li>无需建立连接，不会引入建立连接的时延</li>
+<li>无连接状态，tcp需要维护接发缓存、拥塞控制参数、序号及确认号的参数</li>
+<li>分组首部更小</li>
+<li>无拥塞控制，对于不希望过分延迟报文段的传送并且容忍数据丢失的场景适用</li>
+</ul>
+<h1 id="校验和的计算"><a href="#校验和的计算" class="headerlink" title="校验和的计算"></a>校验和的计算</h1><ul>
+<li>发送方对UDP报文段中的所有16比特字进行累加，溢出将回卷，并取反得到校验和。</li>
+<li>接收方将所有16比特字(包括校验和)进行累加,无错即得到全1</li>
+</ul>
+<h1 id="TCP"><a href="#TCP" class="headerlink" title="TCP"></a>TCP</h1><p><img src="/images/TCP.png" srcset="/images/loading.gif" lazyload></p>
+<h2 id="涉及概念"><a href="#涉及概念" class="headerlink" title="涉及概念"></a>涉及概念</h2><ul>
+<li>ACK:肯定确认,在TCP头部中表示当前对确认字段中的值是有效的,明显第一次握手时，该值置为0</li>
+<li>NAK:否定确儿（TCP中没有，只需确认最后一次接收到的分组即可）</li>
+<li>GBN:回退N步</li>
+<li>SR:选择重传</li>
+<li>MSS:最大报文长度,不包括头40字节</li>
+<li>MTU:最大传输单元，链路层的最大帧长度(以太网中为1500字节)，MSS&#x3D;MTU-40(TCP+IP首部长度)</li>
+<li>RTT:往返时间</li>
+</ul>
+<h2 id="六比特标识位"><a href="#六比特标识位" class="headerlink" title="六比特标识位"></a>六比特标识位</h2><ul>
+<li>URG:用于指示报文段里存在着被发送端的上层实体置为紧急的数据(一般不用)</li>
+<li>ACK:用于指示确认字段的值是有效的</li>
+<li>PSH:用于指示接收方应立即将数据交给上层(一般不用)</li>
+<li>RST:用于告诉源：我没有那个报文段的套接字(即端口号未开)，不要再发送该报文,udp遇到这种情况会发送一个ICMP的数据报</li>
+<li>SYN:用于建立连接</li>
+<li>FIN:用于拆除连接</li>
+</ul>
+<h2 id="流量控制"><a href="#流量控制" class="headerlink" title="流量控制"></a>流量控制</h2><ul>
+<li>rwnd(接受窗口)&#x3D;RcvBuffer-[LastByteRcvd-LastByteRead]</li>
+</ul>
+<h2 id="三次握手"><a href="#三次握手" class="headerlink" title="三次握手"></a>三次握手</h2><p><img src="/images/handshake.png" srcset="/images/loading.gif" lazyload></p>
+<ul>
+<li>第一次：SYN为1,ACK为0,随机初始化一个seq(client_isn)</li>
+<li>第二次：SYN为1,ACK为1,随机初始化一个seq(server_isn),并设置确认号ack(client_isn+1)，此时服务器可能分配缓存和变量（此时分配会受到SYN洪泛攻击）</li>
+<li>第三次：SYN为1,ACK为1,客户分配缓存和变量，并可以携带有效数据</li>
+</ul>
+<h2 id="四次挥手"><a href="#四次挥手" class="headerlink" title="四次挥手"></a>四次挥手</h2><p><img src="/images/byebye.png" srcset="/images/loading.gif" lazyload></p>
+<ul>
+<li>第一次(假设客户端先手)：FIN为1，ACK&#x3D;0,随机一个seq,此时不发送有效数据，仍然可以接受数据</li>
+<li>第二次：ACK&#x3D;1,ackNum为seq+1,此时服务器仍然可以发送数据</li>
+<li>第三次：FIN为1，ACK&#x3D;0,随机一个seq，此时服务器不发送有效数据</li>
+<li>第四次：ACK&#x3D;1,ackNum为seq+1</li>
+</ul>
+<h2 id="拥塞控制"><a href="#拥塞控制" class="headerlink" title="拥塞控制"></a>拥塞控制</h2><ul>
+<li>发送方跟踪额外的变量:拥塞窗口(cwnd),注意这与流量控制不同，<strong>不体现在tcp头部中</strong></li>
+<li>LastByteSent-LastByteAcked&lt;&#x3D;min{cwnd,rwnd}</li>
+<li>初始化时，cwnd通常为1个MSS，然后进入慢启动(指数增长),遇到拥塞，cwnd减半，并设置ssthresh&#x3D;cwnd&#x2F;2(慢启动阈值),结束慢启动</li>
+<li>TCP的拥塞控制：每个RTT内cwnd线性增加1个MSS，出现3个冗余ACK时，cwnd减半（加性增、乘性减）</li>
+</ul>
+<h1 id="IP"><a href="#IP" class="headerlink" title="IP"></a>IP</h1><h2 id="ipv4"><a href="#ipv4" class="headerlink" title="ipv4"></a>ipv4</h2><p><img src="/images/IP.png" srcset="/images/loading.gif" lazyload></p>
+<h3 id="关键字段"><a href="#关键字段" class="headerlink" title="关键字段"></a>关键字段</h3><ul>
+<li>版本号：4比特，定义是ipv4还是ipv6</li>
+<li>首部长度：4比特，定义首部长度</li>
+<li>服务类型：8比特，服务类型(延时低，高吞吐等)</li>
+<li>数据包长度：ip数据报总长度（首部+数据）</li>
+<li>标识、标志、偏移：ip分片有关</li>
+<li>寿命：8字节，没经过一个路由减1,为0时丢弃</li>
+<li>协议：表示上层协议（UDP还是）</li>
+<li>首部校验和：只针对头部计算，注意由于寿命会变，所以需要不断的更新</li>
+<li>源和目的ip地址：没啥好说</li>
+<li>选项：很少使用，ipv6中就没有</li>
+<li>有效数据</li>
+</ul>
+<h3 id="数据报分片"><a href="#数据报分片" class="headerlink" title="数据报分片"></a>数据报分片</h3><p><img src="/images/IP_fra.png" srcset="/images/loading.gif" lazyload></p>
+<ul>
+<li>之前提到过，一个链路层帧能承载的最大数据量叫做<strong>最大传送单元（MTU）</strong></li>
+<li>广域网和局域网可能MTU不同所以要分片</li>
+<li>分片的重组放在端系统中，路由器不负责重组</li>
+<li>最后一片标志被置为0</li>
+</ul>
+<h3 id="ipv4编址"><a href="#ipv4编址" class="headerlink" title="ipv4编址"></a>ipv4编址</h3><ul>
+<li>接口：主机与物理链路之间的边界叫做接口</li>
+<li>ip地址：IP协议要求每台主机和路由器的接口拥有自己的IP地址<br><strong>从技术上来讲一个ip地址与一个接口相关联，而不是与包括该接口的主机或路由器相关联</strong></li>
+<li>子网掩码：a.b.c.d&#x2F;x,x最高比特构成了IP地址的网络部分，为网络前缀</li>
+<li>CIDR：无类别域间路由选择，这种更灵活</li>
+<li>分类编址（不灵活）：A类子网(8bit)，B类子网(16bit)，C类子网(24bit),会有c类太少，b类太大的烦恼</li>
+</ul>
+<h3 id="DHCP动态主机配置协议"><a href="#DHCP动态主机配置协议" class="headerlink" title="DHCP动态主机配置协议"></a>DHCP动态主机配置协议</h3><p>性质：基于UDP的应用层协议,默认端口67<br>作用： 除了分配IP地址外，DHCP还允许获取其他信息子网掩码，默认网关（第一跳路由器），本地DNS服务器地址<br><img src="/images/DHCP.png" srcset="/images/loading.gif" lazyload></p>
+<h3 id="网络地址转换-NAT"><a href="#网络地址转换-NAT" class="headerlink" title="网络地址转换-NAT"></a>网络地址转换-NAT</h3><ul>
+<li>会改写IP地址和端口号<br><img src="/images/NAT.png" srcset="/images/loading.gif" lazyload></li>
+</ul>
+<h2 id="ipv6"><a href="#ipv6" class="headerlink" title="ipv6"></a>ipv6</h2><p><img src="/images/IPV6.png" srcset="/images/loading.gif" lazyload></p>
+<ul>
+<li>版本：显然设为6</li>
+<li>流量类型：与ipv4服务类型类似</li>
+<li>流标签：标识一条数据报的流，还未完全确定</li>
+<li>有效载荷长度</li>
+<li>跳限制：计数为0丢弃</li>
+</ul>
+<h3 id="ipv4-ipv6-隧道"><a href="#ipv4-ipv6-隧道" class="headerlink" title="ipv4-&gt;ipv6:隧道"></a>ipv4-&gt;ipv6:隧道</h3><p><img src="/images/tunneling.png" srcset="/images/loading.gif" lazyload></p>
+<h2 id="通用转发和SDN"><a href="#通用转发和SDN" class="headerlink" title="通用转发和SDN"></a>通用转发和SDN</h2><ul>
+<li>OpenFLow标准</li>
+<li>SDN</li>
+<li>就是根据各层的头信息执行特定转发，有更大灵活性，跳出IP转发的局限性</li>
+</ul>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>TCP/IP</div>
+      <div>http://example.com/2022/10/03/TCP-IP/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Nanbert</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2022年10月3日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2023/06/24/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F-%E5%B7%A5%E5%8E%82%E6%A8%A1%E5%BC%8F/" title="设计模式_工厂模式">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">设计模式_工厂模式</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2022/10/02/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%9F%BA%E7%A1%80/" title="计算机网络基础">
+                        <span class="hidden-mobile">计算机网络基础</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

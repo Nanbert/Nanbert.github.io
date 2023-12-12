@@ -1,0 +1,914 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/images/favicon.png">
+  <link rel="icon" href="/images/favicon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Nanbert">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="grep格式:grep [options] [regex] [file...]    选项 描述    -i 忽略大小写   -v 打印不匹配的文本行   -c 只打印匹配或不匹配(-v选项)的行数   -l 打印包含匹配项的文件名,而不是文本行本身   -L 相似于-l项,但是只是打印不包含匹配项的文件名   -n 在每个匹配行之前打印出相应的行号   -w 只识别整个单词(即模式前后有空格)">
+<meta property="og:type" content="article">
+<meta property="og:title" content="grep与正则表达式">
+<meta property="og:url" content="http://example.com/2020/11/20/grep%E4%B8%8E%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F/index.html">
+<meta property="og:site_name" content="Nanbert&#39;s blog">
+<meta property="og:description" content="grep格式:grep [options] [regex] [file...]    选项 描述    -i 忽略大小写   -v 打印不匹配的文本行   -c 只打印匹配或不匹配(-v选项)的行数   -l 打印包含匹配项的文件名,而不是文本行本身   -L 相似于-l项,但是只是打印不包含匹配项的文件名   -n 在每个匹配行之前打印出相应的行号   -w 只识别整个单词(即模式前后有空格)">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/images/regex.jpg">
+<meta property="article:published_time" content="2020-11-20T11:46:54.000Z">
+<meta property="article:modified_time" content="2023-12-12T06:06:27.738Z">
+<meta property="article:author" content="Nanbert">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://example.com/images/regex.jpg">
+  
+  
+  
+  <title>grep与正则表达式 - Nanbert&#39;s blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.6","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/images/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.0.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Nanbert</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/images/regex.jpg') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="grep与正则表达式"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2020-11-20 19:46" pubdate>
+          2020年11月20日 晚上
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          1.2k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          11 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">grep与正则表达式</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="grep"><a href="#grep" class="headerlink" title="grep"></a>grep</h1><p>格式:<code>grep [options] [regex] [file...]</code></p>
+<table>
+<thead>
+<tr>
+<th align="center">选项</th>
+<th align="center">描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">-i</td>
+<td align="center">忽略大小写</td>
+</tr>
+<tr>
+<td align="center">-v</td>
+<td align="center">打印不匹配的文本行</td>
+</tr>
+<tr>
+<td align="center">-c</td>
+<td align="center">只打印匹配或不匹配(-v选项)的行数</td>
+</tr>
+<tr>
+<td align="center">-l</td>
+<td align="center">打印包含匹配项的文件名,而不是文本行本身</td>
+</tr>
+<tr>
+<td align="center">-L</td>
+<td align="center">相似于-l项,但是只是打印不包含匹配项的文件名</td>
+</tr>
+<tr>
+<td align="center">-n</td>
+<td align="center">在每个匹配行之前打印出相应的行号</td>
+</tr>
+<tr>
+<td align="center">-w</td>
+<td align="center">只识别整个单词(即模式前后有空格)</td>
+</tr>
+<tr>
+<td align="center">-E</td>
+<td align="center">识别扩展正则表达式</td>
+</tr>
+<tr>
+<td align="center">-r</td>
+<td align="center">递归对某个目录的所有文件</td>
+</tr>
+<tr>
+<td align="center">-I</td>
+<td align="center">等价于-binary-files&#x3D;without-match,不匹配二进制</td>
+</tr>
+<tr>
+<td align="center">-exclude-dir&#x3D;[目录路径]</td>
+<td align="center">跳过某个目录</td>
+</tr>
+<tr>
+<td align="center">–binary-files&#x3D;without-match</td>
+<td align="center">二进制文件不匹配</td>
+</tr>
+</tbody></table>
+<h1 id="正则表达式"><a href="#正则表达式" class="headerlink" title="正则表达式"></a>正则表达式</h1><h2 id="正则表达式的元字"><a href="#正则表达式的元字" class="headerlink" title="正则表达式的元字"></a>正则表达式的元字</h2><table>
+<thead>
+<tr>
+<th align="center">特殊字符</th>
+<th align="center">用途</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center"><code>.</code></td>
+<td align="center">匹配除换行符外的任一单字符。在awk中,句点也能匹配换行符</td>
+</tr>
+<tr>
+<td align="center"><code>*</code></td>
+<td align="center">匹配任一个(包括零个)在它面前的字符(包括由正则表达式指定的字符)</td>
+</tr>
+<tr>
+<td align="center"><code>[...]</code></td>
+<td align="center">匹配方括号中的字符类中的任意一个。如果方括号中第一个字符为脱字符号(^),则表示否定匹配,即匹配除了换行符和类中列出的那些字符以外的所有字符。在awk中,也匹配换行符。连字符(-)用于表示字符的范围(可以连续用如[A-Za-z0-9])。如果类中的第一个字符为右方括号(])则表示它是类的成员＝所有其他的元字符在被指定为类中的成员时都会失去它们原来的含义</td>
+</tr>
+<tr>
+<td align="center"><code>^</code></td>
+<td align="center">如果作为正则表达式的第一个字符,则表示匹配行的开始。在awk中匹配字符串的开始,即使字符串包含嵌入的换行符</td>
+</tr>
+<tr>
+<td align="center"><code>$</code></td>
+<td align="center">如果作为正则表达式的最后一个字符,则表示匹配行的结尾。在awk中匹配字符串的结尾,即使字符串包含嵌入的换行符。</td>
+</tr>
+<tr>
+<td align="center"><code>\&#123;n,m\&#125;</code></td>
+<td align="center">匹配它前面某个范围内单个字符出现的次数(包括由正则表达式指定的字符)。<code>\&#123;n\&#125;</code>将匹配n次出现,<code>\&#123;n,\&#125;</code>至少匹配n次出现,而且<code>\&#123;n,m\&#125;</code>匹配n和m之间任意次的出现</td>
+</tr>
+<tr>
+<td align="center"><code>\</code></td>
+<td align="center">转义随后的特殊字符</td>
+</tr>
+</tbody></table>
+<h2 id="POSIX字符类"><a href="#POSIX字符类" class="headerlink" title="POSIX字符类"></a>POSIX字符类</h2><p>POSIX是标准,通用于其它shell命令,不仅仅是正则,并且只能出现在中括号中,就是说应该这么写<code>[[:alnum:]]</code></p>
+<table>
+<thead>
+<tr>
+<th align="center">类</th>
+<th align="center">打印字符</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">[:alnum:]</td>
+<td align="center">字母数字字符,等价于[A-Za-z0-9]</td>
+</tr>
+<tr>
+<td align="center">[:word:]</td>
+<td align="center">与[:alnum:]相同,但增加了下划线字符</td>
+</tr>
+<tr>
+<td align="center">[:alpha:]</td>
+<td align="center">字母字符</td>
+</tr>
+<tr>
+<td align="center">[:blank:]</td>
+<td align="center">空格和制表符</td>
+</tr>
+<tr>
+<td align="center">[:cntrl:]</td>
+<td align="center">控制字符,0~31和127的ASCII字符</td>
+</tr>
+<tr>
+<td align="center">[:digit:]</td>
+<td align="center">数字字符0~9</td>
+</tr>
+<tr>
+<td align="center">[:graph:]</td>
+<td align="center">可打印和可见的(非空格)字符,33-126的ASCII</td>
+</tr>
+<tr>
+<td align="center">[:lower:]</td>
+<td align="center">小写字符</td>
+</tr>
+<tr>
+<td align="center">[:upper:]</td>
+<td align="center">大写字符</td>
+</tr>
+<tr>
+<td align="center">[:print:]</td>
+<td align="center">可打印的字符(包括空白字符)</td>
+</tr>
+<tr>
+<td align="center">[:punct:]</td>
+<td align="center">标点符号字符,在 ASCII 中, 等 价 于:&#96;-!”#$%&amp;’()*+,.&#x2F;:;&lt;&#x3D;&gt;?@[\]_‘</td>
+</tr>
+<tr>
+<td align="center">[:space:]</td>
+<td align="center">空白字符,包括空格,tab,回车,换行,vertical tab和form feed,在ASCII中,等价于:[\t\r\n\v\f]</td>
+</tr>
+<tr>
+<td align="center">[:xdigit:]</td>
+<td align="center">十六进制数字</td>
+</tr>
+</tbody></table>
+<h2 id="扩展的元字符"><a href="#扩展的元字符" class="headerlink" title="扩展的元字符"></a>扩展的元字符</h2><table>
+<thead>
+<tr>
+<th align="center">特殊字符</th>
+<th align="center">用途</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center"><code>+</code></td>
+<td align="center">匹配前面的正则表达式的一次或多次出现</td>
+</tr>
+<tr>
+<td align="center"><code>?</code></td>
+<td align="center">匹配前面的正则表达式的零次或一次出现</td>
+</tr>
+<tr>
+<td align="center"><code>|</code></td>
+<td align="center">逻辑表达或,指定可以匹配前面的或后面的正则表达式</td>
+</tr>
+<tr>
+<td align="center"><code>()</code></td>
+<td align="center">对正则表达式分组,如&#96;^(bz</td>
+</tr>
+<tr>
+<td align="center"><code>&#123;n,m&#125;</code></td>
+<td align="center">匹配它前面某个范围内单个字符出现的次数,与基本元字符的一样</td>
+</tr>
+<tr>
+<td align="center"><code>\w</code></td>
+<td align="center">和任何可以做单词组成成分的字符匹配(字母下划线数字)</td>
+</tr>
+<tr>
+<td align="center"><code>\W</code></td>
+<td align="center">和任何不能做单词组成成分的字符匹配</td>
+</tr>
+<tr>
+<td align="center"><code>\&lt;</code></td>
+<td align="center">和一个单词开头的空字符串匹配</td>
+</tr>
+<tr>
+<td align="center"><code>\&gt;</code></td>
+<td align="center">和一个单词末尾的空字符串匹配</td>
+</tr>
+<tr>
+<td align="center"><code>\y</code></td>
+<td align="center">和一个单词开头的空字符串或末尾的空字符串匹配（单词边界）,这适用于awk</td>
+</tr>
+<tr>
+<td align="center"><code>\b</code></td>
+<td align="center">同上，除了awk的其他软件</td>
+</tr>
+<tr>
+<td align="center"><code>\B</code></td>
+<td align="center">匹配非单词边界。er\B 能匹配 verb 中的 er，但不能匹配 never 中的 er。</td>
+</tr>
+<tr>
+<td align="center"><code>\d</code></td>
+<td align="center">匹配数字：[0-9]</td>
+</tr>
+<tr>
+<td align="center"><code>\D</code></td>
+<td align="center">匹配非数字</td>
+</tr>
+<tr>
+<td align="center"><code>\s</code></td>
+<td align="center">匹配所有空格字符，等价于<code>[\t\n\f\r\p&#123;Z&#125;]</code></td>
+</tr>
+<tr>
+<td align="center"><code>\S</code></td>
+<td align="center">匹配所有非空格字符</td>
+</tr>
+<tr>
+<td align="center"><code>p</code></td>
+<td align="center">匹配 CR&#x2F;LF（等同于 \r\n），用来匹配DOS行终止符</td>
+</tr>
+<tr>
+<td align="center"><code>\&#39;</code></td>
+<td align="center">和在缓冲区开始处的空字符串匹配</td>
+</tr>
+</tbody></table>
+<h2 id="零宽度断言"><a href="#零宽度断言" class="headerlink" title="零宽度断言"></a>零宽度断言</h2><p>|符号|描述|</p>
+<p>|:-:|:-:|<br>|?&#x3D;|正先行断言-存在|<br>|?!|负先行断言-排除|<br>|?&lt;&#x3D;|正后发断言-存在|<br>|<code>?&lt;!</code>|负后发断言-排除|</p>
+<h2 id="模式修正符"><a href="#模式修正符" class="headerlink" title="模式修正符"></a>模式修正符</h2><table>
+<thead>
+<tr>
+<th align="center">标志</th>
+<th align="center">描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">i</td>
+<td align="center">忽略大小写。</td>
+</tr>
+<tr>
+<td align="center">g</td>
+<td align="center">全局搜索。</td>
+</tr>
+<tr>
+<td align="center">m</td>
+<td align="center">多行修饰符：锚点元字符 ^ $ 工作范围在每行的起始。</td>
+</tr>
+</tbody></table>
+<h2 id="grep应用举例"><a href="#grep应用举例" class="headerlink" title="grep应用举例"></a>grep应用举例</h2><ul>
+<li>打印匹配前后5行:<code>grep -5 &#39;pattern&#39; inputfile</code> </li>
+<li>打印匹配后5行:<code>grep -A 5 &#39;pattern&#39; inputfile</code></li>
+<li>打印匹配前5行:<code>grep -B 5 &#39;pattern&#39; inputfile</code></li>
+<li>打印匹配前5行:<code>grep -i &#39;pattern&#39; inputfile</code></li>
+</ul>
+<h2 id="正则表达式举例"><a href="#正则表达式举例" class="headerlink" title="正则表达式举例"></a>正则表达式举例</h2><ul>
+<li>引号中的任意字符串: <code>&quot;.*&quot;</code></li>
+<li>邮箱：<code>^[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$</code></li>
+<li>中国大陆手机号：<code>^1[3-9][[:digit:]]\&#123;9\&#125;$</code></li>
+<li>匹配任意域名：<code>^((http:\/\/)|(https:\/\/))?([a-zA-Z0-9]([a-zA-Z0-9\-]&#123;0,61&#125;[a-zA-Z0-9])?\.)+[a-zA-Z]&#123;2,6&#125;(\/)</code></li>
+<li>匹配IP地址：<code>((?:(?:25[0-5]|2[0-4]\d|[01]?\d?\d)\.)&#123;3&#125;(?:25[0-5]|2[0-4]\d|[01]?\d?\d))</code></li>
+<li>汉字：<code>^[\u4e00-\u9fa5]&#123;0,&#125;$</code></li>
+<li>整数：<code>^-?[1-9]\d*$</code></li>
+<li>浮点数：<code>^-?([1-9]\d*\.\d*|0\.\d*[1-9]\d*|0?\.0+|0)$</code></li>
+<li>身份证号：<code>^[1-9]\d&#123;5&#125;(18|19|([23]\d))\d&#123;2&#125;((0[1-9])|(10|11|12))(([0-2][1-9])|10|20|30|31)\d&#123;3&#125;[0-9Xx]$</code></li>
+<li>军官证：<code>^[\u4E00-\u9FA5](字第)([0-9a-zA-Z]&#123;4,8&#125;)(号?)$</code></li>
+<li>护照：<code>^([a-zA-z]|[0-9])&#123;5,17&#125;$</code></li>
+<li>港澳通行证：<code>^([A-Z]\d&#123;6,10&#125;(\(\w&#123;1&#125;\))?)$</code></li>
+<li>台湾通行证：<code>^\d&#123;8&#125;|^[a-zA-Z0-9]&#123;10&#125;|^\d&#123;18&#125;$</code></li>
+<li>强密码：<code>^.*(?=.&#123;6,&#125;)(?=.*\d)(?=.*[A-Z])(?=.*[a-z])(?=.*[!@#$%^&amp;*? ]).*$</code></li>
+<li>火车车次：<code>^[GCDZTSPKXLY1-9]\d&#123;1,4&#125;$</code></li>
+<li>url：<code>^[a-zA-Z]+:\/\/</code></li>
+<li>Mac地址：<code>^([0-9a-fA-F][0-9a-fA-F]:)&#123;5&#125;([0-9a-fA-F][0-9a-fA-F])$</code></li>
+<li>传真号码：<code>^(([0\+]\d&#123;2,3&#125;-)?(0\d&#123;2,3&#125;)-)(\d&#123;7,8&#125;)(-(\d&#123;3,&#125;))?$</code></li>
+<li>手机号码：<code>^1[34578]\d&#123;9&#125;$</code></li>
+<li>md5格式32位：<code>^[a-f0-9]&#123;32&#125;$</code></li>
+<li>ipv4：<code>(\b25[0-5]|\b2[0-4][0-9]|\b[01]?[0-9][0-9]?)(\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?))&#123;3&#125;</code></li>
+<li>ipv6：<code>(([0-9a-fA-F]&#123;1,4&#125;:)&#123;7,7&#125;[0-9a-fA-F]&#123;1,4&#125;|([0-9a-fA-F]&#123;1,4&#125;:)&#123;1,7&#125;:|([0-9a-fA-F]&#123;1,4&#125;:)&#123;1,6&#125;:[0-9a-fA-F]&#123;1,4&#125;|([0-9a-fA-F]&#123;1,4&#125;:)&#123;1,5&#125;(:[0-9a-fA-F]&#123;1,4&#125;)&#123;1,2&#125;|([0-9a-fA-F]&#123;1,4&#125;:)&#123;1,4&#125;(:[0-9a-fA-F]&#123;1,4&#125;)&#123;1,3&#125;|([0-9a-fA-F]&#123;1,4&#125;:)&#123;1,3&#125;(:[0-9a-fA-F]&#123;1,4&#125;)&#123;1,4&#125;|([0-9a-fA-F]&#123;1,4&#125;:)&#123;1,2&#125;(:[0-9a-fA-F]&#123;1,4&#125;)&#123;1,5&#125;|[0-9a-fA-F]&#123;1,4&#125;:((:[0-9a-fA-F]&#123;1,4&#125;)&#123;1,6&#125;)|:((:[0-9a-fA-F]&#123;1,4&#125;)&#123;1,7&#125;|:)|fe80:(:[0-9a-fA-F]&#123;0,4&#125;)&#123;0,4&#125;%[0-9a-zA-Z]&#123;1,&#125;|::(ffff(:0&#123;1,4&#125;)&#123;0,1&#125;:)&#123;0,1&#125;((25[0-5]|(2[0-4]|1&#123;0,1&#125;[0-9])&#123;0,1&#125;[0-9])\.)&#123;3,3&#125;(25[0-5]|(2[0-4]|1&#123;0,1&#125;[0-9])&#123;0,1&#125;[0-9])|([0-9a-fA-F]&#123;1,4&#125;:)&#123;1,4&#125;:((25[0-5]|(2[0-4]|1&#123;0,1&#125;[0-9])&#123;0,1&#125;[0-9])\.)&#123;3,3&#125;(25[0-5]|(2[0-4]|1&#123;0,1&#125;[0-9])&#123;0,1&#125;[0-9]))</code></li>
+<li>email：<code>^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]&#123;2,4&#125;)$</code></li>
+<li>十六进制颜色：<code>^#?([a-fA-F0-9]&#123;6&#125;|[a-fA-F0-9]&#123;3&#125;)$</code></li>
+<li>版本号：<code>^\d+(?:\.\d+)&#123;2&#125;$</code></li>
+<li>车牌号：<code>^[京津沪渝冀豫云辽黑湘皖鲁新苏浙赣鄂桂甘晋蒙陕吉闽贵粤青藏川宁琼使领][A-HJ-NP-Z](?:((\d&#123;5&#125;[A-HJK])|([A-HJK][A-HJ-NP-Z0-9][0-9]&#123;4&#125;))|[A-HJ-NP-Z0-9]&#123;4&#125;[A-HJ-NP-Z0-9挂学警港澳])$</code></li>
+<li>中国邮政编码：<code>[1-9]\d&#123;5&#125;(?!\d)</code></li>
+<li>迅雷连接：<code>^thunderx?:\/\/[a-zA-Z\d]+=$</code></li>
+<li>ed2k连接：<code>^ed2k:\/\/\|file\|.+\|\/$</code></li>
+<li>磁力连接：<code>^magnet:\?xt=urn:btih:[0-9a-fA-F]&#123;40,&#125;.*$</code></li>
+<li>html标记：<code>&lt;(\S*?)[^&gt;]*&gt;.*?&lt;/\1&gt;|&lt;.*?/&gt;</code></li>
+<li>html注释：<code>&lt;!--(.*?)--&gt;</code></li>
+</ul>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>grep与正则表达式</div>
+      <div>http://example.com/2020/11/20/grep与正则表达式/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Nanbert</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2020年11月20日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2020/11/21/%E6%96%87%E6%9C%AC%E5%A4%84%E7%90%86%E7%91%9E%E5%A3%AB%E5%86%9B%E5%88%80-%E5%B0%8F%E8%80%8C%E5%BC%BA%E6%82%8D/" title="文本处理瑞士军刀--小而强悍">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">文本处理瑞士军刀--小而强悍</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2020/11/19/%E5%BD%92%E6%A1%A3%E5%92%8C%E5%A4%87%E4%BB%BD%E5%91%BD%E4%BB%A4/" title="归档和备份命令">
+                        <span class="hidden-mobile">归档和备份命令</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

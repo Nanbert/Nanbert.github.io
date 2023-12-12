@@ -1,0 +1,1347 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/images/favicon.png">
+  <link rel="icon" href="/images/favicon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Nanbert">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="注释 单行注释: # 多行注释:  :&lt;&lt;EOF ... EOF或者 :&lt;&lt;! ... !  变量 创建普通变量: name&#x3D;”test” (&#x3D;两边不可有空格) 创建函数体中的局部变量: ** local name&#x3D;”test”**,函数体及整个脚本中的变量默认都是全局变量,函数体内外皆可访问和改变,函数体内的变量最好用这个加以限制,同时为了得">
+<meta property="og:type" content="article">
+<meta property="og:title" content="shell基本概念">
+<meta property="og:url" content="http://example.com/2021/10/15/shell%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5/index.html">
+<meta property="og:site_name" content="Nanbert&#39;s blog">
+<meta property="og:description" content="注释 单行注释: # 多行注释:  :&lt;&lt;EOF ... EOF或者 :&lt;&lt;! ... !  变量 创建普通变量: name&#x3D;”test” (&#x3D;两边不可有空格) 创建函数体中的局部变量: ** local name&#x3D;”test”**,函数体及整个脚本中的变量默认都是全局变量,函数体内外皆可访问和改变,函数体内的变量最好用这个加以限制,同时为了得">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/images/bash.jpg">
+<meta property="article:published_time" content="2021-10-15T12:10:51.000Z">
+<meta property="article:modified_time" content="2023-12-12T06:06:27.745Z">
+<meta property="article:author" content="Nanbert">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://example.com/images/bash.jpg">
+  
+  
+  
+  <title>shell基本概念 - Nanbert&#39;s blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.6","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/images/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.0.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Nanbert</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/images/bash.jpg') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="shell基本概念"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2021-10-15 20:10" pubdate>
+          2021年10月15日 晚上
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          4.7k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          40 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">shell基本概念</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h3 id="注释"><a href="#注释" class="headerlink" title="注释"></a>注释</h3><ul>
+<li>单行注释: #</li>
+<li>多行注释:  <code>:&lt;&lt;EOF ... EOF</code>或者 <code>:&lt;&lt;! ... !</code></li>
+</ul>
+<h3 id="变量"><a href="#变量" class="headerlink" title="变量"></a>变量</h3><ul>
+<li>创建普通变量: <strong>name&#x3D;”test”</strong> (&#x3D;两边不可有空格)</li>
+<li>创建函数体中的局部变量: ** local name&#x3D;”test”**,函数体及整个脚本中的变量默认都是全局变量,函数体内外皆可访问和改变,函数体内的变量最好用这个加以限制,同时为了得到命令替换的返回码时最好分开写(否则只会捕获local的成功码)：<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-built_in">local</span> varname<br>varname=$(<span class="hljs-built_in">command</span>)<br>re=$?<br></code></pre></td></tr></table></figure></li>
+<li>使用变量: <strong>echo $name 或者 echo $(name)</strong> 使用时要加$,重新赋值时不需要</li>
+<li>只读变量: <strong>name&#x3D;”only_read” -&gt; readonly name</strong></li>
+<li>删除变量: <strong>unset name</strong></li>
+</ul>
+<h3 id="字符串变量"><a href="#字符串变量" class="headerlink" title="字符串变量"></a>字符串变量</h3><p>字符串与变量展开有密切联系,可以参考那节</p>
+<ol>
+<li>单引号</li>
+</ol>
+<ul>
+<li>单引号变量var&#x3D;’test’,只能原样输出,不能解释变量</li>
+<li>单引号中不能出现一个单引号,转义也不行</li>
+</ul>
+<ol start="2">
+<li>双引号</li>
+</ol>
+<ul>
+<li>双引号变量<code>var=&quot;my name is $&#123;name&#125;&quot;</code>,可以解释变量</li>
+<li>可以出现转移字符</li>
+</ul>
+<ol start="3">
+<li>拼接字符串</li>
+</ol>
+<ul>
+<li><code>name=&quot;this is&quot;&quot;my name&quot;;name=&quot;this is my name&quot;;name=&quot;this&quot;is&quot;my name&quot;</code>等效</li>
+</ul>
+<ol start="4">
+<li><p>获取字符串长度</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-built_in">echo</span> <span class="hljs-variable">$&#123;#str&#125;</span><br></code></pre></td></tr></table></figure>
+</li>
+<li><p>提取子字符串</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs bash">name=<span class="hljs-string">&quot;this is my name&quot;</span>;<br><span class="hljs-built_in">echo</span> <span class="hljs-variable">$&#123;name:1:4&#125;</span> <span class="hljs-comment">#输出his</span><br><span class="hljs-built_in">echo</span> <span class="hljs-variable">$&#123;name::4&#125;</span> <span class="hljs-comment">#输出this</span><br></code></pre></td></tr></table></figure></li>
+<li><p>大小写</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-built_in">declare</span> -u upper<br><span class="hljs-built_in">declare</span> -l lower<br><span class="hljs-comment">#upper将会强制转成SL</span><br>upper=<span class="hljs-string">&quot;sl&quot;</span><br><span class="hljs-comment">#lower将会强制转成sl</span><br>lower=<span class="hljs-string">&quot;SL&quot;</span><br></code></pre></td></tr></table></figure></li>
+</ol>
+<h3 id="数组"><a href="#数组" class="headerlink" title="数组"></a>数组</h3><p>bash只支持以为数组,不支持多维数组</p>
+<ul>
+<li>定义数组: <strong>array_name&#x3D;(li wang xiang zhang)</strong> (小括号做边界、使用空格分离)或者<strong>declare -a array_name</strong></li>
+<li>单独定义数组的元素: <strong>arraypara[0]&#x3D;”w”;arraypara[3]&#x3D;”s”</strong> (定义时下标可以不连续,同样可以用于赋值)</li>
+<li>获取数组元素<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs bash">array_name[0]=<span class="hljs-string">&quot;li&quot;</span><br>array_name[3]=<span class="hljs-string">&quot;zhang&quot;</span><br><span class="hljs-built_in">echo</span> <span class="hljs-variable">$&#123;array_name[0]&#125;</span> <span class="hljs-comment">#输出&quot;li&quot;</span><br><span class="hljs-built_in">echo</span> <span class="hljs-variable">$&#123;array_name[1]&#125;</span> <span class="hljs-comment">#输出空</span><br><span class="hljs-built_in">echo</span> <span class="hljs-variable">$&#123;array_name[@]&#125;</span> <span class="hljs-comment">#输出&quot;li zhang&quot;输出数组所有元素,没有元素的下标省略</span><br><span class="hljs-comment">#等价于下面</span><br><span class="hljs-built_in">echo</span> <span class="hljs-variable">$&#123;array_name[*]&#125;</span><br></code></pre></td></tr></table></figure></li>
+<li>取得元素个数:<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-variable">$&#123;#arrayname[@]&#125;</span><br><span class="hljs-comment">#或者</span><br><span class="hljs-variable">$&#123;#arrayname[\*]&#125;</span><br></code></pre></td></tr></table></figure></li>
+<li>取得单个元素长度: <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-variable">$&#123;#array_name[1]&#125;</span><br></code></pre></td></tr></table></figure></li>
+<li><code>for i in &quot;$&#123;!foo[@]&#125;&quot;</code>取得每个非空元素的下标</li>
+<li><code>foo+=(d e f)</code>添加3个元素</li>
+<li>删除数组不能通过赋空值,只能通过unset,unset还能删除某个元素(这样后面元素往前补)</li>
+<li>没有指明数组下标的访问或赋值皆指向第一个值</li>
+<li>最新版本bash支持关联数组<code>declare -A colors;colors[&quot;red&quot;]=&quot;red&quot;</code></li>
+<li><a href="#funAndArr">函数与数组</a></li>
+<li>取切片<code>echo $&#123;array:0:3&#125;</code></li>
+<li>遍历数组<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-comment">#方法1</span><br><span class="hljs-keyword">for</span>(( i=<span class="hljs-number">0</span>;i&lt;<span class="hljs-variable">$&#123;#array[@]&#125;</span>;i++)) <span class="hljs-keyword">do</span><br><span class="hljs-built_in">echo</span> <span class="hljs-variable">$&#123;array[i]&#125;</span>;<br><span class="hljs-keyword">done</span>;<br><span class="hljs-comment">#方法2</span><br><span class="hljs-keyword">for</span> element <span class="hljs-keyword">in</span> <span class="hljs-variable">$&#123;array[@]&#125;</span><br><span class="hljs-keyword">do</span><br><span class="hljs-built_in">echo</span> <span class="hljs-variable">$element</span><br><span class="hljs-keyword">done</span><br><span class="hljs-comment">#方法3</span><br><span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-string">&quot;<span class="hljs-variable">$&#123;!arr[@]&#125;</span>&quot;</span>;<br><span class="hljs-keyword">do</span><br>    <span class="hljs-built_in">printf</span> <span class="hljs-string">&quot;%s\t%s\n&quot;</span> <span class="hljs-string">&quot;<span class="hljs-variable">$i</span>&quot;</span> <span class="hljs-string">&quot;<span class="hljs-variable">$&#123;arr[$i]&#125;</span>&quot;</span><br><span class="hljs-keyword">done</span><br></code></pre></td></tr></table></figure></li>
+</ul>
+<ul>
+<li>添加数组元素<br><code>$arr+=(a b)</code></li>
+</ul>
+<h3 id="环境变量"><a href="#环境变量" class="headerlink" title="环境变量"></a>环境变量</h3><h4 id="FUNCNAME"><a href="#FUNCNAME" class="headerlink" title="FUNCNAME"></a>FUNCNAME</h4><p>该环境变量是个数组，存储当前位置函数调用的堆栈，当只有主程序时，个数为0,当存在调用函数时，第一个总是当前函数名，最后一个为main表示主程序</p>
+<h4 id="BASH-SOURCE"><a href="#BASH-SOURCE" class="headerlink" title="BASH_SOURCE"></a>BASH_SOURCE</h4><p>是一个数组，不过它的第一个元素是当前脚本名称，然后是source它的脚本，依次类推，常用如下</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-comment"># 如果脚本是被source的话</span><br><span class="hljs-keyword">if</span> [ -n <span class="hljs-string">&quot;<span class="hljs-variable">$BASH_SOURCE</span>&quot;</span> -a <span class="hljs-string">&quot;<span class="hljs-variable">$BASH_SOURCE</span>&quot;</span> != <span class="hljs-string">&quot;<span class="hljs-variable">$0</span>&quot;</span> ]<br><span class="hljs-keyword">then</span><br>    do_something<br><span class="hljs-keyword">else</span> <span class="hljs-comment"># Otherwise, run directly in the shell</span><br>    do_other<br><span class="hljs-keyword">fi</span><br></code></pre></td></tr></table></figure>
+
+<h3 id="参数传递的相关特殊变量"><a href="#参数传递的相关特殊变量" class="headerlink" title="参数传递的相关特殊变量"></a>参数传递的相关特殊变量</h3><table>
+<thead>
+<tr>
+<th align="center">变量</th>
+<th align="center">意义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center"><code>$0</code></td>
+<td align="center">代表执行的文件名</td>
+</tr>
+<tr>
+<td align="center"><code>$n</code></td>
+<td align="center">代表传入的第n个参数</td>
+</tr>
+<tr>
+<td align="center"><code>$#</code></td>
+<td align="center">参数个数,不包括程序名本身</td>
+</tr>
+<tr>
+<td align="center"><code>$</code></td>
+<td align="center">以一个单字符串显示所有向脚本传递的参数。即为”$1 $2…$n”</td>
+</tr>
+<tr>
+<td align="center"><code>$@</code></td>
+<td align="center">展开成一个从 1 开始的位置参数列表。当它被用双引号引 起来的时候，展开成一个由双引号引起来的字符串，包含了 所有的位置参数，每个位置参数由 shell 变量 IFS 的第一个 字符（默认为一个空格）分隔开。</td>
+</tr>
+<tr>
+<td align="center"><code>$*</code></td>
+<td align="center">把所有参数当成一个大字符串</td>
+</tr>
+<tr>
+<td align="center"><code>$$</code></td>
+<td align="center">该脚本进程ID</td>
+</tr>
+<tr>
+<td align="center"><code>$!</code></td>
+<td align="center">后台运行的最后一个进程ID</td>
+</tr>
+<tr>
+<td align="center"><code>$?</code></td>
+<td align="center">上个调用(最后命令)返回值,0表示没有错误</td>
+</tr>
+</tbody></table>
+<p>有个<strong>shift</strong>命令可以方便处理命令行参数,每次执行该命令的时候,变量$2会移动到$1,变量$3会移动到变量$2,以此类推,$#值也会减1。例子:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs bash">count=1<br><span class="hljs-keyword">while</span> [[ <span class="hljs-variable">$#</span> -gt 0 ]];<br><span class="hljs-keyword">do</span><br>	<span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;Argument <span class="hljs-variable">$count</span> = <span class="hljs-variable">$1</span>&quot;</span><br>	count=$((count + <span class="hljs-number">1</span>))<br>	<span class="hljs-built_in">shift</span><br><span class="hljs-keyword">done</span><br></code></pre></td></tr></table></figure>
+<p><a href="#jumpopt">getopt和getopts两个命令经常被用来处理传递的参数</a></p>
+<h3 id="运算符"><a href="#运算符" class="headerlink" title="运算符"></a>运算符</h3><h3 id="let"><a href="#let" class="headerlink" title="let"></a>let</h3><p>let使数字运算更方便:<code>let a++</code>,<code>let a+=2</code></p>
+<h4 id="算数运算"><a href="#算数运算" class="headerlink" title="算数运算"></a>算数运算</h4><ul>
+<li><code>+ - * /</code></li>
+<li>加法运算<ul>
+<li><code>bash val=$(expr 2 + 2)</code> 这么写乘号要加转义,空格也是必须</li>
+<li><code>val=$[2+2]</code> (4个空格不是必要的,不同于条件判断)</li>
+<li><code>val=$((2+2))</code>(4个空格不是必要的)</li>
+</ul>
+</li>
+</ul>
+<p>bash支持任意进制</p>
+<table>
+<thead>
+<tr>
+<th align="center">表示法</th>
+<th align="center">描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">number</td>
+<td align="center">默认10进制</td>
+</tr>
+<tr>
+<td align="center">0number</td>
+<td align="center">8进制</td>
+</tr>
+<tr>
+<td align="center">0xnumber</td>
+<td align="center">16进制</td>
+</tr>
+<tr>
+<td align="center">base#number</td>
+<td align="center">base进制</td>
+</tr>
+</tbody></table>
+<p>在双括号中会被解释成数字,否则默认为字符串</p>
+<h4 id="数字关系运算符"><a href="#数字关系运算符" class="headerlink" title="数字关系运算符"></a>数字关系运算符</h4><p>关系运算符只支持数字,不支持字符串,除非字符串是数字</p>
+<table>
+<thead>
+<tr>
+<th align="center">符号</th>
+<th align="center">意义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center"><code>-eq</code></td>
+<td align="center">相等返回true,<code>[$a -eq $b]</code></td>
+</tr>
+<tr>
+<td align="center"><code>-ne</code></td>
+<td align="center">不相等返回true,<code>[$a -ne $b]</code></td>
+</tr>
+<tr>
+<td align="center"><code>-gt</code></td>
+<td align="center">大于号</td>
+</tr>
+<tr>
+<td align="center"><code>-lt</code></td>
+<td align="center">小于号</td>
+</tr>
+<tr>
+<td align="center"><code>-ge</code></td>
+<td align="center">大于等于号</td>
+</tr>
+<tr>
+<td align="center"><code>-le</code></td>
+<td align="center">小于等于号</td>
+</tr>
+</tbody></table>
+<h4 id="字符串运算符"><a href="#字符串运算符" class="headerlink" title="字符串运算符"></a>字符串运算符</h4><table>
+<thead>
+<tr>
+<th align="center">符号</th>
+<th align="center">意义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center"><strong>&#x3D;</strong></td>
+<td align="center">相等返回true,<code>[$a = $b]</code></td>
+</tr>
+<tr>
+<td align="center"><strong>!&#x3D;</strong></td>
+<td align="center">不相等返回true,<code>[$a != $b]</code></td>
+</tr>
+<tr>
+<td align="center"><strong>-z</strong></td>
+<td align="center">字符串长度为0返回true,<code>[-z $b]</code></td>
+</tr>
+<tr>
+<td align="center"><strong>-n</strong></td>
+<td align="center">字符串长度不为0返回true,<code>[-n $b]</code></td>
+</tr>
+<tr>
+<td align="center"><strong>$</strong></td>
+<td align="center">不为空返回true,<code>[$a]</code></td>
+</tr>
+</tbody></table>
+<h4 id="逻辑运算符"><a href="#逻辑运算符" class="headerlink" title="逻辑运算符"></a>逻辑运算符</h4><table>
+<thead>
+<tr>
+<th align="center">符号</th>
+<th align="center">意义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center"><strong>!</strong></td>
+<td align="center">非运算,<code>[! false]</code></td>
+</tr>
+<tr>
+<td align="center"><strong>&amp;&amp;</strong></td>
+<td align="center">与运算,<code>[[ $a -lt 20 ]] &amp;&amp; [[$b -gt 100 ]]</code></td>
+</tr>
+<tr>
+<td align="center">**</td>
+<td align="center"></td>
+</tr>
+</tbody></table>
+<p>逻辑判断的括号<br>1.<code>[]</code>:中括号旁边和运算符两边必须添加空格(可以使用，等价于test命令,本文不讲test命令,不推荐)<br>2.<code>[[]]</code>:中括号旁边和运算符两边必须添加空格(字符串验证,文件名时，推荐)<br>3.<code>(())</code>:中括号旁边和运算符两边必须添加空格(数字验证时，推荐)<br>4.<code>[[]]和(())</code>分别是针对数学表达式和字符串表达式的加强版<br>5.<code>[]</code>基本舍弃的原因，它与**&amp;&amp;、||、&lt;和&gt;**不兼容,会报错,它只能用-ne等等这些,例如下面是等价的<br><code>if [[ $a != 1 &amp;&amp; $a !=2 ]]</code>,<code>if [ $a -ne 1 ] &amp;&amp; [ $a != 2 ]</code>,<code>if [ $a -ne 1 -a $a !=2 ]</code><br>6.双括号支持以下额外的符号(没列全,C语言能用的都能用,包括?:)</p>
+<table>
+<thead>
+<tr>
+<th align="center">符号</th>
+<th align="center">描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">val++</td>
+<td align="center">后增</td>
+</tr>
+<tr>
+<td align="center">val–</td>
+<td align="center">后减</td>
+</tr>
+<tr>
+<td align="center">++val</td>
+<td align="center">前增</td>
+</tr>
+<tr>
+<td align="center">–val</td>
+<td align="center">前减</td>
+</tr>
+<tr>
+<td align="center">!</td>
+<td align="center">逻辑求反</td>
+</tr>
+<tr>
+<td align="center">~</td>
+<td align="center">位求反</td>
+</tr>
+<tr>
+<td align="center">**</td>
+<td align="center">幂运算</td>
+</tr>
+<tr>
+<td align="center">&lt;&lt;</td>
+<td align="center">左位移</td>
+</tr>
+<tr>
+<td align="center">&gt;&gt;</td>
+<td align="center">右位移</td>
+</tr>
+<tr>
+<td align="center">&amp;</td>
+<td align="center">布尔和</td>
+</tr>
+<tr>
+<td align="center">&#96;</td>
+<td align="center">&#96;</td>
+</tr>
+<tr>
+<td align="center">&#96;</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center">&amp;&amp;</td>
+<td align="center">逻辑与</td>
+</tr>
+<tr>
+<td align="center">&#x3D;~</td>
+<td align="center">用于字符串的模式匹配,右边加上引号会丧失正则的含义，变成普通字符串,避免反斜杠转移，可以赋值给一个变量</td>
+</tr>
+<tr>
+<td align="center">&#x3D;&#x3D;</td>
+<td align="center">用于字符串的类型匹配(通配符等),例子<code>if [[ $FILE == foo.* ]]</code></td>
+</tr>
+<tr>
+<td align="center">&#x3D;</td>
+<td align="center">用于字符串是否相同，右边一定要引号括起来，否则是模式匹配，如<code>*</code>则会永远为true</td>
+</tr>
+</tbody></table>
+<h4 id="文件运算符"><a href="#文件运算符" class="headerlink" title="文件运算符"></a>文件运算符</h4><p>file是代表文件名的字符串</p>
+<table>
+<thead>
+<tr>
+<th align="center">符号</th>
+<th align="center">意义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">$file1 -ef $file2</td>
+<td align="center">拥有相同的索引号返回True(硬连接)</td>
+</tr>
+<tr>
+<td align="center">$file1 -nt $file2</td>
+<td align="center">file1新于file2返回true</td>
+</tr>
+<tr>
+<td align="center">$file1 -ot $file2</td>
+<td align="center">file1早于file2返回true</td>
+</tr>
+<tr>
+<td align="center"><code>[-b $file]</code></td>
+<td align="center">是块设备文件返回true</td>
+</tr>
+<tr>
+<td align="center"><code>[-c $file]</code></td>
+<td align="center">是字符备文件返回true</td>
+</tr>
+<tr>
+<td align="center"><code>[-d $file]</code></td>
+<td align="center">是目录返回true</td>
+</tr>
+<tr>
+<td align="center"><code>[-f $file]</code></td>
+<td align="center">是普通文件返回true</td>
+</tr>
+<tr>
+<td align="center"><code>[-g $file]</code></td>
+<td align="center">设置了SGID位文件返回true</td>
+</tr>
+<tr>
+<td align="center"><code>[-h $file]</code></td>
+<td align="center">是符号链接返回true</td>
+</tr>
+<tr>
+<td align="center"><code>[-G $file]</code></td>
+<td align="center">由有效组(即当前进程用户组)ID拥有返回true</td>
+</tr>
+<tr>
+<td align="center"><code>[-L $file]</code></td>
+<td align="center">是符号链接返回true</td>
+</tr>
+<tr>
+<td align="center"><code>[-k $file]</code></td>
+<td align="center">设置了stick位文件返回true</td>
+</tr>
+<tr>
+<td align="center"><code>[-N $file]</code></td>
+<td align="center">atime和mtime一样的文件</td>
+</tr>
+<tr>
+<td align="center"><code>[-p $file]</code></td>
+<td align="center">是有名管道文件返回true</td>
+</tr>
+<tr>
+<td align="center"><code>[-u $file]</code></td>
+<td align="center">设置了SUID位文件返回true</td>
+</tr>
+<tr>
+<td align="center"><code>[-O $file]</code></td>
+<td align="center">由有效用户(即当前进程用户)件D拥有返回true</td>
+</tr>
+<tr>
+<td align="center"><code>[-r $file]</code></td>
+<td align="center">是可读文件返回true</td>
+</tr>
+<tr>
+<td align="center"><code>[-w $file]</code></td>
+<td align="center">是可写文件返回true</td>
+</tr>
+<tr>
+<td align="center"><code>[-x $file]</code></td>
+<td align="center">是可执行文件返回true</td>
+</tr>
+<tr>
+<td align="center"><code>[-s $file]</code></td>
+<td align="center">非空文件返回true</td>
+</tr>
+<tr>
+<td align="center"><code>[-S $file]</code></td>
+<td align="center">是一个网络Socket返回true</td>
+</tr>
+<tr>
+<td align="center"><code>[-e $file]</code></td>
+<td align="center">文件存在返回true</td>
+</tr>
+<tr>
+<td align="center"><code>[-t $fd]</code></td>
+<td align="center">fd是一个定向到终端&#x2F;从终端定向的文件描述符。这可以被用来判断是否重定向了标准输入&#x2F;错误</td>
+</tr>
+</tbody></table>
+<h3 id="输出"><a href="#输出" class="headerlink" title="输出"></a>输出</h3><p><strong>echo</strong>只用于字符串,自动添加换行符号<code>echo nanbert male 66.1234</code><br><strong>printf</strong>不自动加换行符号,例:<code>printf &quot;%-10s %-8s %-4.2f\n&quot; nanbert male 66.1234</code></p>
+<h3 id="流程控制"><a href="#流程控制" class="headerlink" title="流程控制"></a>流程控制</h3><h4 id="if"><a href="#if" class="headerlink" title="if"></a>if</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-comment">#then后必须有语句,空语句可以用:</span><br><span class="hljs-keyword">if</span> condition<br><span class="hljs-keyword">then</span> <br>	command1<br>	...<br><span class="hljs-keyword">elif</span> condition<br><span class="hljs-keyword">then</span><br>	command2<br>	...<br><span class="hljs-keyword">else</span><br>	command3<br>	...<br><span class="hljs-keyword">fi</span><br></code></pre></td></tr></table></figure>
+<h4 id="for"><a href="#for" class="headerlink" title="for"></a>for</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-keyword">for</span> var <span class="hljs-keyword">in</span> item1 item2 ... itemN<br><span class="hljs-keyword">do</span> <br>	command1<br>	...<br><span class="hljs-keyword">done</span><br><span class="hljs-comment">#等价于c语言</span><br><span class="hljs-keyword">for</span> (( expression1;expression2; expression3 ));<span class="hljs-keyword">do</span><br>	commands<br><span class="hljs-keyword">done</span><br></code></pre></td></tr></table></figure>
+<p>如果省略in，默认处理位置参数</p>
+<h4 id="while"><a href="#while" class="headerlink" title="while"></a>while</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-keyword">while</span> condition<br><span class="hljs-keyword">do</span> <br>	command1<br>	...<br><span class="hljs-keyword">done</span><br><span class="hljs-comment">#无限循环</span><br><span class="hljs-keyword">while</span> :<br><span class="hljs-keyword">do</span><br>	<span class="hljs-built_in">command</span><br><span class="hljs-keyword">done</span><br></code></pre></td></tr></table></figure>
+<h4 id="until"><a href="#until" class="headerlink" title="until"></a>until</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-keyword">until</span> condition<br><span class="hljs-keyword">do</span> <br>	command1<br>	...<br><span class="hljs-keyword">done</span><br></code></pre></td></tr></table></figure>
+<h4 id="case"><a href="#case" class="headerlink" title="case"></a>case</h4><p>Shell case匹配一个值与一个模式,用两个分号表示break</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-keyword">case</span> value <span class="hljs-keyword">in</span><br>	pattern1)<br>		command1<br>		...<br>		commandN<br>		;;<br>	pattern2)<br>		command1<br>		...<br>		commandN<br>		;;<br><span class="hljs-keyword">esac</span><br></code></pre></td></tr></table></figure>
+
+<p>循环都支持<strong>continue</strong>和<strong>break</strong>,<code>break n</code>则可以指定跳出n层循环,n默认为1<br>,continue也支持数字。</p>
+<h3 id="定义函数"><a href="#定义函数" class="headerlink" title="定义函数"></a>定义函数</h3><ul>
+<li>函数定义<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-keyword">function</span> <span class="hljs-function"><span class="hljs-title">fun</span></span>()&#123;<br>	action;<br>	[<span class="hljs-built_in">return</span> int;]<br>&#125;<br><span class="hljs-comment">#等价于下面</span><br><span class="hljs-function"><span class="hljs-title">fun1</span></span>()&#123;<br>	action;<br>	[<span class="hljs-built_in">return</span> int;]<br>&#125;<br></code></pre></td></tr></table></figure></li>
+<li>参数传递<br>函数中直接使用特殊变量来获取参数,可以加上{}<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-function"><span class="hljs-title">funWithParam</span></span>()&#123;<br>    <span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;第一个参数为 <span class="hljs-variable">$1</span> !&quot;</span><br>    <span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;第二个参数为 <span class="hljs-variable">$2</span> !&quot;</span><br>    <span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;第十个参数为 <span class="hljs-variable">$10</span> !&quot;</span><br>    <span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;第十个参数为 <span class="hljs-variable">$&#123;10&#125;</span> !&quot;</span><br>    <span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;第十一个参数为 <span class="hljs-variable">$&#123;11&#125;</span> !&quot;</span><br>    <span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;参数总数有 <span class="hljs-variable">$#</span> 个!&quot;</span><br>    <span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;作为一个字符串输出所有参数 $* !&quot;</span>&#125;<br>funWithParam 1 2 3 4 5 6 7 8 9 34 73<br><span class="hljs-built_in">echo</span> $?  <span class="hljs-comment"># 判断执行是否成功</span><br></code></pre></td></tr></table></figure></li>
+<li>函数返回值<ul>
+<li>返回值是可选的</li>
+<li>return只能为<strong>return [0-255]</strong>,可通过$?获取该值</li>
+<li>如果不加return,则最后一条语句的执行状态为返回值,0为成功</li>
+<li>如果用反引号执行函数,结果是函数内的所有输出而非返回值</li>
+</ul>
+</li>
+<li><a href="#funAndArr">函数与数组</a></li>
+</ul>
+<ul>
+<li>函数本质上是一组命令集合,不一定用大括号括起来,更多见shell例子</li>
+<li>可以使用<code>declare -F | sed &#39;s/declare -f//&#39;</code>来查看当前脚本定义的函数</li>
+</ul>
+<h3 id="读取外部输入"><a href="#读取外部输入" class="headerlink" title="读取外部输入"></a>读取外部输入</h3><p><code>read arg</code>从键盘读取输入并赋值给arg</p>
+<table>
+<thead>
+<tr>
+<th align="center">选项</th>
+<th align="center">说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">-a array</td>
+<td align="center">把输入赋值到数组array中</td>
+</tr>
+<tr>
+<td align="center">-d delimiter</td>
+<td align="center">用字符串delimiter中的第一个字符指示输入结束,而不是一个换行符</td>
+</tr>
+<tr>
+<td align="center">-e</td>
+<td align="center">使用readline来处理输入</td>
+</tr>
+<tr>
+<td align="center">-n num</td>
+<td align="center">读取num个输入字符,而不是整行</td>
+</tr>
+<tr>
+<td align="center">-p prompt</td>
+<td align="center">为输入显示提示信息,使用字符串prompt</td>
+</tr>
+<tr>
+<td align="center">-r</td>
+<td align="center">Raw mode,不把反斜杠解释为转义字符</td>
+</tr>
+<tr>
+<td align="center">-s</td>
+<td align="center">Silent mode,不会在屏幕上显示输入的字符。输入密码的时候很有用</td>
+</tr>
+<tr>
+<td align="center">-t seconds</td>
+<td align="center">超过时间，终止输入,read会非0状态退出</td>
+</tr>
+<tr>
+<td align="center">-u fd</td>
+<td align="center">使用文件描述符fd中的输入,而不是标准输入</td>
+</tr>
+<tr>
+<td align="center">-k n</td>
+<td align="center">只读n个字节</td>
+</tr>
+</tbody></table>
+<p>IFS是字段分割符,默认为空格,tab,换行符。可以自行改变。如下:<br><code>IFS=:</code>改成冒号<br><code>IFS=$&#39;\n&#39;:;&quot;</code>改成换行符、冒号、分号和双引号<br>read不应该使用管道线来接受赋值，如下是错误的:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;<span class="hljs-variable">$file_info</span>&quot;</span> | IFS=<span class="hljs-string">&quot;:&quot;</span> <span class="hljs-built_in">read</span> user pw uid gid name home shell<br></code></pre></td></tr></table></figure>
+<p>而应该这么写</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">IFS=<span class="hljs-string">&quot;:&quot;</span> <span class="hljs-built_in">read</span> user pw uid gid name home shell &lt;&lt;&lt; <span class="hljs-string">&quot;<span class="hljs-variable">$file_info</span>&quot;</span><br></code></pre></td></tr></table></figure>
+<p>这是因为管道线会开个子进程,子进程变量的变化不会影响父进程,可以用<a href="#jump">进程替换</a>解决<br>如果输入的数多余接受的变量,则多出来的会保存在变量REPLY中</p>
+<h3 id="包含其他shell文件"><a href="#包含其他shell文件" class="headerlink" title="包含其他shell文件"></a>包含其他shell文件</h3><ul>
+<li><code>. filepath/filename</code></li>
+<li><code>source filepath/filename</code></li>
+</ul>
+<h3 id="颜色标识"><a href="#颜色标识" class="headerlink" title="颜色标识"></a>颜色标识</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-built_in">printf</span>  <span class="hljs-string">&quot;\033[32m SUCCESS: yay \033[0m\n&quot;</span>;<br><span class="hljs-built_in">printf</span>  <span class="hljs-string">&quot;\033[33m WARNING: hmm \033[0m\n&quot;</span>;<br><span class="hljs-built_in">printf</span>  <span class="hljs-string">&quot;\033[31m ERROR: fubar \033[0m\n&quot;</span>;<br></code></pre></td></tr></table></figure>
+<p>具体内容有待研究</p>
+<h3 id="长句换行"><a href="#长句换行" class="headerlink" title="长句换行"></a>长句换行</h3><p>在shell中为避免一个语句过长,可以使用”&quot;进行换行,注意”&quot;前加一个空格,之后无空格直接换行。</p>
+<h3 id="退出脚本"><a href="#退出脚本" class="headerlink" title="退出脚本"></a>退出脚本</h3><p><code>exit [num]</code>num为0表示执行成功,可以不加num<br><code>set -e 或 set +e</code>set -e表示从当前位置开始,如果出现任何错误都将触发exit。相反,set +e表示不管出现任何错误继续执行脚本</p>
+<h3 id="调试"><a href="#调试" class="headerlink" title="调试"></a>调试</h3><p>-n表示检查有无语法错误,-x表示调试</p>
+<h3 id="变量展开"><a href="#变量展开" class="headerlink" title="变量展开"></a>变量展开</h3><table>
+<thead>
+<tr>
+<th align="center">操作符</th>
+<th align="center">意义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center"><code>:$&#123;parameter:=word&#125;</code></td>
+<td align="center">如果parameter没有设置或者为空,展开的结果是word的值,并且word的值会赋给parameter;否则展开为parameter的值</td>
+</tr>
+<tr>
+<td align="center"><code>$&#123;parameter:-word&#125;</code></td>
+<td align="center">如果parameter没有设置或者为空,展开的结果是word的值,否则是parameter的值</td>
+</tr>
+<tr>
+<td align="center"><code>$&#123;parameter:?word&#125;</code></td>
+<td align="center">如果parameter没有设置或者为空,会带有错误的推出,否则是parameter的值</td>
+</tr>
+<tr>
+<td align="center"><code>$&#123;parameter:+word&#125;</code></td>
+<td align="center">如果parameter没有设置或者为空,展开为空,否则是word的值;不管如何parameter值不会变</td>
+</tr>
+<tr>
+<td align="center"><code>$&#123;parameter#pattern&#125;</code></td>
+<td align="center">pattern是通配符模式,会从parameter开头开始最短匹配pattern,删除匹配中的部分,留下剩余部分,注意是开头不是从左到右第一次的意思,即第一个字符一定要匹配上</td>
+</tr>
+<tr>
+<td align="center"><code>$&#123;parameter##pattern&#125;</code></td>
+<td align="center">pattern是通配符模式,会从parameter开头开始最长匹配pattern,删除匹配中的部分,留下剩余部分,注意是开头不是从左到右第一次的意思,即第一个字符一定要匹配上</td>
+</tr>
+<tr>
+<td align="center"><code>$&#123;parameter%pattern&#125;</code></td>
+<td align="center">pattern是通配符模式,会从parameter结尾开始最短匹配pattern,删除匹配中的部分,留下剩余部分,注意是结尾不是从右到左第一次的意思,即最后一个字符一定要匹配上</td>
+</tr>
+<tr>
+<td align="center"><code>$&#123;parameter%%pattern&#125;</code></td>
+<td align="center">pattern是通配符模式,会从parameter结尾开始最长匹配pattern,删除匹配中的部分,留下剩余部分,注意是结尾不是从右到左第一次的意思,即最后一个字符一定要匹配上</td>
+</tr>
+<tr>
+<td align="center"><code>$&#123;parameter/pattern/string&#125;</code></td>
+<td align="center">在parameter中找到匹配通配符pattern的文本,用string替换,只替换第一次匹配到的</td>
+</tr>
+<tr>
+<td align="center"><code>$&#123;parameter//pattern/string&#125;</code></td>
+<td align="center">在parameter中找到匹配通配符pattern的文本,用string替换,替换所有匹配到的</td>
+</tr>
+<tr>
+<td align="center"><code>$&#123;parameter/#pattern/string&#125;</code></td>
+<td align="center">在parameter中找到匹配通配符pattern的文本,用string替换,只能从parameter开头开始匹配,注意是开头不是从左到右第一次的意思,即第一个字符一定要匹配上</td>
+</tr>
+<tr>
+<td align="center"><code>$&#123;parameter/%pattern/string&#125;</code></td>
+<td align="center">在parameter中找到匹配通配符pattern的文本,用string替换,只能从parameter结尾开始匹配,注意是结尾不是从右到左第一次的意思,即最后一个字符一定要匹配上</td>
+</tr>
+<tr>
+<td align="center"><code>$&#123;parameter,,&#125;</code></td>
+<td align="center">把parameter全部展开成小写字母</td>
+</tr>
+<tr>
+<td align="center"><code>$&#123;parameter,&#125;</code></td>
+<td align="center">把parameter首字母展开成小写字母</td>
+</tr>
+<tr>
+<td align="center"><code>$&#123;parameter^^&#125;</code></td>
+<td align="center">把parameter全部展开成大写字母</td>
+</tr>
+<tr>
+<td align="center"><code>$&#123;parameter^&#125;</code></td>
+<td align="center">把parameter首字母展开成大写字母</td>
+</tr>
+</tbody></table>
+<p><code>$&#123;!prefix*&#125;</code>等价于<code>$&#123;!prefix@&#125;</code>这种展开会返回以prefix开头的已有变量名(而不是变量的值)<br>字符串的长度和切片其实也是一种展开</p>
+<p><span id = "jump"></span></p>
+<h3 id="进程替换"><a href="#进程替换" class="headerlink" title="进程替换"></a>进程替换</h3><p>进程替换可以用来解决子进程问题,它实质是把子进程的输出当作一个用于重定向的普通文件(文件描述符)。<br>标准输出<br><code>&lt;(cmd1;cmd2)</code><br>标准输入<br><code>&gt;(cmd1;cmd2)</code><br>由此可以解决read管道线的问题</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-keyword">while</span> <span class="hljs-built_in">read</span> attr links owner group size <span class="hljs-built_in">date</span> time filename;<span class="hljs-keyword">do</span><br>	<span class="hljs-built_in">cat</span> &lt;&lt;- <span class="hljs-string">EOF</span><br><span class="hljs-string">		Filename: $filename</span><br><span class="hljs-string">		Size:     $size</span><br><span class="hljs-string">		Owner:    $owner</span><br><span class="hljs-string">		Group:    $group</span><br><span class="hljs-string">		Modified: $date $time</span><br><span class="hljs-string">		Links:    $links</span><br><span class="hljs-string">		Attributes: $attr</span><br><span class="hljs-string">	EOF</span><br><span class="hljs-keyword">done</span> &lt; &lt;(<span class="hljs-built_in">ls</span> -l | <span class="hljs-built_in">tail</span> -n +2)<br></code></pre></td></tr></table></figure>
+<p><span id = "jumpopt"></span></p>
+<h3 id="getopt和getopts"><a href="#getopt和getopts" class="headerlink" title="getopt和getopts"></a>getopt和getopts</h3><h4 id="getopt"><a href="#getopt" class="headerlink" title="getopt"></a>getopt</h4><p>格式:<code>getopt [options] optstring parameters</code>,例:<br><code>getopt ab:cd -a -b test1 -cd test2 test3</code>该命令会产生如下输出:<br><code>-a -b test1 -c -d -- test2 test3</code>,optstring定义了四个有效项字母:a、b、c和d。冒号(:)表示b选项需要个参数值,它会将-cd选项分成两个单独选项,插入’–’来分隔额外的参数,如果提供’-cde’由于e不在optstring中,会报错<strong>getopt: invalid option – e</strong>,但还会输出结果,可以加-q选项忽略报错结果。<br>在脚本中经常与set的’–’选项来使用,来把getopt的输出转成当前脚本的输入参数,示例如下:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-meta">#!/bin/bash</span><br><span class="hljs-comment"># Extract command line options &amp; values with getopt</span><br><span class="hljs-comment">#</span><br><span class="hljs-built_in">set</span> -- $(getopt -q ab:<span class="hljs-built_in">cd</span> <span class="hljs-string">&quot;<span class="hljs-variable">$@</span>&quot;</span>)<br><span class="hljs-comment">#</span><br><span class="hljs-built_in">echo</span><br><span class="hljs-keyword">while</span> [ -n <span class="hljs-string">&quot;<span class="hljs-variable">$1</span>&quot;</span> ]<br><span class="hljs-keyword">do</span><br>    <span class="hljs-keyword">case</span> <span class="hljs-string">&quot;<span class="hljs-variable">$1</span>&quot;</span> <span class="hljs-keyword">in</span><br>    -a) <span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;Found the -a option&quot;</span> ;;<br>    -b) param=<span class="hljs-string">&quot;<span class="hljs-variable">$2</span>&quot;</span><br>        <span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;Found the -b option, with parameter value <span class="hljs-variable">$param</span>&quot;</span><br>        <span class="hljs-built_in">shift</span> ;;<br>    -c) <span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;Found the -c option&quot;</span> ;;<br>    --) <span class="hljs-built_in">shift</span><br>        <span class="hljs-built_in">break</span> ;;<br>    *) <span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;<span class="hljs-variable">$1</span> is not an option&quot;</span>;;<br>    <span class="hljs-keyword">esac</span><br>    <span class="hljs-built_in">shift</span><br><span class="hljs-keyword">done</span><br><span class="hljs-comment">#</span><br>count=1<br><span class="hljs-keyword">for</span> param <span class="hljs-keyword">in</span> <span class="hljs-string">&quot;<span class="hljs-variable">$@</span>&quot;</span><br><span class="hljs-keyword">do</span><br>    <span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;Parameter #<span class="hljs-variable">$count</span>: <span class="hljs-variable">$param</span>&quot;</span><br>    count=$[ <span class="hljs-variable">$count</span> + 1 ]<br><span class="hljs-keyword">done</span><br><span class="hljs-comment">#</span><br></code></pre></td></tr></table></figure>
+
+<h4 id="getopts"><a href="#getopts" class="headerlink" title="getopts"></a>getopts</h4><p>格式:<code>getopts optstring variable</code>,这里variable为命令行上检测到的第一个参数(getopts会去除’-‘,这点与getopt不同),处理完所有参数后,它会返回一个大于0的退出状态码。可以用”:optstring”格式来忽略未识别选项的错误信息。会用到两个环境变量,如果选项用到一个参数值,OPTARG会保存该值,OPTIND环境变量保存了参数列表中getopts正在处理的参数位置。<br>getopts可以识别双引号内的带括号参数值,而getopt不可以。getopts将命令行上找到的所有未定义选项统一输成问号,getopt遇到未识别的非选项值时,会结束识别,即使后面有正确的选项。可以用以下脚本自行测试getopts的行为:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-built_in">echo</span><br><span class="hljs-keyword">while</span> <span class="hljs-built_in">getopts</span> :ab:<span class="hljs-built_in">cd</span> opt<br><span class="hljs-keyword">do</span><br>    <span class="hljs-keyword">case</span> <span class="hljs-string">&quot;<span class="hljs-variable">$opt</span>&quot;</span> <span class="hljs-keyword">in</span><br>        a) <span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;Found the -a option&quot;</span>  ;;<br>        b) <span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;Found the -b option, with value <span class="hljs-variable">$OPTARG</span>&quot;</span> ;;<br>        c) <span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;Found the -c option&quot;</span>  ;;<br>        d) <span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;Found the -d option&quot;</span>  ;;<br>        *) <span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;Unknown option: <span class="hljs-variable">$opt</span>&quot;</span> ;;<br>    <span class="hljs-keyword">esac</span><br><span class="hljs-keyword">done</span><br><span class="hljs-comment">#</span><br><span class="hljs-built_in">shift</span> $[ <span class="hljs-variable">$OPTIND</span> - 1 ]<br><span class="hljs-comment">#</span><br><span class="hljs-built_in">echo</span><br>count=1<br><span class="hljs-keyword">for</span> param <span class="hljs-keyword">in</span> <span class="hljs-string">&quot;<span class="hljs-variable">$@</span>&quot;</span><br><span class="hljs-keyword">do</span><br>    <span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;Parameter <span class="hljs-variable">$count</span>: <span class="hljs-variable">$param</span>&quot;</span><br>    count=$[ <span class="hljs-variable">$count</span> + 1 ]<br><span class="hljs-keyword">done</span><br></code></pre></td></tr></table></figure>
+<h3 id="set命令"><a href="#set命令" class="headerlink" title="set命令"></a>set命令</h3><p>set 指令可根据不同的需求来设置当前所使用 shell 的执行方式，同时也可以用来设置或显示 shell 变量的值。当指定某个单一的选项时将设置 shell 的常用特性，如果在选项后使用 -o 参数将打开特殊特性，若是 +o 将关闭相应的特殊特性。而不带任何参数的 set 指令将显示当前 shell 中的全部变量，且总是返回 true，除非遇到非法的选项。可以使用<code>echo $-</code>查看当前设置,默认是（himxBH）<br>参数说明：</p>
+<p>|参数|说明|<br>|:-:||:-:|<br>|-a|标示已修改的变量，以供输出至环境变量|<br>|-b|使被中止的后台程序立刻回报执行状态|<br>|-B|启用大括号展开|<br>|-d|Shell预设会用杂凑表记忆使用过的指令，以加速指令的执行。使用-d参数可取消|<br>|-e|若指令传回值不等于0，则立即退出shell|<br>|-f|取消使用通配符|<br>|-h|自动缓存命令的所在位置,如果在PATH指定路径内，更换命令的位置,缓存就不会同步，就会发生错误，不过谁会换命令的位置呢,可以使用which更新缓存|<br>|-i|设置当前选项为交互式|<br>|-k|指令所给的参数都会被视为此指令的环境变量|<br>|-l|记录for循环的变量名称|<br>|-m|使用监视模式,可以控制进程的停止、继续、后台前台等，默认打开|<br>|-n|测试模式，只读取指令，而不实际执行|<br>|-p|启动优先顺序模式|<br>|-P|启动-P参数后，执行指令时，会以实际的文件或目录来取代符号连接|<br>|-t|执行完随后的指令，即退出shell|<br>|-u|当执行时使用到未定义过的变量，则显示错误信息|<br>|-v|显示shell所读取的输入值|<br>|-H shell|可利用”!”加&lt;指令编号&gt;的方式来执行 history 中记录的指令,最好不用|<br>|-x|执行指令后，会先显示该指令及所下的参数|<br>|+&lt;参数&gt;|取消某个set曾启动的参数。与-&lt;参数&gt;相反|<br>|-o [option]|特殊属性有很多,见下面|</p>
+<p><strong>option属性</strong></p>
+<ul>
+<li>pipefail:管道流水线中有一个失败，则返回失败值，从右往左数起(默认只返回最后一个命令的退出码)</li>
+<li>noclobber:防止&gt;重定向操作符覆盖已有内容，你可以使用<code>command &gt;| file</code>强制覆盖</li>
+</ul>
+<h3 id="Tips"><a href="#Tips" class="headerlink" title="Tips"></a>Tips</h3><ul>
+<li>波浪号展开只能<strong>紧跟</strong>在<code>=</code>和<code>:</code>之后才能正确展开,引号中无法正确展开</li>
+<li>**&lt;&lt;<strong>和</strong>&lt;&lt;-**的区别在于,&lt;&lt;-会忽略接下来输入的tab建,一般用于格式化脚本,便于读代码</li>
+<li>组命令(在当前shell执行)–<code>&#123; command1;command2;command3  &#125;</code>,子shell–<code>(command1;command2;command3)</code>一般配合管道符</li>
+<li>trap命令<br><code>trap &quot;命令&quot; &quot;信号&quot;</code>当脚本遇到信号前执行的命令<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-built_in">trap</span> <span class="hljs-string">&quot;echo I am ignoring you&quot;</span> SIGINT SIGTERM<br></code></pre></td></tr></table></figure>
+常见信号有:</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th align="center">编号</th>
+<th align="center">英文名</th>
+<th align="center">含义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">1</td>
+<td align="center">SIGHUP</td>
+<td align="center">挂起进程</td>
+</tr>
+<tr>
+<td align="center">2</td>
+<td align="center">SIGINT</td>
+<td align="center">终止进程</td>
+</tr>
+<tr>
+<td align="center">3</td>
+<td align="center">SIGQUIT</td>
+<td align="center">停止进程</td>
+</tr>
+<tr>
+<td align="center">9</td>
+<td align="center">SIGKILL</td>
+<td align="center">无条件终止进程</td>
+</tr>
+<tr>
+<td align="center">15</td>
+<td align="center">SIGTERM</td>
+<td align="center">尽可能终止进程</td>
+</tr>
+<tr>
+<td align="center">17</td>
+<td align="center">SIGSTOP</td>
+<td align="center">无条件停止进程,但不是终止进程</td>
+</tr>
+<tr>
+<td align="center">18</td>
+<td align="center">IGTSTP</td>
+<td align="center">停止或暂停进程,但不终止进程</td>
+</tr>
+<tr>
+<td align="center">19</td>
+<td align="center">SIGCONT</td>
+<td align="center">继续运行停止的进程</td>
+</tr>
+</tbody></table>
+<pre><code class="hljs">* tap除了捕获信号外,还会捕获脚本退出:`trap &quot;echo Goodbye...&quot; EXIT`,不管正常还是非正常,都会打印Goodbye
+* `trap -- SIGINT`取消某个信号的设置
+* `trap -`恢复信号的默认行为
+</code></pre>
+<ul>
+<li>wait命令<br><code>wait $pid</code>等待子进程<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-comment">#小火车子进程</span><br>sl &amp;<br>pid=$!<br><span class="hljs-comment">#父进程继续干事</span><br><span class="hljs-built_in">sleep</span> 2<br><span class="hljs-comment">#干完事等子进程</span><br><span class="hljs-built_in">wait</span> <span class="hljs-variable">$pid</span><br><span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;子父进程都结束了&quot;</span><br></code></pre></td></tr></table></figure></li>
+<li>命名管道<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-comment">#创建一个命名管道文件</span><br><span class="hljs-built_in">mkfifo</span> pipe1<br><span class="hljs-comment">#子进程写入(写入完会阻塞,等待另一端读,所以不要wait)</span><br><span class="hljs-built_in">ls</span> -l &gt; pipe1 &amp;<br><span class="hljs-comment">#父进程读</span><br><span class="hljs-built_in">sleep</span> 5<br><span class="hljs-built_in">cat</span>&lt;pipe1<br></code></pre></td></tr></table></figure></li>
+</ul>
+<ul>
+<li>IFS默认是空白字符(回车，空格，制表符等)，位于字符串和结尾的空白字符都被删除，中间连续空格会被压缩成一个</li>
+</ul>
+<ul>
+<li>子shell的全局环境变量改变并不会影响父shell,甚至用export也不行</li>
+<li>命令替换<code>$(command)</code>,子shell<code>(command)</code>两个是不同概念,命令替换会开个子shell(貌似都会开子shell)</li>
+<li>文件描述符与exec<ul>
+<li>配合exec可以使标准输入输出永久重定向:<code>exec 2&gt;testerror</code>重定向标准错误至文件。</li>
+<li>exec可以创建文件描述:<code>exec 3&gt;testxx;echo hello&gt;&amp;3</code>这可以用来恢复正常的输入输出,如下:<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-built_in">exec</span> 3&gt;&amp;1<br><span class="hljs-built_in">exec</span> 1&gt;test14out<br><span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;这会输入到test14out&quot;</span><br><span class="hljs-built_in">exec</span> 1&gt;&amp;3<br><span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;这会输入到屏幕&quot;</span><br></code></pre></td></tr></table></figure></li>
+<li>exec创建读写描述符:<code>exec 3&lt;&gt;testfile</code>,这要特别小心,任何读或写都会从文件指针的上次位置开始</li>
+<li>exec关闭文件描述符:<code>exec 3&gt;&amp;-</code></li>
+<li>lsof命令可以查看已经打开的文件描述符,见Linux命令博客</li>
+</ul>
+</li>
+</ul>
+<p><span id = "funAndArr"></span></p>
+<ul>
+<li><p>函数与数组<br>将数组变量当作但个参数传递的话,它不会其作用,只会传递第一个值,可以借鉴以下例子:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-meta">#!/bin/bash</span><br><span class="hljs-comment"># array variable to function test</span><br><span class="hljs-keyword">function</span> testit &#123;<br>    <span class="hljs-built_in">local</span> newarray<br>    newarray=`<span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;<span class="hljs-variable">$@</span>&quot;</span>`<br>    <span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;The new array value is: <span class="hljs-variable">$&#123;newarray[*]&#125;</span>&quot;</span><br>&#125;<br>myarray=(1 2 3 4 5)<br><span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;The original array is <span class="hljs-variable">$&#123;myarray[*]&#125;</span>&quot;</span><br>testit <span class="hljs-variable">$&#123;myarray[*]&#125;</span><br></code></pre></td></tr></table></figure></li>
+<li><p>预处理替换优先级<br>a.shell替换:文件通配符<br>b.变量替换<br>c.命令替换,如下示例:  </p>
+</li>
+<li><p>shell元字符汇总</p>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th align="center">符号</th>
+<th align="center">意义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">空格、制表符</td>
+<td align="center">命令行参数的分隔符</td>
+</tr>
+<tr>
+<td align="center">回车</td>
+<td align="center">执行键入的命令</td>
+</tr>
+<tr>
+<td align="center">&lt; &gt; &brvbar;</td>
+<td align="center">重定向与管道</td>
+</tr>
+<tr>
+<td align="center">;</td>
+<td align="center">多个命令分隔符</td>
+</tr>
+<tr>
+<td align="center">&amp;</td>
+<td align="center">后台运行</td>
+</tr>
+<tr>
+<td align="center">$</td>
+<td align="center">引用shell的变量</td>
+</tr>
+<tr>
+<td align="center">`</td>
+<td align="center">命令替换,<code>\\</code>代表反斜线自身,&#96;`&#96;代表反撇号自身</td>
+</tr>
+<tr>
+<td align="center">* [] ?</td>
+<td align="center">文件通配符,不匹配*和&#x2F;</td>
+</tr>
+<tr>
+<td align="center">()</td>
+<td align="center">用于定义shell函数或子shell中执行命令</td>
+</tr>
+<tr>
+<td align="center">\</td>
+<td align="center">转义字符取消元字符特殊含义，若不用于元字符跟不加一样</td>
+</tr>
+<tr>
+<td align="center">“ “</td>
+<td align="center">其中的内容除$和`外取消元字符的特殊含义</td>
+</tr>
+<tr>
+<td align="center">‘ ‘</td>
+<td align="center">取消所有元字符特殊含义</td>
+</tr>
+</tbody></table>
+<ul>
+<li>RANDOM是个内建的随机值</li>
+<li><code>&lt;&lt;&lt;</code><br>here-string语法，允许直接传递字符串给标准输入</li>
+<li>eval<br>eval 的功能是将字符串作为代码来执行。看上去好像很简单，但实际涉及很复杂的内容，主要是符号转义导致的语义问题。<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs routeros"><span class="hljs-attribute">str1</span>=str2<br><span class="hljs-attribute">str2</span>=abc<br>eval echo \$<span class="hljs-variable">$str1</span><br></code></pre></td></tr></table></figure></li>
+</ul>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>shell基本概念</div>
+      <div>http://example.com/2021/10/15/shell基本概念/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Nanbert</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2021年10月15日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2021/10/20/Linux%E6%96%87%E4%BB%B6%E6%9D%83%E9%99%90/" title="Linux文件权限">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">Linux文件权限</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2021/03/31/git/" title="git">
+                        <span class="hidden-mobile">git</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

@@ -1,0 +1,645 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/images/favicon.png">
+  <link rel="icon" href="/images/favicon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Nanbert">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="原始磁盘-&gt;创建分区(划分磁盘)-&gt;在各个分区上创建文件系统-&gt;挂载文件系统 创建分区-&gt;fdisk和cfdiskcfdisk更加界面友好一点  查看当前系统所有设备fdisk -l 对某个设备进行分区fdisk [设备名]或cfdisk [设备名],注意设备名后面不加数字,加数字的都是该设备上的某分区,如:&#x2F;dev&#x2F;sda是设备,&#x2F;dev&amp;#">
+<meta property="og:type" content="article">
+<meta property="og:title" content="文件系统与存储">
+<meta property="og:url" content="http://example.com/2021/10/21/%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F%E4%B8%8E%E5%AD%98%E5%82%A8/index.html">
+<meta property="og:site_name" content="Nanbert&#39;s blog">
+<meta property="og:description" content="原始磁盘-&gt;创建分区(划分磁盘)-&gt;在各个分区上创建文件系统-&gt;挂载文件系统 创建分区-&gt;fdisk和cfdiskcfdisk更加界面友好一点  查看当前系统所有设备fdisk -l 对某个设备进行分区fdisk [设备名]或cfdisk [设备名],注意设备名后面不加数字,加数字的都是该设备上的某分区,如:&#x2F;dev&#x2F;sda是设备,&#x2F;dev&amp;#">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/images/filesystem.jpg">
+<meta property="article:published_time" content="2021-10-21T13:06:28.000Z">
+<meta property="article:modified_time" content="2023-12-12T06:06:27.715Z">
+<meta property="article:author" content="Nanbert">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://example.com/images/filesystem.jpg">
+  
+  
+  
+  <title>文件系统与存储 - Nanbert&#39;s blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.6","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/images/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.0.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Nanbert</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/images/filesystem.jpg') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="文件系统与存储"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2021-10-21 21:06" pubdate>
+          2021年10月21日 晚上
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          694 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          6 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">文件系统与存储</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <p>原始磁盘-&gt;创建分区(划分磁盘)-&gt;在各个分区上创建文件系统-&gt;挂载文件系统</p>
+<h3 id="创建分区-fdisk和cfdisk"><a href="#创建分区-fdisk和cfdisk" class="headerlink" title="创建分区-&gt;fdisk和cfdisk"></a>创建分区-&gt;fdisk和cfdisk</h3><p>cfdisk更加界面友好一点</p>
+<ul>
+<li>查看当前系统所有设备<code>fdisk -l</code></li>
+<li>对某个设备进行分区<code>fdisk [设备名]</code>或<code>cfdisk [设备名]</code>,注意设备名后面不加数字,加数字的都是该设备上的某分区,如:<strong>&#x2F;dev&#x2F;sda是设备,&#x2F;dev&#x2F;sda1则是已分好的分区</strong>,(之后进入工具,有关知识待实践)</li>
+</ul>
+<h3 id="创建文件系统-mkfs"><a href="#创建文件系统-mkfs" class="headerlink" title="创建文件系统-&gt;mkfs.*"></a>创建文件系统-&gt;mkfs.*</h3><p>目前流行的系统有:ext4(mkfs.ext4),zfs(mkfs.zfs),btrfs(mkfs.btrfs)<br><code>mkfs.* [分区名]</code>分区名有数字,这会格式化分区后建文件系统</p>
+<h3 id="挂载文件系统-mount"><a href="#挂载文件系统-mount" class="headerlink" title="挂载文件系统-&gt;mount"></a>挂载文件系统-&gt;mount</h3><p><code>mount -t [ext4、zfs、btrfs] [设备名] [目录]</code>把已经建好文件系统的分区挂载到指定目录</p>
+<h3 id="文件系统的检查与修复-fsck"><a href="#文件系统的检查与修复-fsck" class="headerlink" title="文件系统的检查与修复-&gt;fsck"></a>文件系统的检查与修复-&gt;fsck</h3><p>fsck检查文件系统时,文件系统必须未挂载,fsck使用&#x2F;etc&#x2F;fstab文件自动检查文件系统类型,如果&#x2F;etc&#x2F;fstab里没有该文件系统分区的信息,需要加-t选项指明文件系统类型,如下:<br><code>fsck -t ext4 /dev/sdb1</code></p>
+<h2 id="逻辑卷"><a href="#逻辑卷" class="headerlink" title="逻辑卷"></a>逻辑卷</h2><p>逻辑卷可以把不同物理设备上的分区,结合起来,动态增加文件系统大小:下面是类比<br>物理卷(实质上是各个原始分区)-&gt;卷组(多个物理卷)-&gt;逻辑卷(在卷组基础上加上逻辑关联,新成整体)。<br>物理设备-&gt;某个原始分区-&gt;文件系统。<br>Linux系统将一个逻辑卷视为一个物理分区,格式化一个文件系统后可以挂载</p>
+<h3 id="pvcreate转化物理分区为物理卷"><a href="#pvcreate转化物理分区为物理卷" class="headerlink" title="pvcreate转化物理分区为物理卷"></a>pvcreate转化物理分区为物理卷</h3><p><code>sudo pvcreate /dev/sdb1</code>这实际只是标记该分区为一个物理卷<br><code>sudo pvdisplay /dev/sdb1</code>显示物理卷的详细信息</p>
+<h3 id="vgcreate创建卷组"><a href="#vgcreate创建卷组" class="headerlink" title="vgcreate创建卷组"></a>vgcreate创建卷组</h3><p><code>sudo vgcreate Vol1 /dev/sdb1 /dev/sdx</code>将两个物理卷创建到一个卷组<br><code>sudo vgdisplay Vol1</code>查看卷组信息</p>
+<h3 id="lvcreate创建逻辑卷"><a href="#lvcreate创建逻辑卷" class="headerlink" title="lvcreate创建逻辑卷"></a>lvcreate创建逻辑卷</h3><p><code>sudo lvcreate -l 100%FREE -n lvtest Vol1</code>在卷组上创建逻辑卷,-l制定多少可用的卷组空间,以百分比表示,-L选项以字节为单位,-n制定逻辑卷的名字,更多选项看man(有待研究)<br><code>sudo lvdisplay Vol1</code>查看逻辑卷</p>
+<h3 id="创建文件系统"><a href="#创建文件系统" class="headerlink" title="创建文件系统"></a>创建文件系统</h3><p><code>sudo mkfs.ext4 /dev/Vol1/lvtest</code>创建文件系统<br><code>sudo mount /dev/Vol1/lvtest /mnt</code>挂载<br>注意:路径中同时指明了卷组名和逻辑卷名</p>
+<h3 id="修改逻辑卷-待建"><a href="#修改逻辑卷-待建" class="headerlink" title="修改逻辑卷(待建)"></a>修改逻辑卷(待建)</h3><ul>
+<li>vgchange 激活和禁用卷组</li>
+<li>vgremove 删除卷组</li>
+<li>vgextend 将物理卷加到卷组中</li>
+<li>vgreduce 从卷组中删除物理卷</li>
+<li>lvextend 增加逻辑卷的大小</li>
+<li>lvreduce 减小逻辑卷的大小</li>
+</ul>
+<h2 id="一些tips"><a href="#一些tips" class="headerlink" title="一些tips"></a>一些tips</h2><h3 id="windows下U盘只读不可写问题"><a href="#windows下U盘只读不可写问题" class="headerlink" title="windows下U盘只读不可写问题"></a>windows下U盘只读不可写问题</h3><p>a.<code>df -h</code>查找挂载点<br>b.<code>sudo umount 位置</code>卸载U盘而不拔掉<br>c.<code>sudo dosfsck -v -a 文件系统分区(如:/dev/sdb1)</code>修复故障<br>d.<code>sudo mount 文件系统 挂载点</code>重新挂载</p>
+<h3 id="自动挂载磁盘"><a href="#自动挂载磁盘" class="headerlink" title="自动挂载磁盘:"></a>自动挂载磁盘:</h3><p>　a.<code>fdisk -l</code>查看可挂载磁盘<br>　b.<code>df -h</code>查看已挂载的磁盘<br>　c.<code>blkid</code>获取目标磁盘的uuid和属性<br>　d.<code>vi /etc/fstab</code>添加开机mount,格式:UUID&#x3D;xx &#x2F;home&#x2F;nanbert&#x2F;disk ext4 defaults 1 1 </p>
+<h3 id="从现有文件创建映像文件"><a href="#从现有文件创建映像文件" class="headerlink" title="从现有文件创建映像文件"></a>从现有文件创建映像文件</h3><p><code>genisoimage -o cd-rom.iso -R -J ~/cd-rom-files</code></p>
+<h3 id="CD-ROM"><a href="#CD-ROM" class="headerlink" title="CD-ROM"></a>CD-ROM</h3><p>清除一张CD-ROM<br><code>wodim dev=/dev/cdrw blank=fast</code><br>写入一个映像文件进CD-ROM<br><code>wodim dev=/dev/cdrw image.iso</code></p>
+<h3 id="挂载某个镜像"><a href="#挂载某个镜像" class="headerlink" title="挂载某个镜像"></a>挂载某个镜像</h3><p><code>sudo mount xx.iso -o loop /mnt</code></p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>文件系统与存储</div>
+      <div>http://example.com/2021/10/21/文件系统与存储/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Nanbert</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2021年10月21日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2022/02/03/zsh/" title="zsh">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">zsh</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2021/10/20/Linux%E6%96%87%E4%BB%B6%E6%9D%83%E9%99%90/" title="Linux文件权限">
+                        <span class="hidden-mobile">Linux文件权限</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

@@ -1,0 +1,1188 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/images/favicon.png">
+  <link rel="icon" href="/images/favicon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Nanbert">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="语法awk [-v var&#x3D;value] [-F re] [--] &#39;pattern n&#123;action&#125;&#39; var&#x3D;value filesawk [-v var&#x3D;value] [-F re] [--] -f scriptfile [file] var&#x3D;value files注:-v指定的变量定义在BEGIN之前,BEGIN过程中不能访问有关文件或命令行的任何变量">
+<meta property="og:type" content="article">
+<meta property="og:title" content="AWK">
+<meta property="og:url" content="http://example.com/2021/01/24/AWK/index.html">
+<meta property="og:site_name" content="Nanbert&#39;s blog">
+<meta property="og:description" content="语法awk [-v var&#x3D;value] [-F re] [--] &#39;pattern n&#123;action&#125;&#39; var&#x3D;value filesawk [-v var&#x3D;value] [-F re] [--] -f scriptfile [file] var&#x3D;value files注:-v指定的变量定义在BEGIN之前,BEGIN过程中不能访问有关文件或命令行的任何变量">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/images/awk.jpg">
+<meta property="article:published_time" content="2021-01-24T09:08:06.000Z">
+<meta property="article:modified_time" content="2023-12-12T06:06:27.715Z">
+<meta property="article:author" content="Nanbert">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://example.com/images/awk.jpg">
+  
+  
+  
+  <title>AWK - Nanbert&#39;s blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.6","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/images/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.0.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Nanbert</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/images/awk.jpg') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="AWK"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2021-01-24 17:08" pubdate>
+          2021年1月24日 下午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          2.7k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          23 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">AWK</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h3 id="语法"><a href="#语法" class="headerlink" title="语法"></a>语法</h3><p><code>awk [-v var=value] [-F re] [--] &#39;pattern n&#123;action&#125;&#39; var=value files</code><br><code>awk [-v var=value] [-F re] [--] -f scriptfile [file] var=value files</code><br><strong>注:</strong>-v指定的变量定义在BEGIN之前,BEGIN过程中不能访问有关文件或命令行的任何变量(除了环境变量)</p>
+<h3 id="awk选项总结"><a href="#awk选项总结" class="headerlink" title="awk选项总结"></a>awk选项总结</h3><table>
+<thead>
+<tr>
+<th align="center">options</th>
+<th align="center">describe</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">-F</td>
+<td align="center">改变字段分割符,默认为空格</td>
+</tr>
+<tr>
+<td align="center">-f</td>
+<td align="center">跟随脚本中的文件名</td>
+</tr>
+<tr>
+<td align="center">-v</td>
+<td align="center">跟随var&#x3D;value,作用域在BEGIN之前</td>
+</tr>
+<tr>
+<td align="center">-mf [N]</td>
+<td align="center">指定处理的数据文件中最大字段数</td>
+</tr>
+<tr>
+<td align="center">-mr [N]</td>
+<td align="center">指定处理的数据文件中最大行数</td>
+</tr>
+<tr>
+<td align="center">-W keyword</td>
+<td align="center">指定gawk的兼容模式或警告等级</td>
+</tr>
+</tbody></table>
+<h3 id="awk内置变量"><a href="#awk内置变量" class="headerlink" title="awk内置变量"></a>awk内置变量</h3><table>
+<thead>
+<tr>
+<th align="center">variable</th>
+<th align="center">describe</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">ARGV</td>
+<td align="center">命令行参数的数组,不包括脚本本身(-f选项也不包括),下标从0开始(一般为awk),一般大于0的下标都是输入的文件名,最后一个是ARGC-1</td>
+</tr>
+<tr>
+<td align="center">ARGC</td>
+<td align="center">ARGV数组个数</td>
+</tr>
+<tr>
+<td align="center">ARGIND</td>
+<td align="center">当前输入文件在ARGV的索引值</td>
+</tr>
+<tr>
+<td align="center">CONVFMT</td>
+<td align="center">用于数字的字符串转换格式(%.6g)</td>
+</tr>
+<tr>
+<td align="center">ENVIRON</td>
+<td align="center">环境变量数组,下标是环境变量名</td>
+</tr>
+<tr>
+<td align="center">FILENAME</td>
+<td align="center">当前输入文件名称</td>
+</tr>
+<tr>
+<td align="center">FNR</td>
+<td align="center">当前输入文件的记录(行)个数</td>
+</tr>
+<tr>
+<td align="center">FS</td>
+<td align="center">字段分隔符,最好在BEGIN的时候定义</td>
+</tr>
+<tr>
+<td align="center">ERRNO</td>
+<td align="center">当getline或close失败时的描述信息</td>
+</tr>
+<tr>
+<td align="center">FIELDWIDTHS</td>
+<td align="center">见该小结</td>
+</tr>
+<tr>
+<td align="center">IGNORECASE</td>
+<td align="center">如果不为0,模式匹配不区分大小写</td>
+</tr>
+<tr>
+<td align="center">NF</td>
+<td align="center">每段记录(即行)的字段数(即单词)</td>
+</tr>
+<tr>
+<td align="center">NR</td>
+<td align="center">行号</td>
+</tr>
+<tr>
+<td align="center">OFMT</td>
+<td align="center">数值的输出格式,默认为”%.6g”</td>
+</tr>
+<tr>
+<td align="center">OFS</td>
+<td align="center">输出字段分割符,默认为” “</td>
+</tr>
+<tr>
+<td align="center">ORS</td>
+<td align="center">输出的记录分割符,默认为”\n”</td>
+</tr>
+<tr>
+<td align="center">RLENGTH</td>
+<td align="center">被函数match匹配的字符串长度</td>
+</tr>
+<tr>
+<td align="center">RS</td>
+<td align="center">记录分隔符</td>
+</tr>
+<tr>
+<td align="center">RT</td>
+<td align="center">如果RS为正则表达式，RT则代表当前行所匹配的值</td>
+</tr>
+<tr>
+<td align="center">RSTART</td>
+<td align="center">被函数match匹配的字符串的开始</td>
+</tr>
+<tr>
+<td align="center">SUBSEP</td>
+<td align="center">下标分割符(\034)</td>
+</tr>
+<tr>
+<td align="center">$0</td>
+<td align="center">整行内容</td>
+</tr>
+</tbody></table>
+<h3 id="awk内置函数"><a href="#awk内置函数" class="headerlink" title="awk内置函数"></a>awk内置函数</h3><table>
+<thead>
+<tr>
+<th align="center">算术函数</th>
+<th align="center">描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">cos(x)</td>
+<td align="center">返回x的余弦</td>
+</tr>
+<tr>
+<td align="center">exp(x)</td>
+<td align="center">返回e的x次幂</td>
+</tr>
+<tr>
+<td align="center">sin(x)</td>
+<td align="center">返回x的正弦</td>
+</tr>
+<tr>
+<td align="center">int(x)</td>
+<td align="center">返回x的整数部分的值</td>
+</tr>
+<tr>
+<td align="center">log(x)</td>
+<td align="center">返回x的自然对数(以e为底)</td>
+</tr>
+<tr>
+<td align="center">sqrt(x)</td>
+<td align="center">返回x的平方根</td>
+</tr>
+<tr>
+<td align="center">atan2(y,x)</td>
+<td align="center">返回y&#x2F;x的反正切</td>
+</tr>
+<tr>
+<td align="center">rand()</td>
+<td align="center">返回0-1之间的随机数</td>
+</tr>
+<tr>
+<td align="center">srand(x)</td>
+<td align="center">建立rand()的新的种子数。如果没有指定种子数,就用当天的时间。返回旧的种子值</td>
+</tr>
+<tr>
+<td align="center">字符串函数</td>
+<td align="center">描述</td>
+</tr>
+<tr>
+<td align="center">gsub(r,s,t)</td>
+<td align="center">在字符串t中用字符串s替换和正则表达式r匹配的所有字符串。返回替换的个数。如果没有给出t,默认$0</td>
+</tr>
+<tr>
+<td align="center">gensub(r,s,h,t)</td>
+<td align="center">如果h以g或G开始的字符串，则对于在t中的r,用s进行全局替换。否则，h是一个数据：替换第h次出现的r.该函数返回新值，t本身不会改变，t默认为$0</td>
+</tr>
+<tr>
+<td align="center">sprintf(fmt,expr-list)</td>
+<td align="center">根据格式字符串fmt返回格式化后的expr-list,fmt格式见printf那里</td>
+</tr>
+<tr>
+<td align="center">index(s,t)</td>
+<td align="center">返回子串t在字符串s中的位置,如果没有指定s,则返回0</td>
+</tr>
+<tr>
+<td align="center">length(s)</td>
+<td align="center">返回字符串s的长度,当没有给出s时,返回$0的长度</td>
+</tr>
+<tr>
+<td align="center">match(s,r)</td>
+<td align="center">如果正则表达式r在s中出现,则返回出现的起始位置;如果没有,则返回0</td>
+</tr>
+<tr>
+<td align="center">spllit(s,a,sep)</td>
+<td align="center">使用字段分隔符sep将字符串s分解到数组a的元素中,返回元素个数。如果没有给出sep,则使用FS。数组分割和字段分隔采用相同的方式</td>
+</tr>
+<tr>
+<td align="center">sub(r,s,t)</td>
+<td align="center">在字符串t中用s替换正则表达式r的首次匹配。如果成功则返回1,否则返回0,,如果没有给出t,默认为$0</td>
+</tr>
+<tr>
+<td align="center">substr(s,p,n)</td>
+<td align="center">返回字符串s中从位置p开始最大长度为n的子串。如果没有给出n,返回从p开始剩余的字符串。</td>
+</tr>
+<tr>
+<td align="center">systime()</td>
+<td align="center">返回用秒表示的天的当前的时间,从UNIX元年开始算</td>
+</tr>
+<tr>
+<td align="center">strftime(format,timestamp)</td>
+<td align="center">依照format格式化timestamp。timestamp默认为当前</td>
+</tr>
+<tr>
+<td align="center">tolower(s)</td>
+<td align="center">将字符串s中的所有大写字符转换为小写,并返回新串</td>
+</tr>
+<tr>
+<td align="center">toupper(s)</td>
+<td align="center">将字符串s中的小写字符转换为大写,并返回新串</td>
+</tr>
+</tbody></table>
+<h3 id="模式汇总"><a href="#模式汇总" class="headerlink" title="模式汇总"></a>模式汇总</h3><table>
+<thead>
+<tr>
+<th align="center">格式</th>
+<th align="center">含义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">BEGIN {statements}</td>
+<td align="center">在输入被读取之前,statements执行一次,<strong>注意BEGIN里一些内建变量可能为空(如FILENAME)</strong></td>
+</tr>
+<tr>
+<td align="center">END {statements}</td>
+<td align="center">当所有输入被读取完毕之后,statements执行一次</td>
+</tr>
+<tr>
+<td align="center">expression {statements}</td>
+<td align="center">每碰到一个使expression为真的输入行,statements就执行.expression为真指的是其值非零或非空</td>
+</tr>
+<tr>
+<td align="center">&#x2F;regular expression&#x2F; {statements}</td>
+<td align="center">当输入行有一段字符串可以被正则表达式匹配,则执行statements</td>
+</tr>
+<tr>
+<td align="center">compound pattern {statements}</td>
+<td align="center">一个复合模式将表达式用&amp;&amp;,</td>
+</tr>
+<tr>
+<td align="center">pattern1,pattern2 {statements}</td>
+<td align="center">一个范围模式匹配多个输入行,这些输入行从匹配pattern1的开始,到匹配pattern2的行结束(包括这两行),对这其中的每一行执行statements</td>
+</tr>
+</tbody></table>
+<h3 id="字符串匹配模式"><a href="#字符串匹配模式" class="headerlink" title="字符串匹配模式"></a>字符串匹配模式</h3><table>
+<thead>
+<tr>
+<th align="center">格式</th>
+<th align="center">含义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">&#x2F;regexpr&#x2F;</td>
+<td align="center">当当前输入行包含一段能够被regexexpr匹配的子字符串时,该模式匹配</td>
+</tr>
+<tr>
+<td align="center">expression ~ &#x2F;regexpr&#x2F;</td>
+<td align="center">如果expression的字符串值包含一段能够被regexpr匹配的子字符串时,该模式被匹配,返回该字符串,否则返回（待测试）</td>
+</tr>
+<tr>
+<td align="center">expression !~ &#x2F;regexpr&#x2F;</td>
+<td align="center">与上述相反</td>
+</tr>
+</tbody></table>
+<h3 id="正则和字符串中的转移序列"><a href="#正则和字符串中的转移序列" class="headerlink" title="正则和字符串中的转移序列"></a>正则和字符串中的转移序列</h3><table>
+<thead>
+<tr>
+<th align="center">序列</th>
+<th align="center">意义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center"><code>\a</code></td>
+<td align="center">报警字符</td>
+</tr>
+<tr>
+<td align="center"><code>\b</code></td>
+<td align="center">退格</td>
+</tr>
+<tr>
+<td align="center"><code>\f</code></td>
+<td align="center">换页</td>
+</tr>
+<tr>
+<td align="center"><code>\n</code></td>
+<td align="center">换行</td>
+</tr>
+<tr>
+<td align="center"><code>\r</code></td>
+<td align="center">回车</td>
+</tr>
+<tr>
+<td align="center"><code>\t</code></td>
+<td align="center">制表符</td>
+</tr>
+<tr>
+<td align="center"><code>\v</code></td>
+<td align="center">垂直制表符</td>
+</tr>
+<tr>
+<td align="center"><code>\ddd</code></td>
+<td align="center">八进制数ddd, ddd含有1到3个数字,每个数字的值在0到7 之间</td>
+</tr>
+<tr>
+<td align="center"><code>\xbex</code></td>
+<td align="center">十六进制</td>
+</tr>
+</tbody></table>
+<h3 id="数组"><a href="#数组" class="headerlink" title="数组"></a>数组</h3><p>awk中的数组不需要声明定义,都是关联数组</p>
+<ul>
+<li>赋值一个数组<code>array[0]=1;array[1]=2</code></li>
+<li>删除一个元素<code>delete array[subscript]</code></li>
+<li>删除一个数组<code>delete array</code></li>
+<li><code>i in a</code>如果a[i]存在,则表达式为1,否则为0</li>
+<li>遍历数组<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-comment">#var是arr的每个下标</span><br><span class="hljs-keyword">for</span> (var <span class="hljs-keyword">in</span> arr)<br>&#123;<br>	statements<br>&#125;<br></code></pre></td></tr></table></figure></li>
+</ul>
+<h3 id="字符串"><a href="#字符串" class="headerlink" title="字符串"></a>字符串</h3><ul>
+<li>字符串的连接<code>&quot;pre&quot;str&quot;suf&quot;</code>不需要加号</li>
+</ul>
+<h3 id="自定义函数"><a href="#自定义函数" class="headerlink" title="自定义函数"></a>自定义函数</h3><p>自定义函数的参数为值传递，不改变遍历本身，但是数组例外,函数体内出现的任何变量都是全局变量，想要使用局部变量，只能放在参数列表中（参数列表中没有实际参数对应的参数都将作为局部变量使用）</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-keyword">function</span> name(patameter-list)&#123;<br>	statements<br>&#125;<br></code></pre></td></tr></table></figure>
+<h3 id="awk处理多行记录-主要改变分隔符"><a href="#awk处理多行记录-主要改变分隔符" class="headerlink" title="awk处理多行记录,主要改变分隔符"></a>awk处理多行记录,主要改变分隔符</h3><p><code>BEGIN &#123; FS=&quot;\n&quot;;RS=&quot;&quot;&#125;</code>,RS代表空行</p>
+<h3 id="awk-script-x-1-test1-x-2-test2-awk可以这样传递变量"><a href="#awk-script-x-1-test1-x-2-test2-awk可以这样传递变量" class="headerlink" title="awk &#39;script&#39; x=1 test1 x=2 test2,awk可以这样传递变量"></a><code>awk &#39;script&#39; x=1 test1 x=2 test2</code>,awk可以这样传递变量</h3><h3 id="BEGIN与END"><a href="#BEGIN与END" class="headerlink" title="BEGIN与END"></a>BEGIN与END</h3><p>特殊的模式BEGIN在第一个输入文件的第一行之前被匹配,END在最后一个输入文件的最后一行被处理之后匹配。</p>
+<h3 id="next与exit"><a href="#next与exit" class="headerlink" title="next与exit"></a>next与exit</h3><p>next使awk抓取下一行,并返回到脚本底部;exit会使awk执行END,如果已经在END,则结束程序</p>
+<h3 id="nextfile"><a href="#nextfile" class="headerlink" title="nextfile"></a>nextfile</h3><p>nextfile语句和next类似，但它是更高层次上的操作。当执行nextfile时，当前的数据文件将被放弃，操作从脚本顶端开始，并使用下一个文件的第一个记录。</p>
+<h3 id="输入分隔符"><a href="#输入分隔符" class="headerlink" title="输入分隔符"></a>输入分隔符</h3><p>内建变量 FS 的默认值是 “ “, 也就是一个空格符. 当 FS 具有这个特定值时, 输入字段按照 空格和 (或) 制表符分割, 前导的空格与制表符会被丢弃, 所以下面三行数据中, 其每一行的第 1 个字段都相同:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs bash"> field1<br> 	field1<br>field1 field2<br></code></pre></td></tr></table></figure>
+<p>然而, 当 FS 是其他值时, 前导的空格与制表符不会被丢弃.  把一个字符串赋值给内建变量 FS 就可以改变字段分隔符. 如果字符串的长度多于一个字 符, 那么它会被当成一个正则表达式. 当前输入行中, 与该正则表达式匹配的最左, 最长, 非空且<br>不重叠的子字符串变成字段分隔符, 举例来说,<br><code>BEGIN &#123; FS = &quot;,[ \t]*|[ \t]+&quot; &#125;</code><br>如果某个子串由一个后面跟着空格或制表符的逗号组成, 或者没有逗号, 只有空格与制表符, 那 么这个子串就是字段分隔符.  如果 FS 被设置成单个字符 (除了空格符), 那么这个字符就变成字段分隔符. 这个约定使得<br>把正则表达式元字符当作字段分隔符来用, 变得很容易:<br>FS &#x3D; “|”<br>把 | 变成字段分隔符<br><font color=#FF0000>不管FS的值是什么,换行符总是多行记录的字段分隔符之一 </font>,如果RS被设置成””(即空行为记录分割符),则默认的字段分隔符就是空格,制表及换行;如果FS是\n,则换行符既是唯一分隔符</p>
+<h4 id="FIELDWIDTHS"><a href="#FIELDWIDTHS" class="headerlink" title="FIELDWIDTHS"></a>FIELDWIDTHS</h4><p>该变量可以用来分隔出现在固定宽度列中的数据。这些数据可能或不可能由空白字符来风格字段的值<br><code>FIELDWIDTHS= &quot;5 6 8 3&quot;</code><br>这里的记录有4个字段：$1有5个字符宽度，$2有6个字符的宽度等等。为FS指定一个值将恢复常规机制。通常使用FS&#x3D;FS恢复，无需保存到额外变量中。</p>
+<h3 id="print与printf"><a href="#print与printf" class="headerlink" title="print与printf"></a>print与printf</h3><table>
+<thead>
+<tr>
+<th align="center">格式</th>
+<th align="center">含义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">print</td>
+<td align="center">将$0打印到标准输出</td>
+</tr>
+<tr>
+<td align="center">print expression,expression,…</td>
+<td align="center">打印各个expression,expression之间由OFS分开,由ORS终止</td>
+</tr>
+<tr>
+<td align="center">print expression,expression,…&gt;filename</td>
+<td align="center">输出至filename</td>
+</tr>
+<tr>
+<td align="center">print expression,expression,…&gt;filename</td>
+<td align="center">追加到filename,不覆盖之前内容</td>
+</tr>
+<tr>
+<td align="center">print expression,expression,…</td>
+<td align="center">command</td>
+</tr>
+<tr>
+<td align="center">close(filename),close(command)</td>
+<td align="center">断开print与filename(或command)之间的连接,同一命令想要两次之间毫无关联,必须先close</td>
+</tr>
+<tr>
+<td align="center">fflush(filename&#x2F;cmd)</td>
+<td align="center">刷新缓存</td>
+</tr>
+<tr>
+<td align="center">system(command)</td>
+<td align="center">执行command;函数的返回值是command的退出状态</td>
+</tr>
+</tbody></table>
+<p>printf主要可以指定格式,以上都能用printf替换,如:<code>printf(format,expression,expression,...) &gt; filename</code>末尾不会自动添加换行符<br>printf格式控制符(每一个格式说明符都以%开始,以转换字符结束)</p>
+<p>|字符|表达式将被打印成|<br>|C|ASCII 字符|<br>|d|十进制整数|<br>|e|[-]d.dddddde[+-]dd|<br>|E|[-]d.ddddddE[+-]dd|<br>|f|[-]ddd.dddddd|<br>|g|照e或f进行转换, 选择较短的那个, 无意义的零会被抑制|<br>|G|照E或f进行转换, 选择较短的那个, 无意义的零会被抑制|<br>|i|十进制|<br>|O|无符号八进制数|<br>|s|字符串|<br>|x|无符号十六进制数|<br>|X|无符号十六进制数,字母大写|<br>|%|打印一个百分号 %, 不会有参数被吸收|</p>
+<table>
+<thead>
+<tr>
+<th align="center">修饰符</th>
+<th align="center">含义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">-</td>
+<td align="center">表达式在它的域内左对齐</td>
+</tr>
+<tr>
+<td align="center">width</td>
+<td align="center">为了达到规定的宽度,必要时填充空格，前导0表示用0填充</td>
+</tr>
+<tr>
+<td align="center">.prec</td>
+<td align="center">字符串最大宽度, 或十进制数的小数部分的位数</td>
+</tr>
+</tbody></table>
+<table>
+<thead>
+<tr>
+<th align="center">fmt</th>
+<th align="center">$1</th>
+<th align="center">printf(fmt,$1)</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">%c</td>
+<td align="center">97</td>
+<td align="center">a</td>
+</tr>
+<tr>
+<td align="center">%d</td>
+<td align="center">97.5</td>
+<td align="center">97</td>
+</tr>
+<tr>
+<td align="center">%5d</td>
+<td align="center">97.5</td>
+<td align="center">97</td>
+</tr>
+<tr>
+<td align="center">%e</td>
+<td align="center">97.5</td>
+<td align="center">9.750000e+01</td>
+</tr>
+<tr>
+<td align="center">%f</td>
+<td align="center">97.5</td>
+<td align="center">97.500000</td>
+</tr>
+<tr>
+<td align="center">%7.2f</td>
+<td align="center">97.5</td>
+<td align="center">97.50</td>
+</tr>
+<tr>
+<td align="center">%g</td>
+<td align="center">97.5</td>
+<td align="center">97.5</td>
+</tr>
+<tr>
+<td align="center">%.6g</td>
+<td align="center">97.5</td>
+<td align="center">97.5</td>
+</tr>
+<tr>
+<td align="center">%o</td>
+<td align="center">97</td>
+<td align="center">141</td>
+</tr>
+<tr>
+<td align="center">%06o</td>
+<td align="center">97</td>
+<td align="center">000141</td>
+</tr>
+<tr>
+<td align="center">%x</td>
+<td align="center">97</td>
+<td align="center">61</td>
+</tr>
+<tr>
+<td align="center">%s</td>
+<td align="center">January</td>
+<td align="center">&#96;</td>
+</tr>
+<tr>
+<td align="center">%10s</td>
+<td align="center">January</td>
+<td align="center">&#96;</td>
+</tr>
+<tr>
+<td align="center">%-10s</td>
+<td align="center">January</td>
+<td align="center">&#96;</td>
+</tr>
+<tr>
+<td align="center">%.3s</td>
+<td align="center">January</td>
+<td align="center"><code>Jan</code></td>
+</tr>
+<tr>
+<td align="center">%10.3s</td>
+<td align="center">January</td>
+<td align="center">&#96;</td>
+</tr>
+<tr>
+<td align="center">%-10.3s</td>
+<td align="center">January</td>
+<td align="center">&#96;</td>
+</tr>
+<tr>
+<td align="center">%%</td>
+<td align="center">January</td>
+<td align="center">%</td>
+</tr>
+</tbody></table>
+<h3 id="管道的奇怪用法-好好理解到底啥是管道"><a href="#管道的奇怪用法-好好理解到底啥是管道" class="headerlink" title="管道的奇怪用法(好好理解到底啥是管道)"></a>管道的奇怪用法(好好理解到底啥是管道)</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs bash">&#123;<br>	<span class="hljs-comment">#注意sort命令用引号括起来,当成字符串</span><br>	<span class="hljs-built_in">print</span> xx | <span class="hljs-string">&quot;sort -t&#x27;\t&#x27; +1rn&quot;</span><br>	<span class="hljs-comment">#上面的管道名就是&quot;sort -t&#x27;\t&#x27; +1rn&quot;</span><br>	close(<span class="hljs-string">&quot;sort -t&#x27;\t&#x27; +1rn&quot;</span>)<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>假设有以下文件</p>
+<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">France</span>	<span class="hljs-number">211</span>	<span class="hljs-number">55</span>	Europe<br><span class="hljs-attribute">Japan</span>	<span class="hljs-number">144</span>	<span class="hljs-number">120</span>	Asia<br><span class="hljs-attribute">Germany</span>	<span class="hljs-number">96</span>	<span class="hljs-number">61</span>	Europe<br><span class="hljs-attribute">England</span>	<span class="hljs-number">94</span>	<span class="hljs-number">56</span>	Europe<br><span class="hljs-attribute">USSR</span>	<span class="hljs-number">8649</span>	<span class="hljs-number">275</span>	Asia<br><span class="hljs-attribute">Canada</span>	<span class="hljs-number">3852</span>	<span class="hljs-number">25</span>	North America<br><span class="hljs-attribute">China</span>	<span class="hljs-number">3705</span>	<span class="hljs-number">1032</span>	Asia<br><span class="hljs-attribute">USA</span>	<span class="hljs-number">3615</span>	<span class="hljs-number">237</span>	North America<br><span class="hljs-attribute">Brazil</span>	<span class="hljs-number">3286</span>	<span class="hljs-number">134</span>	South America<br><span class="hljs-attribute">India</span>	<span class="hljs-number">1267</span>	<span class="hljs-number">746</span>	Asia<br><span class="hljs-attribute">Mexico</span>	<span class="hljs-number">762</span>	<span class="hljs-number">78</span>	North America<br></code></pre></td></tr></table></figure>
+<p>以下程序会简单排序</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-comment"># prep1 - prepare countries by continent and pop. den.</span><br>BEGIN &#123; FS = <span class="hljs-string">&quot;\t&quot;</span> &#125;<br>&#123; <br>	<span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;%s:%s:%d:%d:%.1f\n&quot;</span>,<br>	<span class="hljs-variable">$4</span>, <span class="hljs-variable">$1</span>, <span class="hljs-variable">$3</span>, <span class="hljs-variable">$2</span>, 1000*<span class="hljs-variable">$3</span>/<span class="hljs-variable">$2</span>) | <span class="hljs-string">&quot;sort -t: -k 1,1 -k 5rn&quot;</span><br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h3 id="getline函数"><a href="#getline函数" class="headerlink" title="getline函数"></a>getline函数</h3><ul>
+<li>描述:函数getline可以从当前输入行,或文件,或管道,读取输入.getline抓取下一个记录,按照通常的方式把记录分割成一个个的字段.它会设置NF,NR,和FNR;如果存在一个记录,返回1,若遇到文件末尾,返回0,发生错误时返回-1(例如打开文件失败).</li>
+<li><code>getline x</code>读取下一条记录到变量x中，并递增NR与FNR,不会对记录进行分隔，不会设置NF</li>
+<li><code>getline &lt;&quot;file&quot;</code>从文件file读取输入.它不会对NR与FNR产生影响, 但是会执行字段分割,并且设置NF.</li>
+<li><code>getline x &lt;&quot;file&quot;</code>从file读取下一条记录,存到变量x中.记录不会被分割成字段,变量NF,NR,与FNR都不会被修改.</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th align="center">表达式</th>
+<th align="center">被设置的变量</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">getline</td>
+<td align="center">$0,NF,NR,FNR</td>
+</tr>
+<tr>
+<td align="center">getline var</td>
+<td align="center">var,NR,FNR</td>
+</tr>
+<tr>
+<td align="center">getline &lt;file</td>
+<td align="center">$0,NF</td>
+</tr>
+<tr>
+<td align="center">getline var&lt;file</td>
+<td align="center">var</td>
+</tr>
+<tr>
+<td align="center">&#96;cmd</td>
+<td align="center">getline&#96;</td>
+</tr>
+<tr>
+<td align="center">&#96;cmd</td>
+<td align="center">getline var&#96;</td>
+</tr>
+</tbody></table>
+<p>例子：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-comment">#必须判断大于0,否则文件不存在则就是死循环</span><br><span class="hljs-keyword">while</span> (getline x&lt;file &gt;0)<br>	<span class="hljs-built_in">print</span> x<br>	next<br><span class="hljs-keyword">while</span> (<span class="hljs-string">&quot;who&quot;</span>|getline)<br>	n++<br></code></pre></td></tr></table></figure>
+
+<p>13.例子<br>a.将每一行的字段逆序打印</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs bash">&#123;<br>	<span class="hljs-keyword">for</span> (i=NF;i&gt;0;i=i-1) <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;%s &quot;</span>,<span class="hljs-variable">$i</span>)<br>	<span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;\n&quot;</span>)<br>&#125;<br></code></pre></td></tr></table></figure>
+<h3 id="awk的正则表达式"><a href="#awk的正则表达式" class="headerlink" title="awk的正则表达式"></a>awk的正则表达式</h3><ul>
+<li>awk的圆括号用法有点异样:<code>(r1)(r2)</code>若匹配xy,其中x匹配r1,y匹配r2。<br>举例:<code>(Asian|European|North American) (male|female) (black|blue)bird</code>12种组合</li>
+</ul>
+<h3 id="shell中包含awk"><a href="#shell中包含awk" class="headerlink" title="shell中包含awk"></a>shell中包含awk</h3><ul>
+<li>见例子1</li>
+</ul>
+<h3 id="awk程序搜索路径"><a href="#awk程序搜索路径" class="headerlink" title="awk程序搜索路径"></a>awk程序搜索路径</h3><p> awk允许你指定一个名为AWKPATH的环境变量，它定义了awk程序的文件搜索路径，默认路径为:&#x2F;usr&#x2F;local&#x2F;share&#x2F;awk。当前路径永远最优先,如果文件名包含<code>/</code>将不执行查找</p>
+<h3 id="例子"><a href="#例子" class="headerlink" title="例子"></a>例子</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-comment"># field -打印每个文件的指定字段顺序</span><br><span class="hljs-comment"># usage: field n n n ... file file file ...</span><br>awk <span class="hljs-string">&#x27;</span><br><span class="hljs-string">#开始时,寻找数字,并使之清空,这样他们就不会被当成文件名</span><br><span class="hljs-string">BEGIN &#123;</span><br><span class="hljs-string">for (i = 1; ARGV[i] ~ /^[0-9]+$/; i++) &#123; # collect numbers</span><br><span class="hljs-string">fld[++nf] = ARGV[i]</span><br><span class="hljs-string">ARGV[i] = &quot;&quot;</span><br><span class="hljs-string">&#125;</span><br><span class="hljs-string">if (i &gt;= ARGC)</span><br><span class="hljs-string"># no file names so force stdin</span><br><span class="hljs-string">ARGV[ARGC++] = &quot;-&quot;</span><br><span class="hljs-string">&#125;</span><br><span class="hljs-string">&#123;</span><br><span class="hljs-string">for (i = 1; i &lt;= nf; i++)</span><br><span class="hljs-string">printf(&quot;%s%s&quot;, $fld[i], i &lt; nf ? &quot; &quot; : &quot;\n&quot;)</span><br><span class="hljs-string">&#125;</span><br><span class="hljs-string">&#x27;</span> $*<br></code></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-comment">#交互式awk脚本</span><br>BEGIN &#123;<br>	maxnum = ARGC &gt; 1 ? ARGV[1] : 10<br>	<span class="hljs-comment"># default size is 10</span><br>	ARGV[1] = <span class="hljs-string">&quot;-&quot;</span><span class="hljs-comment"># read standard input subsequently</span><br>	srand()<span class="hljs-comment"># reset rand from time of day</span><br>	<span class="hljs-keyword">do</span> &#123;<br>		n1 = randint(maxnum)<br>		n2 = randint(maxnum)<br>		<span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;%g + %g = ? &quot;</span>, n1, n2)<br>		<span class="hljs-keyword">while</span> ((input = getline) &gt; <span class="hljs-number">0</span>)<br>			if (<span class="hljs-variable">$0</span> == n1 + n2) &#123;<br>				print &quot;Right!&quot;<br>				break<br>			&#125; else if (<span class="hljs-variable">$0</span> == &quot;&quot;) &#123;<br>				print n1 + n2<br>				break<br>			&#125; else<br>				printf(&quot;wrong, try again: &quot;)<br>		&#125; while (input &gt; <span class="hljs-number">0</span>)<br>&#125;<br>function randint(n) &#123; return int(rand()*n)+<span class="hljs-number">1</span> &#125;<br></code></pre></td></tr></table></figure>
+<ul>
+<li>去除字符串<code>gsub(/&quot;([^&quot;]|\\&quot;)*&quot;/, &quot;&quot;, line)</code></li>
+<li>去除正则表达式<code>gsub(/\/([^\/]|\\\/)+\//, &quot;&quot;, line)</code></li>
+<li>去除注释<code>sub(/#.*/, &quot;&quot;, line)</code></li>
+</ul>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>AWK</div>
+      <div>http://example.com/2021/01/24/AWK/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Nanbert</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2021年1月24日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2021/03/11/%E8%BE%93%E5%85%A5%E8%BE%93%E5%87%BA%E6%B5%81/" title="输入输出流">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">输入输出流</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2020/12/31/Arch_Linux%E9%97%AE%E9%A2%98%E8%A7%A3%E5%86%B3%E7%BB%8F%E9%AA%8C/" title="Arch Linux问题解决">
+                        <span class="hidden-mobile">Arch Linux问题解决</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

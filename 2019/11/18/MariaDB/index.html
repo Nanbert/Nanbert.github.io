@@ -1,0 +1,637 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/images/favicon.png">
+  <link rel="icon" href="/images/favicon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Nanbert">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="启动关闭用’systemctl’命令 mysql命令行工具:“-h、–help”后接服务器地址,若是本地127.0.0.1,可以省略“-p、–port”后接端口,默认是3306“-u、–user”连接MariaDB服务器时用的用户名“-p、–password”连接MariaDB服务器的密码“-D、–database”连接MariaDB服务器时要使用的数据库“–auto-rehash”在mysql">
+<meta property="og:type" content="article">
+<meta property="og:title" content="MariaDB">
+<meta property="og:url" content="http://example.com/2019/11/18/MariaDB/index.html">
+<meta property="og:site_name" content="Nanbert&#39;s blog">
+<meta property="og:description" content="启动关闭用’systemctl’命令 mysql命令行工具:“-h、–help”后接服务器地址,若是本地127.0.0.1,可以省略“-p、–port”后接端口,默认是3306“-u、–user”连接MariaDB服务器时用的用户名“-p、–password”连接MariaDB服务器的密码“-D、–database”连接MariaDB服务器时要使用的数据库“–auto-rehash”在mysql">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2019-11-18T08:09:14.000Z">
+<meta property="article:modified_time" content="2023-12-12T06:01:19.865Z">
+<meta property="article:author" content="Nanbert">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  
+  <title>MariaDB - Nanbert&#39;s blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.6","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/images/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.0.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Nanbert</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/images/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="MariaDB"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2019-11-18 16:09" pubdate>
+          2019年11月18日 下午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          1.1k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          9 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">MariaDB</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <ol>
+<li>启动关闭用’systemctl’命令</li>
+<li><code>mysql</code>命令行工具:<br>“-h、–help”后接服务器地址,若是本地127.0.0.1,可以省略<br>“-p、–port”后接端口,默认是3306<br>“-u、–user”连接MariaDB服务器时用的用户名<br>“-p、–password”连接MariaDB服务器的密码<br>“-D、–database”连接MariaDB服务器时要使用的数据库<br>“–auto-rehash”在mysql客户端程序内输入表或列名时，使用TAB键可以自动补全<br>“–batch”以批处理模式(非交互模式)运行mysql客户端程序<br>“–execute、-e”mysql客户端程序在连接MariaDB服务器的同时执行参数给出的语句<br>“–skip-column-names、-N”在mysql客户端中不显示查询结果中的列名<br>“–safe-updates、-U”以安全模式运行mysql客户端，安全模式下防止误操作</li>
+<li>默认数据库文件存放位置为:&#x2F;var&#x2F;lib&#x2F;mysql<br>读取配置文件顺序:&#x2F;etc&#x2F;my.cnf、&#x2F;etc&#x2F;mysql&#x2F;my.cnf、~&#x2F;.my.cnf</li>
+<li>创建、删除数据库<br>CREATE DATABASE 数据库名称 DEFAULT CHARACTER SET utf8mb4(指定字符集及排序方式)<br>DROP DATABASE 数据库名称</li>
+<li>创建数据表<br>　<code>USE test</code>进入指定的数据库test<br>　<figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs pgsql"><span class="hljs-keyword">CREATE</span> <span class="hljs-keyword">TABLE</span> [<span class="hljs-keyword">IF</span> <span class="hljs-keyword">NOT</span> <span class="hljs-keyword">EXISTS</span>] tab_test (<br>		tid <span class="hljs-type">BIGINT</span> <span class="hljs-keyword">NOT</span> <span class="hljs-keyword">NULL</span> AUTO_INCREMENT,<br>		tname <span class="hljs-type">VARCHAR</span>(<span class="hljs-number">100</span>) <span class="hljs-keyword">NOT</span> <span class="hljs-keyword">NULL</span>,<br>		tmemo <span class="hljs-type">TEXT</span> <span class="hljs-keyword">NOT</span> <span class="hljs-keyword">NULL</span>,<br>		<span class="hljs-keyword">PRIMARY KEY</span> (tid),<br>		<span class="hljs-keyword">INDEX</span> ix_tname_tid (tname,tid)<br>		) ENGINE=InnoDB;<br></code></pre></td></tr></table></figure><br>约束分为表约束和列约束，上述NOT NULL为列约束跟在每个列定义后面,而PRIMARY KEY为表约束可以指定多个列。<br>完整性约束的基本语法格式：<br>[CONSTRAINT&lt;约束名&gt;]&lt;约束类型&gt;,中括号中内容可以省略,约束类型有:NULL&#x2F;NOT NULL、UNIQUE、PRIMARY KEY、FOREIGN KEY、CHECK。 其中外键约束格式为:FOREIGN KEY REFERENCES &lt;主表名&gt;(&lt;列名&gt;),CHECK:CHECK(&lt;约束条件&gt;),约束条件举例:CHECK (Score&gt;&#x3D;0 AND Score&lt;&#x3D;100)<br>查看数据表<br><code>SHOW CREATE TABLE test</code><br>修改数据表格式<br>(待建设,各种情形不同处理,有点复杂)<br>删除数据表<br><code>DROP TABLE &lt;表名&gt;</code></li>
+<li>a.插入元组数据<br><code>INSERT INTO test (fd1,fd2) VALUES (1,&#39;Matt&#39;) ON DUPLICATE KEY UPDATE fd2=&#39;Matt&#39;;</code>ON DUPLICATE KEY UPDATE选项可以确保若记录已存在则执行UPDATE,否则执行INSERT;<br>b.检索元祖数据<br><code>SELECT * FROM tab_test;</code><br><code>SELECT * FROM tab_test WHERE fd1=1;</code>条件查询可以有NOT、AND、OR(优先级从高到低);BETWEEN…AND…;IN(&lt;值1&gt;、&lt;值2&gt;);LIKE&lt;字符串常量&gt;(‘张％’代表姓张的人,’_力%’代表第二个字是力,%匹配0或多个字符);<br>统计汇总查询常用函数:<br>　AVG 按列计算平均值<br>　SUM 按列计算值的总和<br>　MAX 求一列中的最大值<br>　MIN 求一列中的最小值<br>　COUNT 按列值计算个数<br>例子:&#96;&#96;&#96;<br>SELECT MAX(Score) AS MaxScore,<br>   MIN(Score) AS MinScore,<br>   MAX(Score)-MIN(Score) AS Diff<br>   FROM SC<br>   WHERE(CNo&#x3D;’C1’)<figure class="highlight n1ql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs n1ql">`<span class="hljs-keyword">SELECT</span> <span class="hljs-built_in">COUNT</span>(<span class="hljs-keyword">DISTINCT</span> Dept) <span class="hljs-keyword">AS</span> DeptNum <span class="hljs-keyword">FROM</span> S<span class="hljs-symbol">`DISTINCT关键字消除重复</span><br><span class="hljs-symbol">`</span><span class="hljs-keyword">SELECT</span> fd2 <span class="hljs-keyword">FROM</span> tab_test;`<br></code></pre></td></tr></table></figure>
+SELECT SNo,COUNT(<em>) AS SC_Num<br>FROM SC<br>GROUP BY SNo<br>HAVING(COUNT(</em>)&gt;&#x3D;2)<br>这GROUP BY后面的属性表示若其相同，将在同一行呈现(相当于DISTINCT),但count将计算当前组的个数，而HAVING则是对GROUP BY进一步筛选,不能用where。<figure class="highlight n1ql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs n1ql">```<br><span class="hljs-keyword">SELECT</span> SNo,CNo,Score<br><span class="hljs-keyword">FROM</span> SC<br><span class="hljs-keyword">WHERE</span> CNo <span class="hljs-keyword">IN</span> (<span class="hljs-string">&#x27;C2&#x27;</span>,<span class="hljs-string">&#x27;C3&#x27;</span>,<span class="hljs-string">&#x27;C4&#x27;</span>)<br><span class="hljs-keyword">ORDER</span> <span class="hljs-keyword">BY</span> SNo,Score <span class="hljs-keyword">DESC</span><br>学号升序，分数降序排列<br></code></pre></td></tr></table></figure>
+<code>SELECT * FROM tab_test\G</code>注意这没有分号,按列输出记录<br>多表内连接查询<br>方法一:<figure class="highlight oxygene"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs oxygene"><span class="hljs-keyword">SELECT</span> T.TNo,TN,CNo<br><span class="hljs-keyword">FROM</span> T,TC<br><span class="hljs-keyword">WHERE</span> (T.TNo=TC.TNo) <span class="hljs-keyword">AND</span>(TN=<span class="hljs-string">&#x27;刘伟&#x27;</span>)<br><span class="hljs-comment">//这里TN=‘刘伟为查询条件’T.TNo=TC.TNo为连接条件，TNo为连接字段</span><br></code></pre></td></tr></table></figure>
+方法二:<figure class="highlight n1ql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs n1ql"><span class="hljs-keyword">SELECT</span> T.TNo,TN,CNo <br><span class="hljs-keyword">FROM</span> T <span class="hljs-keyword">INNER</span> <span class="hljs-keyword">JOIN</span> TC<br><span class="hljs-keyword">ON</span> T.TNo=TC.TNo <span class="hljs-keyword">WHERE</span>(TN=<span class="hljs-string">&#x27;刘伟&#x27;</span>)<br></code></pre></td></tr></table></figure>
+多表外连接查询<figure class="highlight n1ql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs n1ql"><span class="hljs-keyword">SELECT</span> S.SNo,SN,CN,Score<br><span class="hljs-keyword">FROM</span> S<br><span class="hljs-keyword">LEFT</span> <span class="hljs-keyword">OUTER</span> <span class="hljs-keyword">JOIN</span> SC<br><span class="hljs-keyword">ON</span> S.SNo=SC.SNo<br><span class="hljs-keyword">LEFT</span> <span class="hljs-keyword">OUTER</span> <span class="hljs-keyword">JOIN</span> C<br><span class="hljs-keyword">ON</span> C.CNo=SC.CNo<br>//外链接不符合条件的将置为<span class="hljs-literal">NULL</span><br></code></pre></td></tr></table></figure>
+多表交叉查询<figure class="highlight oxygene"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs oxygene"><span class="hljs-keyword">SELECT</span> * <span class="hljs-keyword">FROM</span> S CROSS <span class="hljs-keyword">JOIN</span> C<br><span class="hljs-comment">//行数两个表行的乘积，列数为两个表的列数和</span><br></code></pre></td></tr></table></figure>
+自连接查询(例子为查询所有比”刘伟”工资高的教师姓名、工资和刘伟的工资)<br>方法一:<figure class="highlight tp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs tp"><span class="hljs-keyword">SELECT</span> <span class="hljs-keyword">X</span>.TN,<span class="hljs-keyword">X</span>.Sal AS Sal_a,<span class="hljs-keyword">Y</span>.Sal AS Sal_b<br>FROM T AS <span class="hljs-keyword">X</span>,T AS <span class="hljs-keyword">Y</span><br>WHERE <span class="hljs-keyword">X</span>.Sal&gt;<span class="hljs-keyword">Y</span>.Sal <span class="hljs-keyword">AND</span> <span class="hljs-keyword">Y</span>.TN=<span class="hljs-string">&#x27;刘伟&#x27;</span><br></code></pre></td></tr></table></figure>
+方法二:<figure class="highlight tp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs tp"><span class="hljs-keyword">SELECT</span> <span class="hljs-keyword">X</span>.TN,<span class="hljs-keyword">X</span>.Sal,<span class="hljs-keyword">Y</span>.Sal<br>FROM T AS <span class="hljs-keyword">X</span> INNER JOIN T AS <span class="hljs-keyword">Y</span><br><span class="hljs-literal">ON</span> <span class="hljs-keyword">X</span>.Sal&gt;<span class="hljs-keyword">Y</span>.Sal<br><span class="hljs-keyword">AND</span> <span class="hljs-keyword">Y</span>.TN=<span class="hljs-string">&#x27;刘伟&#x27;</span><br></code></pre></td></tr></table></figure>
+普通子查询<figure class="highlight oxygene"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs oxygene"><span class="hljs-keyword">SELECT</span> TNo,TN<br><span class="hljs-keyword">FROM</span> T<br><span class="hljs-keyword">WHERE</span> Prof= (<span class="hljs-keyword">SELECT</span> Prof <br>		<span class="hljs-keyword">FROM</span> T<br>		<span class="hljs-keyword">WHERE</span> TN=<span class="hljs-string">&#x27;刘伟&#x27;</span>)<br><span class="hljs-comment">//查询与刘伟老师相同职称的老师姓名与工号</span><br><span class="hljs-keyword">SELECT</span> TN<br><span class="hljs-keyword">FROM</span> T<br><span class="hljs-keyword">WHERE</span> (TNo = ANY (<span class="hljs-keyword">SELECT</span> TNo<br>			<span class="hljs-keyword">FROM</span> TC<br>			<span class="hljs-keyword">WHERE</span> CNo = <span class="hljs-string">&#x27;C5&#x27;</span>))<br><span class="hljs-comment">//查询讲授课程号为C5的教师姓名</span><br></code></pre></td></tr></table></figure>
+相关子查询(它先对外查询中每一条记录进行比对，这与普通子查询不同，普通子查询先执行子查询)<figure class="highlight n1ql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs n1ql"><span class="hljs-keyword">SELECT</span> TN<br><span class="hljs-keyword">FROM</span> T<br><span class="hljs-keyword">WHERE</span> <span class="hljs-keyword">EXISTS</span> (<span class="hljs-keyword">SELECT</span> *<br>		<span class="hljs-keyword">FROM</span> TC<br>		<span class="hljs-keyword">WHERE</span> TNo=T.TNo <span class="hljs-keyword">AND</span> CNo=<span class="hljs-string">&#x27;C5&#x27;</span>)<br>//查询讲授课程为C5的教师姓名<br></code></pre></td></tr></table></figure>
+合并查询(就是把结果合并到一起)<figure class="highlight n1ql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs n1ql"><span class="hljs-keyword">SELECT</span> SNo <span class="hljs-keyword">AS</span> 学号,<span class="hljs-built_in">SUM</span>(Score) <span class="hljs-keyword">AS</span> 总分<br><span class="hljs-keyword">FROM</span> SC<br><span class="hljs-keyword">WHERE</span> (SNo = <span class="hljs-string">&#x27;S1&#x27;</span>)<br><span class="hljs-keyword">GROUP</span> <span class="hljs-keyword">BY</span> SNo<br><span class="hljs-keyword">UNION</span><br><span class="hljs-keyword">SELECT</span> SNo <span class="hljs-keyword">AS</span> 学号,<span class="hljs-built_in">SUM</span>(Score) <span class="hljs-keyword">AS</span> 总分<br><span class="hljs-keyword">FROM</span> SC<br><span class="hljs-keyword">WHERE</span> (SNo = <span class="hljs-string">&#x27;S5&#x27;</span>)<br><span class="hljs-keyword">GROUP</span> <span class="hljs-keyword">BY</span> SNo<br></code></pre></td></tr></table></figure>
+存储查询<figure class="highlight n1ql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs n1ql"><span class="hljs-keyword">SELECT</span> SNo <span class="hljs-keyword">AS</span> 学号,<span class="hljs-built_in">SUM</span>(Score) <span class="hljs-keyword">AS</span> 总分<br><span class="hljs-keyword">INTO</span> Cal_Table<br><span class="hljs-keyword">FROM</span> SC<br><span class="hljs-keyword">GROUP</span> <span class="hljs-keyword">BY</span> SNo<br>//如果在新表名前面加个#则是临时表，关闭则消失<br></code></pre></td></tr></table></figure>
+c.修改元祖数据<br><code>UPDATE tab_test SET fd2=&#39;Brandon&#39; WHERE fd1=1</code>如果没有WHERE则所有元祖的fd2都将改变，请一定小心<br><code>REPLACE tab_test SET fd1=1,fd2=&#39;Matt&#39;;</code>若记录存在执行UPDATE,否则执行INSERT,最好用INSERT加ON DUPLICATE KEY UPDATE命令,资源消耗更小。<br>d.删除元祖数据<br><code>DELETE FROM tab_test WHERE fd1=1;</code>同理没有WHERE将会删除所有元组<br>e.视图(是一个虚表,基于基本表，对其修改会影响基本表，但本身不占内存)<figure class="highlight n1ql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs n1ql"><span class="hljs-keyword">CREATE</span> <span class="hljs-keyword">VIEW</span> Sub_T<br><span class="hljs-keyword">AS</span> <span class="hljs-keyword">SELECT</span> TNo,TN,Prof<br><span class="hljs-keyword">FROM</span> T<br><span class="hljs-keyword">WHERE</span> Dept = <span class="hljs-string">&#x27;计算机&#x27;</span><br>//创建一个计算机系老师情况的视图Sub_T<br><span class="hljs-keyword">ALTER</span> <span class="hljs-keyword">VIEW</span> S_SC_C(SN,CN,Score)<br><span class="hljs-keyword">AS</span> <span class="hljs-keyword">SELECT</span> SN,CN,Score<br> <span class="hljs-keyword">FROM</span> S,C,SC<br> <span class="hljs-keyword">WHERE</span> S.SNo=SC.SNo <span class="hljs-keyword">AND</span> SC.CNo=C.CNo<br>//修改,就是查询内容的覆盖<br></code></pre></td></tr></table></figure></li>
+</ol>
+<p>###对表的操作适用于视图，可以通过视图简化操作<br>6.索引(待建)<br>7.规则约束<br>　a.创建规则<br><code>CREATE RULE age_rule AS@age &gt;=18and @age &lt;= 50</code><br>b.将规则绑定到数据库的对象上，或者将规则从数据库的对象上松绑<br>用sp_bindrule绑定规则<br><code>EXEC sp_bindrule &#39;age_rule&#39;,&#39;S.Age&#39;</code>对已输入的数据不起作用<br><code>EXEC sp_unbindrule &#39;S.Age&#39;</code>解绑<br>c.删除规则<br><code>DROP RULE age_rule</code>删除前必须先解绑<br>8.默认<br>　a.创建默认<br><code>CREATE DEFAULT birthday_defa AS &#39;1978-1-1&#39;</code><br>　b.查看默认<br><code>EXEC sp_helptext birthday_defa</code><br>　c.默认的绑定与解绑<br><code>EXEC sp_bindefault &#39;birthday_defa&#39; &#39;S.[Birthday]&#39;</code><br><code>EXEC sp_unbinefault &#39;S.[Birthday]&#39;</code><br>　d.删除默认<br><code>DROP DEFAULT birthday_defa</code></p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>MariaDB</div>
+      <div>http://example.com/2019/11/18/MariaDB/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Nanbert</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2019年11月18日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2020/01/16/GDB/" title="GDB">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">GDB</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2019/08/10/C-%E6%A0%87%E5%87%86%E5%BA%93/" title="C++标准库">
+                        <span class="hidden-mobile">C++标准库</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

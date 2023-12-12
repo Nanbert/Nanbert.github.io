@@ -1,0 +1,1100 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/images/favicon.png">
+  <link rel="icon" href="/images/favicon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Nanbert">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="1.登录服务器ssh &lt;user&gt;@&lt;hostname&gt;hostname是主机名,可以是域名,也可能是IP地址,不指定@时,默认为客户端的当前用户名ssh -p 8821 foo.com默认端口为21,可以用-p选项指定服务器的端口2.文件信息服务器公钥的指纹既是SSH服务器公钥的哈希值,每台SSH服务器都有唯一一对密钥ssh-keygen -l -f [*.pub]查看某">
+<meta property="og:type" content="article">
+<meta property="og:title" content="openSSH">
+<meta property="og:url" content="http://example.com/2020/12/21/openSSH/index.html">
+<meta property="og:site_name" content="Nanbert&#39;s blog">
+<meta property="og:description" content="1.登录服务器ssh &lt;user&gt;@&lt;hostname&gt;hostname是主机名,可以是域名,也可能是IP地址,不指定@时,默认为客户端的当前用户名ssh -p 8821 foo.com默认端口为21,可以用-p选项指定服务器的端口2.文件信息服务器公钥的指纹既是SSH服务器公钥的哈希值,每台SSH服务器都有唯一一对密钥ssh-keygen -l -f [*.pub]查看某">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/images/openssh.png">
+<meta property="article:published_time" content="2020-12-21T12:30:23.000Z">
+<meta property="article:modified_time" content="2023-12-12T06:06:27.741Z">
+<meta property="article:author" content="Nanbert">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://example.com/images/openssh.png">
+  
+  
+  
+  <title>openSSH - Nanbert&#39;s blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.6","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/images/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.0.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Nanbert</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/images/openssh.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="openSSH"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2020-12-21 20:30" pubdate>
+          2020年12月21日 晚上
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          3.5k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          30 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">openSSH</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <p>1.登录服务器<br><code>ssh &lt;user&gt;@&lt;hostname&gt;</code>hostname是主机名,可以是域名,也可能是IP地址,不指定<user>@时,默认为客户端的当前用户名<br><code>ssh -p 8821 foo.com</code>默认端口为21,可以用-p选项指定服务器的端口<br>2.文件信息<br>服务器公钥的指纹既是SSH服务器公钥的哈希值,每台SSH服务器都有唯一一对密钥<br><code>ssh-keygen -l -f [*.pub]</code>查看某个公钥的指纹<br>ssh会将本机链接过的所有服务器公钥的指纹存储在”~&#x2F;.ssh&#x2F;known_hosts”文件中。每次链接服务器都会通过该文件判断是否为陌生服务器,如果是陌生的则会产生警告,如果输入yes忽略警告,将会自动添加该服务器的公钥指纹到该文件<br><code>ssh-keygen -R &lt;hostname&gt;</code>用于删除某服务器的公钥(用于失效的情况),也可以手动删除known_hosts文件中的相关内容<br>3.执行远程命令<br>一般在登陆后,输入命令,<br>也可以一步到位<code>ssh [username@hostname] &lt;command&gt;</code>登陆成功后立即执行命令,如果命令是交互式的,则需要加上-t选项,如:<code>ssh -t foo.com vi foo.txt</code><br>4.命令行配置项</p>
+<table>
+<thead>
+<tr>
+<th align="center">参数</th>
+<th align="center">意义</th>
+<th align="center">例子</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">-c</td>
+<td align="center">指定加密算法</td>
+<td align="center"><code>ssh -c blowfish,3des server.example.com</code>,<code>ssh -c blowfish -c 3des server.example.com</code></td>
+</tr>
+<tr>
+<td align="center">-C</td>
+<td align="center">压缩数据传输</td>
+<td align="center"><code>ssh -C server.example.com</code></td>
+</tr>
+<tr>
+<td align="center">-d</td>
+<td align="center">设置打印的debug信息级别,数值越高越详细</td>
+<td align="center"><code>ssh -d 1 foo.com</code></td>
+</tr>
+<tr>
+<td align="center">-D</td>
+<td align="center">指定本机的Socks监听端口,该端口收到的请求,都将转发到远程SSH主机,又称动态端口转发</td>
+<td align="center"><code>ssh -D 1080 server</code></td>
+</tr>
+<tr>
+<td align="center">-f</td>
+<td align="center">表示SSH链接在后台运行</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center">-F</td>
+<td align="center">指定配置文件</td>
+<td align="center"><code>ssh -F /usr/local/ssh/other_config</code></td>
+</tr>
+<tr>
+<td align="center">-i</td>
+<td align="center">用于指定私钥,默认值是~&#x2F;.ssh&#x2F;id_dsa</td>
+<td align="center"><code>ssh -i my-key server.example.com</code></td>
+</tr>
+<tr>
+<td align="center">-l</td>
+<td align="center">参数指定远程登录的账户名</td>
+<td align="center"><code>ssh -l nanbert server.example.com</code></td>
+</tr>
+<tr>
+<td align="center">-L</td>
+<td align="center">设置本地端口转发</td>
+<td align="center"><code>ssh -L 9999:targetServer:80 user@remoteServer</code>所有发向本地9999端口的请求,都会经过remoteServer发往targetServer的80端口,相当于直接连上了80的端口</td>
+</tr>
+<tr>
+<td align="center">-m</td>
+<td align="center">指定校验数据完整性的算法(MAC)</td>
+<td align="center"><code>ssh -m hmac-sha1,hmac-md5 server.example.com</code></td>
+</tr>
+<tr>
+<td align="center">-o</td>
+<td align="center">参数用来指定一个配置命令,来覆盖配置文件设置</td>
+<td align="center"><code>ssh -o &quot;User sally&quot; server.example.com</code></td>
+</tr>
+<tr>
+<td align="center">-p</td>
+<td align="center">指定链接的服务器的端口</td>
+<td align="center"><code>ssh -p 2305 server.example.com</code></td>
+</tr>
+<tr>
+<td align="center">-q</td>
+<td align="center">安静模式,不输出任何警告</td>
+<td align="center"><code>ssh -q foo.com</code></td>
+</tr>
+<tr>
+<td align="center">-R</td>
+<td align="center">指定远程端口转发</td>
+<td align="center"><code>ssh -R 9999:targetServer:902 local</code>该命令需要在跳板服务器执行,指定本机计算机local监听自己的9999端口,所有发向这个端口的请求,都会转向targetServer的902端口</td>
+</tr>
+<tr>
+<td align="center">-t</td>
+<td align="center">在ssh直接运行远端命令时,提供一个交互shell</td>
+<td align="center"><code>ssh -t server.example.com emacs</code></td>
+</tr>
+<tr>
+<td align="center">-v</td>
+<td align="center">显示详细信息,可重复多次,表示详细程度</td>
+<td align="center"><code>ssh -vvv server.example.com</code></td>
+</tr>
+<tr>
+<td align="center">-V</td>
+<td align="center">显示客户端版本信息</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center">-X</td>
+<td align="center">表示打开X窗口转发</td>
+<td align="center"><code>ssh -X server.example.com</code></td>
+</tr>
+<tr>
+<td align="center">-1,-2,-4,-6</td>
+<td align="center">1表示SSH1协议,2表示SSH2协议,4表示IPv4协议(默认值),6表示Ipv6协议</td>
+<td align="center"></td>
+</tr>
+</tbody></table>
+<p>5.配置文件</p>
+<table>
+<thead>
+<tr>
+<th align="center">路径</th>
+<th align="center">作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">&#x2F;etc&#x2F;ssh&#x2F;ssh_config</td>
+<td align="center">全局配置文件</td>
+</tr>
+<tr>
+<td align="center">~&#x2F;.ssh&#x2F;config</td>
+<td align="center">用户个人的配置文件</td>
+</tr>
+<tr>
+<td align="center">~&#x2F;.ssh&#x2F;id_ecdsa</td>
+<td align="center">用户的ECDSA私钥</td>
+</tr>
+<tr>
+<td align="center">~&#x2F;.ssh&#x2F;id_ecdsa.pub</td>
+<td align="center">用户的ECDSA公钥</td>
+</tr>
+<tr>
+<td align="center">~&#x2F;.ssh&#x2F;rsa</td>
+<td align="center">用于SSH2的rsa私钥</td>
+</tr>
+<tr>
+<td align="center">~&#x2F;.ssh&#x2F;rsa.pub</td>
+<td align="center">用于SSH2的rsa公钥</td>
+</tr>
+<tr>
+<td align="center">~&#x2F;.ssh&#x2F;identity</td>
+<td align="center">用于SSH1的rsa私钥</td>
+</tr>
+<tr>
+<td align="center">~&#x2F;.ssh&#x2F;identity.pub</td>
+<td align="center">用于SSH1的rsa公钥</td>
+</tr>
+<tr>
+<td align="center">~&#x2F;.ssh&#x2F;known_hosts</td>
+<td align="center">包含SSH服务器的公钥指纹</td>
+</tr>
+</tbody></table>
+<p>配置文件示例:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs bash">Host *<br>	Port 2222<br>Host remoteserver<br>	HostName remote.example.com<br>	User nanbert<br>	Port 2112<br></code></pre></td></tr></table></figure>
+<p>常见配置命令:<br><code>AddressFamily &lt;option&gt;</code>option可以是inet,表示IPV4协议,也可以是inet6,表示IPV6协议<br><code>BindAddress 192.168.10.235</code>指定本机的IP地址(如果本机有多个Ip地址)<br><code>CheckHostIP &lt;yesOrNo&gt;</code>是否检查SSH的服务器IP地址是否跟公钥数据库吻合<br><code>Ciphers &lt;option&gt;</code>:指定加密算法<br><code>Compression &lt;yesOrNo&gt;</code>是否压缩传输信号<br><code>ConnectionAttempts &lt;num&gt;</code>客户端进行连接时,最大尝试次数<br><code>ConnectTimeout &lt;num&gt;</code>客户端进行连接时,服务器在指定秒数内没有回复,则中断连接尝试<br><code>DynamicForward &lt;portNum&gt;</code>指定动态转发端口<br><code>GlobalKnownHostsFile &lt;filePath&gt;</code>指定全局的公钥数据库文件的位置<br><code>Host &lt;serverName&gt;</code>指定连接的域名或IP地址,也可以是别名,支持通配符,后面所有配置都是针对该主机,直到遇到下一个Host<br><code>HostKeyAlgorithm &lt;options&gt;</code>指定密钥算法,优先级从高到低排列,以逗号分隔<br><code>HostName &lt;serverAddress&gt;</code>在Host命令使用别名的情况下用<br><code>IdentityFile &lt;fileName&gt;</code>指定私钥文件<br><code>LocalForward 2001 localhost:143</code>指定本地端口转发<br><code>LogLevel &lt;options&gt;</code>指定日志详细程度。如果设为<code>QUIET</code>,将不输出大部分的警告和提示<br><code>MACs &lt;options&gt;</code>指定数据校验算法,以逗号分隔<br><code>NumberOfPasswordPrompts &lt;num&gt;</code>输错密码最大尝试数<br><code>PasswordAuthentication &lt;yesOrNo&gt;</code>是否支持密码登录,这里只是客户端,需要服务器也有相同的设置<br><code>Port &lt;portNum&gt;</code>指定客户端链接的SSH服务器端口<br><code>PreferredAutentications publickey,hostbased,password</code>指定各种登录方法优先级<br><code>Protocol &lt;1,2&gt;</code>支持的SSH协议版本,可以用逗号分隔同时支持两个版本<br><code>PubKeyAuthentication &lt;yesOrNo&gt;</code>是否支持密钥登录,这里只是客户端设置,需要服务器相同的设置<br><code>RemoteForward 2001 server:143</code>指定远程端口转发<br><code>SendEnv &lt;variable&gt;</code>客户端向服务器发送环境变量名,多个环境变量之间用空格分隔,变量的值从当前环境拷贝<br><code>ServerAliveCountMax &lt;num&gt;</code>如果没有收到服务器的回应,客户端发送多少次keepalive信号,才断开连接,默认为3<br><code>ServerAliveInterval &lt;num&gt;</code>客户端建立连接后,如果在给定的数秒内,没有收到服务器发来的消息,客户端向服务器发送keepalive消息,如果不希望客户端发送,这一项设为0<br><code>StrictHostKeyChecking &lt;yesOrNo&gt;</code>yes表示严格检查,服务器公钥为未知或发生变化,则拒绝连接。no表示如果服务器公钥未知,则加入客户端公钥数据库,如果公钥发生变化,不改变客户端公钥数据库,输出一条警告,依然允许连接继续进行。ask(默认值)表示向用户询问是否继续<br><code>TCPKeepAlive &lt;yesOrNo&gt;</code>客户端是否定期向服务器发送keepalive信息<br><code>User &lt;userName&gt;</code>指定登录账户名<br><code>UserKnownHostsFile &lt;filePath&gt;</code>指定当前用户的服务器公钥指纹列表(known_hosts)的文件位置<br><code>VerifyHostKeyDNS &lt;yesOrNo&gt;</code>是否检查SSH服务器的DNS记录,确认公钥指纹是否与known_hosts文件保持一致<br>6.密钥<br><em>概念</em>:<br>密钥是一个非常大的数字,通过加密算法得到。对称加密只需要一个密钥,非对称加密需要成对使用,分为公钥和私钥。<br>SSH密钥登录采用非对称加密,每个永不通过自己的密钥登录。其中,私钥必须私密保存,不能泄露;公钥则公开,对外发送。它们的关系是,公钥和私钥是一一对应<br><em>过程</em>:<br>预备步骤,客户端通过<code>ssh-keygen</code>生产自己的公钥和私钥<br>第一步,手动将客户端的公钥放入远程服务器的指定位置<br>第二步,客户端向服务器发起SSH登录请求<br>第三步,服务器收到用户SSH登录的请求,发送一些随机数据给用户,要求用户证明自己的身份<br>第四步,客户端收到服务器发来的数据,私用私钥对数据进行签名,然后再发给服务器<br>第五步,服务器收到客户端发来的加密签名后,使用对应的公钥解密,然后跟原始数据比较。如果一致,就允许用户登录<br><em>ssh-key–生成密钥</em><br>该命令会生成一对密钥,私钥默认存在<del>&#x2F;.ssh&#x2F;id_rsa,公钥默认存在</del>&#x2F;.ssh&#x2F;id_rsa.pub</p>
+<table>
+<thead>
+<tr>
+<th align="center">选项</th>
+<th align="center">含义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">-b [num]</td>
+<td align="center">指定密钥的二进制位数。这个参数越大,密钥越不容易破解,但是加密解密的开销也会越大,一般至少应该是1024</td>
+</tr>
+<tr>
+<td align="center">-C “[string]”</td>
+<td align="center">可以为密钥文件指定新的注释,格式一般为<code>username@host</code></td>
+</tr>
+<tr>
+<td align="center">-f [filename]</td>
+<td align="center">参数指定生成的私钥文件。不指定的话,会在~&#x2F;.ssh文件夹下生成一对密钥</td>
+</tr>
+<tr>
+<td align="center">-F [hostname]</td>
+<td align="center">检查某个主机名是否在known_hosts文件里面</td>
+</tr>
+<tr>
+<td align="center">-N [secretword]</td>
+<td align="center">指定私钥的密码</td>
+</tr>
+<tr>
+<td align="center">-p[secretword]</td>
+<td align="center">重新指定私钥的密码</td>
+</tr>
+<tr>
+<td align="center">-R [hostname]</td>
+<td align="center">将指定的主机公钥移除出known_hosts文件</td>
+</tr>
+<tr>
+<td align="center">-t [algorithm]</td>
+<td align="center">指定加密算法,一般为dsa或rsa</td>
+</tr>
+</tbody></table>
+<p><em>手动上传公钥</em><br>把客户端生成的公钥复制粘贴到文件~&#x2F;.ssh&#x2F;authorized_keys中去,一个公钥占据一行<br><em>ssh-copy-id–自动上传公钥</em><br><code>ssh-copy-id -i key_file user@host</code> 自动上传公钥到服务器<br>公钥文件可以不指定路劲和.pub后缀,会自动在~&#x2F;.ssh目录下寻找<br>确保authorized_keys文件末尾为换行符,否则两个公钥连在一起,两个都会失效</p>
+<p><em>ssh-agent命令</em><br>私钥设置了密码后,每次使用都必须输入密码,连续使用scp命令时,这就很麻烦,ssh-agent命令就是为了解决这个问题而设计的,它让用户在整个bash对话中,只在第一次使用SSH命令是输入密码,然后将私钥保存在内存中<br>第一步,新建一次命令对话<br><code>ssh-agent bash(zhs、fish)</code><br>第二步,添加私钥<br><code>ssh-add [filename]</code>可以不指定私钥名称,使用默认文件~&#x2F;.ssh&#x2F;id_rsa<br>第三步登录远程服务器<br><code>ssh remoteHost</code><br>最后,如果要退出ssh-agent,可以按Ctrl+d,也可以用如下命令<br><code>ssh-agent -k</code><br><em>ssh-add命令</em><br>ssh-add命令用来将私钥加入ssh-agent</p>
+<table>
+<thead>
+<tr>
+<th align="center">选项</th>
+<th align="center">含义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">-d</td>
+<td align="center">从内存中删除指定的私钥</td>
+</tr>
+<tr>
+<td align="center">-D</td>
+<td align="center">从内存中删除所有已经添加的私钥</td>
+</tr>
+<tr>
+<td align="center">-l</td>
+<td align="center">列出所有已经添加的私钥</td>
+</tr>
+</tbody></table>
+<p><font size=6><strong>服务器端sshd</strong></font><br><strong>1.sshd配置文件</strong><br><code>/etc/ssh/sshd_config</code>配置文件<br><code>/etc/ssh/ssh_host_ecdsa_key</code>ECDSA私钥<br><code>/etc/ssh/ssh_host_ecdsa_key.pub</code>ECDSA公钥<br><code>/etc/ssh/ssh_host_key</code>用于SSH1协议版本的RSA私钥<br><code>/etc/ssh/ssh_host_key.pub</code>用于SSH1协议版本的RSA公钥<br><code>/etc/ssh/ssh_host_rsa_key</code>用于SSH2协议版本的RSA私钥<br><code>/etc/ssh/ssh_host_rsa_key.pub</code>用于SSH2协议版本的RSA公钥<br><code>/etc/pam.d/sshd</code>PAM配置文件<br><font color=#FF0000>重装会使这些文件失效,可以先备份</font><br><strong>sshd配置项</strong></p>
+<table>
+<thead>
+<tr>
+<th align="center">配置项</th>
+<th align="center">含义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">AcceptEnv [variables…]</td>
+<td align="center">允许接受客户端通过SendEnv命令发来的哪些环境变量,变量名用空格分隔</td>
+</tr>
+<tr>
+<td align="center">AllowGroups [groupNames…]</td>
+<td align="center">指定允许登录的用户组,多个组之间用空格隔开,若不用该项,则所有组都可以用</td>
+</tr>
+<tr>
+<td align="center">AllowUsers [userNames…]</td>
+<td align="center">指定允许登录的用户,用户名之间用空格隔开,支持通配符</td>
+</tr>
+<tr>
+<td align="center">AllowTcpForwarding [options]</td>
+<td align="center">默认值为yes,允许端口转发,local只允许本地端口转发,remote表示只允许远程端口转发</td>
+</tr>
+<tr>
+<td align="center">AuthorizedKeysFile [directory]</td>
+<td align="center">指定存储用户公钥的目录,默认是<code>~/.ssh/authorized_keys</code></td>
+</tr>
+<tr>
+<td align="center">Banner [file]</td>
+<td align="center">指定用户登录后,sshd向其展示的信息文件,默认不展示任何内容</td>
+</tr>
+<tr>
+<td align="center">ChallengeResponseAuthentication [yesOrNo]</td>
+<td align="center">指定是否用”键盘交互”身份验证方案,默认值为yes,如果完全禁用基于密码的验证,PasswordAuthentication也设为no</td>
+</tr>
+<tr>
+<td align="center">Ciphers [algorithms]</td>
+<td align="center">指定sshd可以接受的加密算法,多个算法之间使用逗号分割</td>
+</tr>
+<tr>
+<td align="center">ClientAliveCountMax [num]</td>
+<td align="center">指定建立连接后,客户端失去响应时,服务器尝试连接的次数</td>
+</tr>
+<tr>
+<td align="center">ClientAliveInterval [num]</td>
+<td align="center">允许客户端发呆的时间,单位为秒,如果超过这时间,连接将会关闭</td>
+</tr>
+<tr>
+<td align="center">Compression [yesOrNo]</td>
+<td align="center">Compression指定客户端与服务器之间的数据传输是否为压缩,默认为yes</td>
+</tr>
+<tr>
+<td align="center">DenyGroups [groupNames…]</td>
+<td align="center">指定不允许登录的用户组,组间空格分开</td>
+</tr>
+<tr>
+<td align="center">DenyUsers [userNames…]</td>
+<td align="center">指定不允许登录的用户,空格分开不同用户</td>
+</tr>
+<tr>
+<td align="center">FascistLogging [yesOrNo]</td>
+<td align="center">SSH1版本专用,指定日志是否输出全部Debug信息</td>
+</tr>
+<tr>
+<td align="center">HostKey [filePath]</td>
+<td align="center">指定服务器密钥的文件路径</td>
+</tr>
+<tr>
+<td align="center">KeyRegenerationInterval [num]</td>
+<td align="center">指定SSH1版本的密钥重新生成的时间间隔,单位为秒,默认为3600</td>
+</tr>
+<tr>
+<td align="center">ListenAddress [ipAddress]</td>
+<td align="center">指定sshd监听本机的IP地址,即sshd启用的IP地址,默认是0.0.0.0,表示在本机所有网络接口启用。可以改成只在某个网络接口启用,可以多次使用该配置项,来监听多个ip地址</td>
+</tr>
+<tr>
+<td align="center">LoginGraceTime [num]</td>
+<td align="center">指定允许客户端登录时发呆的最长时间,超过该时间就断开,0表示没有限制</td>
+</tr>
+<tr>
+<td align="center">LogLevel [options]</td>
+<td align="center">指定日志的详细程度,可能的值有:QUIET,FATAL,ERROR,INFO,VERNBOSE,DEBUG,DEBUG1,DEBUG2,DEBUG3,默认为INFO</td>
+</tr>
+<tr>
+<td align="center">MACs [algorithms]</td>
+<td align="center">指定sshd可以接受的数据校验算法(MACs hmac-sha1),多个算法之间使用逗号分隔</td>
+</tr>
+<tr>
+<td align="center">MaxAuthTries [num]</td>
+<td align="center">指定SSH登录允许的最大密码尝试数</td>
+</tr>
+<tr>
+<td align="center">MaxStartups [num]</td>
+<td align="center">指定允许同时并发的SSH链接数量,0表示没有限制,也可以是A:B:C形式,如10:50:20,表示如果达到10个并发链接,后面的连接有50%的概率被拒绝,如果达到20个并发连接,则后面的100%拒绝</td>
+</tr>
+<tr>
+<td align="center">PasswordAuthentication [yesOrNo]</td>
+<td align="center">是否允许密码登录,默认值为yes</td>
+</tr>
+<tr>
+<td align="center">PermitEmptyPasswords [yesOrNo]</td>
+<td align="center">指定是否允许空密码登录,默认为yes</td>
+</tr>
+<tr>
+<td align="center">PermitRootLogin [yesOrNo]</td>
+<td align="center">是否允许根用户登录,默认为yes,也可以设为prohibit-password,表示允许密钥登录root,但禁止密码登录</td>
+</tr>
+<tr>
+<td align="center">PermitUserEnvironment [yesOrNo]</td>
+<td align="center">是否允许sshd加载客户端的<del>&#x2F;.ssh&#x2F;environment文件和</del>&#x2F;.ssh&#x2F;authorized_keys文件里面的environment&#x3D;options 环境变量设置.默认值为no</td>
+</tr>
+<tr>
+<td align="center">Port [num]</td>
+<td align="center">指定sshd监听的端口,默认22,可以多次设置,监听多个端口</td>
+</tr>
+<tr>
+<td align="center">PrintMoth [yesOrNo]</td>
+<td align="center">指定用户登录后,是否向其展示系统的motd的信息文件&#x2F;etc&#x2F;motd,默认为yes</td>
+</tr>
+<tr>
+<td align="center">Protocol [options]</td>
+<td align="center">1表示使用SSH1协议,’1,2’表示支持两个版本的协议</td>
+</tr>
+<tr>
+<td align="center">PubKeyAuthentication [yesOrNo]</td>
+<td align="center">指定是否允许公钥登录,默认为yes</td>
+</tr>
+<tr>
+<td align="center">QuietMode [yesOrNo]</td>
+<td align="center">SSH1专用,yes表示日志只输出致命的错误信息</td>
+</tr>
+<tr>
+<td align="center">RSAAuthentication [yesOrNo]</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center">ServerKeyBits [num]</td>
+<td align="center">指定SSH1版本的密钥重新生成时的位数,默认为767</td>
+</tr>
+<tr>
+<td align="center">StrictModes [yesOrNo]</td>
+<td align="center">指定sshd是否检查用户的一些重要文件和目录权限,即对于用户的SSH配置文件,密钥文件和所在目录,SSH要求拥有者必须是根用户或用户本人,其他人的写权限必须关闭</td>
+</tr>
+<tr>
+<td align="center">SyslogFacility [options]</td>
+<td align="center">指定Syslog如何处理sshd日志,默认是AUTH</td>
+</tr>
+<tr>
+<td align="center">TCPKeepAlive [unknown]</td>
+<td align="center">指定打开sshd跟客户端tcp链接的keepalive参数</td>
+</tr>
+<tr>
+<td align="center">UseDNS [yesOrNo]</td>
+<td align="center">指定用户SSH登录一个域名时,服务器是否使用DNS,确认该域名对应的IP地址包含本机,建议关闭</td>
+</tr>
+<tr>
+<td align="center">UserLogin [yesOrNo]</td>
+<td align="center">指定用户认证内部是否使用&#x2F;user&#x2F;bin&#x2F;login代替SSH工具,默认为no</td>
+</tr>
+<tr>
+<td align="center">UserPrivilegeSeparation</td>
+<td align="center">指定用户认证通过后,使用另一个子线程处理用户权限相关的操作,这样利于提高安全性</td>
+</tr>
+<tr>
+<td align="center">VerboseMode</td>
+<td align="center">SSH2版本专用,指定日志输出详细的Debug信息</td>
+</tr>
+<tr>
+<td align="center">X11Forwarding</td>
+<td align="center">指定是否打开X window的转发,默认值为no</td>
+</tr>
+<tr>
+<td align="center"><strong>sshd命令行配置项</strong></td>
+<td align="center"></td>
+</tr>
+</tbody></table>
+<table>
+<thead>
+<tr>
+<th align="center">参数</th>
+<th align="center">含义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">-d</td>
+<td align="center">用于显示debug信息</td>
+</tr>
+<tr>
+<td align="center">-D</td>
+<td align="center">指定sshd不作为后台守护进程运行</td>
+</tr>
+<tr>
+<td align="center">-e</td>
+<td align="center">将sshd写入系统日志syslog的内容导向标准错误</td>
+</tr>
+<tr>
+<td align="center">-f [filePath]</td>
+<td align="center">指定配置文件位置</td>
+</tr>
+<tr>
+<td align="center">-h [filePath]</td>
+<td align="center">指定密钥</td>
+</tr>
+<tr>
+<td align="center">-o [Key Value]</td>
+<td align="center">指定配置文件的一个配置项和对应的值,如:sshd -o “Port 2034”</td>
+</tr>
+<tr>
+<td align="center">-p [num]</td>
+<td align="center">指定sshd的服务端口</td>
+</tr>
+<tr>
+<td align="center">-t</td>
+<td align="center">检查配置文件语法是否正确</td>
+</tr>
+</tbody></table>
+<p><font size=6><strong>scp命令</strong></font><br><strong>简介</strong><br>它的底层是SSH协议,默认端口22,相当于先用ssh命令登陆远程主机,然后在执行拷贝,可以用于两个远程系统之间的复制</p>
+<table>
+<thead>
+<tr>
+<th align="center">参数</th>
+<th align="center">含义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">-c</td>
+<td align="center">指定传输的加密算法,如blowfish</td>
+</tr>
+<tr>
+<td align="center">-C</td>
+<td align="center">传输时压缩文件</td>
+</tr>
+<tr>
+<td align="center">-F</td>
+<td align="center">用来指定ssh_config文件,供ssh链接使用</td>
+</tr>
+<tr>
+<td align="center">-i</td>
+<td align="center">用来指定密钥的文件</td>
+</tr>
+<tr>
+<td align="center">-l</td>
+<td align="center">用来限制传输数据的带宽速率,单位是kb&#x2F;s</td>
+</tr>
+<tr>
+<td align="center">-p</td>
+<td align="center">用来保留修改时间,访问时间,文件状态等原始文件的信息</td>
+</tr>
+<tr>
+<td align="center">-P</td>
+<td align="center">用来指定远程主机的SSH端口,默认用22</td>
+</tr>
+<tr>
+<td align="center">-q</td>
+<td align="center">用来关闭显示拷贝的进度条</td>
+</tr>
+<tr>
+<td align="center">-r</td>
+<td align="center">递归复制</td>
+</tr>
+<tr>
+<td align="center">-v</td>
+<td align="center">显示详细的输出</td>
+</tr>
+</tbody></table>
+<p><font size=6><strong>sftp命令</strong></font><br><strong>简介</strong><br>sftp是ssh提供的一个客户端应用程序,主要用来安全地访问FTP。因为FTP是不加密协议,很不安全,sftp相当于将FTP放入SSH:<br><code>sftp username@hostname</code><br>进入sftp后,使用那些命令,如get获取远程文件,put上传文件等<br><font size=6><strong>端口转发</strong></font><br>(待建)可见<a target="_blank" rel="noopener" href="https://wangdoc.com/ssh/port-forwarding.html">https://wangdoc.com/ssh/port-forwarding.html</a><br><font size=6><strong>证书登录</strong></font><br>(待建)可见<a target="_blank" rel="noopener" href="https://wangdoc.com/ssh/ca.html">https://wangdoc.com/ssh/ca.html</a></p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>openSSH</div>
+      <div>http://example.com/2020/12/21/openSSH/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Nanbert</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2020年12月21日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2020/12/31/Arch_Linux%E9%97%AE%E9%A2%98%E8%A7%A3%E5%86%B3%E7%BB%8F%E9%AA%8C/" title="Arch Linux问题解决">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">Arch Linux问题解决</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2020/12/19/gcc%E7%BC%96%E8%AF%91%E5%99%A8%E5%8F%8A%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86/" title="gcc编译器及编译原理">
+                        <span class="hidden-mobile">gcc编译器及编译原理</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

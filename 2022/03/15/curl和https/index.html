@@ -1,0 +1,1243 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/images/favicon.png">
+  <link rel="icon" href="/images/favicon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Nanbert">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="HTTP HTTP&#x2F;2和HTTP&#x2F;3的头部通常会被curl压缩发送，但是-v选项总是把它们解压成HTTP&#x2F;1.1的样子 HTTP默认端口：80，HTTPS默认端口：443 HTTP有4种方法：GET，POST，HEAD，PUT,OPTIONS curl默认的http版本为HTTP&#x2F;1.1,默认的https版本为HTTP&#x2F;2  返回码 1XX：瞬态响">
+<meta property="og:type" content="article">
+<meta property="og:title" content="curl和https">
+<meta property="og:url" content="http://example.com/2022/03/15/curl%E5%92%8Chttps/index.html">
+<meta property="og:site_name" content="Nanbert&#39;s blog">
+<meta property="og:description" content="HTTP HTTP&#x2F;2和HTTP&#x2F;3的头部通常会被curl压缩发送，但是-v选项总是把它们解压成HTTP&#x2F;1.1的样子 HTTP默认端口：80，HTTPS默认端口：443 HTTP有4种方法：GET，POST，HEAD，PUT,OPTIONS curl默认的http版本为HTTP&#x2F;1.1,默认的https版本为HTTP&#x2F;2  返回码 1XX：瞬态响">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/images/curl.png">
+<meta property="article:published_time" content="2022-03-15T12:35:58.000Z">
+<meta property="article:modified_time" content="2023-12-12T06:06:27.738Z">
+<meta property="article:author" content="Nanbert">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://example.com/images/curl.png">
+  
+  
+  
+  <title>curl和https - Nanbert&#39;s blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.6","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/images/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.0.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Nanbert</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/images/curl.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="curl和https"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2022-03-15 20:35" pubdate>
+          2022年3月15日 晚上
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          6.7k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          56 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">curl和https</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h2 id="HTTP"><a href="#HTTP" class="headerlink" title="HTTP"></a>HTTP</h2><ul>
+<li>HTTP&#x2F;2和HTTP&#x2F;3的头部通常会被curl压缩发送，但是-v选项总是把它们解压成HTTP&#x2F;1.1的样子</li>
+<li>HTTP默认端口：80，HTTPS默认端口：443</li>
+<li>HTTP有4种方法：GET，POST，HEAD，PUT,OPTIONS</li>
+<li>curl默认的http版本为HTTP&#x2F;1.1,默认的https版本为HTTP&#x2F;2</li>
+</ul>
+<h3 id="返回码"><a href="#返回码" class="headerlink" title="返回码"></a>返回码</h3><ul>
+<li>1XX：瞬态响应，更多内容即将发生</li>
+<li>2XX：成功</li>
+<li>3XX：重定向<ul>
+<li>301:永久重定向，当一个url第一次返回该值时，重定向的内容将被浏览器缓存，下次该url不起作用，直接访问重定向内容(浏览器总是使用GET，即使第一次访问时用的是POST),curl永远不会缓存</li>
+<li>302:暂时重定向，不会缓存,重定向总是使用GET</li>
+<li>303:同302,但是更接近于间接访问的概念</li>
+<li>307:暂时重定向，不会缓存，区别在于它会保持第一次访问的方法</li>
+<li>308:永久重定向，区别在于它会保持第一次访问的方法</li>
+</ul>
+</li>
+<li>4XX：服务器无法提供或不会提供要求的内容<ul>
+<li>401:服务器需要一个认证，通常包含头<code>WWW-Authenticate:</code>,包含了服务器支持的认证方法(Basic)</li>
+<li>407:代理服务器需要一个认证，通常包含头<code>Proxy-Authenticate:</code>,包含了代理支持的认证方法</li>
+</ul>
+</li>
+<li>5XX：服务器出现问题</li>
+</ul>
+<h3 id="GET"><a href="#GET" class="headerlink" title="GET"></a>GET</h3><p>通过URL来形成HTTP头<br><img src="/images/httpRequest.png" srcset="/images/loading.gif" lazyload><br><strong>request例子</strong>：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs bash">GET / HTTP/1.1<br>User-agent: curl/2000<br>Host: example.com<br></code></pre></td></tr></table></figure>
+<p><strong>response例子</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs bash">HTTP/1.1 200 OK<br>Server: example-server/1.1<br>Content-Length: 5<br>Content-Type: plain/text<br><br>hello<br></code></pre></td></tr></table></figure>
+<h3 id="Transfer-Encoding-chunked"><a href="#Transfer-Encoding-chunked" class="headerlink" title="Transfer-Encoding: chunked"></a>Transfer-Encoding: chunked</h3><p>有时response可能没有Content-Length，而是<strong>Transfer-Encoding: chunked</strong>，这只有HTTP1.1服务才有，它表示内容是一系列的块，每块开头有显示该块的十六进制大小，结束时，也会有表示结束的0块。curl会自动解码</p>
+<h3 id="Content-Encoding-gzip"><a href="#Content-Encoding-gzip" class="headerlink" title="Content-Encoding: gzip"></a>Content-Encoding: gzip</h3><p>body是经过压缩的,curl会自动解压</p>
+<h3 id="Expect-100-continue"><a href="#Expect-100-continue" class="headerlink" title="Expect:100-continue"></a>Expect:100-continue</h3><p>很少有服务器支持这一特性，且HTTP&#x2F;2及以上支持在没关闭连接的情况下停止持续传输,这使得该特性无意义。(该特性到底是啥不懂)post时，curl会默认</p>
+<h3 id="透明压缩"><a href="#透明压缩" class="headerlink" title="透明压缩"></a>透明压缩</h3><p>过于老式，不常用，可以使用–tr-encoding来使用，前提是服务器支持</p>
+<h3 id="Etag"><a href="#Etag" class="headerlink" title="Etag"></a>Etag</h3><p>服务器通过<strong>Etag</strong>来标识一个资源的版本，这样便于客户判断是否资源更新</p>
+<h3 id="Multipart-formposts"><a href="#Multipart-formposts" class="headerlink" title="Multipart formposts"></a>Multipart formposts</h3><p>这对应html中form的enctype&#x3D;multiparg&#x2F;form-data,可以通过-F选项指定form:<br><code>curl -F person=anonymous -F secret=@file.txt http://example.com/submit.cgi</code><br><strong>Header内容：</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs bash">POST /submit.cgi HTTP/1.1<br>Host: example.com<br>User-Agent: curl/7.46.0<br>Accept: */*<br>Content-Length: 313<br>Expect: 100-<span class="hljs-built_in">continue</span><br>Content-Type: multipart/form-data; boundary=------------------------d74496d66958873e<br></code></pre></td></tr></table></figure>
+<p><strong>Body内容：</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs bash">--------------------------d74496d66958873e<br>Content-Disposition: form-data; name=<span class="hljs-string">&quot;person&quot;</span><br><br>anonymous<br>--------------------------d74496d66958873e<br>Content-Disposition: form-data; name=<span class="hljs-string">&quot;secret&quot;</span>; filename=<span class="hljs-string">&quot;file.txt&quot;</span><br>Content-Type: text/plain<br><br>contents of the file<br>--------------------------d74496d66958873e--<br></code></pre></td></tr></table></figure>
+<p>html的form表单中enctype默认为<code>application/x-www-form-urlencoded</code>,此时只需要-d选项即可</p>
+<h3 id="重定向"><a href="#重定向" class="headerlink" title="重定向"></a>重定向</h3><ul>
+<li>有时服务器不会直接返回内容，而是告诉你该资源所在位置，此时响应中包含关键字<code>Location:</code></li>
+<li>有时重定向会指向不同主机，此时用户名密码或证书等可能无法使用，无论如何信任的话，可以使用–location-trusted</li>
+<li>浏览器支持更多的重定向方式，curl不支持他们，比如html里meta元素，javascript的动态重定向</li>
+</ul>
+<h3 id="Set-Cookie"><a href="#Set-Cookie" class="headerlink" title="Set-Cookie"></a>Set-Cookie</h3><p>cookie设置的一个头</p>
+<h3 id="Upgrade"><a href="#Upgrade" class="headerlink" title="Upgrade"></a>Upgrade</h3><p>强制升级http版本的头，过老的服务器可能会出错</p>
+<h3 id="Alt-Svc"><a href="#Alt-Svc" class="headerlink" title="Alt-Svc"></a>Alt-Svc</h3><p>响应体中的头，告诉客户还有哪些主机可以获得同样资源,只能在https中使用，并且这是使用http3的唯一方法（截至2019）</p>
+<h3 id="http3"><a href="#http3" class="headerlink" title="http3"></a>http3</h3><p>http3是实验版本，是为了适应QUIC协议（一个基于UDP的可靠安全的协议），只能通过https,curl没有针对http3连结失败时作自动降级处理，而是直接返回错误</p>
+<h2 id="代理-就是web缓存服务器"><a href="#代理-就是web缓存服务器" class="headerlink" title="代理(就是web缓存服务器)"></a>代理(就是web缓存服务器)</h2><ul>
+<li>HTTP代理为了安全，使用<strong>CONNECT</strong>方法</li>
+<li>HTTP代理可以代理FTP,此时curl将认为就是HTTP,FTP所有特性无效</li>
+<li>MITM代理可以监控加密的流量</li>
+<li>代理认证失败，拒绝代理，会返回407</li>
+<li>HTTPS代理的默认端口为443</li>
+<li>curl中与代理相关的环境变量<ul>
+<li>[scheme]_proxy:指定某个协议的默认代理,等价于-x选项,除了http_proxy只能全部小写(CGI的原因),其他形式可以用全部大写<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs bash">http_proxy=http://proxy.example.com:80<br>curl -v www.example.com<br></code></pre></td></tr></table></figure></li>
+<li>ALL_PROXY:所有url都走该代理</li>
+<li>NO_PROXY:某些url不走该代理，用<code>,</code>分隔多个url，等效于–noproxy</li>
+</ul>
+</li>
+</ul>
+<h2 id="FTP"><a href="#FTP" class="headerlink" title="FTP"></a>FTP</h2><ul>
+<li>FTP协议使用两个tcp连接，一个用来建立认证，并进入到正确的文件夹内(控制连接)，一个用来传输文件，curl默认是被动连接（即客户端发送PASV或EPSV命令给服务器,服务器新开个端口，curl用该端口连接传输）,主动连接见-P，被动连接见–ftp-pasv</li>
+<li>curl传输文件时有三种方法(见–ftp-method)：</li>
+<li>FTPS的默认端口是990,可以通过<code>scheme:ftps://</code>指定，抑或使用<code>--ssl,--ssl-reqd</code></li>
+<li>FTPS无法推广的原因是，FTP的第二个连接是新建的tcp连接，防火墙和其他网络工具检查辨别是FTP传输并采取一些规则或设置应用到该连接,但如果加密，防火墙等就无法判断，并无法应用一些规则</li>
+</ul>
+<h2 id="URLs-URIs"><a href="#URLs-URIs" class="headerlink" title="URLs(URIs)"></a>URLs(URIs)</h2><p>需要注意的是现代浏览器的地址栏里支持IRIs,一个URLs的超集(更强大，支持空白字符等等)</p>
+<h3 id="Scheme"><a href="#Scheme" class="headerlink" title="Scheme"></a>Scheme</h3><p>scheme就是分隔符前面的内容,是协议吗？不可以包含任何空格</p>
+<ul>
+<li>分隔符:<code>://</code>curl只支持双斜杠的，有标准是单斜杠的</li>
+<li>curl会自动纠错一些scheme格式以及自动推测(通过选项–proto-default设置)</li>
+</ul>
+<h3 id="Name-and-password-非主流"><a href="#Name-and-password-非主流" class="headerlink" title="Name and password(非主流)"></a>Name and password(非主流)</h3><p>scheme及分隔符之后可能跟着用户名和密码,不过这风险很大,正慢慢淘汰,同时你也可以通过选项等方式来指定。一般格式如下：<br><code>curl ftp://user:password@example.com/</code></p>
+<h3 id="host"><a href="#host" class="headerlink" title="host"></a>host</h3><p>host就是主机，可以是数字地址本身或简单的域名</p>
+<ul>
+<li>ipv4:<code>curl http://127.0.0.1/</code></li>
+<li>ipv6:<code>curl http://[::1]/</code></li>
+</ul>
+<h3 id="port-number"><a href="#port-number" class="headerlink" title="port number"></a>port number</h3><p>如果端口号没指明，那么就会使用各个协议的默认端口。<br>通常在主机名后指明,用冒号和数字。为十进制数范围在[0-65535]</p>
+<ul>
+<li>ipv4:<code>curl http://example.com:8080/</code></li>
+<li>ipv6:<code>curl http://[fdea::1]:8080/</code></li>
+</ul>
+<h3 id="path"><a href="#path" class="headerlink" title="path"></a>path</h3><p>每个url包含路径,如果没指明则是根目录<code>/</code>,如下是等价的<br><code>https://example.com</code>&#x3D;&#x3D;&gt;<code>https://example.com/</code></p>
+<h3 id="FTP-type-FTP特有很少用的特性"><a href="#FTP-type-FTP特有很少用的特性" class="headerlink" title="FTP type(FTP特有很少用的特性)"></a>FTP type(FTP特有很少用的特性)</h3><p>该特性可以让你指明文件类型,指定不同的类型ftp协议相应的用不同传输,curl默认以二进制格式传递FTP协议</p>
+<ul>
+<li>A:指明传输类型为ASCII<br><code>curl &quot;ftp://example.com/foo;type=A&quot;</code></li>
+<li>I:指明传输类型为二进制<br><code>curl &quot;ftp://example.com/foo;type=I&quot;</code></li>
+<li>D:指明传输类型为目录(此时不要以斜杠结尾)<br><code>curl &quot;ftp://example.com/foo;type=D&quot;</code></li>
+</ul>
+<h3 id="Fragment"><a href="#Fragment" class="headerlink" title="Fragment"></a>Fragment</h3><p>由<code>#</code>标识</p>
+<ul>
+<li>URLs提供fragment，但curl传递时，会忽略它,(就是浏览器中的定位,跟网页屏幕位置有关)</li>
+<li>有时<code>#</code>处于路径中,为了方便你可用<code>%23</code>来代替<code>#</code><br><code>https://www.example.com/info.html#the-plot</code>&#x3D;&#x3D;&gt;<code>curl https://www.example.com/info.html%23the-plot</code></li>
+</ul>
+<h3 id="curl与URLs"><a href="#curl与URLs" class="headerlink" title="curl与URLs"></a>curl与URLs</h3><p>curl支持许多选项，不是可选项内容的都是URLs，可以支持多个URLs,从左到右一个个解析</p>
+<ul>
+<li>curl总是返回最后一个URL的错误代码(可以用–fail-early改变),</li>
+<li>curl的选项总是应用所有URLs(当然存在例外(-o、-O)),要想应用不同的URL不同的option,可以使用<code>--next、-:</code></li>
+<li>指定多个URLs,可以节省时间(如果多个URLs有相同主机，TCP将会一直保持链接)</li>
+<li>默认是串行,可以指定并行(-Z),并行时的进度条和串行时有区别，该进度条是所有当前运行的并行任务的实时情况</li>
+</ul>
+<h4 id="globbing"><a href="#globbing" class="headerlink" title="globbing"></a>globbing</h4><p>有时想传递同一主机下的一系列资源，可以用<code>&#123;&#125;</code>和<code>[]</code>来指定，处于它们之间的内容称为[globbing],并且他们可以混用，此时为防止shell的副作用，应该用引号括起来URL，</p>
+<ul>
+<li><code>[]</code><ul>
+<li><code>curl -O &quot;http://example.com/[1-100].png&quot;</code></li>
+<li><code>curl -O &quot;http://example.com/[001-100].png&quot;</code>支持前导0</li>
+<li><code>curl -O &quot;http://example.com/[001-100:2].png&quot;</code>取奇数</li>
+<li><code>curl -O &quot;http://example.com/[a-z].png&quot;</code>支持字母</li>
+</ul>
+</li>
+<li><code>&#123;&#125;</code><ul>
+<li><code>curl -O &quot;http://example.com/&#123;one,two,three,alpha,beta&#125;.html&quot;</code></li>
+</ul>
+</li>
+<li>-o选项里面可以通过<code>#[num]</code>来代表globbing内容,num从1开始编号<ul>
+<li><code>curl &quot;http://&#123;one,two&#125;.example.com&quot; -o &quot;file_#1.txt&quot;</code></li>
+<li><code>curl &quot;http://&#123;site,host&#125;.host[1-5].example.com&quot; -o &quot;subdir/#1_#2&quot;</code><br>globbing有时还可以用于-T选项，上传多个文件:<br><code>curl -T &#39;image[1-99].jpg&#39; ftp://ftp.example.com/upload/</code></li>
+</ul>
+</li>
+</ul>
+<h2 id="curl"><a href="#curl" class="headerlink" title="curl"></a>curl</h2><h3 id="配置文件curlrc"><a href="#配置文件curlrc" class="headerlink" title="配置文件curlrc"></a>配置文件curlrc</h3><p>按以下优先级读取文件：</p>
+<ol>
+<li>“$CURL_HOME&#x2F;.curlrc”</li>
+<li>“$XDG_CONFIG_HOME&#x2F;.curlrc”</li>
+<li>“$HOME&#x2F;.curlrc”</li>
+</ol>
+<h2 id="选项"><a href="#选项" class="headerlink" title="选项"></a>选项</h2><h3 id="A-–user-agent"><a href="#A-–user-agent" class="headerlink" title="-A&#x2F;–user-agent"></a>-A&#x2F;–user-agent</h3><p>指明<code>User-Agent:</code>的值</p>
+<h3 id="–alt-svc-cacheFile"><a href="#–alt-svc-cacheFile" class="headerlink" title="–alt-svc [cacheFile]"></a>–alt-svc [cacheFile]</h3><p>会尝试cacheFile定义中的可获得同样资源的主机地址，如果server响应并更新了<code>Alt-Svc:</code>,则也会自动更新到cacheFile中。</p>
+<h3 id="–anyauth"><a href="#–anyauth" class="headerlink" title="–anyauth"></a>–anyauth</h3><p>curl首先不使用认证，如果服务器需要，curl将会尝试使用认证</p>
+<h3 id="B"><a href="#B" class="headerlink" title="-B"></a>-B</h3><p>以二进制形式传输，curl默认就是二进制</p>
+<h3 id="b-cookiesFile"><a href="#b-cookiesFile" class="headerlink" title="-b [cookiesFile]"></a>-b [cookiesFile]</h3><p>从文件中读取cookie，-c选项是写cookie</p>
+<h3 id="–basic"><a href="#–basic" class="headerlink" title="–basic"></a>–basic</h3><p>使用Basic认证方法，默认的认证方法</p>
+<h3 id="c-cookieFile"><a href="#c-cookieFile" class="headerlink" title="-c [cookieFile]"></a>-c [cookieFile]</h3><p>写入cookie到一个文件中</p>
+<h3 id="C-–continue-at-num"><a href="#C-–continue-at-num" class="headerlink" title="-C&#x2F;–continue-at [num&#x2F;-]"></a>-C&#x2F;–continue-at [num&#x2F;-]</h3><p>指明从num byte offset开始继续下载或<code>-</code>curl根据已有的下载文件确定从哪开始继续下载。<br><strong>例1</strong>:<code>curl --continue-at 100 ftp://example.com/bigfile</code><br><strong>例2</strong>:<code>curl --continue-at - http://example.com/bigfile -O</code></p>
+<h3 id="–cacert-path"><a href="#–cacert-path" class="headerlink" title="–cacert [path]"></a>–cacert [path]</h3><p>设置CA证书路径</p>
+<h3 id="–cert-file-passwd"><a href="#–cert-file-passwd" class="headerlink" title="–cert [file:passwd]"></a>–cert [file:passwd]</h3><p>TLS指定客户端的证书文件,待学习相关知识</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs bash">curl --cert mycert:mypassword https://example.com<br>curl --cert mycert:mypassword --key mykey https://example.com<br>curl --cert mycert:mypassword --cert-type PEM \<br>     --key mykey --key-type PEM https://example.com<br></code></pre></td></tr></table></figure>
+<h3 id="–cert-type"><a href="#–cert-type" class="headerlink" title="–cert-type"></a>–cert-type</h3><p>见–cert例子</p>
+<h3 id="–cert-status"><a href="#–cert-status" class="headerlink" title="–cert-status"></a>–cert-status</h3><p>这个TLS特性为OCSP stapling,比较新，目前仅有openssl,gnutls,nss支持，一般不使用</p>
+<h3 id="–ciphers"><a href="#–ciphers" class="headerlink" title="–ciphers"></a>–ciphers</h3><p>TLS中ciphers,除非你知道你在干啥，否则慎用。</p>
+<h3 id="–connect-to-source-name-source-port-destination-name-destination-port"><a href="#–connect-to-source-name-source-port-destination-name-destination-port" class="headerlink" title="–connect-to [source name:source port:destination name:destination port]"></a>–connect-to [source name:source port:destination name:destination port]</h3><p>有时负载均衡，一个host name其实由多个服务提供，有时你只想测试其中一个服务，可以用此选项，如下：<br><code>curl --connect-to www.example.com:80:load1.example.com:80 http://www.example.com</code></p>
+<h3 id="–connect-timeout-num"><a href="#–connect-timeout-num" class="headerlink" title="–connect-timeout [num]"></a>–connect-timeout [num]</h3><p>指定tcp连接多长时间没反应算失败，单位秒，可以给出float类型数字</p>
+<h3 id="–compressed"><a href="#–compressed" class="headerlink" title="–compressed"></a>–compressed</h3><p>http&#x2F;https,请求服务器提供压缩版本的内容，curl会在数据到达后自动解压，这只是加快传输速度，注意不能和另一个–tr-encoding混用，因为两者采用不同压缩</p>
+<h3 id="d-–data-string-or-num"><a href="#d-–data-string-or-num" class="headerlink" title="-d&#x2F;–data [string or num]"></a>-d&#x2F;–data [string or num]</h3><p>发送的数据,simple POST,一下两种方式等价</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs bash">curl -d <span class="hljs-string">&#x27;name=admin&amp;shoesize=12&#x27;</span> http://example.com/<br>curl -d name=admin -d shoesize=12 http://example.com/<br><span class="hljs-comment">#从某个文件读取</span><br>curl -d @filename http://example.com<br></code></pre></td></tr></table></figure>
+<p>从文件中读取时，会去除回车和换行，如果不想这样见–data-binary</p>
+<h3 id="–data-binary"><a href="#–data-binary" class="headerlink" title="–data-binary"></a>–data-binary</h3><p>该选项从文件读取时，不会去除回车和换行</p>
+<h3 id="–data-raw"><a href="#–data-raw" class="headerlink" title="–data-raw"></a>–data-raw</h3><p>-d选项的补充，主要是为了下面的情况:<br><code>curl --data-raw &#39;@string&#39; https://example.com</code></p>
+<h3 id="–data-urlencode"><a href="#–data-urlencode" class="headerlink" title="–data-urlencode"></a>–data-urlencode</h3><p>把post内容使用url的安全编码(即把空格和一些不安全字符使用%xx%编码)，接受以下形式(只对内容进行编码):</p>
+<ul>
+<li>content</li>
+<li>&#x3D;content</li>
+<li>name&#x3D;content</li>
+<li>@filename</li>
+<li>name@filename</li>
+</ul>
+<h3 id="–digest"><a href="#–digest" class="headerlink" title="–digest"></a>–digest</h3><p>digest的认证方式</p>
+<h3 id="–dns-interface"><a href="#–dns-interface" class="headerlink" title="–dns-interface"></a>–dns-interface</h3><p>指定dns走的网卡？</p>
+<h3 id="–dns-ipv4-addr"><a href="#–dns-ipv4-addr" class="headerlink" title="–dns-ipv4-addr"></a>–dns-ipv4-addr</h3><p>指定ipv4的dns服务器</p>
+<h3 id="–dns-ipv6-addr"><a href="#–dns-ipv6-addr" class="headerlink" title="–dns-ipv6-addr"></a>–dns-ipv6-addr</h3><p>指定ipv6的dns服务器</p>
+<h3 id="–dns-servers"><a href="#–dns-servers" class="headerlink" title="–dns-servers"></a>–dns-servers</h3><p>指定一个dns服务器</p>
+<h3 id="e-–referer"><a href="#e-–referer" class="headerlink" title="-e&#x2F;–referer"></a>-e&#x2F;–referer</h3><p>当在浏览器中，从一个页面，点击另一个页面，会形成一个<code>Referer:</code>的头，它说明是从哪个网站进去的，例如：<br><code>curl --referer http://comes-from.example.com https://www.example.com/</code></p>
+<h3 id="–etag-save-etagSavedFile"><a href="#–etag-save-etagSavedFile" class="headerlink" title="–etag-save [etagSavedFile]"></a>–etag-save [etagSavedFile]</h3><p>把该资源的Etag保存到某文件中</p>
+<h3 id="–etag-compare-etagFile"><a href="#–etag-compare-etagFile" class="headerlink" title="–etag-compare [etagFile]"></a>–etag-compare [etagFile]</h3><p>与本地文件中保存Etag做对比，只下载更新的，可以与–etag-save连用，达到自动更新的目的<br><code>curl --etag-compare etag.txt --etag-save etag.txt https://example.com/file -o output</code></p>
+<h3 id="f-–fail"><a href="#f-–fail" class="headerlink" title="-f&#x2F;–fail"></a>-f&#x2F;–fail</h3><p>一般http返回4xx码时，curl也会认为是成功的一次传输，如果启用该选项，如果是4xx，curl将以22退出</p>
+<h3 id="F"><a href="#F" class="headerlink" title="-F"></a>-F</h3><p>http的方法将是POST</p>
+<h3 id="–fail-early"><a href="#–fail-early" class="headerlink" title="–fail-early"></a>–fail-early</h3><h3 id="–fail-with-body"><a href="#–fail-with-body" class="headerlink" title="–fail-with-body"></a>–fail-with-body</h3><p>同–fail</p>
+<h3 id="–ftp-method-multicwd-nocwd-singlecwd"><a href="#–ftp-method-multicwd-nocwd-singlecwd" class="headerlink" title="–ftp-method [multicwd&#x2F;nocwd&#x2F;singlecwd]"></a>–ftp-method [multicwd&#x2F;nocwd&#x2F;singlecwd]</h3><ul>
+<li>multicwd(curl默认方法)：<code>curl --ftp-method multicwd ftp://example.com/one/two/three/file.txt</code><br>等价于<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">CWD one &lt; 250 OK. Current directory is /one CWD two &lt; 250 OK. Current directory is /one/two CWD three &lt; 250 OK. Current directory is /one/two/three RETR file.txt<br></code></pre></td></tr></table></figure></li>
+<li>nocwd(并不符合标准):<code>curl --ftp-method nocwd ftp://example.com/one/two/three/file.txt</code><br>等价于<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">RETR one/two/three/file.txt<br></code></pre></td></tr></table></figure></li>
+<li>singlecwd(服务器不一定支持):<code>curl --ftp-method singlecwd ftp://example.com/one/two/three/file.txt</code><br>等价于<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">CWD one/two/three &lt; 250 OK. Current directory is /one/two/three RETR file.txt<br></code></pre></td></tr></table></figure></li>
+</ul>
+<h3 id="–ftp-pasv"><a href="#–ftp-pasv" class="headerlink" title="–ftp-pasv"></a>–ftp-pasv</h3><p>curl默认就是ftp被动连接，这个选项是重新设置为被动连接</p>
+<h3 id="–ftp-skip-pasv-ip"><a href="#–ftp-skip-pasv-ip" class="headerlink" title="–ftp-skip-pasv-ip"></a>–ftp-skip-pasv-ip</h3><p>有时服务器对于PASV被动建立连接命令会故意返回一个错的ip地址，此时该选项可以忽略该地址，使用控制连接的地址</p>
+<h3 id="G-–get"><a href="#G-–get" class="headerlink" title="-G&#x2F;–get"></a>-G&#x2F;–get</h3><p>当指定-d等选项时，默认为post方法，此选项可以强制转成get，所有数据都追加在url末尾，以<code>?</code>分割</p>
+<h3 id="h-–help"><a href="#h-–help" class="headerlink" title="-h&#x2F;–help"></a>-h&#x2F;–help</h3><h3 id="H-header-content"><a href="#H-header-content" class="headerlink" title="-H [header content]"></a>-H [header content]</h3><ul>
+<li>自定义头部内容<br><code>curl -H &quot;Host: www.example.com&quot; http://localhost/</code></li>
+<li>去除curl自动形成的头，只要不给值就行：<br><code>curl -H &quot;User-Agent:&quot; http://example.com/</code></li>
+<li>去除所有头<br><code>curl -H &quot;Empty;&quot; http://example.com</code></li>
+</ul>
+<h3 id="–hsts-hstsFile"><a href="#–hsts-hstsFile" class="headerlink" title="–hsts [hstsFile]"></a>–hsts [hstsFile]</h3><p>HSTS是一个严格的传输安全协议，它保护https不被降级和中间cookie注入，整个过程中不能使用明文。该选项使curl读入某个server的HSTS缓存,然后自动更新，并且自动转换http为https:<br><code>curl --hsts hsts.txt https://example.com</code></p>
+<h3 id="–http0-9"><a href="#–http0-9" class="headerlink" title="–http0.9"></a>–http0.9</h3><p>该版本非常不成熟，响应只有body，没有header,使用该选项是告诉curl接受该种响应</p>
+<h3 id="–http1-0"><a href="#–http1-0" class="headerlink" title="–http1.0"></a>–http1.0</h3><p>尝试使用http1.0</p>
+<h3 id="–http1-1"><a href="#–http1-1" class="headerlink" title="–http1.1"></a>–http1.1</h3><p>尝试使用http1.1</p>
+<h3 id="–http2"><a href="#–http2" class="headerlink" title="–http2"></a>–http2</h3><p>尝试使用http2</p>
+<h3 id="–http2-prior-knowledge"><a href="#–http2-prior-knowledge" class="headerlink" title="–http2-prior-knowledge"></a>–http2-prior-knowledge</h3><p>前提你确定已经知道服务器支持http2了，这个加快negotiate的速度</p>
+<h3 id="–http3"><a href="#–http3" class="headerlink" title="–http3"></a>–http3</h3><p>尝试使用http3</p>
+<h3 id="I"><a href="#I" class="headerlink" title="-I"></a>-I</h3><p>HTTP方法将是HEAD</p>
+<h3 id="–ignore-content-length"><a href="#–ignore-content-length" class="headerlink" title="–ignore-content-length"></a>–ignore-content-length</h3><p>忽略头部的Content-Length信息（早期数据不可以超过2g,content-length可能是负的），直接接受数据</p>
+<h3 id="–interface-ip-addr-or-some-interface"><a href="#–interface-ip-addr-or-some-interface" class="headerlink" title="–interface [ip addr or some interface]"></a>–interface [ip addr or some interface]</h3><p>指定哪个网络接口来传输流量，或者使用哪个原始ip地址（前提你有多个ip）这个不影响dns的接口，dns接口可用–dns-interface</p>
+<h3 id="j-–junk-session-cookies"><a href="#j-–junk-session-cookies" class="headerlink" title="-j&#x2F;–junk-session-cookies"></a>-j&#x2F;–junk-session-cookies</h3><p>模拟浏览器重新打开，一个新的会话cookie<br><code>curl -j -b cookies.txt http://example.com/</code></p>
+<h3 id="J-–remote-header-name"><a href="#J-–remote-header-name" class="headerlink" title="-J&#x2F;–remote-header-name"></a>-J&#x2F;–remote-header-name</h3><p>HTTP头可能提供<code>Content-Disposition:</code>,这其中包含了建议的文件名，这个选项使用该文件名作为输出，如果该内容存在，会覆盖-O选项。</p>
+<ul>
+<li>它只会保留文件名部分，忽略目录</li>
+<li>CURL不会帮你解码，可能是个URL原码格式的文件名（浏览器会解码）</li>
+</ul>
+<h3 id="–json"><a href="#–json" class="headerlink" title="–json"></a>–json</h3><p>该选项是为了更好的post json格式的内容，等价于下面三个选项</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs bash">--data [jsonformat]<br>--header <span class="hljs-string">&quot;Content-Type: application/json&quot;</span><br>--header <span class="hljs-string">&quot;Accept: application/json&quot;</span><br></code></pre></td></tr></table></figure>
+<p>注意多次使用该选项时，curl只是简单的字符串拼接，并不会帮你合并，所以应该像下面这样使用：<br><code>curl --json @json.txt --json &quot;, &quot;end&quot;: &quot;true&quot;&#125;&#39; https://example.com/</code></p>
+<h3 id="k-–insecure"><a href="#k-–insecure" class="headerlink" title="-k&#x2F;–insecure"></a>-k&#x2F;–insecure</h3><p>tls&#x2F;ssh协议中，curl会跳过检查known_hosts文件及本地安全证书，直接信任</p>
+<h3 id="K-–config"><a href="#K-–config" class="headerlink" title="-K&#x2F;–config"></a>-K&#x2F;–config</h3><p><code>-K &lt;fileName&gt;</code><br>此选项是为了帮助过长的选项不好输在命令行中，fileName则可以保存这些选项</p>
+<ul>
+<li>一行一个选项，长选项可以省略<code>--</code></li>
+<li>可以用<code>#</code>注释</li>
+<li>选项和参数内容间可以用<code>=</code>或<code>:</code>使结构清晰</li>
+<li>参数如果含空格，必须用双引号括起来,括号内只可以用下面这些转义字符<code>\\,\&quot;,\t,\n,\r,\v</code>,如果不用双引号,则遇到第一个空格就结束读取</li>
+<li>文件内也可以指明url，必须如下格式<br><code>url = &quot;http://example.com&quot;</code></li>
+</ul>
+<h3 id="–keepalive-time-num"><a href="#–keepalive-time-num" class="headerlink" title="–keepalive-time [num]"></a>–keepalive-time [num]</h3><p>curl默认会保持无流量的tcp连接长达60s,这可以更改时间，单位为秒</p>
+<h3 id="–key"><a href="#–key" class="headerlink" title="–key"></a>–key</h3><p>指定cert健，见–cert</p>
+<h3 id="–key-type"><a href="#–key-type" class="headerlink" title="–key-type"></a>–key-type</h3><p>见–cert</p>
+<h3 id="l-–list-only"><a href="#l-–list-only" class="headerlink" title="-l&#x2F;–list-only"></a>-l&#x2F;–list-only</h3><p>FTP协议中相当与使用NLST命令，可能不会list符号链接和目录</p>
+<h3 id="L-–location"><a href="#L-–location" class="headerlink" title="-L&#x2F;–location"></a>-L&#x2F;–location</h3><p>如果返回重定向，则继续访问重定向的地址。默认最多50个。curl默认不会访问重定向的内容,</p>
+<h3 id="–limit-rate"><a href="#–limit-rate" class="headerlink" title="–limit-rate "></a>–limit-rate <num></h3><p>参数是个数字，默认单位是byte，可以跟K&#x2F;M&#x2F;G，整个过程的平均速度将不超过这个值,也同样适用于上传速率</p>
+<h3 id="–location-trusted"><a href="#–location-trusted" class="headerlink" title="–location-trusted"></a>–location-trusted</h3><p>永远信任重定向的任何主机，默认是不信任，因为，可能重定向不同主机</p>
+<h3 id="–local-port-num-or-range"><a href="#–local-port-num-or-range" class="headerlink" title="–local-port [num or range]"></a>–local-port [num or range]</h3><p>通常不需要指定本地端口，但有时只有某些端口是开放的，指定curl的本地端口，可以指定一个范围，因为一个可能被占用了,最好不要指定1024以下的端口</p>
+<h3 id="m-–max-time-num"><a href="#m-–max-time-num" class="headerlink" title="-m&#x2F;–max-time [num]"></a>-m&#x2F;–max-time [num]</h3><p>整个命令允许运行的最长时间，即使正在下载，也会立刻退出(退出码28)</p>
+<h3 id="–mail-from"><a href="#–mail-from" class="headerlink" title="–mail-from"></a>–mail-from</h3><p>smtp中指定发件人</p>
+<h3 id="–mail-rcpt"><a href="#–mail-rcpt" class="headerlink" title="–mail-rcpt"></a>–mail-rcpt</h3><p>smtp中指定收件人</p>
+<h3 id="–manual"><a href="#–manual" class="headerlink" title="–manual"></a>–manual</h3><h3 id="–max-filesize-num"><a href="#–max-filesize-num" class="headerlink" title="–max-filesize [num]"></a>–max-filesize [num]</h3><p>单位是byte，如果curl在传输开始可以获得将要下载的内容大小，该选项才会起作用，如果超过该大小，curl将会自动放弃。</p>
+<h3 id="–max-redirs-num"><a href="#–max-redirs-num" class="headerlink" title="–max-redirs [num]"></a>–max-redirs [num]</h3><p>指定最多重定向次数，默认50个</p>
+<h3 id="n-–netrc"><a href="#n-–netrc" class="headerlink" title="-n&#x2F;–netrc"></a>-n&#x2F;–netrc</h3><p>读取<code>~/.netrc</code>配置文件，该文件存储用户名密码，例子如下</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-comment">#以下的值都不许有空格，且可以写在一行</span><br>machine example.com <span class="hljs-comment">#可以填default,此时不需要machine关键字</span><br>login nanbert<br>password xxx <br>macdef xxx <span class="hljs-comment">#该选项curl不支持，会忽略</span><br></code></pre></td></tr></table></figure>
+<h3 id="–negotiate"><a href="#–negotiate" class="headerlink" title="–negotiate"></a>–negotiate</h3><p>negotiate的认证方式</p>
+<h3 id="netrc-file-path"><a href="#netrc-file-path" class="headerlink" title="-netrc-file [path]"></a>-netrc-file [path]</h3><p>不读默认<code>~/.netrc</code>文件，而是具体某个文件</p>
+<h3 id="–netrc-optional"><a href="#–netrc-optional" class="headerlink" title="–netrc-optional"></a>–netrc-optional</h3><p>这与<code>--netrc</code>区别在于，使得默认配置内容是可选的,不是强制的</p>
+<h3 id="–next"><a href="#–next" class="headerlink" title="–next"></a>–next</h3><h3 id="–no-eprt"><a href="#–no-eprt" class="headerlink" title="–no-eprt"></a>–no-eprt</h3><p>ftp协议中禁止使用命令EPRT，该命令比PORT更新</p>
+<h3 id="–no-epsv"><a href="#–no-epsv" class="headerlink" title="–no-epsv"></a>–no-epsv</h3><p>ftp协议中进制使用命令EPSV，该命令比PASV更新</p>
+<h3 id="–no-keepalive"><a href="#–no-keepalive" class="headerlink" title="–no-keepalive"></a>–no-keepalive</h3><p>默认curl会保持tcp(无流量)连接60s,这个会关闭该功能</p>
+<h3 id="–noproxy"><a href="#–noproxy" class="headerlink" title="–noproxy"></a>–noproxy</h3><p>不使用全局环境变量代理</p>
+<h3 id="–no-verbose"><a href="#–no-verbose" class="headerlink" title="–no-verbose"></a>–no-verbose</h3><h3 id="–ntlm"><a href="#–ntlm" class="headerlink" title="–ntlm"></a>–ntlm</h3><p>ntlm的认证方式</p>
+<h3 id="o"><a href="#o" class="headerlink" title="-o"></a>-o</h3><p>输出到某个文件，一个该选项对应一个url,想要指明多个，必须声明多个-o</p>
+<h3 id="O-–remote-name"><a href="#O-–remote-name" class="headerlink" title="-O&#x2F;–remote-name"></a>-O&#x2F;–remote-name</h3><p>把结果输出到使用远程服务器的原始文件名,一个该选项对应一个url,想要指明多个，必须声明多个-O</p>
+<h3 id="–path-as-is"><a href="#–path-as-is" class="headerlink" title="–path-as-is"></a>–path-as-is</h3><p>在url指定路径时，如果出现<code>/../</code>或<code>/./</code>,curl会替换它们，再发送给服务器，比如<code>/hello/sir/../</code>变成<code>/hello/</code>,<code>/hello/./sir</code>变成<code>/hello/sir/</code>,而该选项会保留<code>..</code>和<code>.</code></p>
+<h3 id="P-–ftp-port-ip"><a href="#P-–ftp-port-ip" class="headerlink" title="-P&#x2F;–ftp-port [ip&#x2F;-]"></a>-P&#x2F;–ftp-port [ip&#x2F;-]</h3><p>这其实是使用命令PORT或EPRT，即服务器建立新连接到客户,但经常不指定一个确切的port,直接使用<code>-</code>,总是为，信息来时的地址，如下：<br><code>curl -P - ftp://example.com/foobar.txt</code></p>
+<h3 id="–post301"><a href="#–post301" class="headerlink" title="–post301"></a>–post301</h3><p>返回301重定向时，保持初始的方法</p>
+<h3 id="–post302"><a href="#–post302" class="headerlink" title="–post302"></a>–post302</h3><p>返回302重定向时，保持初始的方法</p>
+<h3 id="–post303"><a href="#–post303" class="headerlink" title="–post303"></a>–post303</h3><p>返回303重定向时，保持初始的方法</p>
+<h3 id="p-–proxytunnel"><a href="#p-–proxytunnel" class="headerlink" title="-p&#x2F;–proxytunnel"></a>-p&#x2F;–proxytunnel</h3><p>使用隧道对代理加密<br><code>curl -p -x http://proxy.example.com:80 ftp://ftp.example.com/file.txt</code></p>
+<h3 id="–parallel-max"><a href="#–parallel-max" class="headerlink" title="–parallel-max"></a>–parallel-max</h3><h3 id="–pinnedpubkey-sha256-hashnum1-hashnum2"><a href="#–pinnedpubkey-sha256-hashnum1-hashnum2" class="headerlink" title="–pinnedpubkey [sha256&#x2F;&#x2F;hashnum1;hashnum2;..]"></a>–pinnedpubkey [sha256&#x2F;&#x2F;hashnum1;hashnum2;..]</h3><p>TLS协议中，Certifiate pinning中直接指定sha256值</p>
+<h3 id="–proto-default"><a href="#–proto-default" class="headerlink" title="–proto-default"></a>–proto-default</h3><h3 id="–proxy1-0-ip-addr"><a href="#–proxy1-0-ip-addr" class="headerlink" title="–proxy1.0 [ip addr]"></a>–proxy1.0 [ip addr]</h3><p>指定代理，和<code>--x</code>一样，只是使用HTTP&#x2F;1.0</p>
+<h3 id="–proxy-anyauth"><a href="#–proxy-anyauth" class="headerlink" title="–proxy-anyauth"></a>–proxy-anyauth</h3><p>任意一种代理用户名认证方式,根据代理服务器要求自动匹配或者不使用认证</p>
+<h3 id="–proxy-digest"><a href="#–proxy-digest" class="headerlink" title="–proxy-digest"></a>–proxy-digest</h3><p>一种代理用户名认证方式</p>
+<h3 id="–proxy-header"><a href="#–proxy-header" class="headerlink" title="–proxy-header"></a>–proxy-header</h3><p>该头只发送给代理，真正的远程服务器不会收到，这比–header更精细化<br><code>curl --proxy-header &quot;User-Agent: magic/3000&quot; -x proxy https://example.com/</code></p>
+<h3 id="–proxy-negotiate"><a href="#–proxy-negotiate" class="headerlink" title="–proxy-negotiate"></a>–proxy-negotiate</h3><p>一种代理用户名认证方式</p>
+<h3 id="–proxy-ntlm"><a href="#–proxy-ntlm" class="headerlink" title="–proxy-ntlm"></a>–proxy-ntlm</h3><p>一种代理用户名认证方式</p>
+<h3 id="Q-–quote-ftp-cmd"><a href="#Q-–quote-ftp-cmd" class="headerlink" title="-Q&#x2F;–quote [ftp cmd]"></a>-Q&#x2F;–quote [ftp cmd]</h3><p>发送命令给ftp服务器</p>
+<ul>
+<li>在传输之前发送NOOP命令<code>curl -Q NOOP ftp://example.com/file</code></li>
+<li>在传输之后发送NOOP命令<code>curl -Q -NOOP ftp://example.com/file</code></li>
+<li>不知什么时候发<code>curl -Q +NOOP ftp://example.com/file</code><br>发送的命令发生错误时会导致curl退出，有时可以在命令前加<code>*</code>，忽略可能发送错误，如：<br><code>curl -Q &quot;-*DELE file&quot; ftp://example.com/moo</code></li>
+</ul>
+<h3 id="r-–range-num1-num2-num3-0-num3-…"><a href="#r-–range-num1-num2-num3-0-num3-…" class="headerlink" title="-r&#x2F;–range [num1-num2,num3-,0-num3,…]"></a>-r&#x2F;–range [num1-num2,num3-,0-num3,…]</h3><p>只下num1 byte offset至num2 byte offset的内容,服务器可以选择性的实现该功能，也就是说，即使你这么请求，服务器也可能返回全部内容</p>
+<h3 id="–remote-name-all"><a href="#–remote-name-all" class="headerlink" title="–remote-name-all"></a>–remote-name-all</h3><p>所有结果均输出保存到服务器上的原始文件名</p>
+<h3 id="–remote-time"><a href="#–remote-time" class="headerlink" title="–remote-time"></a>–remote-time</h3><p>使得下载到本地的文件的时间戳和远程服务器文件的时间戳一样，常和-z -o选项搭配<br><code>curl -z file.html -o file.html --remote-time https://example.com/file.html</code></p>
+<h3 id="–resolve-host-name-port-ip-address"><a href="#–resolve-host-name-port-ip-address" class="headerlink" title="–resolve [host name:port:ip address]"></a>–resolve [host name:port:ip address]</h3><p>dns重定向，这会保存到curl的cache中<br><code>curl --resolve example.com:80:127.0.0.1 http://example.com/</code></p>
+<h3 id="s-–silent"><a href="#s-–silent" class="headerlink" title="-s&#x2F;–silent"></a>-s&#x2F;–silent</h3><p>此选项关闭进度条，并不显示错误，但是-S&#x2F;–show-error不受此选项影响</p>
+<h3 id="S-–show-error"><a href="#S-–show-error" class="headerlink" title="-S&#x2F;–show-error"></a>-S&#x2F;–show-error</h3><p>默认情况下curl会输出错误，该选项主要是抵消-s的作用</p>
+<h3 id="–speed-time-num"><a href="#–speed-time-num" class="headerlink" title="–speed-time [num]"></a>–speed-time [num]</h3><p>经常和–speed-limit一起用,下面的意思是速度小于1000并且持续15s就退出<br><code>curl --speed-time 15 --speed-limit 1000 https://example.com/</code></p>
+<h3 id="–speed-limit-num"><a href="#–speed-limit-num" class="headerlink" title="–speed-limit [num]"></a>–speed-limit [num]</h3><p>见–speed-time</p>
+<h3 id="–ssl"><a href="#–ssl" class="headerlink" title="–ssl"></a>–ssl</h3><p>尝试ssl加密(FTP,IMAP,POP3,SMTP)</p>
+<h3 id="–sslv2"><a href="#–sslv2" class="headerlink" title="–sslv2"></a>–sslv2</h3><p>使用SSL2版本</p>
+<h3 id="–sslv3"><a href="#–sslv3" class="headerlink" title="–sslv3"></a>–sslv3</h3><p>使用SSL3版本</p>
+<h3 id="–ssl-reqd"><a href="#–ssl-reqd" class="headerlink" title="–ssl-reqd"></a>–ssl-reqd</h3><p>强制ssl加密(FTP,IMAP,POP3,SMTP)</p>
+<h3 id="–raw"><a href="#–raw" class="headerlink" title="–raw"></a>–raw</h3><p>禁用内容或传输编码的所有内部http解码，而是使用未经修改的原始数据,这经常用在curl为一个代理的情况</p>
+<h3 id="–retry-num"><a href="#–retry-num" class="headerlink" title="–retry [num]"></a>–retry [num]</h3><p>curl会在发生transient error时，会重新尝试num次，默认失败一次就不会尝试，transient error包括以下：超时，FTP 4XX返回码，http5xx返回码</p>
+<h3 id="–request-target"><a href="#–request-target" class="headerlink" title="–request-target"></a>–request-target</h3><p>获取的资源路径，这个一般直接写在url中，但这配合OPTIONS方法，有个特殊用法：<br><code>curl -X OPTIONS --request-target &quot;*&quot; http://example.com/</code><br>会形成下面的头：<br><code>OPTIONS * HTTP/1.1</code></p>
+<h3 id="–retry-all-errors"><a href="#–retry-all-errors" class="headerlink" title="–retry-all-errors"></a>–retry-all-errors</h3><p>有时你确定一个服务器是好的，出现任何错误都想重试，该选项就可以帮你</p>
+<h3 id="–retry-connrefused"><a href="#–retry-connrefused" class="headerlink" title="–retry-connrefused"></a>–retry-connrefused</h3><p>重试只会发生在transient error时，但拒绝访问不属于，有时你确认服务器只是重启或其他原因，该选项可以使得出现拒绝访问时，也可以重试。</p>
+<h3 id="–retry-max-time-num"><a href="#–retry-max-time-num" class="headerlink" title="–retry-max-time [num]"></a>–retry-max-time [num]</h3><p>第一次重试之前,curl会等1s,然后第二次重试会等2s,如此指数增长下去，直到达到10min，该选项会指明等待时间不少于num秒，–max-time选项仍会起作用</p>
+<h3 id="T"><a href="#T" class="headerlink" title="-T"></a>-T</h3><ul>
+<li>HTTP PUT就是上传某个完整资源上传或替换远程的现有资源，很少被服务器启用</li>
+<li>FTP或TFTP 上传文件，如下<br><code>curl -T uploadthis ftp://example.com/this/directory/</code><br><code>curl -T uploadthis ftp://example.com/this/directory/remotename</code></li>
+<li>SMTP上传body内容，通常需要其他选项(有关header的选项)配合（–mail-from,等）<br><code>curl -T mail smtp://mail.example.com/ --mail-from user@example.com</code></li>
+</ul>
+<h3 id="t-–telnet-option-keyword-value"><a href="#t-–telnet-option-keyword-value" class="headerlink" title="-t&#x2F;–telnet-option [keyword&#x3D;value]"></a>-t&#x2F;–telnet-option [keyword&#x3D;value]</h3><p>telnet选项特有，传递以下三个参数：</p>
+<ul>
+<li>TTYPE&#x3D;[term]:设置终端类型</li>
+<li>XDISPLOC&#x3D;[X display]:设置X展示位置</li>
+<li>NEW_ENV&#x3D;[var,val]:设置环境变量值</li>
+</ul>
+<h3 id="–tftp-blksize-num"><a href="#–tftp-blksize-num" class="headerlink" title="–tftp-blksize [num]"></a>–tftp-blksize [num]</h3><p>tftp通信传输块默认大小为512,此选项可以修改，支持8-65464</p>
+<h3 id="–tftp-no-options"><a href="#–tftp-no-options" class="headerlink" title="–tftp-no-options"></a>–tftp-no-options</h3><p>有些tftp服务器不接受任何选项，此时该选项可以应用</p>
+<h3 id="–tlspassword-passwd"><a href="#–tlspassword-passwd" class="headerlink" title="–tlspassword [passwd]"></a>–tlspassword [passwd]</h3><p>TLS的特性，可以在命令行中直接使用用户名和密码<br><code>curl --tlsuser daniel --tlspassword secret https://example.com</code></p>
+<h3 id="–tlsuser-name"><a href="#–tlsuser-name" class="headerlink" title="–tlsuser [name]"></a>–tlsuser [name]</h3><p>见–tlspassword</p>
+<h3 id="–tlsv1-–tlsv1-0"><a href="#–tlsv1-–tlsv1-0" class="headerlink" title="–tlsv1&#x2F;–tlsv1.0"></a>–tlsv1&#x2F;–tlsv1.0</h3><p>使用TLS&gt;&#x3D;1.0的版本</p>
+<h3 id="–tlsv1-1"><a href="#–tlsv1-1" class="headerlink" title="–tlsv1.1"></a>–tlsv1.1</h3><p>使用TLS&gt;&#x3D;1.0的版本</p>
+<h3 id="–tlsv1-2"><a href="#–tlsv1-2" class="headerlink" title="–tlsv1.2"></a>–tlsv1.2</h3><p>使用TLS&gt;&#x3D;1.2的版本</p>
+<h3 id="–tlsv1-3"><a href="#–tlsv1-3" class="headerlink" title="–tlsv1.3"></a>–tlsv1.3</h3><p>使用TLS&gt;&#x3D;1.3的版本,curl默认</p>
+<h3 id="–tr-encoding"><a href="#–tr-encoding" class="headerlink" title="–tr-encoding"></a>–tr-encoding</h3><p>采用Transfer-Encoded压缩传输内容，curl会自动解压,不能和–compressed混用,且该选项不常用</p>
+<h3 id="–trace-filename"><a href="#–trace-filename" class="headerlink" title="–trace [filename]"></a>–trace [filename]</h3><p>会跟踪每拍接受的内容，以16进制显示,每行开头的十六进制加冒号代表该内容的byte offset</p>
+<h3 id="–trace-ascii-filename"><a href="#–trace-ascii-filename" class="headerlink" title="–trace-ascii [filename]"></a>–trace-ascii [filename]</h3><p>会跟踪每拍接受的内容，以ascii码可读形式显示</p>
+<h3 id="–trace-time"><a href="#–trace-time" class="headerlink" title="–trace-time"></a>–trace-time</h3><p>化学选项：-v&#x2F;–verbose,–trace和–trace-ascii<br>这个选项会帮助化学选项所输出内容之前加高精度的时间。</p>
+<h3 id="u-–user"><a href="#u-–user" class="headerlink" title="-u&#x2F;–user"></a>-u&#x2F;–user</h3><p>指定用户名和密码，冒号分隔<code>user:passwd</code>,这种明文，最好不用，协议层方面使用https和ftps等，如果非要使用明文,可以选择选项<code>--digest</code>,<code>--negotiate</code>,<code>--ntlm</code>,或者直接通过配置文件###1禁用。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs bash">curl --digest --user daniel:secret http://example.com/<br>curl --negotiate --user daniel:secret http://example.com/<br>curl --ntlm --user daniel:secret http://example.com/<br></code></pre></td></tr></table></figure>
+<h3 id="U-–proxy-user-user-passwd"><a href="#U-–proxy-user-user-passwd" class="headerlink" title="-U&#x2F;–proxy-user [user:passwd]"></a>-U&#x2F;–proxy-user [user:passwd]</h3><p>指定代理的用户名和密码<br><code>curl -U daniel:secr3t -x myproxy:80 http://example.com</code></p>
+<h3 id="–upload-file"><a href="#–upload-file" class="headerlink" title="–upload-file"></a>–upload-file</h3><p>指定上传内容文件，用于smtp</p>
+<h3 id="–use-ascii"><a href="#–use-ascii" class="headerlink" title="–use-ascii"></a>–use-ascii</h3><p>使用ascii传输，而不是二进制</p>
+<h3 id="v-–verbose"><a href="#v-–verbose" class="headerlink" title="-v&#x2F;–verbose"></a>-v&#x2F;–verbose</h3><p>该选项会使curl显示更多的内容，具体格式如下：</p>
+<ul>
+<li><code>*</code>后面跟解释性内容</li>
+<li><code>&gt;</code>后面跟客户端发送的头协议，（FTP,SMTP,POP3等没有头协议的，命令和返回当成头）</li>
+<li><code>&lt;</code>后面跟从服务端接受的返回头协议<br>HTTP&#x2F;2和HTTP&#x2F;3协议头是压缩的，但在此选项下会展开和HTTP&#x2F;1.1一样的格式</li>
+</ul>
+<h3 id="V-–version"><a href="#V-–version" class="headerlink" title="-V&#x2F;–version"></a>-V&#x2F;–version</h3><p>会输出版本相关的信息，各行含义如下:<br>**第一行:**版本号+平台+第三方依赖信息<br>**第二行:**版本发布日期<br>**第三行:**支持的协议<br>**第四行:**支持的特性</p>
+<h3 id="w-–write-out"><a href="#w-–write-out" class="headerlink" title="-w&#x2F;–write-out"></a>-w&#x2F;–write-out</h3><p>参数:<code>&lt;formatted string&gt;</code>或<code>@[filename或-]</code><br>该选项会在每个传输完毕后，在末尾加上formatted string或文件中的内容,%可以使用<code>\n,\r,\t</code>转义字符，特殊的变量跟在<code>%</code>后,<code>%%</code>输出真正的%<br>有以下formatted string:</p>
+<table>
+<thead>
+<tr>
+<th align="center">格式</th>
+<th align="center">含义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center"><code>%&#123;content_type&#125;</code></td>
+<td align="center">字面义，有的内容没有类型</td>
+</tr>
+<tr>
+<td align="center"><code>%&#123;errormsg&#125;</code></td>
+<td align="center">字面义，无错误为空</td>
+</tr>
+<tr>
+<td align="center"><code>%&#123;exitcode&#125;</code></td>
+<td align="center">传输的退出码，无错返回0</td>
+</tr>
+<tr>
+<td align="center"><code>%&#123;filename_effective&#125;</code></td>
+<td align="center">最终传输内容所保存的文件名，只当指定-o或–remote-name选项有意义</td>
+</tr>
+<tr>
+<td align="center"><code>%&#123;ftp_entry_path&#125;</code></td>
+<td align="center">登陆ftp的初始路径</td>
+</tr>
+<tr>
+<td align="center"><code>%&#123;http_code&#125;</code></td>
+<td align="center">也就是response_code</td>
+</tr>
+<tr>
+<td align="center"><code>%&#123;http_connect&#125;</code></td>
+<td align="center">待探索</td>
+</tr>
+<tr>
+<td align="center"><code>%&#123;http_version&#125;</code></td>
+<td align="center">字面义</td>
+</tr>
+<tr>
+<td align="center"><code>%&#123;json&#125;</code></td>
+<td align="center">所有write-out的变量生成json格式</td>
+</tr>
+<tr>
+<td align="center"><code>%&#123;local_ip&#125;</code></td>
+<td align="center">最近一次连接的ipv4或ipv6的本地地址</td>
+</tr>
+<tr>
+<td align="center"><code>%&#123;local_port&#125;</code></td>
+<td align="center">最近一次连接的本地端口</td>
+</tr>
+<tr>
+<td align="center"><code>%&#123;method&#125;</code></td>
+<td align="center">最近请求的方法</td>
+</tr>
+<tr>
+<td align="center"><code>%&#123;num_connects&#125;</code></td>
+<td align="center">最近传输的新连接数量</td>
+</tr>
+<tr>
+<td align="center"><code>%&#123;num_headers&#125;</code></td>
+<td align="center">上一次传输的反应头的数量</td>
+</tr>
+<tr>
+<td align="center"><code>%&#123;num_redirects&#125;</code></td>
+<td align="center">请求的重定向次数</td>
+</tr>
+<tr>
+<td align="center"><code>%&#123;onerror&#125;</code></td>
+<td align="center">如果传输发生错误，输出之后的string,内容，否则不输出</td>
+</tr>
+<tr>
+<td align="center"><code>%&#123;proxy_ssl_verify_result&#125;</code></td>
+<td align="center">与代理通信时请求的SSL对等证书验证的结果,0表示成功</td>
+</tr>
+<tr>
+<td align="center"><code>%&#123;redirect_url&#125;</code></td>
+<td align="center">当发出HTTP请求而没有-L重定向时，重定向会将您带到的实际URL</td>
+</tr>
+<tr>
+<td align="center"><code>%&#123;remote_ip&#125;</code></td>
+<td align="center">远程的ipv4或6地址</td>
+</tr>
+<tr>
+<td align="center"><code>%&#123;remote_port&#125;</code></td>
+<td align="center">远程的端口</td>
+</tr>
+<tr>
+<td align="center"><code>%&#123;response_code&#125;</code></td>
+<td align="center">字面义</td>
+</tr>
+<tr>
+<td align="center"><code>%&#123;scheme&#125;</code></td>
+<td align="center">url的scheme</td>
+</tr>
+<tr>
+<td align="center"><code>%&#123;size_download&#125;</code></td>
+<td align="center">字面义</td>
+</tr>
+<tr>
+<td align="center"><code>%&#123;size_header&#125;</code></td>
+<td align="center">头部的大小</td>
+</tr>
+<tr>
+<td align="center"><code>%&#123;size_request&#125;</code></td>
+<td align="center">请求的大小</td>
+</tr>
+<tr>
+<td align="center"><code>%&#123;size_upload&#125;</code></td>
+<td align="center">上传大小</td>
+</tr>
+<tr>
+<td align="center"><code>%&#123;speed_download&#125;</code></td>
+<td align="center">平均下载速度</td>
+</tr>
+<tr>
+<td align="center"><code>%&#123;speed_upload&#125;</code></td>
+<td align="center">平均上传速度</td>
+</tr>
+<tr>
+<td align="center"><code>%&#123;ssl_verify_result&#125;</code></td>
+<td align="center">请求SSL对等证书验证的结果，0表示成功</td>
+</tr>
+<tr>
+<td align="center"><code>%&#123;stderr&#125;</code></td>
+<td align="center">接下来的内容输出到标准错误</td>
+</tr>
+<tr>
+<td align="center"><code>%&#123;stdout&#125;</code></td>
+<td align="center">接下来的内容输出到标准输出</td>
+</tr>
+<tr>
+<td align="center"><code>%&#123;time_appconnect&#125;</code></td>
+<td align="center">从开始到完成SSL&#x2F;SSH&#x2F;etc到远程主机的连接&#x2F;握手花费的时间，单位秒</td>
+</tr>
+<tr>
+<td align="center"><code>%&#123;time_connect&#125;</code></td>
+<td align="center">从一开始直到TCP连接到远程主机（或代理）完成花费的时间，单位秒</td>
+</tr>
+<tr>
+<td align="center"><code>%&#123;time_namelookup&#125;</code></td>
+<td align="center">从一开始直到名字解析完成所花费的时间,单位秒</td>
+</tr>
+<tr>
+<td align="center"><code>%&#123;time_pretransfer&#125;</code></td>
+<td align="center">从一开始直到文件传输即将开始所花费的时间，单位秒</td>
+</tr>
+<tr>
+<td align="center"><code>%&#123;time_redirect&#125;</code></td>
+<td align="center">所有重定向步骤，包括名称查找，连接，预传输和最终事务开始之前的传输所花费的时间,单位秒</td>
+</tr>
+<tr>
+<td align="center"><code>%&#123;time_starttransfer&#125;</code></td>
+<td align="center">从一凯斯直到第一个字节即将被传输，这包括time_pretransfer和服务器计算结果所需的时间</td>
+</tr>
+<tr>
+<td align="center"><code>%&#123;time_total&#125;</code></td>
+<td align="center">完整操作持续的总时间，时间为秒，精度达到毫秒</td>
+</tr>
+<tr>
+<td align="center"><code>%&#123;url&#125;</code></td>
+<td align="center">命令行中指定url</td>
+</tr>
+<tr>
+<td align="center"><code>%&#123;url_effective&#125;</code></td>
+<td align="center">真实有效的url</td>
+</tr>
+<tr>
+<td align="center"><code>%&#123;urlnum&#125;</code></td>
+<td align="center">url的编号，从0开始计数</td>
+</tr>
+</tbody></table>
+<h3 id="X-–request"><a href="#X-–request" class="headerlink" title="-X&#x2F;–request"></a>-X&#x2F;–request</h3><p>指定http的方法，一般curl会根据选项自动判断，无需特地指定该选项，错误的方法可能使得curl行为怪异</p>
+<h3 id="x-–proxy-ip-addr"><a href="#x-–proxy-ip-addr" class="headerlink" title="-x&#x2F;–proxy [ip addr]"></a>-x&#x2F;–proxy [ip addr]</h3><ul>
+<li>指定代理，默认scheme为http,默认端口为1080<br><code>curl -x 192.168.0.1:8080 http://example.com/</code></li>
+<li>指定SOCKS协议代理，这可以直接使用各个版本，而不用-x，说明如下：<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-comment">#SOCKS4版本</span><br>curl -x socks4://proxy.example.com http://www.example.com/<br>curl --socks4 proxy.example.com http://www.example.com/<br><span class="hljs-comment">#SOCKS4a版本</span><br>curl -x socks4a://proxy.example.com http://www.example.com/<br>curl --socks4a proxy.example.com http://www.example.com/<br><span class="hljs-comment">#SOCKS5版本</span><br>curl -x socks5://proxy.example.com http://www.example.com/<br>curl --socks5 proxy.example.com http://www.example.com/<br><span class="hljs-comment">#SOCKS5h版本</span><br>curl -x socks5h://proxy.example.com http://www.example.com/<br>curl --socks5-ostname proxy.example.com http://www.example.com/<br></code></pre></td></tr></table></figure></li>
+</ul>
+<h3 id="–xattr"><a href="#–xattr" class="headerlink" title="–xattr"></a>–xattr</h3><h3 id="Z-–parallel"><a href="#Z-–parallel" class="headerlink" title="-Z&#x2F;–parallel"></a>-Z&#x2F;–parallel</h3><h3 id="z-–time-cond-time-stamp-file"><a href="#z-–time-cond-time-stamp-file" class="headerlink" title="-z&#x2F;–time-cond [time stamp&#x2F;file]"></a>-z&#x2F;–time-cond [time stamp&#x2F;file]</h3><p>对下载的内容做时间限制(可早，可晚)，时间格式可以是常见的格式，或者指定比某个本地文件新</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs bash">curl -z <span class="hljs-string">&quot;Jan 10, 2017&quot;</span> https://example.com/file -O<span class="hljs-comment">#只下载比该时间戳新的</span><br>curl --time-cond <span class="hljs-string">&quot;Sun, 12 Sep 2004 15:05:58 -0700&quot;</span> https://www.example.org/file.html<span class="hljs-comment">#只下载比该时间早的</span><br>curl -z file.html https://example.com/file.html -O<span class="hljs-comment">#比file.html新的</span><br></code></pre></td></tr></table></figure>
+<h3 id=""><a href="#" class="headerlink" title="-:"></a>-:</h3><h3 id="–progress-bar"><a href="#–progress-bar" class="headerlink" title="-#&#x2F;–progress-bar"></a>-#&#x2F;–progress-bar</h3><p>当内容重定向时，进度条是默认打开的,该选项会展示一种简单的进度条，有时进度条无法估计时间</p>
+<h3 id="作用"><a href="#作用" class="headerlink" title="@作用"></a>@作用</h3><p>传参数可以把参数放到文件里，如下:<br><code>curl -d @json http://example.com</code></p>
+<h2 id="curl退出码"><a href="#curl退出码" class="headerlink" title="curl退出码"></a>curl退出码</h2><ul>
+<li>1：不支持的协议</li>
+<li>2：初始化失败，libcurl可能出了问题</li>
+<li>3：url格式不对</li>
+<li>4：某个请求需要某个特性或选项未能满足</li>
+<li>5：无法解析代理</li>
+<li>6：无法解析主机</li>
+<li>7：无法连接主机。可能端口，主机名或防火墙的问题</li>
+<li>8：未知的ftp服务返回。可能未支持，也可能未启用选项</li>
+<li>9：ftp拒绝访问。没该文件或用户名或没权限</li>
+<li>10：ftp接受失败。</li>
+<li>11：ftp奇怪的PASS回复</li>
+<li>12：在等待服务器连接的活动FTP会话期间，超过限期</li>
+<li>13：FTP PASV命令未知的反应。通过–ftp-port选项可能解决该问题</li>
+<li>14：未知FTP227格式。这肯定是个坏服务器，或者可以通过–ftp-port解决该问题</li>
+<li>15：FTP无法获得主机</li>
+<li>16：HTTP&#x2F;2 error</li>
+<li>17：FTP无法设置binary传输。坏的服务器</li>
+<li>18：只传输了部分文件</li>
+<li>19：FTP无法获得下载该文件。RETR命令失败</li>
+<li>20：（保留）</li>
+<li>21：引用错误。IMAP、POP3、SMTP、FTP发送自定义命令时出错，建议查看报头</li>
+<li>22：HTTP页面未抓取。对应400反应码以上的错误，出现该错误只能在-f选项启用的时候</li>
+<li>23：写错误。写到本地时发生的错误</li>
+<li>24：（保留）</li>
+<li>25：上传失败。服务器空间已满或拒绝上传</li>
+<li>26：读错误。从本地读取时发生错误</li>
+<li>27：内存不够。系统分配给curl内存不足</li>
+<li>28：操作超时。由各种选项设置的各种超时</li>
+<li>29：（保留）</li>
+<li>30：FTP PORT命令错误。PORT命令有点非主流，可以试试PASV</li>
+<li>31：FTP无法使用REST。可以在没有范围或恢复的情况下重试</li>
+<li>32：（保留）</li>
+<li>33：HTTP范围错误</li>
+<li>34：HTTP post错误,需要反馈BUG</li>
+<li>35：TLS&#x2F;SSL连接错误</li>
+<li>36：无法恢复下载。FILE,FTP,SFTP会发生此错误</li>
+<li>37：无法读取该文件。FILE协议，可能不存在或没权限</li>
+<li>38：绑定LDAP失败。可能用户密码错误</li>
+<li>39：LDAP搜索失败。</li>
+<li>40：（保留）</li>
+<li>41：（保留）</li>
+<li>42：回调错误。开发者编程的错误</li>
+<li>43：错误函数参数。libcurl的调用问题</li>
+<li>44：（保留）</li>
+<li>45：网络接口错误</li>
+<li>46：（保留）</li>
+<li>47：太多重定向。默认最多50个，可以通过–max-redirs改变</li>
+<li>48：libcurl未知选项。可能curl和libcurl版本不一</li>
+<li>49：telnet错误的选项</li>
+<li>50：（保留）</li>
+<li>51：SSL&#x2F;TLS、SSH认证失败</li>
+<li>52：服务器未返回任何内容。可能是服务器有意为之</li>
+<li>53：未发现SSL引擎</li>
+<li>54：无法设置SSL加密引擎为默认</li>
+<li>55：无法发送网络数据。网络底层的错误，需要Wireshark等工具查看</li>
+<li>56：无法接受网络数据。网络底层错误。</li>
+<li>57：（保留）</li>
+<li>58：本地认证有问题。</li>
+<li>59：无法使用ssl密码。密码有格式标准</li>
+<li>60：对等证书无法使用已知ca认证</li>
+<li>61：无法识别传输编码</li>
+<li>62：无效LDAP URL</li>
+<li>63：超过最大文件大小限制</li>
+<li>64：FTP SSL失败</li>
+<li>65：发送之前帧失败</li>
+<li>66：初始化SSL引擎失败</li>
+<li>67：用户名密码CURL无法登陆</li>
+<li>68：TFTP服务没有该文件</li>
+<li>69：TFTP服务权限问题</li>
+<li>70：TFTP服务没有空间</li>
+<li>71：非法TFTP操作</li>
+<li>72：未知TFTP传输id</li>
+<li>73：TFTP文件已存在</li>
+<li>74：TFTP没有该用户</li>
+<li>75：字符转换失败</li>
+<li>76：需要字符转换函数</li>
+<li>77：读SSL CA认证时发生问题</li>
+<li>78：URL中的资源不存在</li>
+<li>79：在SSH会话中发生错误</li>
+<li>80：关闭SSL连接失败</li>
+<li>81：（保留）</li>
+<li>82：无法下载CRL文件，错误格式</li>
+<li>83：TLS认证检查失败</li>
+<li>84：FTP PRET命令失败</li>
+<li>85：RTSP:CSeq数字不匹配</li>
+<li>86：RTSP:会话标识符不匹配</li>
+<li>87：无法解析ftp文件列表</li>
+<li>88：FTP 块回掉错误</li>
+<li>89：没有可用的连接，会话将排队</li>
+<li>90：SSL公钥不匹配固定公钥</li>
+<li>91：无效SSL认证状态</li>
+<li>92：HTTP&#x2F;2流错误</li>
+<li>93：API回调错误</li>
+<li>94：认证错误</li>
+<li>95：HTTP&#x2F;3错误</li>
+<li>96：QUIC连接错误</li>
+</ul>
+<h2 id="curl与浏览器的区别"><a href="#curl与浏览器的区别" class="headerlink" title="curl与浏览器的区别"></a>curl与浏览器的区别</h2><ul>
+<li>浏览器会对接受的数据进行二次解码,更易懂些，curl就直接解码</li>
+<li>有的服务器会根据不同客户端(甚至不同的浏览器)提供更适配的内容</li>
+<li>你可以使用f12然后选中network,右键点击你想要的资源，选中<code>copy cURL</code>就可以复制相应的命令</li>
+</ul>
+<h2 id="POP3-curl读邮件使用的协议"><a href="#POP3-curl读邮件使用的协议" class="headerlink" title="POP3(curl读邮件使用的协议)"></a>POP3(curl读邮件使用的协议)</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-comment">#To list message numbers and sizes:</span><br>curl pop3://mail.example.com/<br><span class="hljs-comment">#To download message 1:</span><br>curl pop3://mail.example.com/1<br><span class="hljs-comment">#To delete message 1:</span><br>curl --request DELE pop3://mail.example.com/1<br></code></pre></td></tr></table></figure>
+<p><strong>TLS加密</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs bash">curl pop3://mail.example.com/ --ssl-reqd<br>curl pop3s://mail.example.com/<br></code></pre></td></tr></table></figure>
+<h2 id="IMAP-curl读邮件使用的协议，更常用现代"><a href="#IMAP-curl读邮件使用的协议，更常用现代" class="headerlink" title="IMAP(curl读邮件使用的协议，更常用现代)"></a>IMAP(curl读邮件使用的协议，更常用现代)</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-comment">#Get the mail using the UID 57 from mailbox &#x27;stuff&#x27;:</span><br>curl imap://server.example.com/stuff;UID=57<br><span class="hljs-comment">#get the mail with index 57 from the mailbox &#x27;fun&#x27;</span><br>curl imap://server.example.com/fun;MAILINDEX=57<br><span class="hljs-comment">#List the mails in the mailbox &#x27;boring&#x27;:</span><br>curl imap://server.example.com/boring<br><span class="hljs-comment">#List the mails in the mailbox &#x27;boring&#x27; and provide user and password:</span><br>curl imap://server.example.com/boring -u user:password<br></code></pre></td></tr></table></figure>
+<p><strong>TLS加密</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs bash">curl --ssl imap://mail.example.com/inbox<br>curl imaps://mail.example.com/inbox<br></code></pre></td></tr></table></figure>
+<h2 id="SMTP-cURL写邮件使用的协议"><a href="#SMTP-cURL写邮件使用的协议" class="headerlink" title="SMTP(cURL写邮件使用的协议)"></a>SMTP(cURL写邮件使用的协议)</h2><p>必须指定收发邮箱，以及内容,默认端口587</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs bash">curl smtp://mail.example.com --mail-from myself@example.com --mail-rcpt \<br>receiver@example.com --upload-file email.txt<br></code></pre></td></tr></table></figure>
+<p>email.txt:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs bash">From: John Smith &lt;john@example.com&gt;<br>To: Joe Smith &lt;smith@example.com&gt;<br>Subject: an example.com example email<br>Date: Mon, 7 Nov 2016 08:45:16<br><br>Dear Joe,<br>Welcome to this example email. What a lovely day.<br></code></pre></td></tr></table></figure>
+<p>和POP3、IMAP一样，可以使用SSL&#x2F;TLS加密，schema改成smtps即可，或者使用–ssl或–ssl-reqd,此时默认端口为465</p>
+<h2 id="MQTT"><a href="#MQTT" class="headerlink" title="MQTT"></a>MQTT</h2><p>订阅推送的协议，不太懂</p>
+<h2 id="TFTP"><a href="#TFTP" class="headerlink" title="TFTP"></a>TFTP</h2><p>小文件传输协议，使用的是UDP</p>
+<ul>
+<li>下载<code>curl -O tftp://localserver/file.boot</code></li>
+<li>上传<code>curl -T file.boot tftp://localserver/</code></li>
+</ul>
+<h2 id="TELNET"><a href="#TELNET" class="headerlink" title="TELNET"></a>TELNET</h2><p>即时通信协议，默认端口23</p>
+<h2 id="DICT"><a href="#DICT" class="headerlink" title="DICT"></a>DICT</h2><p>字典查询的协议<br>alias:</p>
+<ul>
+<li>m:match和find</li>
+<li>d:define和lookup<br>例子：<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs bash">curl dict://dict.org/m:curl<br>curl dict://dict.org/d:heisenbug:jargon<br>curl dict://dict.org/d:daniel:gcide<br>curl dict://dict.org/find:curl<br></code></pre></td></tr></table></figure></li>
+</ul>
+<h2 id="TLS-SSL"><a href="#TLS-SSL" class="headerlink" title="TLS&#x2F;SSL"></a>TLS&#x2F;SSL</h2><p>TLS是建立于TCP上一层的安全加密层，SSL是旧称(且所有ssl版本都在淘汰中)，两个是一个概念。<br>各个版本协议都有TLS版本：</p>
+<ul>
+<li>HTTP-HTTPS</li>
+<li>LDAP-LDAPS</li>
+<li>FTP-FTPS</li>
+<li>POP3-POP3S</li>
+<li>IMAP-IMAPS</li>
+<li>SMTP-SMTPS<br>TLS属于third-party,你可以通过–version查看，如果你feature中有MultiSSL的特性，证明curl是支持多版本的，你可以通过<code>CURL_SSL_BACKEND</code>来设置使用那个版二</li>
+</ul>
+<h3 id="版本历史"><a href="#版本历史" class="headerlink" title="版本历史"></a>版本历史</h3><p>SSL2(1995)-&gt;SSL3-&gt;TLS1.0(1999)-&gt;TLS1.1(2006)-&gt;TLS1.2(2008)-&gt;TLS1.3(2018)</p>
+<h3 id="CA的存储"><a href="#CA的存储" class="headerlink" title="CA的存储"></a>CA的存储</h3><p>一般都是内建的，但你也可以用–cacert指定路径（一定要是PEM格式），或者设置CURL-CA_BUNDLE环境变量</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>curl和https</div>
+      <div>http://example.com/2022/03/15/curl和https/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Nanbert</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2022年3月15日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2022/03/22/%E6%96%87%E6%9C%AC%E5%A4%84%E7%90%86%E7%91%9E%E5%A3%AB%E5%86%9B%E5%88%80-%E6%89%A9%E5%B1%95/" title="文本处理瑞士军刀-扩展">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">文本处理瑞士军刀-扩展</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2022/02/03/zsh/" title="zsh">
+                        <span class="hidden-mobile">zsh</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>
