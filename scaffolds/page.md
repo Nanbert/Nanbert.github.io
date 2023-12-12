@@ -1,7 +1,4 @@
 ---
-title: {{title}}
-subtitle:
+title: {{ title }}
 date: {{ date }}
-cover:
-type:
 ---
