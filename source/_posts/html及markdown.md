@@ -4,7 +4,8 @@ date: 2019-07-18 15:54:54
 subtitle:
 categories: html
 tags:
-index_img:
+index_img: /images/html.jpg
+banner_img: /images/html.jpg
 ---
 1.  
 粗体&lt;b>...&lt;/b>
@@ -34,9 +35,3 @@ markdown特殊符号的打出：
 代码行２
 代码行３
 ```
-4.  
-段落格式:
-*轻轻的我走了
-那河畔
-*那语音下
-

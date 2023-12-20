@@ -4,7 +4,8 @@ date: 2019-07-18 16:28:04
 subtitle:
 categories: Linux
 tags: 文件
-index_img:
+index_img: /images/linuxFile.webp
+banner_img: /images/linuxFile.webp
 ---
 1.  
 /etc/resolv.conf:加快网速的

@@ -4,9 +4,10 @@ date: 2019-08-10 21:22:59
 subtitle:
 categories: C++
 tags:
-index_img:
+index_img: /images/STL.webp
+banner_img: /images/STL.webp
 ---
-1.顺序容器
+# 顺序容器
 |方法|说明|
 |:-:|:-:|
 |c.resize(n)|调整c的大小为n个元素。要么多出的元素被丢弃,要么新添加默认值的元素|
@@ -16,8 +17,7 @@ index_img:
 |c.reserve(n)|只适用于vector和string,分配至少容纳n个元素的内存空间|
 |c.assign(i1)|将c中的元素全部替换为i1元素,i1可以和c类型不同,但元素必须相同,甚至可以是map与set类型|
 |c.assign(n,t)|将c中的元素全部换为n个t|
-2.lambda
-格式:`[capture list] (parameter list) -> return type {function body}`,capture list可以为空，里面一般是包含此lambda的函数的(非static)局部变量,该函数外的变量可以在函数体内直接用,return type可以省略。
-3.优先队列
+
+# 优先队列
 格式:`priority_queue<Type,Container,Functional>`
 例子:`priority_queue<int,vector<int>,myCompare>`,myCompare可以替换为less<int>降序,greater<int>升序

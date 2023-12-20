@@ -4,7 +4,8 @@ date: 2019-11-18 16:09:14
 subtitle:
 categories:
 tags:
-index_img:
+index_img: /images/mariadb.jpeg
+banner_img: /images/mariadb.jpeg
 ---
 1.  
 启动关闭用'systemctl'命令
