@@ -16,19 +16,19 @@
   <meta name="author" content="Nanbert">
   <meta name="keywords" content="">
   
-    <meta name="description" content="八进制整型常量以”0”开头如:0123十六进制以”0x(X)”开头长整型以”L(l)”结尾无符号型以”U(u)”结尾2.默认数据类型为int型,默认实型为double型,若要表示float型在结尾加”F(f)” extern可以使用后面的定义的数据:extern int h, k;   .   .   .int h&#x3D;1,k&#x3D;2; register+类型+变量名,存放在寄存器,">
+    <meta name="description" content="指针与应用.初始化要求不同，引用创建的同时必须初始化，而指针不必，可以重新赋值。.可修改性不同，引用一旦被初始化，就不可更改，而指针可以指向另一个变量.不存在NULL引用，指针可以，指针更灵活，但风险也大.指针是一个实体，引用是一个别名.内存上，指针有分配的存储空间，而应用则不用 tips c++无符号右移高位都补0 auto dp &#x3D; vector&lt;vector&lt;int&gt;&amp;gt">
 <meta property="og:type" content="article">
 <meta property="og:title" content="C++小知识">
 <meta property="og:url" content="http://example.com/2019/07/18/C-%E5%B0%8F%E7%9F%A5%E8%AF%86/index.html">
 <meta property="og:site_name" content="Nanbert&#39;s blog">
-<meta property="og:description" content="八进制整型常量以”0”开头如:0123十六进制以”0x(X)”开头长整型以”L(l)”结尾无符号型以”U(u)”结尾2.默认数据类型为int型,默认实型为double型,若要表示float型在结尾加”F(f)” extern可以使用后面的定义的数据:extern int h, k;   .   .   .int h&#x3D;1,k&#x3D;2; register+类型+变量名,存放在寄存器,">
+<meta property="og:description" content="指针与应用.初始化要求不同，引用创建的同时必须初始化，而指针不必，可以重新赋值。.可修改性不同，引用一旦被初始化，就不可更改，而指针可以指向另一个变量.不存在NULL引用，指针可以，指针更灵活，但风险也大.指针是一个实体，引用是一个别名.内存上，指针有分配的存储空间，而应用则不用 tips c++无符号右移高位都补0 auto dp &#x3D; vector&lt;vector&lt;int&gt;&amp;gt">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://en.cppreference.com/w/cpp/utility/variant">
+<meta property="og:image" content="http://example.com/images/Cpp.jpeg">
 <meta property="article:published_time" content="2019-07-18T09:14:17.000Z">
-<meta property="article:modified_time" content="2023-12-12T06:29:01.371Z">
+<meta property="article:modified_time" content="2023-12-20T12:31:23.507Z">
 <meta property="article:author" content="Nanbert">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="https://en.cppreference.com/w/cpp/utility/variant">
+<meta name="twitter:image" content="http://example.com/images/Cpp.jpeg">
   
   
   
@@ -192,7 +192,7 @@
   
 
 <div id="banner" class="banner" parallax=true
-     style="background: url('/images/default.png') no-repeat center center; background-size: cover;">
+     style="background: url('/images/Cpp.jpeg') no-repeat center center; background-size: cover;">
   <div class="full-bg-img">
     <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
       <div class="banner-text text-center fade-in-up">
@@ -221,7 +221,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          646 字
+          468 字
         
       </span>
     
@@ -232,7 +232,7 @@
         
         
         
-          6 分钟
+          4 分钟
         
       </span>
     
@@ -274,18 +274,18 @@
             
               <div class="markdown-body">
                 
-                <ol>
-<li>八进制整型常量以”0”开头如:0123<br>十六进制以”0x(X)”开头<br>长整型以”L(l)”结尾<br>无符号型以”U(u)”结尾<br>2.默认数据类型为int型,默认实型为double型,若要表示float型在结尾加”F(f)”</li>
-<li>extern可以使用后面的定义的数据:<br>extern int h, k;<br>   .<br>   .<br>   .<br>int h&#x3D;1,k&#x3D;2;</li>
-<li>register+类型+变量名,存放在寄存器,加快调用<br>auto+类型+变量名,自动分配存储,默认就是这个可以省略</li>
-<li>内部函数,在前面加static,仅在包含文件中有效.<br>外部函数在前面加extern,默认就是这个.</li>
-<li>const与指针<br><code>const double *cptr; //cptr指针指向一个类型为double的常量值</code><br><code>double *const cura; //cura是一个const指针,即无法改变指向的对象</code> </li>
-<li>指针与函数<br>返回指针的函数称为指针函数，本质上是一个返回指针的函数，示例如下:<br><code>int *test(a,b)</code><br>函数指针就是指向函数的指针。示例如下:<br><code>int (*test)(int a,int b)</code></li>
-<li>数组与指针<br>数组指针是一个指针变量，它指向一个数组。示例如下:<br><code>int (*ap)[2]</code><br>指针数组是一个包含指针元素的数组，它的元素可以指向相同类型的不同对象<br><code>int *ap[2]</code><br>ps:从以上可以看出指针从左至右结合，</li>
-<li>指针与应用<br>.初始化要求不同，引用创建的同时必须初始化，而指针不必，可以重新赋值。<br>.可修改性不同，引用一旦被初始化，就不可更改，而指针可以指向另一个变量<br>.不存在NULL引用，指针可以，指针更灵活，但风险也大<br>.指针是一个实体，引用是一个别名<br>.内存上，指针有分配的存储空间，而应用则不用</li>
+                <h2 id="指针与应用"><a href="#指针与应用" class="headerlink" title="指针与应用"></a>指针与应用</h2><p>.初始化要求不同，引用创建的同时必须初始化，而指针不必，可以重新赋值。<br>.可修改性不同，引用一旦被初始化，就不可更改，而指针可以指向另一个变量<br>.不存在NULL引用，指针可以，指针更灵活，但风险也大<br>.指针是一个实体，引用是一个别名<br>.内存上，指针有分配的存储空间，而应用则不用</p>
+<h2 id="tips"><a href="#tips" class="headerlink" title="tips"></a>tips</h2><ul>
 <li>c++无符号右移高位都补0</li>
 <li><code>auto dp = vector&lt;vector&lt;int&gt;&gt;(length, vector&lt;int&gt;(length));</code>可以这样声明数组</li>
-</ol>
+<li>八进制整型常量以”0”开头如:0123</li>
+<li>十六进制以”0x(X)”开头</li>
+<li>长整型以”L(l)”结尾</li>
+<li>无符号型以”U(u)”结尾</li>
+<li>默认数据类型为int型,默认实型为double型,若要表示float型在结尾加”F(f)”</li>
+<li>register+类型+变量名,存放在寄存器,加快调用</li>
+</ul>
+<h2 id="lambda"><a href="#lambda" class="headerlink" title="lambda"></a>lambda</h2><p>格式:<code>[capture list] (parameter list) -&gt; return type &#123;function body&#125;</code>,capture list可以为空，里面一般是包含此lambda的函数的(非static)局部变量,该函数外的变量可以在函数体内直接用,return type可以省略。</p>
 <h2 id="技巧"><a href="#技巧" class="headerlink" title="技巧"></a>技巧</h2><h3 id="使用初始化列表比较大小"><a href="#使用初始化列表比较大小" class="headerlink" title="使用初始化列表比较大小"></a>使用初始化列表比较大小</h3><p><strong>差：</strong><code>small = min(x,min(y,z));</code><br><strong>好：</strong><code>small = min(&#123;x,y,z,k&#125;);</code></p>
 <h3 id="解构"><a href="#解构" class="headerlink" title="解构"></a>解构</h3><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs C++">pair&lt;<span class="hljs-type">int</span>,<span class="hljs-type">int</span>&gt; cur = &#123;<span class="hljs-number">1</span>,<span class="hljs-number">2</span>&#125;;<br><span class="hljs-keyword">auto</span> [x,y] = cur;<br></code></pre></td></tr></table></figure>
 <h3 id="debug宏"><a href="#debug宏" class="headerlink" title="debug宏"></a>debug宏</h3><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs C++"><span class="hljs-meta">#definde deb(x) cout&lt;&lt; #x &lt;&lt; <span class="hljs-string">&quot; = &quot;</span> &lt;&lt; x</span><br><span class="hljs-type">int</span> ten = <span class="hljs-number">10</span>;<br><span class="hljs-built_in">deb</span>(ten); <span class="hljs-comment">//prints &quot;ten = 10&quot;</span><br></code></pre></td></tr></table></figure>
@@ -405,9 +405,9 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2019/07/18/%E4%B8%89%E5%89%91%E5%AE%A2sed_awk_grep/" title="三剑客sed_grep_awk">
+                      <a href="/2019/07/18/sed/" title="sed">
                         <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">三剑客sed_grep_awk</span>
+                        <span class="hidden-mobile">sed</span>
                         <span class="visible-mobile">上一篇</span>
                       </a>
                     
