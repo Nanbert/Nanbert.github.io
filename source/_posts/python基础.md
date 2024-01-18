@@ -2,6 +2,8 @@
 title: python基础
 date: 2024-01-10 03:48:23
 tags:
+index_img: /images/python_basic.png
+banner_img: /images/python_basic.png
 ---
 
 # 函数

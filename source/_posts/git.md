@@ -181,3 +181,14 @@ Tag采用三段式:v版本.里程碑.序号(v2.3.1)
 - 仓库中所有文件的sha1值在.git目录中的objects文件夹下，想要根据sha1值查看文件内容，可以用`git cat-file -p [sha1值]`注意，objects中只有两个数字的文件夹是该文件夹下所有文件内容的sha1值的前两位，所以要拼接一下，当然你如果用命令知道它的完整sha1值就不用拼接了
 - `gitjk`有用的命令，可以查看如何撤销上个命令,可以从网上下载该工具，需要npm
 - `git log --tags --simplify-by-decoration --pretty="format:%ci %d"`通过log来看tag,并且加上了日期
+- 加了ssh-key死活连不上
+    1. 在.ssh文件夹下加个config文件,内容如下：
+ ```c++
+Host github.com
+User 2726905171@qq.com
+Hostname ssh.github.com
+PreferredAuthentications publickey
+IdentityFile ~/.ssh/id_ed25519
+Port 443
+ ```
+    2. 之后执行命令`ssh-add 私钥位置`
