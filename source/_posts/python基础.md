@@ -162,6 +162,131 @@ for index, elem in enumerate(list1):
 |scores.pop('xx', 10)|去除键为xx的元素,如果没有返回10|
 |scores.clear()|清空|
 
+# 类
+## 类的定义
+```python
+class Student(object):
+    # __init__是一个特殊方法用于在创建对象时进行初始化操作
+    # 通过这个方法我们可以为学生对象绑定name和age两个属性
+    def __init__(self, name, age):
+        self.name = name
+        self.age = age
+    def study(self, course_name):
+        print('%s正在学习%s.' % (self.name, course_name))
+    # PEP 8要求标识符的名字用全小写多个单词用下划线连接
+    # 但是部分程序员和公司更倾向于使用驼峰命名法(驼峰标识)
+    def watch_movie(self):
+        if self.age < 18:
+            print('%s只能观看《熊出没》.' % self.name)
+        else:
+            print('%s正在观看岛国爱情大电影.' % self.name)
+```
+## 访问可见性
+- 在属性或方法前加两个下划线`__`，则是私有的，可以加`_Test`前缀强制访问，例如`a.__bar()`不可以访问，`a._Test__bar()`即可访问
+- 可以通过装饰器property设置setter和getter
+```python
+class Person(object):
+    def __init__(self, name, age):
+        self._name = name
+        self._age = age
+    # 访问器 - getter方法
+    @property
+    def name(self):
+        return self._name
+    # 访问器 - getter方法
+    @property
+    def age(self):
+        return self._age
+    # 修改器 - setter方法
+    @age.setter
+    def age(self, age):
+        self._age = age
+    def play(self):
+        if self._age <= 16:
+            print('%s正在玩飞行棋.' % self._name)
+        else:
+            print('%s正在玩斗地主.' % self._name)
+def main():
+    person = Person('王大锤', 12)
+    person.play()
+    person.age = 22
+    person.play()
+    # person.name = '白元芳'  # AttributeError: can't set attribute
+if __name__ == '__main__':
+    main()
+```
+## __slots__
+果我们需要限定自定义类型的对象只能绑定某些属性，可以通过在类中定义__slots__变量来进行限定。需要注意的是__slots__的限定只对当前类的对象生效，对子类并不起任何作用
+```python
+class Person(object):
+    # 限定Person对象只能绑定_name, _age和_gender属性
+    __slots__ = ('_name', '_age', '_gender')
+    def __init__(self, name, age):
+        self._name = name
+        self._age = age
+    @property
+    def name(self):
+        return self._name
+    @property
+    def age(self):
+        return self._age
+    @age.setter
+    def age(self, age):
+        self._age = age
+    def play(self):
+        if self._age <= 16:
+            print('%s正在玩飞行棋.' % self._name)
+        else:
+            print('%s正在玩斗地主.' % self._name)
+def main():
+    person = Person('王大锤', 22)
+    person.play()
+    person._gender = '男'
+    # AttributeError: 'Person' object has no attribute '_is_gay'
+    # person._is_gay = True
+```
+## 静态方法
+```python
+
+class Triangle(object):
+    def __init__(self, a, b, c):
+        self._a = a
+        self._b = b
+        self._c = c
+    @staticmethod
+    def is_valid(a, b, c):
+        return a + b > c and b + c > a and a + c > b
+
+if Triangle.is_valid(a, b, c):
+```
+## 类方法
+```python
+from time import time, localtime, sleep
+class Clock(object):
+    """数字时钟"""
+    def __init__(self, hour=0, minute=0, second=0):
+        self._hour = hour
+        self._minute = minute
+        self._second = second
+    @classmethod
+    def now(cls):
+        ctime = localtime(time())
+        return cls(ctime.tm_hour, ctime.tm_min, ctime.tm_sec)
+clock = Clock.now()
+```
+## 虚类
+```python
+from abc import ABCMeta, abstractmethod
+class Pet(object, metaclass=ABCMeta):
+    """宠物"""
+    def __init__(self, nickname):
+        self._nickname = nickname
+    @abstractmethod
+    def make_voice(self):
+        """发出声音"""
+        pass
+```
+
 # sys
 - sys.getsizeof(var1): 打印变量的空间
 
