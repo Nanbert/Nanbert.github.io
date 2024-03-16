@@ -220,3 +220,35 @@ public:
     {
     return p->f(i);   // possibly a virtual function call
     }
+## c++23的print
+```C++
+#include <print>
+int main()
+{
+    std::print("Hello World! {}, {}, {}\n", 3, 4ll, "aa");
+    // print "Hello World! 3 4 aa"
+}
+```
+
+## c++20的`<=>`
+```C++
+(3 <=> 5) == 0; // false
+('a' <=> 'a') == 0; // true
+(3 <=> 5) < 0; // true
+(7 <=> 5) < 0; // false
+```
+
+## c++20的有符号与无符号的比较
+```C++
+bool cmp_equal(T1 a, T2 b)
+bool cmp_not_equal(T1 a, T2 b)
+bool cmp_less(T1 a, T2 b)
+bool cmp_greater(T1 a, T2 b)
+bool cmp_less_equal(T1 a, T2 b)
+bool cmp_greater_equal(T1 a, T2 b)
+# include <utility>
+unsigned a = 4;
+int b = -3;
+bool v1 = (a > b); // false!!!, see next slides
+bool v2 = std::cmp_greater(a, b); // true
+```
