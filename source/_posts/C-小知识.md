@@ -170,6 +170,7 @@ string_view只读，span<char>可变
 ## [[maybe_unused]]
 可以使用该attribute，声明条件用到的参数
 `Value* find(const set<Value>& s, const Value& v, [[maybe_unused]] Hint hint)`
+`[[maybe_unused]] int x = value`
 ## zstring或not_null<zstring>来表明C字符串
 `int length(const char* p)`=>`int length(zstring p)`
 `int length(not_null<zstring>)`
@@ -251,4 +252,22 @@ unsigned a = 4;
 int b = -3;
 bool v1 = (a > b); // false!!!, see next slides
 bool v2 = std::cmp_greater(a, b); // true
+```
+## C++17 enum class支持attributes
+```c++
+enum class Color { RED, GREEN, BLUE [[deprecated]] };
+auto x = Color::BLUE; // compiler warning
+```
+## Bitfield
+```C++
+struct S1 {
+int b1 : 10; // range [0, 1023]
+int b2 : 10; // range [0, 1023]
+int b3 : 8; // range [0, 255]
+}; // sizeof(S1): 4 bytes
+struct S2 {
+int b1 : 10;
+int : 0; // reset: force the next field
+int b2 : 10; // to start at bit 32
+}; // sizeof(S1): 8 bytes
 ```
