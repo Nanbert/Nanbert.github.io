@@ -238,6 +238,19 @@ int main()
 (3 <=> 5) < 0; // true
 (7 <=> 5) < 0; // false
 ```
+强大的default
+```C++
+# include <compare>
+struct Obj {
+int x;
+char y;
+short z[2];
+auto operator<=>(const Obj&) const = default;
+// if x == other.x, then compare y
+// if y == other.y, then compare z
+// if z[0] == other.z[0], then compare z[1]
+};
+```
 
 ## c++20的有符号与无符号的比较
 ```C++
@@ -258,6 +271,150 @@ bool v2 = std::cmp_greater(a, b); // true
 enum class Color { RED, GREEN, BLUE [[deprecated]] };
 auto x = Color::BLUE; // compiler warning
 ```
+## 函数属性
+
+|关键字|最低标准|含义|
+|:-:|:-:|:-:|
+|`[[noreturn]]`|c++11|表示函数不返回|
+|`[[deprecated]],[[deprecated("reason")]]`|c++14|表示将会弃用函数，产生编译告警|
+|`[[nodiscard]]`|c++17|见下|
+|`[[nodiscard("reason")]]`|c++20|如果返回值没被使用，会产生告警|
+|`[[maybe_unused]]`|c++17|未使用的变量不产生告警|
+
+```C++
+[[noreturn]] void f() { std::exit(0); }
+[[deprecated]] void my_rand() { ... }
+[[nodiscard]] bool g(int& x) {
+update(x);
+bool status = ...;
+return status;
+}
+void h([[maybe_unused]] x) {
+#if !defined(SKIP_COMPUTATION)
+... use x ...
+#endif
+}
+//----------------------------------------------------------------------
+my_rand(); // WARNING "deprecated"
+g(y); // WARNING "discard return value"
+int z = g(); // no warning
+h(3); // no warning if SKIP_COMPUTATION is defined
+```
+
+## 宏
+### 使用条件
+不建议使用宏，一般在以下情况使用宏
+- 条件编译： 不同架构、编译器等
+- 多语言混编
+- 复杂名字代替
+### 内置宏
+```C++
+# include <iostream>
+void f(int p) {
+std::cout << __FILE__ << ":" << __LINE__; // print 'source.cpp:4'
+std::cout << __FUNCTION__; // print 'f'
+std::cout << __func__; // print 'f'
+}
+// see template lectures
+template<typename T>
+float g(T p) {
+std::cout << __PRETTY_FUNCTION__; // print 'float g(T) [T = int]'
+return 0.0f;
+}
+void g1() { g(3); }
+```
+C++20在<source_location>提供了函数方法来代替这些宏。
+```C++
+# include <source_location>
+void f(std::source_location s = std::source_location::current()) {
+cout << "function: " << s.function_name() << ", line " << s.line();
+} // column(),file_name() also support
+f(); // print: "function: f, line 6"
+```
+- `__DATE__`:输出编译的开始日期以'mmm dd yyyy'格式
+- `__TIME__`:输出编译的开始时间
+### 常见的条件编译
+可见网址![](https://sourceforge.net/p/predef/wiki/Home/)
+可见网址![](https://abseil.io/docs/cpp/platforms/macros)
+
+|语法|含义|
+|:-:|:-:|
+|`#if defined( cplusplus)`| C++ code|
+|`#if cplusplus == 199711L`| ISO C++ 1998/2003,仅限于linux,MSVC的2011和2014也是该值|
+|`#if cplusplus == 201103L`| ISO C++ 2011,仅限于linux|
+|`#if cplusplus == 201402L`| ISO C++ 2014,仅限于linux|
+|`#if cplusplus == 201703L`| ISO C++ 2017|
+|`#if defined( GNUG )`| The compiler is gcc/g++ |
+|`#if defined( clang )`| The compiler is clang/clang++|
+|`#if defined( MSC VER)`| The compiler is Microsoft Visual C++|
+|`#if defined( WIN64)`| OS is Windows 64-bit|
+|`#if defined( linux )`| OS is Linux|
+|`#if defined( APPLE )`| OS is Mac OS|
+|`#if defined( MINGW32 )`| OS is MinGW 32-bit|
+
+### 其他
+- `#`:等价于加个双引号
+```C++
+# define STRING_MACRO(string) #string
+cout << STRING_MACRO(hello); // equivalent to "hello"
+# define INFO_MACRO(my_func) \
+{ \
+my_func \
+cout << "call " << #my_func << " at " \
+<< __FILE__ << ":" __LINE__; \
+}
+void g(int) {}
+INFO_MACRO( g(3) ) // print: "call g(3) at my_file.cpp:7"
+```
+- `#error "text"`:编译器遇到时会输出error
+- `#warning "text"`:编译器遇到时会输出warning
+- `##`：连接字符串
+```C++
+# define FUNC_GEN_A(tokenA, tokenB) \
+void tokenA##tokenB() {}
+# define FUNC_GEN_B(tokenA, tokenB) \
+void tokenA##_##tokenB() {}
+FUNC_GEN_A(my, function)
+FUNC_GEN_B(my, function)
+myfunction(); // ok, from FUNC_GEN_A
+my_function(); // ok, from FUNC_GEN_B
+```
+- `__VA_ARGS__`:多参数宏
+```C++
+void f(int a) { printf("%d", a); }
+void f(int a, int b) { printf("%d %d", a, b); }
+void f(int a, int b, int c) { printf("%d %d %d", a, b, c); }
+# define PRINT(...) \
+f( VA ARGS );
+PRINT(1, 2)
+PRINT(1, 2, 3) 
+```
+- `#if __has_include(<iostream>)`：c++17判断是否存在头文件
+```C++
+# if __has_include(<iostream>)
+# include <iostream>
+# endif
+```
+- `#if __cpp_constexpr`:C++20引入，判断编译器是否支持某特性，还有许多其它的宏
+```C++
+# if __cpp_constexpr
+constexpr int square(int x) { return x * x; }
+# endif
+```
+- `#pragma`:调用某个指令，依赖于编译器
+### 技巧
+**数字转字符串**
+```C++
+# define TO_LITERAL_AUX(x) #x
+# define TO_LITERAL(x) TO_LITERAL_AUX(x)
+int main() {
+int x1 = 3 * 10;
+int y1 = __LINE__ + 4;
+char x2[] = TO_LITERAL(3);
+char y2[] = TO_LITERAL(__LINE__);//这里你知道为啥包一层了把，有些并不是无意义的包
+}
+```
+
 ## Bitfield
 ```C++
 struct S1 {
@@ -270,4 +427,18 @@ int b1 : 10;
 int : 0; // reset: force the next field
 int b2 : 10; // to start at bit 32
 }; // sizeof(S1): 8 bytes
+```
+
+## type_info
+```C++
+struct A {
+virtual void f() {}
+};
+struct B : A {};
+A a;
+B b;
+A& a1 = b; // implicit upcasting
+cout << typeid(a).name(); // print "1A"
+cout << typeid(b).name(); // print "1B"
+cout << typeid(a1).name(); // print "1B"
 ```
