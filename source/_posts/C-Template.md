@@ -2,6 +2,8 @@
 title: C++_Template
 date: 2024-03-24 03:59:20
 tags:
+index_img: /images/template.jpg
+banner_img: /images/template.jpg
 ---
 
 # type_traits
@@ -62,4 +64,26 @@ result_t x = add(3, 4.0f);
 - 如果 T 是一个数组类型（如 int[5]），std::decay<T>::type 就是 int*。
 - 如果 T 是一个函数类型，std::decay<T>::type 就是相应的函数指针类型。
 - 如果 T 是一个 cv-qualified 类型（如 const int 或 volatile int），std::decay<T>::type 就是没有这些限定符的 int。
+
+# Variadic Template
+- 可以用`sizeof...(args)`得出个数
+```C++
+// BASE CASE
+template<typename T, typename R>
+auto add(T a, R b) {
+return a + b;
+}
+// RECURSIVE CASE
+template<typename T, typename... TArgs> // Variadic typename
+auto add(T a, TArgs... args) { // Typename expansion
+return a + add(args...); // Arguments expansion
+}
+add(2, 3.0); // 5
+add(2, 3.0, 4); // 9
+add(2, 3.0, 4, 5); // 14
+// add(2); // compile error the base case accepts only two arguments
+```
+
+# Concepts
+
 
