@@ -41,32 +41,62 @@ g++ source2.c -c source2.o -fPIC
 g++ source1.o source2.o -shared -o libmydynamiclib.so
 ```
 - 环境变量：`LD_LIBRARY_PATH`Specify the directories where search for dynamic/shared libraries .dll at run-time
-# 工具
-- `c++filt`可以把mangle的字符串demangle
-- `ldd` shows the shared objects (shared libraries) required by a program or other shared objects
-- `nm`The nm utility provides information on the symbols being used in an object file or executable file
-- `readelf`:displays information about ELF format object files
-```bash
-$ readelf --symbols something.so | c++filt
-... OBJECT LOCAL DEFAULT 17 __frame_dummy_init_array_
-... FILE LOCAL DEFAULT ABS prog.cpp
-... OBJECT LOCAL DEFAULT 14 CC1
-... OBJECT LOCAL DEFAULT 14 CC2
-... FUNC LOCAL DEFAULT 12 g()
-# --symbols: display symbol table
+# 内存检查
+## -fsanitize
+基本比Valgrind工具更好
+### address
+memory error detector,Similar to valgrind but faster (50X slowdown)
+• heap/stack/global out-of-bounds
+• memory leaks
+• use-after-free, use-after-return, use-after-scope
+• double-free, invalid free
+• initialization order bugs
+`clang++ -O1 -g -fsanitize=address -fno-omit-frame-pointer <program>`
+### leak
+a run-time memory leak detector
+`clang++ -O1 -g -fsanitize=leak -fno-omit-frame-pointer <program>`
+### memory
+is detector of uninitialized reads
+`clang++ -O1 -g -fsanitize=memory -fno-omit-frame-pointer <program>`
+### undefined
+a undefined behavior detector
+- signed integer overflow, floating-point types overflow, enumerated not in range
+- out-of-bounds array indexing, misaligned address
+- divide by zero
+- etc.
+`clang++ -O1 -g -fsanitize=undefined -fno-omit-frame-pointer <program>`
+### integer
+Checks for undefined or suspicious integer behavior (e.g. unsigned integer overflow)
+### nullability
+Checks passing null as a function parameter, assigning null to an lvalue, and returning null from a function
+# Warn
+- `Wall`:Enables many standard warnings (∼50 warnings)
+- `Wextra`:Enables some extra warning flags that are not enabled by -Wall (∼15 warnings)
+- `Wpedantic`:Issue all the warnings demanded by strict ISO C/C++
+
+# 栈有关选项
+- `-Wstack-usage=<byte-size>` Warn if the stack usage of a function might exceed byte-size. The computation done to determine the stack usage is conservative (no VLA)
+- `fstack-usage` Makes the compiler output stack usage information for the
+program, on a per-function basis
+- `-Wvla` Warn if a variable-length array is used in the code
+- `-Wvla-larger-than=<byte-size>` Warn for declarations of variable-length arrays whose size is either unbounded, or bounded by an argument that allows the array size to exceed byte-size bytes
+## _FORTIFY_SOURCE
+Adding FORTIFY SOURCE define, the compiler provides buffer overflow checks for the
+following functions:
+memcpy , mempcpy , memmove , memset , strcpy , stpcpy , strncpy , strcat ,
+strncat , sprintf , vsprintf , snprintf , vsnprintf , gets .
+```C++
+# include <cstring> // std::memset
+# include <string> // std::stoi
+int main(int argc, char** argv) {
+int size = std::stoi(argv[1]);
+char buffer[24];
+std::memset(buffer, 0xFF, size);
+}
 ```
-- `objdump`:displays information about object files
 ```bash
-$ objdump -t -C something.so | c++filt
-... df *ABS* ... prog.cpp
-... O .rodata ... CC1
-... O .rodata ... CC2
-... F .text ... g()
-... O .rodata ... (anonymous namespace)::CC3
-... O .rodata ... (anonymous namespace)::CC4
-... F .text ... (anonymous namespace)::h()
-... F .text ... (anonymous namespace)::B::j1()
-... F .text ... (anonymous namespace)::B::j2()
-# --t: display symbols
-# -C: Decode low-level symbol names
+$ gcc -O1 -D FORTIFY SOURCE program.cpp -o program
+$ ./program 12 # OK
+$ ./program 32 # Wrong
+$ *** buffer overflow detected ***: ./program terminated
 ```
