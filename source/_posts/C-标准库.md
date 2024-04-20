@@ -82,6 +82,16 @@ unsigned seed2 = seed1 + 1000;
 std::seed_seq seq1{ seed1, seed2 };
 std::default_random_engine generator1(seq);
 ```
+## bit
+以下方法支持bitwise，性能更好
+rotate left : std::rotl
+rotate right : std::rotr
+count leading zero : std::countl zero
+count leading one : std::countl one
+count trailing zero : std::countr zero
+count trailing one : std::countr one
+population count : std::popcount
+
 ## 随机引擎
 三种随机引擎的对比
 |Generator|Quality|Period|Randomness|C++引擎|
@@ -290,3 +300,61 @@ fs::copy_file(p1, "/my_dir/my_file2.txt");
 fs::remove(p1);
 fs::remove_all(p1.parent_path());
 ```
+# 多线程库
+## thread
+```C++
+# include <iostream>
+# include <thread>
+# include <vector>
+void f(int id) {
+std::cout << "thread " << id << std::endl;
+}
+int main() {
+std::vector<std::thread> thread_vect; // thread vector
+for (int i = 0; i < 10; i++)
+thread_vect.push_back( std::thread(&f, i) );
+for (auto& th : thread_vect)
+th.join();
+thread_vect.clear();
+for (int i = 0; i < 10; i++) { // thread + lambda expression
+thread_vect.push_back(
+std::thread( [](){ std::cout << "thread\n"; } );
+}
+```
+
+|类别|函数|说明|
+|:-:|:-:|:-:|
+|库函数|`std::this_thread::get_id()`|返回线程id|
+|库函数|`std::this_thread::sleep_for(sleep_duration)`|blocks the thread|
+|库函数|`std::thread::hardware_concurrency()`|returns the number of concurrent threads supported by the implementation|
+|对象方法|`get_id()`|returns the thread id|
+|对象方法|`join()`|waits for a thread to finish its execution|
+|对象方法|`detach()`|permits the thread to execute independently of the thread handle|
+## mutex
+## atomic
+## future
+The future library provides facilities to obtain values that are returned and to catch exceptions that are thrown by asynchronous tasks
+```C++
+# include <future> // numeric, algorithm, vector, iostream
+template <typename RandomIt>
+int parallel_sum(RandomIt beg, RandomIt end) {
+auto len = end - beg;
+if (len < 1000) // base case
+return std::accumulate(beg, end, 0);
+RandomIt mid = beg + len / 2;
+auto handle = std::async(std::launch::async, // right side
+parallel_sum<RandomIt>, mid, end);
+int sum = parallel_sum(beg, mid); // left side
+return sum + handle.get(); // left + right
+}
+int main() {
+std::vector<int> v(10000, 1); // init all to 1
+std::cout << "The sum is " << parallel_sum(v.begin(), v.end());
+}
+```
+std::future methods:
+• T get() returns the result
+• wait() waits for the result to become available
+async() can be called with two launch policies for a task executed:
+• std::launch::async a new thread is launched to execute the task asynchronously
+• std::launch::deferred the task is executed on the calling thread the first time its result is requested (lazy evaluation)
