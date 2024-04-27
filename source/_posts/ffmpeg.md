@@ -5,6 +5,9 @@ tags:
 ---
 # 视频剪裁
 - 裁剪:`ffmpeg -i xx.mp4 -vcodec copy -acodec copy -ss 00:00:00 -to 01:18:08 output.mp4`
+## 精确剪切
+ffmpeg 会在你输入的时间点附近调整到最接近的关键帧处，这会导致时间不准确，可以先转换为帧内编码（每一帧都是关键帧）
+`ffmpeg -i xx.flv -strict -2 -qscale 0 -intra xx2.flv`
 # 合并:
 ## 通用
  先建立个文本文档file,格式如下:
@@ -57,6 +60,13 @@ It's you,Assole!
 # 视频与声音
 - 静音:`ffmpeg -i 10.mp4 -af "volume=0" 10Silent.mp4`
 - 静音一部分:`ffmpeg -i 10.mp4 -af "volume=enable='between(t,0,8)':volume=0" 10Silent.mp4`
+- 去掉原声:`ffmpeg -i 12.mp4 -c:v copy -an xx.mp4`
+- 合并指定音频:`ffmpeg -i out.mp4 -i xx.mp3 xx.mp4`
+- 指定合成时间：`ffmpeg -i out.mp4 -i xx.mp3 -t 30 xx.mp4`
+- 保留视频原声并添加新音频:`ffmpeg -i xx.mp3 -i 22.mp4 -filter_complex amix=inputs=2 output.mp4`
+- 替换原来的音频：`ffmpeg -i xx.wav -i xx.flv -shortest -c copy xx.flv`
+- 提取音频：`ffmpeg -i xx.flv -vn -acodec copy xx.wav`
+- 调整音量：`ffmpeg -i input.wav -af 'volume=1.5' xx.wav`
 # 流媒体
 - 一边播放一边保存流媒体:`ffmpeg -i host/input.m3u8 -c copy out.mkv -c copy -f matroska - | ffplay - `
 # 音频
@@ -139,4 +149,50 @@ ffmpeg -i buck.mp4 -i s1.jpg -lavfi "[1:v]format=rgba,rotate='PI/6:c=0x00000000:
 ffmpeg -i buck.mp4 -loop 1 -i s1.jpg -lavfi "[1:v]format=rgba,rotate='PI/2*t:c=0x00000000:ow=hypot(iw,ih):oh=ow'[out];[0:v][out]overlay=10:10" -shortest out.mp4 -y
 这次水印图片前面添加了-loop 1，正常情况下水印图片默认在播放一次后就停下来，保留最后一帧，所以要让水印图片保持循环才行。
 ```
+# 录屏及摄像头
+- `ffmpeg -devices`:列出音频设备及摄像头
+## 录屏命令
+`ffmpeg -f x11grab -s 1920x1080 -r 30 -i :0.0 -c:v libx264 output.mp4`
+- -f x11grab 指定使用X11grab设备作为输入。
+- -s [分辨率] 设置录制视频的分辨率，例如 1920x1080。不指定就是全屏
+- -r [帧率] 设置录制视频的帧率，例如 30。
+- -i :0.0 指定要捕获的X11屏幕。:0.0 通常表示第一个屏幕。如果你有多个屏幕或显示设置不同，这个值可能需要调整。
+- -c:v [编码器] 设置视频编码器，例如 libx264 用于H.264编码。
+- output.mp4 是输出文件的名称。
+## 录屏加声音
+`ffmpeg -f x11grab -i :0.0 -f alsa -ac 2 -i hw:2 -vcodec libx264 -acodec libmp3lame -s 1280x720 -r 15 xx.mp4`
+alsa使用于linux alsa声卡，`hw:2`是当前电脑上的设备，可以用`arecord -l`命令来显示设备，card几就hw:几
+## 摄像头
+`ffmpeg -f v4l2 -framerate 25 -video_size 640x480 -i /dev/video0 xx.mkv`
+可以通过`v4l2-ctl --list-devices`来查看v4l2的设备，
+## 摄像头加声音
+`ffmpeg -f v4l2 -framerate 25 -video_size 640x480 -i /dev/video0 -f alsa -ac 2 -i hw:2 -vcodec libx264 -acodec libmp3lame xx.mkv`
+# 文字水印
+`ffmpeg -i xx.mp4 -vf "drawtext=fontfile=simhei.ttf: text='hi,Nanbert':x=100:y=1fontsize=24fontcolor=white:shadowy=2" output.mp4`
+- ontfile:字体类型
+- text:要添加的文字内容
+- fontsize:字体大小
+- fontcolor：字体颜色
+# 各种特效
+- 渐入:`ffmpeg -i in.mp4 -vf fade=in:0:90 out.mp4`
+- 黑白:`ffmpeg -i in.mp4 -vf lutyuv="u=128:v=128" out.mp4`
+- 锐化:`ffmpeg -i in.mp4 -vf unsharp=luma_msize_x=7:luma_msize_y=7:luma_amount=2.5 out.mp4`
+- 反锐化:`ffmpeg -i in.mp4 -vf unsharp=7:7:-2:7:7:-2 out.mp4`
+- 渐晕:`ffmpeg -i in.mp4 -vf vignette=PI/4 out.mp4`
+- 闪烁渐晕:`ffmpeg -i in.mp4 -vf vignette='PI/4+random(1)*PI/50':eval=frame out.mp4`
+- 视频颤抖:`ffmpeg -i in.mp4 -vf crop="in_w/2:in_h/2:(in_w-out_w)/2+((in_w-out_w)/2)*sin(n/10):(in_h-out_h)/2+((in_h-out_h)/2)*sin(n/7)" out.mp4`
+- 色彩变幻:`ffmpeg -i in.mp4 -vf hue="H=2*PI*t:s=sin(2*PI*t)+1" out.mp4`
+- 模糊处理:`ffmpeg -i in.mp4 -vf boxblur=5:1:cr=0:ar=0 out.mp4`
+- 镜像翻转:`ffmpeg -i in.mp4 -vf crop=iw/2:ih:0:0,split[left][tmp];[tmp]hflip[right];[left]pad=iw*2[a];[a][right]overlay=w out.mp4`
+- 水平翻转:`ffmpeg -i in.mp4 -vf geq=p(W-X\\,Y) out.mp4`
+- 垂直翻转:`ffmpeg -i in.mp4 -vf vflip out.mp4`
+- 浮雕效果:`ffmpeg -i in.mp4 -vf format=gray,geq=lum_expr='(p(X,Y)+(256-p(X-4,Y-4)))/2' out.mp4`
+- 均匀噪声:`ffmpeg -i in.mp4 -vf noise=alls=20:allf=t+u out.mp4`
+# 字幕
+- `ffmpeg -i xx.mp4 -vf ass=xx.ass -b:v 3000k xx.mp4`
+# 图片
+- 5秒处截图：`ffmpeg -ss 00:00:05 -i xx.mp4 xx.jpg -r 1 -vframes 1 -an -vodec mjpeg`
+- 每一帧输出图片：`ffmpeg -i xx.mp4 image_%d.jpg`
+- 图片转为视频：`ffmpeg -f image2 -i image_%d.jpg video.mpg`
+
 
