@@ -170,34 +170,44 @@ banner_img: /images/linuxCmd.jpeg
   - `-M`忽略产生的任何输出
   - /etc/at.deny,文件中的用户不能执行at(系统默认存在)
   - /etc/at.allow,默认不存在,只要存在的用户才能执行
-- crontab服务定时任务计划
-  - `sudo systemctl start cronie.service`启动服务
-  - `crontab -e`新增任务或编辑任务
-  格式如下: `<minute> <hour> <day> <month> <week> <command>`
+# crontab服务定时任务计划
+- `sudo systemctl start cronie.service`启动服务
+- `crontab -e`新增任务或编辑任务
+- `crontab -l`显示crontab文件
+- `crontab -r`删除crontab文件
+- `crontab -ir`删除crontab文件前提醒用户
+## 内容格式
+格式如下: `<minute> <hour> <day> <month> <week> <command>`
 
-  |条目|取值|
-  |:-:|:-:|
-  |minute|0到59之间任何整数|
-  |hour|0到23之间任何整数|
-  |day|1到31之间的任何整数|
-  |month|1到12之间任何整数|
-  |week|1到7之间任何整数,|
-  |command|执行的命令|
-  (\*)代表所有可能值
+|条目|取值|
+|:-:|:-:|
+|minute|0到59之间任何整数|
+|hour|0到23之间任何整数|
+|day|1到31之间的任何整数|
+|month|1到12之间任何整数|
+|week|1到7之间任何整数,|
+|command|执行的命令|
 
-  (,)一个列表范围
-  
-  (-)表示一个整数范围
-  
-  (/)指定时间间隔的频率,比如"0-23/2"表示每两小时执行
-
-  - `crontab -l`显示crontab文件
-  - `crontab -r`删除crontab文件
-  - `crontab -ir`删除crontab文件前提醒用户
-
-  如果对时间精读要求不高,可以把脚本复制到/etc/cron.daily等目录下
-
-  anacron是对该程序的一个补充,它会自动运行crontab原本应该运行但由于关机等原因造成的程序,但它只会处理位于/etc/cron.daily、/etc/cron.weekly、/etc/cron.monthly下的脚本文件,它的配置文件位于/etc/anacrontab
+- `*`代表所有可能值
+- `,`一个列表范围
+- `-`表示一个整数范围
+- `/`指定时间间隔的频率,比如"0-23/2"表示每两小时执行
+## example
+如果对时间精读要求不高,可以把脚本复制到/etc/cron.daily等目录下
+- `* * * * * myCommand`:每分钟执行一次
+- `3,15 * * * * myCommand`:每小时的第3和第15分钟执行
+- `3,15 8-11 * * * myCommand`:在上午8点到11点的第3和第15分钟执行
+- `3,15 8-11 */2  *  * myCommand`:每隔两天的上午8点到11点的第3和第15分钟执行
+- `3,15 8-11 * * 1 myCommand`:每周一上午8点到11点的第3和第15分钟执行
+- `30 21 * * * /etc/init.d/smb restart`:每晚的21:30重启smb
+- `45 4 1,10,22 * * /etc/init.d/smb restart`:每月1、10、22日的4 : 45重启smb
+- `10 1 * * 6,0 /etc/init.d/smb restart`:每周六、周日的1 : 10重启smb
+- `0,30 18-23 * * * /etc/init.d/smb restart`:每天18 : 00至23 : 00之间每隔30分钟重启smb
+- `0 23 * * 6 /etc/init.d/smb restart`:每星期六的晚上11 : 00 pm重启smb
+- `* */1 * * * /etc/init.d/smb restart`:每一小时重启smb
+- `0 23-7 * * * /etc/init.d/smb restart`晚上11点到早上7点之间，每隔一小时重启smb
+## anacron
+anacron是对该程序的一个补充,它会自动运行crontab原本应该运行但由于关机等原因造成的程序,但它只会处理位于/etc/cron.daily、/etc/cron.weekly、/etc/cron.monthly下的脚本文件,它的配置文件位于/etc/anacrontab
 anacron是自动运行的?(有待研究)
 - run-parts一个接一个运行同一目录下的脚本
   -  `run-parts<directory-path>`
@@ -223,19 +233,6 @@ anacron是自动运行的?(有待研究)
 - coproc(这就是协程?)
   `coproc [job_name(可选)] [command]`等价于`( command )&`
   即生成后台子shell，并在子shell中执行命令。command本身可以是小括号命令集(嵌套子shell)或大括号命令集
-- lsof列出打开的文件描述符
-  - -p:指定进程ID
-  - -d:指定要显示的文件描述符编号
-  - `lsof -a -p $$ -d 0,1,2`显示当前进程0,1,2的文件描述符信息,信息含义如下:
-    * COMMAND 正在运行的命令名的前 9 个字符
-    * PID 进程的 PID
-    * USER 进程属主的登录名
-    * FD 文件描述符号以及访问类型（r 代表读，w 代表写，u 代表读写）
-    * TYPE 文件的类型（CHR 代表字符型，BLK 代表块型，DIR 代表目录，REG 代表常规文件）
-    * DEVICE 设备的设备号（主设备号和从设备号）
-    * SIZE 如果有的话，表示文件的大小
-    * NODE 本地文件的节点号
-    * NAME 文件名
 - mktemp
 
   mktemp可以用来创建临时文件,成功会输出文件路径
@@ -249,8 +246,6 @@ anacron是自动运行的?(有待研究)
   `nice -[num] [command]`,num值越大,优先级越低,可以通过"ps -o ni"查看优先级,只能降低,不能提高优先级,
 - renice调整某个程序优先级
   `renice -[num] -p [process id]`普通用户只能降低优先级,root可以任意调整
-- neofetch
-  显示arch linux系统信息
 - ntpd
   `sudo ntpd -qg`可以校准时间
 - readlink输出文件的绝对路径

@@ -805,3 +805,6 @@ TLS属于third-party,你可以通过--version查看，如果你feature中有Mult
 SSL2(1995)->SSL3->TLS1.0(1999)->TLS1.1(2006)->TLS1.2(2008)->TLS1.3(2018)
 ### CA的存储
 一般都是内建的，但你也可以用--cacert指定路径（一定要是PEM格式），或者设置CURL-CA_BUNDLE环境变量
+
+## wget
+- ![](https://linuxtools-rst.readthedocs.io/zh-cn/latest/tool/wget.html)

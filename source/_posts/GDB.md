@@ -109,3 +109,10 @@ banner_img: /images/gdb.png
 　`cal <expr>`:调用某函数
 - `ptype`:显示某个量的类型
 - `until`:执行某个循环体直到结束
+# 分割窗口
+- `layout`：用于分割窗口，可以一边查看代码，一边测试：
+- `layout src`：显示源代码窗口
+- `layout asm`：显示反汇编窗口
+- `layout regs`：显示源代码/反汇编和CPU寄存器窗口
+- `layout split`：显示源代码和反汇编窗口
+- Ctrl+L:刷新窗口
