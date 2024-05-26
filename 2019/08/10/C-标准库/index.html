@@ -25,7 +25,7 @@
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="http://example.com/images/STL.webp">
 <meta property="article:published_time" content="2019-08-10T13:22:59.000Z">
-<meta property="article:modified_time" content="2023-12-20T12:29:43.573Z">
+<meta property="article:modified_time" content="2024-04-17T20:45:56.540Z">
 <meta property="article:author" content="Nanbert">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="http://example.com/images/STL.webp">
@@ -221,7 +221,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          166 字
+          410 字
         
       </span>
     
@@ -232,7 +232,7 @@
         
         
         
-          2 分钟
+          4 分钟
         
       </span>
     
@@ -311,6 +311,186 @@
 </tr>
 </tbody></table>
 <h1 id="优先队列"><a href="#优先队列" class="headerlink" title="优先队列"></a>优先队列</h1><p>格式:<code>priority_queue&lt;Type,Container,Functional&gt;</code><br>例子:<code>priority_queue&lt;int,vector&lt;int&gt;,myCompare&gt;</code>,myCompare可以替换为less<int>降序,greater<int>升序</p>
+<h1 id="数学相关"><a href="#数学相关" class="headerlink" title="数学相关"></a>数学相关</h1><h2 id="cmath"><a href="#cmath" class="headerlink" title="cmath"></a>cmath</h2><ul>
+<li>fabs(x) computes absolute value, |x|, C++11</li>
+<li>exp(x) returns e raised to the given powerx</li>
+<li>exp2(x) returns 2 raised to the given power , C++11</li>
+<li>log(x) computes natural (base e) logarithm, loge (x)</li>
+<li>log10(x) computes base 10 logarithm, log10(x)</li>
+<li>log2(x) computes base 2 logarithm, log2 (x), C++11</li>
+<li>pow(x, y) raises a number to the given power, x y</li>
+<li>sqrt(x) computes square root</li>
+<li>cqrt(x) computes cubic root x, C++11</li>
+<li>sin(x) computes sine, sin(x)</li>
+<li>cos(x) computes cosine, cos(x)</li>
+<li>tan(x) computes tangent, tan(x)</li>
+<li>ceil(x) nearest integer not less than the given value, ⌈x⌉</li>
+<li>floor(x) nearest integer not greater than the given value, ⌊x⌋</li>
+<li>atan2(y,x)</li>
+<li>atan(y)</li>
+<li>asin()</li>
+<li>acos()</li>
+<li>round|lround|llround(x) nearest integer(x+0.5),  (return type: floating point, long, long long respectivel</li>
+</ul>
+<h2 id="limits"><a href="#limits" class="headerlink" title="limits"></a>limits</h2><ul>
+<li><code>T numeric_limits&lt;T&gt;:: max()</code></li>
+<li><code>T numeric_limits&lt;T&gt;:: min()</code></li>
+<li><code>T numeric_limits&lt;T&gt;:: lowest()</code></li>
+</ul>
+<h2 id="numeric-c-20"><a href="#numeric-c-20" class="headerlink" title="numeric(c++20)"></a>numeric(c++20)</h2><ul>
+<li><code>e</code> Euler number e</li>
+<li><code>pi</code> π</li>
+<li><code>phi</code>黄金分割比率</li>
+<li><code>sqrt2</code></li>
+</ul>
+<h1 id="随机数"><a href="#随机数" class="headerlink" title="随机数"></a>随机数</h1><ul>
+<li>选择随机种子seed(随机引擎的初始值)</li>
+<li>定义随机引擎<code>&lt;type of random engine&gt; generator(seed)</code></li>
+<li>定义分布<code>&lt;type of distribution&gt; distribution(range start, range end)</code></li>
+<li>产生随机数<code>distribution(generator)</code></li>
+</ul>
+<h2 id="产生种子"><a href="#产生种子" class="headerlink" title="产生种子"></a>产生种子</h2><ul>
+<li>自定义：<code>unsigned seed = 2</code>,注意相同种子，产生的随机序列是一样的</li>
+<li>使用时间<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs C++"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;random&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;chrono&gt;</span></span><br><span class="hljs-type">unsigned</span> seed = std::chrono::system_clock::<span class="hljs-built_in">now</span>()<br>.<span class="hljs-built_in">time_since_epoch</span>().<span class="hljs-built_in">count</span>();<br><span class="hljs-function">std::default_random_engine <span class="hljs-title">generator</span><span class="hljs-params">(seed)</span></span>;<br></code></pre></td></tr></table></figure></li>
+</ul>
+<h3 id="使用random-device"><a href="#使用random-device" class="headerlink" title="使用random_device"></a>使用random_device</h3><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs C++"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;random&gt;</span></span><br>std::random_device rnd_device;<br><span class="hljs-function">std::default_random_engine <span class="hljs-title">generator</span><span class="hljs-params">(rnd_device())</span></span>;<br></code></pre></td></tr></table></figure>
+<h3 id="使用seed-seq"><a href="#使用seed-seq" class="headerlink" title="使用seed seq"></a>使用seed seq</h3><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs C++"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;random&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;chrono&gt;</span></span><br><span class="hljs-type">unsigned</span> seed1 = std::chrono::system_clock::<span class="hljs-built_in">now</span>()<br>.<span class="hljs-built_in">time_since_epoch</span>().<span class="hljs-built_in">count</span>();<br><span class="hljs-type">unsigned</span> seed2 = seed1 + <span class="hljs-number">1000</span>;<br>std::seed_seq seq1&#123; seed1, seed2 &#125;;<br><span class="hljs-function">std::default_random_engine <span class="hljs-title">generator1</span><span class="hljs-params">(seq)</span></span>;<br></code></pre></td></tr></table></figure>
+<h2 id="bit"><a href="#bit" class="headerlink" title="bit"></a>bit</h2><p>以下方法支持bitwise，性能更好<br>rotate left : std::rotl<br>rotate right : std::rotr<br>count leading zero : std::countl zero<br>count leading one : std::countl one<br>count trailing zero : std::countr zero<br>count trailing one : std::countr one<br>population count : std::popcount</p>
+<h2 id="随机引擎"><a href="#随机引擎" class="headerlink" title="随机引擎"></a>随机引擎</h2><p>三种随机引擎的对比</p>
+<table>
+<thead>
+<tr>
+<th align="center">Generator</th>
+<th align="center">Quality</th>
+<th align="center">Period</th>
+<th align="center">Randomness</th>
+<th align="center">C++引擎</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">Linear Congruential</td>
+<td align="center">Poor</td>
+<td align="center">10^9</td>
+<td align="center">Statistical tests</td>
+<td align="center">std::minstd_rand,std::minstd_rand0,std::knuth_b</td>
+</tr>
+<tr>
+<td align="center">Mersenne Twister 32&#x2F;64-bit</td>
+<td align="center">High</td>
+<td align="center">10^6000</td>
+<td align="center">Statistical tests</td>
+<td align="center">std::mt19937,std::19937_64</td>
+</tr>
+<tr>
+<td align="center">Subtract-with-carry 24&#x2F;48-bit</td>
+<td align="center">Highest</td>
+<td align="center">10^171</td>
+<td align="center">Mathematically proven</td>
+<td align="center">std::ranlux24_base,std::ranlux48_base,std::ranlux24,std::ranlux48</td>
+</tr>
+</tbody></table>
+<h2 id="分布"><a href="#分布" class="headerlink" title="分布"></a>分布</h2><ul>
+<li><code>uniform int distribution&lt;T&gt;(range start, range end)</code> where T is integral type</li>
+<li><code>uniform real distribution&lt;T&gt;(range start, range end)</code> where T is floating point type</li>
+<li><code>normal distribution&lt;T&gt;(mean, std dev)</code>where T is floating point type</li>
+<li><code>exponential distribution&lt;T&gt;(lambda)</code>where T is floating point type</li>
+</ul>
+<h1 id="时间"><a href="#时间" class="headerlink" title="时间"></a>时间</h1><ul>
+<li><code>Wall-Clock/Real time</code> It is the human perception of the passage of time from the start to the completion of a task(整个程序的时间)</li>
+<li><code>User/CPU time</code> The amount of time spent by the CPU to compute in user code(用户空间的执行时间)</li>
+<li><code>System time</code> The amount of time spent by the CPU to compute system calls (including I&#x2F;O calls) executed into kernel code(内核消耗的时间)<br>如果程序是但线程并且系统负载不高则有：<br>Wall-clock time &#x3D; User time + System time</li>
+</ul>
+<h2 id="Real-Time"><a href="#Real-Time" class="headerlink" title="Real Time"></a>Real Time</h2><h3 id="linux系统调用"><a href="#linux系统调用" class="headerlink" title="linux系统调用"></a>linux系统调用</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-comment"># include &lt;time.h&gt; //struct timeval</span><br><span class="hljs-comment"># include &lt;sys/time.h&gt; //gettimeofday()</span><br>struct timeval start, end; // timeval &#123;second, microseconds&#125;<br>::gettimeofday(&amp;start, NULL);<br>... // code<br>::gettimeofday(&amp;end, NULL);<br>long start_time = start.tv_sec * 1000000 + start.tv_usec;<br>long end_time = end.tv_sec * 1000000 + end.tv_usec;<br>cout &lt;&lt; <span class="hljs-string">&quot;Elapsed: &quot;</span> &lt;&lt; <span class="hljs-string">end_time - start_time; // in microsec</span><br></code></pre></td></tr></table></figure>
+<h3 id="chrono"><a href="#chrono" class="headerlink" title="chrono"></a>chrono</h3><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs C++"><span class="hljs-meta"># <span class="hljs-keyword">include</span> <span class="hljs-string">&lt;chrono&gt;</span></span><br><span class="hljs-keyword">auto</span> start_time = std::chrono::system_clock::<span class="hljs-built_in">now</span>();<br>... <span class="hljs-comment">// code</span><br><span class="hljs-keyword">auto</span> end_time = std::chrono::system_clock::<span class="hljs-built_in">now</span>();<br>std::chrono::duration&lt;<span class="hljs-type">double</span>&gt; diff = end_time - start_time;<br>cout &lt;&lt; <span class="hljs-string">&quot;Elapsed: &quot;</span> &lt;&lt; diff.<span class="hljs-built_in">count</span>(); <span class="hljs-comment">// in seconds</span><br>cout &lt;&lt; std::chrono::<span class="hljs-built_in">duration_cast</span>&lt;milli&gt;(diff).<span class="hljs-built_in">count</span>(); <span class="hljs-comment">// in ms</span><br></code></pre></td></tr></table></figure>
+<h2 id="User-Time"><a href="#User-Time" class="headerlink" title="User Time"></a>User Time</h2><h3 id="chrono-1"><a href="#chrono-1" class="headerlink" title="chrono"></a>chrono</h3><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs C++"><span class="hljs-meta"># <span class="hljs-keyword">include</span> <span class="hljs-string">&lt;chrono&gt;</span></span><br><span class="hljs-type">clock_t</span> start_time = std::<span class="hljs-built_in">clock</span>();<br>... <span class="hljs-comment">// code</span><br><span class="hljs-type">clock_t</span> end_time = std::<span class="hljs-built_in">clock</span>();<br><span class="hljs-type">float</span> diff = <span class="hljs-built_in">static_cast</span>&lt;<span class="hljs-type">float</span>&gt;(end_time - start_time) / CLOCKS_PER_SEC;<br>cout &lt;&lt; <span class="hljs-string">&quot;Elapsed: &quot;</span> &lt;&lt; diff; <span class="hljs-comment">// in seconds</span><br></code></pre></td></tr></table></figure>
+<h3 id="系统调用-包含内核时间的计算方法"><a href="#系统调用-包含内核时间的计算方法" class="headerlink" title="系统调用(包含内核时间的计算方法)"></a>系统调用(包含内核时间的计算方法)</h3><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs C++"><span class="hljs-meta"># <span class="hljs-keyword">include</span> <span class="hljs-string">&lt;sys/times.h&gt;</span></span><br><span class="hljs-keyword">struct</span> ::tms start_time, end_time;<br>::<span class="hljs-built_in">times</span>(&amp;start_time);<br>... <span class="hljs-comment">// code</span><br>::<span class="hljs-built_in">times</span>(&amp;end_time);<br><span class="hljs-keyword">auto</span> user_diff = end_time.tmus_utime - start_time.tms_utime;<br><span class="hljs-keyword">auto</span> sys_diff = end_time.tms_stime - start_time.tms_stime;<br><span class="hljs-type">float</span> user = <span class="hljs-built_in">static_cast</span>&lt;<span class="hljs-type">float</span>&gt;(user_diff) / ::<span class="hljs-built_in">sysconf</span>(_SC_CLK_TCK);<br><span class="hljs-type">float</span> sys = <span class="hljs-built_in">static_cast</span>&lt;<span class="hljs-type">float</span>&gt;(sys_diff) / ::<span class="hljs-built_in">sysconf</span>(_SC_CLK_TCK);<br>cout &lt;&lt; <span class="hljs-string">&quot;user time: &quot;</span> &lt;&lt; user; <span class="hljs-comment">// in seconds</span><br>cout &lt;&lt; <span class="hljs-string">&quot;system time: &quot;</span> &lt;&lt; sys; <span class="hljs-comment">// in seconds</span><br></code></pre></td></tr></table></figure>
+<h1 id="tuple"><a href="#tuple" class="headerlink" title="tuple"></a>tuple</h1><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs C++"><span class="hljs-meta"># <span class="hljs-keyword">include</span> <span class="hljs-string">&lt;tuple&gt;</span></span><br><span class="hljs-function">std::tuple&lt;<span class="hljs-type">int</span>, <span class="hljs-type">float</span>, <span class="hljs-type">char</span>&gt; <span class="hljs-title">f</span><span class="hljs-params">()</span> </span>&#123; <span class="hljs-keyword">return</span> &#123;<span class="hljs-number">7</span>, <span class="hljs-number">0.1f</span>, <span class="hljs-string">&#x27;a&#x27;</span>&#125;; &#125;<br><span class="hljs-function">std::tuple&lt;<span class="hljs-type">int</span>, <span class="hljs-type">char</span>, <span class="hljs-type">float</span>&gt; <span class="hljs-title">tuple1</span><span class="hljs-params">(<span class="hljs-number">3</span>, <span class="hljs-string">&#x27;c&#x27;</span>, <span class="hljs-number">2.2f</span>)</span></span>;<br><span class="hljs-keyword">auto</span> tuple2 = std::<span class="hljs-built_in">make_tuple</span>(<span class="hljs-number">2</span>, <span class="hljs-string">&#x27;d&#x27;</span>, <span class="hljs-number">1.5f</span>);<br>cout &lt;&lt; std::<span class="hljs-built_in">get</span>&lt;<span class="hljs-number">0</span>&gt;(tuple1); <span class="hljs-comment">// print 3</span><br>cout &lt;&lt; std::<span class="hljs-built_in">get</span>&lt;<span class="hljs-number">1</span>&gt;(tuple1); <span class="hljs-comment">// print &#x27;c&#x27;</span><br>cout &lt;&lt; std::<span class="hljs-built_in">get</span>&lt;<span class="hljs-number">2</span>&gt;(tuple1); <span class="hljs-comment">// print 2.2f</span><br>cout &lt;&lt; (tuple1 &gt; tuple2); <span class="hljs-comment">// print true</span><br><span class="hljs-keyword">auto</span> concat = std::<span class="hljs-built_in">tuple_cat</span>(tuple1, tuple2);<br>cout &lt;&lt; std::tuple_size&lt;<span class="hljs-keyword">decltype</span>(concat)&gt;::value; <span class="hljs-comment">// print 6</span><br><span class="hljs-keyword">using</span> T = std::tuple_element&lt;<span class="hljs-number">4</span>, <span class="hljs-keyword">decltype</span>(concat)&gt;::type; <span class="hljs-comment">// T is int</span><br><span class="hljs-type">int</span> value1; <span class="hljs-type">float</span> value2;<br>std::<span class="hljs-built_in">tie</span>(value1, value2, std::ignore) = <span class="hljs-built_in">f</span>();<span class="hljs-comment">//creates a tuple of references to its arguments</span><br>std::<span class="hljs-built_in">swap</span>(tuple1,tuple2);<br></code></pre></td></tr></table></figure>
+<h1 id="variant-c-17"><a href="#variant-c-17" class="headerlink" title="variant(c++17)"></a>variant(c++17)</h1><p>代替联合体union，类型安全(切换类型前会自动析构)，见<a target="_blank" rel="noopener" href="https://en.cppreference.com/w/cpp/utility/variant">variant</a></p>
+<ul>
+<li>构造：<code>std::variant&lt;int, float&gt; tmp</code></li>
+<li>获取类型个数：<code>std::variant_size_v&lt;decltype(tmp)&gt; // 2</code></li>
+<li>获取下标：<code>tmp = 3.2; tmp.index() // 1</code></li>
+<li>判断当前值类型：<code>hold_alternative&lt;float&gt; tmp // true</code></li>
+<li>获取当前值类型：<code>static_assert(std::is_same_v&lt;int, variant_alternative_t&lt;0, tmp&gt;&gt;) // int</code></li>
+</ul>
+<h2 id="Example"><a href="#Example" class="headerlink" title="Example"></a>Example</h2><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs C"><span class="hljs-built_in">std</span>::variant&lt;<span class="hljs-type">int</span>, <span class="hljs-type">float</span>, <span class="hljs-built_in">std</span>::<span class="hljs-built_in">string</span>&gt; tmp;<br>tmp = <span class="hljs-string">&quot;hi&quot;</span>;<br><span class="hljs-built_in">std</span>::get&lt;<span class="hljs-type">int</span>&gt;(tmp); <span class="hljs-comment">// throw exception</span><br><span class="hljs-type">int</span>* s = <span class="hljs-built_in">std</span>::get_if&lt;<span class="hljs-type">int</span>&gt;(tmp); <span class="hljs-comment">// no throw, but return null</span><br><span class="hljs-built_in">string</span> g = <span class="hljs-built_in">std</span>::get&lt;<span class="hljs-built_in">std</span>::<span class="hljs-built_in">string</span>&gt;(tmp); <span class="hljs-comment">//success</span><br></code></pre></td></tr></table></figure>
+<h2 id="visitor"><a href="#visitor" class="headerlink" title="visitor"></a>visitor</h2><p>It is also possible to query the index at run-time depending on the type currently being held by providing a visitor</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs C++"><span class="hljs-meta"># <span class="hljs-keyword">include</span> <span class="hljs-string">&lt;variant&gt;</span></span><br><span class="hljs-keyword">struct</span> <span class="hljs-title class_">Visitor</span> &#123;<br><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">operator</span><span class="hljs-params">()</span><span class="hljs-params">(<span class="hljs-type">int</span>&amp; value)</span> </span>&#123; value *= <span class="hljs-number">2</span>; &#125;<br><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">operator</span><span class="hljs-params">()</span><span class="hljs-params">(<span class="hljs-type">float</span>&amp; value)</span> </span>&#123; value += <span class="hljs-number">3.0f</span>; &#125; <span class="hljs-comment">// &lt;--</span><br><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">operator</span><span class="hljs-params">()</span><span class="hljs-params">(<span class="hljs-type">bool</span>&amp; value)</span> </span>&#123; value = <span class="hljs-literal">true</span>; &#125;<br>&#125;;<br><span class="hljs-function">std::variant&lt;<span class="hljs-type">int</span>, <span class="hljs-type">float</span>, <span class="hljs-type">bool</span>&gt; <span class="hljs-title">v</span><span class="hljs-params">(<span class="hljs-number">3.3f</span>)</span></span>;<br>std::<span class="hljs-built_in">visit</span>(v, Visitor&#123;&#125;);<br>cout &lt;&lt; std::<span class="hljs-built_in">get</span>&lt;<span class="hljs-type">float</span>&gt;(v); <span class="hljs-comment">// 6.3f</span><br></code></pre></td></tr></table></figure>
+<h1 id="optional"><a href="#optional" class="headerlink" title="optional"></a>optional</h1><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><code class="hljs C++"><span class="hljs-meta"># <span class="hljs-keyword">include</span> <span class="hljs-string">&lt;optional&gt;</span></span><br><span class="hljs-function">std::optional&lt;std::string&gt; <span class="hljs-title">find</span><span class="hljs-params">(<span class="hljs-type">const</span> <span class="hljs-type">char</span>* set, <span class="hljs-type">char</span> value)</span> </span>&#123;<br><span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">10</span>; i++) &#123;<br><span class="hljs-keyword">if</span> (set[i] == value)<br><span class="hljs-keyword">return</span> i;<br>&#125;<br><span class="hljs-keyword">return</span> &#123;&#125;; <span class="hljs-comment">// std::nullopt;</span><br>&#125;<br>=============================<br><span class="hljs-meta"># <span class="hljs-keyword">include</span> <span class="hljs-string">&lt;optional&gt;</span></span><br><span class="hljs-type">char</span> set[] = <span class="hljs-string">&quot;sdfslgfsdg&quot;</span>;<br><span class="hljs-keyword">auto</span> x = <span class="hljs-built_in">find</span>(set, <span class="hljs-string">&#x27;a&#x27;</span>); <span class="hljs-comment">// &#x27;a&#x27; is not present</span><br><span class="hljs-keyword">if</span> (!x)<br>cout &lt;&lt; <span class="hljs-string">&quot;not found&quot;</span>;<br><span class="hljs-keyword">if</span> (!x.<span class="hljs-built_in">has_value</span>())<br>cout &lt;&lt; <span class="hljs-string">&quot;not found&quot;</span>;<br><span class="hljs-keyword">auto</span> y = <span class="hljs-built_in">find</span>(set, <span class="hljs-string">&#x27;l&#x27;</span>);<br>cout &lt;&lt; *y &lt;&lt; <span class="hljs-string">&quot; &quot;</span> &lt;&lt; y.<span class="hljs-built_in">value</span>(); <span class="hljs-comment">// print &#x27;4&#x27; &#x27;4&#x27;</span><br>x.<span class="hljs-built_in">value_or</span>(<span class="hljs-number">-1</span>); <span class="hljs-comment">// returns &#x27;-1&#x27;</span><br>y.<span class="hljs-built_in">value_or</span>(<span class="hljs-number">-1</span>); <span class="hljs-comment">// returns &#x27;4&#x27;</span><br></code></pre></td></tr></table></figure>
+<h1 id="any"><a href="#any" class="headerlink" title="any"></a>any</h1><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs C++"><span class="hljs-meta"># <span class="hljs-keyword">include</span> <span class="hljs-string">&lt;any&gt;</span></span><br>std::any var = <span class="hljs-number">1</span>; <span class="hljs-comment">// int</span><br>cout &lt;&lt; var.<span class="hljs-built_in">type</span>().<span class="hljs-built_in">name</span>(); <span class="hljs-comment">// print &#x27;i&#x27;</span><br>cout &lt;&lt; std::<span class="hljs-built_in">any_cast</span>&lt;<span class="hljs-type">int</span>&gt;(var);<br><span class="hljs-comment">// cout &lt;&lt; std::any_cast&lt;float&gt;(var); // exception!!</span><br>var = <span class="hljs-number">3.14</span>; <span class="hljs-comment">// double</span><br>cout &lt;&lt; std::<span class="hljs-built_in">any_cast</span>&lt;<span class="hljs-type">double</span>&gt;(var);<br>var.<span class="hljs-built_in">reset</span>();<br>cout &lt;&lt; var.<span class="hljs-built_in">has_value</span>(); <span class="hljs-comment">// print &#x27;false&#x27;</span><br></code></pre></td></tr></table></figure>
+<h1 id="stacktrace-c-23"><a href="#stacktrace-c-23" class="headerlink" title="stacktrace(c++23)"></a>stacktrace(c++23)</h1><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs C++"><span class="hljs-meta"># <span class="hljs-keyword">include</span> <span class="hljs-string">&lt;print&gt;</span></span><br><span class="hljs-meta"># <span class="hljs-keyword">include</span> <span class="hljs-string">&lt;stacktrace&gt;</span> <span class="hljs-comment">// the program must be linked with the library</span></span><br><span class="hljs-comment">// -lstdc++_libbacktrace</span><br><span class="hljs-comment">// (-lstdc++exp with gcc-14 trunk)</span><br><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">g</span><span class="hljs-params">()</span> </span>&#123;<br><span class="hljs-keyword">auto</span> call_stack = std::stacktrace::<span class="hljs-built_in">current</span>();<br><span class="hljs-keyword">for</span> (<span class="hljs-type">const</span> <span class="hljs-keyword">auto</span>&amp; entry : call_stack)<br>std::<span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;&#123;&#125;\n&quot;</span>, entry);<span class="hljs-comment">//entry.description()entry.source_file(),entry.source_line()</span><br>&#125;<br><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">f</span><span class="hljs-params">()</span> </span>&#123; <span class="hljs-built_in">g</span>(); &#125;<br><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>&#123; <span class="hljs-built_in">f</span>(); &#125;<br></code></pre></td></tr></table></figure>
+<h1 id="filesystem-c-17"><a href="#filesystem-c-17" class="headerlink" title="filesystem(c++17)"></a>filesystem(c++17)</h1><ul>
+<li>Follow the Boost filesystem library</li>
+<li>Based on POSIX</li>
+<li>Fully-supported from clang 7, gcc 8, etc.</li>
+<li>Work on Windows, Linux, Android, etc.</li>
+</ul>
+<h2 id="path"><a href="#path" class="headerlink" title="path"></a>path</h2><h3 id="member-function"><a href="#member-function" class="headerlink" title="member function"></a>member function</h3><ul>
+<li>root_name()</li>
+<li>relative_path()</li>
+<li>parent_path()</li>
+<li>filename()</li>
+<li>extension()</li>
+</ul>
+<h3 id="method"><a href="#method" class="headerlink" title="method"></a>method</h3><ul>
+<li>exists(path)</li>
+<li>file_size(path)</li>
+<li>is_directory(path)</li>
+<li>is_empty(path)</li>
+<li>is_regular_file(path):return true if path is no dir,hard link,soft link</li>
+<li>copy(path1, path2)</li>
+<li>copy_file(src_path, src_path, [fs::copy_options::recursive])</li>
+<li>create_directory(path)</li>
+<li>remove(path):remove a file or empty directory</li>
+<li>remove_all(path)</li>
+<li>rename(old_path,new_path)</li>
+</ul>
+<h2 id="iterator"><a href="#iterator" class="headerlink" title="iterator"></a>iterator</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs C++"><span class="hljs-keyword">namespace</span> fs = std::filesystem;<br><span class="hljs-keyword">for</span>(<span class="hljs-keyword">auto</span>&amp; path : fs::<span class="hljs-built_in">directory_iterator</span>(<span class="hljs-string">&quot;/usr/tmp/&quot;</span>))<br>cout &lt;&lt; path &lt;&lt; <span class="hljs-string">&#x27;\n&#x27;</span>;<br><span class="hljs-keyword">for</span>(<span class="hljs-keyword">auto</span>&amp; path : fs::<span class="hljs-built_in">recursive_directory_iterator</span>(<span class="hljs-string">&quot;/usr/tmp/&quot;</span>))<br>cout &lt;&lt; path &lt;&lt; <span class="hljs-string">&#x27;\n&#x27;</span>;<br></code></pre></td></tr></table></figure>
+<h2 id="example"><a href="#example" class="headerlink" title="example"></a>example</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs C++"><span class="hljs-meta"># <span class="hljs-keyword">include</span> <span class="hljs-string">&lt;filesystem&gt;</span> <span class="hljs-comment">// required</span></span><br><span class="hljs-keyword">namespace</span> fs = std::filesystem;<br>fs::path p1 = <span class="hljs-string">&quot;/usr/tmp/my_file.txt&quot;</span>;<br>cout &lt;&lt; p1.<span class="hljs-built_in">exists</span>(); <span class="hljs-comment">// true</span><br>cout &lt;&lt; p1.<span class="hljs-built_in">parent_path</span>(); <span class="hljs-comment">// &quot;/usr/tmp/&quot;</span><br>cout &lt;&lt; p1.<span class="hljs-built_in">filename</span>(); <span class="hljs-comment">// &quot;my_file&quot;</span><br>cout &lt;&lt; p1.<span class="hljs-built_in">extension</span>(); <span class="hljs-comment">// &quot;txt&quot;</span><br>cout &lt;&lt; p1.<span class="hljs-built_in">is_directory</span>(); <span class="hljs-comment">// false</span><br>cout &lt;&lt; p1.<span class="hljs-built_in">is_regular_file</span>(); <span class="hljs-comment">// true</span><br>fs::<span class="hljs-built_in">create_directory</span>(<span class="hljs-string">&quot;/my_dir/&quot;</span>);<br>fs::<span class="hljs-built_in">copy</span>(p1.<span class="hljs-built_in">parent_path</span>(), <span class="hljs-string">&quot;/my_dir/&quot;</span>, fs::copy_options::recursive);<br>fs::<span class="hljs-built_in">copy_file</span>(p1, <span class="hljs-string">&quot;/my_dir/my_file2.txt&quot;</span>);<br>fs::<span class="hljs-built_in">remove</span>(p1);<br>fs::<span class="hljs-built_in">remove_all</span>(p1.<span class="hljs-built_in">parent_path</span>());<br></code></pre></td></tr></table></figure>
+<h1 id="多线程库"><a href="#多线程库" class="headerlink" title="多线程库"></a>多线程库</h1><h2 id="thread"><a href="#thread" class="headerlink" title="thread"></a>thread</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><code class="hljs C++"><span class="hljs-meta"># <span class="hljs-keyword">include</span> <span class="hljs-string">&lt;iostream&gt;</span></span><br><span class="hljs-meta"># <span class="hljs-keyword">include</span> <span class="hljs-string">&lt;thread&gt;</span></span><br><span class="hljs-meta"># <span class="hljs-keyword">include</span> <span class="hljs-string">&lt;vector&gt;</span></span><br><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">f</span><span class="hljs-params">(<span class="hljs-type">int</span> id)</span> </span>&#123;<br>std::cout &lt;&lt; <span class="hljs-string">&quot;thread &quot;</span> &lt;&lt; id &lt;&lt; std::endl;<br>&#125;<br><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>&#123;<br>std::vector&lt;std::thread&gt; thread_vect; <span class="hljs-comment">// thread vector</span><br><span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">10</span>; i++)<br>thread_vect.<span class="hljs-built_in">push_back</span>( std::<span class="hljs-built_in">thread</span>(&amp;f, i) );<br><span class="hljs-keyword">for</span> (<span class="hljs-keyword">auto</span>&amp; th : thread_vect)<br>th.<span class="hljs-built_in">join</span>();<br>thread_vect.<span class="hljs-built_in">clear</span>();<br><span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">10</span>; i++) &#123; <span class="hljs-comment">// thread + lambda expression</span><br>thread_vect.<span class="hljs-built_in">push_back</span>(<br>std::<span class="hljs-built_in">thread</span>( []()&#123; std::cout &lt;&lt; <span class="hljs-string">&quot;thread\n&quot;</span>; &#125; );<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<table>
+<thead>
+<tr>
+<th align="center">类别</th>
+<th align="center">函数</th>
+<th align="center">说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">库函数</td>
+<td align="center"><code>std::this_thread::get_id()</code></td>
+<td align="center">返回线程id</td>
+</tr>
+<tr>
+<td align="center">库函数</td>
+<td align="center"><code>std::this_thread::sleep_for(sleep_duration)</code></td>
+<td align="center">blocks the thread</td>
+</tr>
+<tr>
+<td align="center">库函数</td>
+<td align="center"><code>std::thread::hardware_concurrency()</code></td>
+<td align="center">returns the number of concurrent threads supported by the implementation</td>
+</tr>
+<tr>
+<td align="center">对象方法</td>
+<td align="center"><code>get_id()</code></td>
+<td align="center">returns the thread id</td>
+</tr>
+<tr>
+<td align="center">对象方法</td>
+<td align="center"><code>join()</code></td>
+<td align="center">waits for a thread to finish its execution</td>
+</tr>
+<tr>
+<td align="center">对象方法</td>
+<td align="center"><code>detach()</code></td>
+<td align="center">permits the thread to execute independently of the thread handle</td>
+</tr>
+</tbody></table>
+<h2 id="mutex"><a href="#mutex" class="headerlink" title="mutex"></a>mutex</h2><h2 id="atomic"><a href="#atomic" class="headerlink" title="atomic"></a>atomic</h2><h2 id="future"><a href="#future" class="headerlink" title="future"></a>future</h2><p>The future library provides facilities to obtain values that are returned and to catch exceptions that are thrown by asynchronous tasks</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><code class="hljs C++"><span class="hljs-meta"># <span class="hljs-keyword">include</span> <span class="hljs-string">&lt;future&gt;</span> <span class="hljs-comment">// numeric, algorithm, vector, iostream</span></span><br><span class="hljs-keyword">template</span> &lt;<span class="hljs-keyword">typename</span> RandomIt&gt;<br><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">parallel_sum</span><span class="hljs-params">(RandomIt beg, RandomIt end)</span> </span>&#123;<br><span class="hljs-keyword">auto</span> len = end - beg;<br><span class="hljs-keyword">if</span> (len &lt; <span class="hljs-number">1000</span>) <span class="hljs-comment">// base case</span><br><span class="hljs-keyword">return</span> std::<span class="hljs-built_in">accumulate</span>(beg, end, <span class="hljs-number">0</span>);<br>RandomIt mid = beg + len / <span class="hljs-number">2</span>;<br><span class="hljs-keyword">auto</span> handle = std::<span class="hljs-built_in">async</span>(std::launch::async, <span class="hljs-comment">// right side</span><br>parallel_sum&lt;RandomIt&gt;, mid, end);<br><span class="hljs-type">int</span> sum = <span class="hljs-built_in">parallel_sum</span>(beg, mid); <span class="hljs-comment">// left side</span><br><span class="hljs-keyword">return</span> sum + handle.<span class="hljs-built_in">get</span>(); <span class="hljs-comment">// left + right</span><br>&#125;<br><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>&#123;<br><span class="hljs-function">std::vector&lt;<span class="hljs-type">int</span>&gt; <span class="hljs-title">v</span><span class="hljs-params">(<span class="hljs-number">10000</span>, <span class="hljs-number">1</span>)</span></span>; <span class="hljs-comment">// init all to 1</span><br>std::cout &lt;&lt; <span class="hljs-string">&quot;The sum is &quot;</span> &lt;&lt; <span class="hljs-built_in">parallel_sum</span>(v.<span class="hljs-built_in">begin</span>(), v.<span class="hljs-built_in">end</span>());<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>std::future methods:<br>• T get() returns the result<br>• wait() waits for the result to become available<br>async() can be called with two launch policies for a task executed:<br>• std::launch::async a new thread is launched to execute the task asynchronously<br>• std::launch::deferred the task is executed on the calling thread the first time its result is requested (lazy evaluation)</p>
 
                 
               </div>

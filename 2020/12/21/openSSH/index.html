@@ -25,7 +25,7 @@
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="http://example.com/images/openssh.png">
 <meta property="article:published_time" content="2020-12-21T12:30:23.000Z">
-<meta property="article:modified_time" content="2023-12-12T06:29:01.371Z">
+<meta property="article:modified_time" content="2024-04-30T21:25:21.319Z">
 <meta property="article:author" content="Nanbert">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="http://example.com/images/openssh.png">
@@ -221,7 +221,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          3.5k 字
+          3.7k 字
         
       </span>
     
@@ -232,7 +232,7 @@
         
         
         
-          30 分钟
+          31 分钟
         
       </span>
     
@@ -706,55 +706,11 @@
 <td align="center">检查配置文件语法是否正确</td>
 </tr>
 </tbody></table>
-<p><font size=6><strong>scp命令</strong></font><br><strong>简介</strong><br>它的底层是SSH协议,默认端口22,相当于先用ssh命令登陆远程主机,然后在执行拷贝,可以用于两个远程系统之间的复制</p>
-<table>
-<thead>
-<tr>
-<th align="center">参数</th>
-<th align="center">含义</th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="center">-c</td>
-<td align="center">指定传输的加密算法,如blowfish</td>
-</tr>
-<tr>
-<td align="center">-C</td>
-<td align="center">传输时压缩文件</td>
-</tr>
-<tr>
-<td align="center">-F</td>
-<td align="center">用来指定ssh_config文件,供ssh链接使用</td>
-</tr>
-<tr>
-<td align="center">-i</td>
-<td align="center">用来指定密钥的文件</td>
-</tr>
-<tr>
-<td align="center">-l</td>
-<td align="center">用来限制传输数据的带宽速率,单位是kb&#x2F;s</td>
-</tr>
-<tr>
-<td align="center">-p</td>
-<td align="center">用来保留修改时间,访问时间,文件状态等原始文件的信息</td>
-</tr>
-<tr>
-<td align="center">-P</td>
-<td align="center">用来指定远程主机的SSH端口,默认用22</td>
-</tr>
-<tr>
-<td align="center">-q</td>
-<td align="center">用来关闭显示拷贝的进度条</td>
-</tr>
-<tr>
-<td align="center">-r</td>
-<td align="center">递归复制</td>
-</tr>
-<tr>
-<td align="center">-v</td>
-<td align="center">显示详细的输出</td>
-</tr>
-</tbody></table>
+<h2 id="scp命令"><a href="#scp命令" class="headerlink" title="scp命令"></a>scp命令</h2><ul>
+<li><code>scp [参数][原路径][目标路径]</code></li>
+<li>它的底层是SSH协议,默认端口22,相当于先用ssh命令登陆远程主机,然后在执行拷贝,可以用于两个远程系统之间的复制</li>
+</ul>
+<h3 id="参数"><a href="#参数" class="headerlink" title="参数"></a>参数</h3><p>-1 强制scp命令使用协议ssh1<br>-2 强制scp命令使用协议ssh2<br>-4 强制scp命令只使用IPv4寻址<br>-6 强制scp命令只使用IPv6寻址<br>-B 使用批处理模式（传输过程中不询问传输口令或短语）<br>-C 允许压缩。（将-C标志传递给ssh，从而打开压缩功能）<br>-p 留原文件的修改时间，访问时间和访问权限。<br>-q 不显示传输进度条。<br>-r 递归复制整个目录。<br>-v 详细方式显示输出。scp和ssh(1)会显示出整个过程的调试信息。这些信息用于调试连接，验证和配置问题。<br>-c cipher 以cipher将数据传输进行加密，这个选项将直接传递给ssh。<br>-F ssh_config 指定一个替代的ssh配置文件，此参数直接传递给ssh。<br>-i identity_file 从指定文件中读取传输时使用的密钥文件，此参数直接传递给ssh。<br>-l limit 限定用户所能使用的带宽，以Kbit&#x2F;s为单位。<br>-o ssh_option 如果习惯于使用ssh_config(5)中的参数传递方式，<br>-P port 注意是大写的P, port是指定数据传输用到的端口号<br>-S program 指定加密传输时所使用的程序。此程序必须能够理解ssh(1)的选项。</p>
 <p><font size=6><strong>sftp命令</strong></font><br><strong>简介</strong><br>sftp是ssh提供的一个客户端应用程序,主要用来安全地访问FTP。因为FTP是不加密协议,很不安全,sftp相当于将FTP放入SSH:<br><code>sftp username@hostname</code><br>进入sftp后,使用那些命令,如get获取远程文件,put上传文件等<br><font size=6><strong>端口转发</strong></font><br>(待建)可见<a target="_blank" rel="noopener" href="https://wangdoc.com/ssh/port-forwarding.html">https://wangdoc.com/ssh/port-forwarding.html</a><br><font size=6><strong>证书登录</strong></font><br>(待建)可见<a target="_blank" rel="noopener" href="https://wangdoc.com/ssh/ca.html">https://wangdoc.com/ssh/ca.html</a></p>
 
                 

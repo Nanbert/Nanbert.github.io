@@ -16,16 +16,16 @@
   <meta name="author" content="Nanbert">
   <meta name="keywords" content="">
   
-    <meta name="description" content="1.基本概念预处理:g++ -E main.cpp -o main.ii,-E表示只进行预处理。预处理主要是处理各种宏的展开;添加行号和文件标识符,为编译器产生调试信息提供便利;删除注释;保留编译器用到的编译器指令等编译:g++ -S main.ii -o main.s,-S表示只编译。编译是在预处理的基础上经过一系列词法分析、语法分析及优化后生成汇编代码。汇编:g++ -c main.s -o">
+    <meta name="description" content="基本概念预处理:g++ -E main.cpp -o main.ii,-E表示只进行预处理。预处理主要是处理各种宏的展开;添加行号和文件标识符,为编译器产生调试信息提供便利;删除注释;保留编译器用到的编译器指令等编译:g++ -S main.ii -o main.s,-S表示只编译。编译是在预处理的基础上经过一系列词法分析、语法分析及优化后生成汇编代码。汇编:g++ -c main.s -o ma">
 <meta property="og:type" content="article">
 <meta property="og:title" content="gcc编译器及编译原理">
 <meta property="og:url" content="http://example.com/2020/12/19/gcc%E7%BC%96%E8%AF%91%E5%99%A8%E5%8F%8A%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86/index.html">
 <meta property="og:site_name" content="Nanbert&#39;s blog">
-<meta property="og:description" content="1.基本概念预处理:g++ -E main.cpp -o main.ii,-E表示只进行预处理。预处理主要是处理各种宏的展开;添加行号和文件标识符,为编译器产生调试信息提供便利;删除注释;保留编译器用到的编译器指令等编译:g++ -S main.ii -o main.s,-S表示只编译。编译是在预处理的基础上经过一系列词法分析、语法分析及优化后生成汇编代码。汇编:g++ -c main.s -o">
+<meta property="og:description" content="基本概念预处理:g++ -E main.cpp -o main.ii,-E表示只进行预处理。预处理主要是处理各种宏的展开;添加行号和文件标识符,为编译器产生调试信息提供便利;删除注释;保留编译器用到的编译器指令等编译:g++ -S main.ii -o main.s,-S表示只编译。编译是在预处理的基础上经过一系列词法分析、语法分析及优化后生成汇编代码。汇编:g++ -c main.s -o ma">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="http://example.com/images/gcc.jpg">
 <meta property="article:published_time" content="2020-12-19T09:25:41.000Z">
-<meta property="article:modified_time" content="2023-12-12T06:29:01.371Z">
+<meta property="article:modified_time" content="2024-04-04T21:12:07.838Z">
 <meta property="article:author" content="Nanbert">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="http://example.com/images/gcc.jpg">
@@ -221,7 +221,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          411 字
+          434 字
         
       </span>
     
@@ -274,7 +274,63 @@
             
               <div class="markdown-body">
                 
-                <p><strong>1.基本概念</strong><br><strong>预处理:</strong><code>g++ -E main.cpp -o main.ii</code>,-E表示只进行预处理。预处理主要是处理各种宏的展开;添加行号和文件标识符,为编译器产生调试信息提供便利;删除注释;保留编译器用到的编译器指令等<br><strong>编译:</strong><code>g++ -S main.ii -o main.s</code>,-S表示只编译。编译是在预处理的基础上经过一系列词法分析、语法分析及优化后生成汇编代码。<br><strong>汇编:</strong><code>g++ -c main.s -o main.o</code>,汇编将汇编代码转换为机器可执行的指令<br><strong>链接:</strong><code>g++ main.o</code>,链接生成可执行程序,之所以需要链接是因为我们的代码不可能像main.cpp这么简单,现代软件动则成百上千万行,如果写在一个main.cpp既不利于分工合作,也无法维护,因此通常是由一堆cpp文件组成,编译器分别编译每个cpp,这些cpp里会引用别的模块中的函数或全局变量,在编译单个cpp的时候是没法知道它们的准确地址,因此在编译结束后,需要连接器将各种还没有准确地址的符号(函数、变量等)设置为正确的值,这样组装在一起就可以形成一个完整的可执行程序<br><strong>2.选项</strong><br><code>-l&lt;library&gt;</code> 链接动态库<br><code>-L&lt;dir&gt;</code> 动态库搜索目录<br><code>-D&lt;expression&gt;</code> 宏定义命令中定义<br><code>-l &lt;dir&gt;</code>头文件搜索目录<br><strong>3.静态库编译和使用</strong><br><code>gcc -c increase.c -o increase.o</code>把.c编译成.o<br><code>ar -r libincrease.a increase.o</code>归档成静态库.a<br><code>gcc main.c -L -static -o main</code>链接成可执行文件<br><strong>4.动态库编译和使用</strong><br><code>gcc -shared -fPIC -o libinc.so increase.c</code>-fPIC生成位置独立的代码,此类代码可以在不同进程间共享<br><code>gcc -lincrease -o main main.c</code>链接动态库<br>有错误</p>
+                <h1 id="基本概念"><a href="#基本概念" class="headerlink" title="基本概念"></a>基本概念</h1><p><strong>预处理:</strong><code>g++ -E main.cpp -o main.ii</code>,-E表示只进行预处理。预处理主要是处理各种宏的展开;添加行号和文件标识符,为编译器产生调试信息提供便利;删除注释;保留编译器用到的编译器指令等<br><strong>编译:</strong><code>g++ -S main.ii -o main.s</code>,-S表示只编译。编译是在预处理的基础上经过一系列词法分析、语法分析及优化后生成汇编代码。<br><strong>汇编:</strong><code>g++ -c main.s -o main.o</code>,汇编将汇编代码转换为机器可执行的指令<br><strong>链接:</strong><code>g++ main.o</code>,链接生成可执行程序,之所以需要链接是因为我们的代码不可能像main.cpp这么简单,现代软件动则成百上千万行,如果写在一个main.cpp既不利于分工合作,也无法维护,因此通常是由一堆cpp文件组成,编译器分别编译每个cpp,这些cpp里会引用别的模块中的函数或全局变量,在编译单个cpp的时候是没法知道它们的准确地址,因此在编译结束后,需要连接器将各种还没有准确地址的符号(函数、变量等)设置为正确的值,这样组装在一起就可以形成一个完整的可执行程序</p>
+<h1 id="选项"><a href="#选项" class="headerlink" title="选项"></a>选项</h1><ul>
+<li><code>-l&lt;library&gt;</code> 链接动态库</li>
+<li><code>-L&lt;dir&gt;</code> 动态库搜索目录</li>
+<li><code>-D&lt;expression&gt;</code> 宏定义命令中定义</li>
+<li><code>-I &lt;dir&gt;</code>头文件搜索目录</li>
+<li><code>-isystem</code>specify the include path for system headers path</li>
+</ul>
+<h1 id="静态库编译和使用"><a href="#静态库编译和使用" class="headerlink" title="静态库编译和使用"></a>静态库编译和使用</h1><ul>
+<li><code>gcc -c increase.c -o increase.o</code>把.c编译成.o</li>
+<li><code>ar -r libincrease.a increase.o</code>归档成静态库.a</li>
+<li><code>gcc main.c -L -static -o main</code>链接成可执行文件</li>
+<li>环境变量：<code>LIBRARY_PATH</code>Specify the directories where search for static libraries .a at compile-time</li>
+</ul>
+<h1 id="调试"><a href="#调试" class="headerlink" title="调试"></a>调试</h1><p><code>g++ -O0 -g [-g3] &lt;program.cpp&gt; -o program gdb [--args] ./program &lt;args...&gt;</code></p>
+<ul>
+<li>-O0 Disable any code optimization for helping the debugger. It is implicit for most compilers</li>
+<li>-g Enable debugging<ul>
+<li>stores the symbol table information in the executable (mapping between assembly and source code lines)</li>
+<li>for some compilers, it may disable certain optimizations</li>
+<li>slow down the compilation phase and the execution</li>
+</ul>
+</li>
+<li>-g3 Produces enhanced debugging information, e.g. macro definitions. Available for most compilers. Suggested instead of -g</li>
+</ul>
+<h1 id="动态库编译和使用"><a href="#动态库编译和使用" class="headerlink" title="动态库编译和使用"></a>动态库编译和使用</h1><ul>
+<li><code>gcc -shared -fPIC -o libinc.so increase.c</code>-fPIC生成位置独立的代码,此类代码可以在不同进程间共享</li>
+<li><code>gcc -lincrease -o main main.c</code>链接动态库<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs bash">g++ source1.c -c source1.o -fPIC<br>g++ source2.c -c source2.o -fPIC<br>g++ source1.o source2.o -shared -o libmydynamiclib.so<br></code></pre></td></tr></table></figure></li>
+<li>环境变量：<code>LD_LIBRARY_PATH</code>Specify the directories where search for dynamic&#x2F;shared libraries .dll at run-time</li>
+</ul>
+<h1 id="内存检查"><a href="#内存检查" class="headerlink" title="内存检查"></a>内存检查</h1><h2 id="fsanitize"><a href="#fsanitize" class="headerlink" title="-fsanitize"></a>-fsanitize</h2><p>基本比Valgrind工具更好</p>
+<h3 id="address"><a href="#address" class="headerlink" title="address"></a>address</h3><p>memory error detector,Similar to valgrind but faster (50X slowdown)<br>• heap&#x2F;stack&#x2F;global out-of-bounds<br>• memory leaks<br>• use-after-free, use-after-return, use-after-scope<br>• double-free, invalid free<br>• initialization order bugs<br><code>clang++ -O1 -g -fsanitize=address -fno-omit-frame-pointer &lt;program&gt;</code></p>
+<h3 id="leak"><a href="#leak" class="headerlink" title="leak"></a>leak</h3><p>a run-time memory leak detector<br><code>clang++ -O1 -g -fsanitize=leak -fno-omit-frame-pointer &lt;program&gt;</code></p>
+<h3 id="memory"><a href="#memory" class="headerlink" title="memory"></a>memory</h3><p>is detector of uninitialized reads<br><code>clang++ -O1 -g -fsanitize=memory -fno-omit-frame-pointer &lt;program&gt;</code></p>
+<h3 id="undefined"><a href="#undefined" class="headerlink" title="undefined"></a>undefined</h3><p>a undefined behavior detector</p>
+<ul>
+<li>signed integer overflow, floating-point types overflow, enumerated not in range</li>
+<li>out-of-bounds array indexing, misaligned address</li>
+<li>divide by zero</li>
+<li>etc.<br><code>clang++ -O1 -g -fsanitize=undefined -fno-omit-frame-pointer &lt;program&gt;</code></li>
+</ul>
+<h3 id="integer"><a href="#integer" class="headerlink" title="integer"></a>integer</h3><p>Checks for undefined or suspicious integer behavior (e.g. unsigned integer overflow)</p>
+<h3 id="nullability"><a href="#nullability" class="headerlink" title="nullability"></a>nullability</h3><p>Checks passing null as a function parameter, assigning null to an lvalue, and returning null from a function</p>
+<h1 id="Warn"><a href="#Warn" class="headerlink" title="Warn"></a>Warn</h1><ul>
+<li><code>Wall</code>:Enables many standard warnings (∼50 warnings)</li>
+<li><code>Wextra</code>:Enables some extra warning flags that are not enabled by -Wall (∼15 warnings)</li>
+<li><code>Wpedantic</code>:Issue all the warnings demanded by strict ISO C&#x2F;C++</li>
+</ul>
+<h1 id="栈有关选项"><a href="#栈有关选项" class="headerlink" title="栈有关选项"></a>栈有关选项</h1><ul>
+<li><code>-Wstack-usage=&lt;byte-size&gt;</code> Warn if the stack usage of a function might exceed byte-size. The computation done to determine the stack usage is conservative (no VLA)</li>
+<li><code>fstack-usage</code> Makes the compiler output stack usage information for the<br>program, on a per-function basis</li>
+<li><code>-Wvla</code> Warn if a variable-length array is used in the code</li>
+<li><code>-Wvla-larger-than=&lt;byte-size&gt;</code> Warn for declarations of variable-length arrays whose size is either unbounded, or bounded by an argument that allows the array size to exceed byte-size bytes</li>
+</ul>
+<h2 id="FORTIFY-SOURCE"><a href="#FORTIFY-SOURCE" class="headerlink" title="_FORTIFY_SOURCE"></a>_FORTIFY_SOURCE</h2><p>Adding FORTIFY SOURCE define, the compiler provides buffer overflow checks for the<br>following functions:<br>memcpy , mempcpy , memmove , memset , strcpy , stpcpy , strncpy , strcat ,<br>strncat , sprintf , vsprintf , snprintf , vsnprintf , gets .</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs C++"><span class="hljs-meta"># <span class="hljs-keyword">include</span> <span class="hljs-string">&lt;cstring&gt;</span> <span class="hljs-comment">// std::memset</span></span><br><span class="hljs-meta"># <span class="hljs-keyword">include</span> <span class="hljs-string">&lt;string&gt;</span> <span class="hljs-comment">// std::stoi</span></span><br><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">(<span class="hljs-type">int</span> argc, <span class="hljs-type">char</span>** argv)</span> </span>&#123;<br><span class="hljs-type">int</span> size = std::<span class="hljs-built_in">stoi</span>(argv[<span class="hljs-number">1</span>]);<br><span class="hljs-type">char</span> buffer[<span class="hljs-number">24</span>];<br>std::<span class="hljs-built_in">memset</span>(buffer, <span class="hljs-number">0xFF</span>, size);<br>&#125;<br></code></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs bash">$ gcc -O1 -D FORTIFY SOURCE program.cpp -o program<br>$ ./program 12 <span class="hljs-comment"># OK</span><br>$ ./program 32 <span class="hljs-comment"># Wrong</span><br>$ *** buffer overflow detected ***: ./program terminated<br></code></pre></td></tr></table></figure>
 
                 
               </div>

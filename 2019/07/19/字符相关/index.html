@@ -16,16 +16,16 @@
   <meta name="author" content="Nanbert">
   <meta name="keywords" content="">
   
-    <meta name="description" content="cctype中的函数isalnum() 参数为字母或数字,返回trueisalpha() 参数字母为字母,返回trueiscntrl() 参数为控制字符,返回trueisdigit() 参数为数字(0～9),返回trueisgraph() 参数为除空格外的打印字符,返回trueislower() 参数为小写字母,返回trueisprint() 参数为打印字符(包括空格),返回trueispunc">
+    <meta name="description" content="cctype中的函数isalnum() 参数为字母或数字,返回trueisalpha() 参数字母为字母,返回trueiscntrl() 参数为控制字符,返回trueisdigit() 参数为数字(0～9),返回trueisgraph() 参数为除空格外的打印字符,返回trueislower() 参数为小写字母,返回trueisprint() 参数为打印字符(包括空格),返回trueispunct">
 <meta property="og:type" content="article">
 <meta property="og:title" content="字符相关">
 <meta property="og:url" content="http://example.com/2019/07/19/%E5%AD%97%E7%AC%A6%E7%9B%B8%E5%85%B3/index.html">
 <meta property="og:site_name" content="Nanbert&#39;s blog">
-<meta property="og:description" content="cctype中的函数isalnum() 参数为字母或数字,返回trueisalpha() 参数字母为字母,返回trueiscntrl() 参数为控制字符,返回trueisdigit() 参数为数字(0～9),返回trueisgraph() 参数为除空格外的打印字符,返回trueislower() 参数为小写字母,返回trueisprint() 参数为打印字符(包括空格),返回trueispunc">
+<meta property="og:description" content="cctype中的函数isalnum() 参数为字母或数字,返回trueisalpha() 参数字母为字母,返回trueiscntrl() 参数为控制字符,返回trueisdigit() 参数为数字(0～9),返回trueisgraph() 参数为除空格外的打印字符,返回trueislower() 参数为小写字母,返回trueisprint() 参数为打印字符(包括空格),返回trueispunct">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="http://example.com/images/character.png">
 <meta property="article:published_time" content="2019-07-19T06:08:18.000Z">
-<meta property="article:modified_time" content="2023-12-12T06:29:01.371Z">
+<meta property="article:modified_time" content="2024-04-05T09:40:12.042Z">
 <meta property="article:author" content="Nanbert">
 <meta property="article:tag" content="字符">
 <meta name="twitter:card" content="summary_large_image">
@@ -222,7 +222,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          858 字
+          866 字
         
       </span>
     
@@ -275,12 +275,9 @@
             
               <div class="markdown-body">
                 
-                <ol>
-<li>cctype中的函数<br>isalnum() 参数为字母或数字,返回true<br>isalpha() 参数字母为字母,返回true<br>iscntrl() 参数为控制字符,返回true<br>isdigit() 参数为数字(0～9),返回true<br>isgraph() 参数为除空格外的打印字符,返回true<br>islower() 参数为小写字母,返回true<br>isprint() 参数为打印字符(包括空格),返回true<br>ispunct() 参数为标点符号,返回true<br>isspace() 参数为标准空白字符,如空格,进纸,换行符,回车,制表符,返回true<br>isupper() 参数为大写字母,返回true<br>isxdigit() 参数为十六进制数字,即0～9,a～f或A～F,返回true<br>tolower() 若是大写,返回其小写,否则返回该参数<br>toupper() 若是小写,返回其大写,否则返回该参数</li>
-<li>C字符串的函数(cstring)<br>strcpy(str1,str2)  复制str2到str1<br>strncpy(str1,str2,n) 把str2的前n字符拷贝到str1<br>strcat(str1,str2)  str2连接到str1后面<br>strncat(str1,str2,n) 把str2的前n字符连接到str1<br>strcmp(str1,str2) 比较两个字符串<br>strlen(str) 计算长度不包括结束标识符</li>
-<li>C字符类型与其他类型的转换<br>atof(str) 将字符串转换为float类型<br>atoi(str) 将字符串转换为int类型<br>itoa(num,str,10) 将int类型转换为字符串,10代表十进制<br>ltoa(num,str,10) 将long类型转换为字符串,10代表十进制<br>ultoa(num,str,10) 将unsigned long类型转换为字符串,10代表十进制<br>sprintf() 函数比上述三个更灵活,具体百度<br>以下三个都是浮点型转换为字符串<br>fcvt()<br>ecvt()<br>gcvt()<br>cppstr.c_str() string类型转换为C类型<br>C字符串可以直接赋值给string类型</li>
-<li>string类型的操作(详见C++Primer P323)<br>str1.substr(pos,n) 返回一个string,包含s中从pos开始的n个字符的拷贝.pos的默认值为0,n的默认值为str1.size()-pos,即所有字符<br>str1.insert(pos,args) 在pos之前插入args指定的字符,若pos不是下标而是迭代器,则返回指向第一个插入字符的迭代器<br>str1.erase(pos,len) 删除从pos开始的len个字符.len默认至末尾<br>str1.assign(args) 将str1字符替换为指定的args的字符<br>str1.append(args) 将args追加到str1,<br>str1.replace(range,args) 删除s中范围range内的字符,替换为args指定的字符.range或者是个下标和长度,或一堆迭代器<br>注:<br>以上args可以是下面格式:<br>a.str2  字符串str2<br>b.str2,pos,len 字符串str2中从pos开始的len个字<br>c.cp cp指向的以空字符结尾的字符数组<br>d.cp,len 从cp指向的字符数组的前len个字符<br>e.n,c n个字符c<br>f.b,e 迭代器的范围,不能是本身<br>g.初始化列表 花括号包围的,以逗号分隔的字符列表<br>而replace和insert的args形式取决于range和pos,以标号代替args.</li>
-</ol>
+                <h1 id="cctype中的函数"><a href="#cctype中的函数" class="headerlink" title="cctype中的函数"></a>cctype中的函数</h1><p>isalnum() 参数为字母或数字,返回true<br>isalpha() 参数字母为字母,返回true<br>iscntrl() 参数为控制字符,返回true<br>isdigit() 参数为数字(0～9),返回true<br>isgraph() 参数为除空格外的打印字符,返回true<br>islower() 参数为小写字母,返回true<br>isprint() 参数为打印字符(包括空格),返回true<br>ispunct() 参数为标点符号,返回true<br>isspace() 参数为标准空白字符,如空格,进纸,换行符,回车,制表符,返回true<br>isupper() 参数为大写字母,返回true<br>isxdigit() 参数为十六进制数字,即0～9,a～f或A～F,返回true<br>tolower() 若是大写,返回其小写,否则返回该参数<br>toupper() 若是小写,返回其大写,否则返回该参数</p>
+<h1 id="C字符串的函数-cstring"><a href="#C字符串的函数-cstring" class="headerlink" title="C字符串的函数(cstring)"></a>C字符串的函数(cstring)</h1><p>strcpy(str1,str2)  复制str2到str1<br>strncpy(str1,str2,n) 把str2的前n字符拷贝到str1<br>strcat(str1,str2)  str2连接到str1后面<br>strncat(str1,str2,n) 把str2的前n字符连接到str1<br>strcmp(str1,str2) 比较两个字符串<br>strlen(str) 计算长度不包括结束标识符<br>3.<br>C字符类型与其他类型的转换<br>atof(str) 将字符串转换为float类型<br>atoi(str) 将字符串转换为int类型<br>itoa(num,str,10) 将int类型转换为字符串,10代表十进制<br>ltoa(num,str,10) 将long类型转换为字符串,10代表十进制<br>ultoa(num,str,10) 将unsigned long类型转换为字符串,10代表十进制<br>sprintf() 函数比上述三个更灵活,具体百度<br>以下三个都是浮点型转换为字符串<br>fcvt()<br>ecvt()<br>gcvt()<br>cppstr.c_str() string类型转换为C类型<br>C字符串可以直接赋值给string类型</p>
+<h1 id="string类型的操作-详见C-Primer-P323"><a href="#string类型的操作-详见C-Primer-P323" class="headerlink" title="string类型的操作(详见C++Primer P323)"></a>string类型的操作(详见C++Primer P323)</h1><p>str1.substr(pos,n) 返回一个string,包含s中从pos开始的n个字符的拷贝.pos的默认值为0,n的默认值为str1.size()-pos,即所有字符<br>str1.insert(pos,args) 在pos之前插入args指定的字符,若pos不是下标而是迭代器,则返回指向第一个插入字符的迭代器<br>str1.erase(pos,len) 删除从pos开始的len个字符.len默认至末尾<br>str1.assign(args) 将str1字符替换为指定的args的字符<br>str1.append(args) 将args追加到str1,<br>str1.replace(range,args) 删除s中范围range内的字符,替换为args指定的字符.range或者是个下标和长度,或一堆迭代器<br>注:<br>以上args可以是下面格式:<br>a.str2  字符串str2<br>b.str2,pos,len 字符串str2中从pos开始的len个字<br>c.cp cp指向的以空字符结尾的字符数组<br>d.cp,len 从cp指向的字符数组的前len个字符<br>e.n,c n个字符c<br>f.b,e 迭代器的范围,不能是本身<br>g.初始化列表 花括号包围的,以逗号分隔的字符列表<br>而replace和insert的args形式取决于range和pos,以标号代替args.</p>
 <table>
 <thead>
 <tr>
@@ -341,7 +338,16 @@
 <td align="center">y</td>
 </tr>
 </tbody></table>
-<p>　　str1.find(args) 查找str1中args第一次出现的位置<br>　　str1.rfind(args) 查找str1中args最后一次出现的位置<br>　　str1.find_first_of(args) 在str1查找args中任意字符第一次出现的位置<br>　　str1.find_last_of(args) 在str1查找args中任意字符最后一次出现的位置<br>　　str1.find_first_not_of(args) 在str1查找第一个不在args中的字符<br>　　str1.find_last_not_of(args) 在str1查找最后一个不在args中的字符<br>　　注:<br>　　args可以是以下的格式:<br>　　c,pos  从str1中位置pos开始查找字符c.pos默认为0<br>　　str2,pos 从str1中位置pos开始查找字符串str2,pos默认为0<br>　　cp,pos 从str1中位置pos开始查找指针cp指向的C字符串.pos默认为0<br>　　cp,pos,n 从str1中查找指针cp指向的前n个字符.无默认值<br>　　str1.compare(args)<br>　　注:<br>　　args可以是以下格式:<br>　　str2 比较str1和str2<br>　　pos1,n1,str2 将str1中从pos1开始的n1个字符与str2字符进行比较<br>　　pos1,n1,str2,pos2,n2 将str1中从pos1开始的n1个字符与str2中从pos2开始的n2个字符串进行比较<br>　　cp 与C字符串比较<br>　　pos1,n1,cp ….<br>　　pos1,n1,cp,n2 ………………….C字符串cp指针指向的位置后的n2个字符串进行比较<br>5.<br>string类型与数字的转换<br>to_string(num) 数字转换成string<br>stoi(s,p,b)<br>stol(s,p,b)<br>stoul(s,p,b)<br>stoll(s,p,b)<br>stoull(s,p,b)<br>注:返回类型为int,long,unsigned long,long long,unsigned long long,<br>   b一般表示十进制<br>   p为size_t指针,用来保存s字符中第一个非数值字符的下标,默认为0,即不保存下标<br>stof(s,p)<br>stod(s,p)<br>stold(s,p)<br>注:返回类型为float,double,long double</p>
+<p>　　str1.find(args) 查找str1中args第一次出现的位置<br>　　str1.rfind(args) 查找str1中args最后一次出现的位置<br>　　str1.find_first_of(args) 在str1查找args中任意字符第一次出现的位置<br>　　str1.find_last_of(args) 在str1查找args中任意字符最后一次出现的位置<br>　　str1.find_first_not_of(args) 在str1查找第一个不在args中的字符<br>　　str1.find_last_not_of(args) 在str1查找最后一个不在args中的字符<br>　　注:<br>　　args可以是以下的格式:<br>　　c,pos  从str1中位置pos开始查找字符c.pos默认为0<br>　　str2,pos 从str1中位置pos开始查找字符串str2,pos默认为0<br>　　cp,pos 从str1中位置pos开始查找指针cp指向的C字符串.pos默认为0<br>　　cp,pos,n 从str1中查找指针cp指向的前n个字符.无默认值<br>　　str1.compare(args)<br>　　注:<br>　　args可以是以下格式:<br>　　str2 比较str1和str2<br>　　pos1,n1,str2 将str1中从pos1开始的n1个字符与str2字符进行比较<br>　　pos1,n1,str2,pos2,n2 将str1中从pos1开始的n1个字符与str2中从pos2开始的n2个字符串进行比较<br>　　cp 与C字符串比较<br>　　pos1,n1,cp ….<br>　　pos1,n1,cp,n2 ………………….C字符串cp指针指向的位置后的n2个字符串进行比较</p>
+<h1 id="string类型与数字的转换"><a href="#string类型与数字的转换" class="headerlink" title="string类型与数字的转换"></a>string类型与数字的转换</h1><p>to_string(num) 数字转换成string<br>stoi(s,p,b)<br>stol(s,p,b)<br>stoul(s,p,b)<br>stoll(s,p,b)<br>stoull(s,p,b)<br>注:返回类型为int,long,unsigned long,long long,unsigned long long,<br>   b一般表示十进制<br>   p为size_t指针,用来保存s字符中第一个非数值字符的下标,默认为0,即不保存下标<br>stof(s,p)<br>stod(s,p)<br>stold(s,p)<br>注:返回类型为float,double,long double<br>std::from_chars(start,end,result,base)</p>
+<h1 id="char-to-string"><a href="#char-to-string" class="headerlink" title="char to string"></a>char to string</h1><ul>
+<li><code>std::string(1,char_value)</code></li>
+</ul>
+<h1 id="std-format"><a href="#std-format" class="headerlink" title="std::format"></a>std::format</h1><p>提供python style的字符串构造</p>
+<h2 id="integer"><a href="#integer" class="headerlink" title="integer"></a>integer</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs C++">std::format(<span class="hljs-string">&quot;&#123;&#125;&quot;</span>, <span class="hljs-number">3</span>); <span class="hljs-comment">// &quot;3&quot;</span><br>std::format(<span class="hljs-string">&quot;&#123;:b&#125;&quot;</span>, <span class="hljs-number">3</span>); <span class="hljs-comment">// &quot;101&quot;</span><br></code></pre></td></tr></table></figure>
+<h2 id="float"><a href="#float" class="headerlink" title="float"></a>float</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs C++">std::format(<span class="hljs-string">&quot;&#123;:.1f&#125;&quot;</span>, <span class="hljs-number">3.273</span>); <span class="hljs-comment">// &quot;3.1&quot;</span><br></code></pre></td></tr></table></figure>
+<h2 id="alignment"><a href="#alignment" class="headerlink" title="alignment"></a>alignment</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs C++">std::format(<span class="hljs-string">&quot;&#123;:&gt;6&#125;&quot;</span>, <span class="hljs-number">3.27</span>); <span class="hljs-comment">// &quot; 3.27&quot;</span><br>std::format(<span class="hljs-string">&quot;&#123;:&lt;6&#125;&quot;</span>, <span class="hljs-number">3.27</span>); <span class="hljs-comment">// &quot;3.27 &quot;</span><br></code></pre></td></tr></table></figure>
+<h2 id="reordering"><a href="#reordering" class="headerlink" title="reordering"></a>reordering</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs C++">std::format(<span class="hljs-string">&quot;&#123;1&#125; - &#123;0&#125;&quot;</span>, <span class="hljs-number">1</span>, <span class="hljs-number">3</span>); <span class="hljs-comment">// &quot;3 - 1&quot; </span><br></code></pre></td></tr></table></figure>
 
                 
               </div>

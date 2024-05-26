@@ -1,0 +1,867 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/images/favicon.png">
+  <link rel="icon" href="/images/favicon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Nanbert">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="valgrind描述用来检测内存和线程bug 用法valgrind &lt;-options&gt; .&#x2F;program &lt;args&gt;,program should be compiled with -g 选项 --leak-check&#x3D;full print details for each “definitely lost” or “possibly lost”block, incl">
+<meta property="og:type" content="article">
+<meta property="og:title" content="c++_tools">
+<meta property="og:url" content="http://example.com/2024/04/05/c-tools/index.html">
+<meta property="og:site_name" content="Nanbert&#39;s blog">
+<meta property="og:description" content="valgrind描述用来检测内存和线程bug 用法valgrind &lt;-options&gt; .&#x2F;program &lt;args&gt;,program should be compiled with -g 选项 --leak-check&#x3D;full print details for each “definitely lost” or “possibly lost”block, incl">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://www.cnblogs.com/xmphoenix/archive/2011/10/23/2221879.html">
+<meta property="article:published_time" content="2024-04-04T20:05:08.000Z">
+<meta property="article:modified_time" content="2024-05-05T21:43:22.717Z">
+<meta property="article:author" content="Nanbert">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://www.cnblogs.com/xmphoenix/archive/2011/10/23/2221879.html">
+  
+  
+  
+  <title>c++_tools - Nanbert&#39;s blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.6","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/images/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.0.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Nanbert</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/images/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="c++_tools"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2024-04-05 04:05" pubdate>
+          2024年4月5日 凌晨
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          2.2k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          18 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">c++_tools</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="valgrind"><a href="#valgrind" class="headerlink" title="valgrind"></a>valgrind</h1><h2 id="描述"><a href="#描述" class="headerlink" title="描述"></a>描述</h2><p>用来检测内存和线程bug</p>
+<h2 id="用法"><a href="#用法" class="headerlink" title="用法"></a>用法</h2><p><code>valgrind &lt;-options&gt; ./program &lt;args&gt;</code>,program should be compiled with -g</p>
+<h2 id="选项"><a href="#选项" class="headerlink" title="选项"></a>选项</h2><ul>
+<li><code>--leak-check=full</code> print details for each “definitely lost” or “possibly lost”<br>block, including where it was allocated</li>
+<li><code>--show-leak-kinds=all</code> to combine with –leak-check&#x3D;full. Print all leak kinds</li>
+<li><code>--track-fds=yes</code> list open file descriptors on exit (not closed)</li>
+<li><code>--track-origins=yes</code> tracks the origin of uninitialized values (very slow execution)</li>
+</ul>
+<h1 id="c-filt"><a href="#c-filt" class="headerlink" title="c++filt"></a>c++filt</h1><ul>
+<li><code>c++filt</code>可以把mangle的字符串demangle</li>
+</ul>
+<h1 id="ldd"><a href="#ldd" class="headerlink" title="ldd"></a>ldd</h1><ul>
+<li><code>ldd</code> shows the shared objects (shared libraries) required by a program or other shared objects</li>
+</ul>
+<h2 id="输出信息"><a href="#输出信息" class="headerlink" title="输出信息"></a>输出信息</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs bash">/opt/app/todeav1/test<span class="hljs-variable">$ldd</span> <span class="hljs-built_in">test</span><br>libstdc++.so.6 =&gt; /usr/lib64/libstdc++.so.6 (0x00000039a7e00000)<br>libm.so.6 =&gt; /lib64/libm.so.6 (0x0000003996400000)<br>libgcc_s.so.1 =&gt; /lib64/libgcc_s.so.1 (0x00000039a5600000)<br>libc.so.6 =&gt; /lib64/libc.so.6 (0x0000003995800000)<br>/lib64/ld-linux-x86-64.so.2 (0x0000003995400000)<br></code></pre></td></tr></table></figure>
+<ul>
+<li>第一列：程序需要依赖什么库</li>
+<li>第二列：系统提供的与程序需要的库所对应的库</li>
+<li>第三列：库加载的开始地址</li>
+</ul>
+<h1 id="nm"><a href="#nm" class="headerlink" title="nm"></a>nm</h1><p>The nm utility provides information on the symbols being used in an object file or executable file</p>
+<h2 id="参数"><a href="#参数" class="headerlink" title="参数"></a>参数</h2><ul>
+<li>-a或–debug-syms：显示所有的符号，包括debugger-only symbols。</li>
+<li>-B：等同于–format&#x3D;bsd，用来兼容MIPS的nm。</li>
+<li>-C或–demangle：将低级符号名解析(demangle)成用户级名字。这样可以使得C++函数名具有可读性。</li>
+<li>–no-demangle：默认的选项，不需要将低级符号名解析成用户级名。</li>
+<li>-D或–dynamic：显示动态符号。该任选项仅对于动态目标(例如特定类型的共享库)有意义。</li>
+<li>-f format：使用format格式输出。format可以选取bsd、sysv或posix，该选项在GNU的nm中有用。默认为bsd。</li>
+<li>-g或–extern-only：仅显示外部符号。</li>
+<li>-n、-v或–numeric-sort：按符号对应地址的顺序排序，而非按符号名的字符顺序。</li>
+<li>-p或–no-sort：按目标文件中遇到的符号顺序显示，不排序。</li>
+<li>-P或–portability：使用POSIX.2标准输出格式代替默认的输出格式。等同于使用任选项-f posix。</li>
+<li>-s或–print-armap：当列出库中成员的符号时，包含索引。索引的内容包含：哪些模块包含哪些名字的映射。</li>
+<li>-r或–reverse-sort：反转排序的顺序(例如，升序变为降序)。</li>
+<li>–size-sort：按大小排列符号顺序。该大小是按照一个符号的值与它下一个符号的值进行计算的。</li>
+<li>–target&#x3D;bfdname：指定一个目标代码的格式，而非使用系统的默认格式。</li>
+<li>-u或–undefined-only：仅显示没有定义的符号(那些外部符号)。</li>
+<li>–defined-only:仅显示定义的符号。</li>
+<li>-l或–line-numbers：对每个符号，使用调试信息来试图找到文件名和行号。</li>
+<li>-V或–version：显示nm的版本号。</li>
+<li>–help：显示nm的选项。</li>
+</ul>
+<h2 id="符号说明"><a href="#符号说明" class="headerlink" title="符号说明"></a>符号说明</h2><p>对于每一个符号来说，其类型如果是小写的，则表明该符号是local的；大写则表明该符号是global(external)的</p>
+<ul>
+<li>A 该符号的值是绝对的，在以后的链接过程中，不允许进行改变。这样的符号值，常常出现在中断向量表中，例如用符号来表示各个中断向量函数在中断向量表中的位置。</li>
+<li>B 该符号的值出现在非初始化数据段(bss)中。例如，在一个文件中定义全局static int test。则该符号test的类型为b，位于bss section中。其值表示该符号在bss段中的偏移。一般而言，bss段分配于RAM中。</li>
+<li>C 该符号为common。common symbol是未初始话数据段。该符号没有包含于一个普通section中。只有在链接过程中才进行分配。符号的值表示该符号需要的字节数。例如在一个c文件中，定义int test，并且该符号在别的地方会被引用，则该符号类型即为C。否则其类型为B。</li>
+<li>D 该符号位于初始化数据段中。一般来说，分配到data section中。</li>
+<li>G 该符号也位于初始化数据段中。主要用于small object提高访问small data object的一种方式。</li>
+<li>I 该符号是对另一个符号的间接引用。</li>
+<li>N 该符号是一个debugging符号。</li>
+<li>R 该符号位于只读数据区。<ul>
+<li>例如定义全局const int test[] &#x3D; {123, 123};则test就是一个只读数据区的符号。</li>
+<li>值得注意的是，如果在一个函数中定义<code>const char *test = “abc”, const char test_int = 3</code>。使用nm都不会得到符号信息，但是字符串”abc”分配于只读存储器中，test在rodata section中，大小为4。</li>
+</ul>
+</li>
+<li>S 符号位于非初始化数据区，用于small object。</li>
+<li>T 该符号位于代码区text section。</li>
+<li>U 该符号在当前文件中是未定义的，即该符号的定义在别的文件中。 例如，当前文件调用另一个文件中定义的函数，在这个被调用的函数在当前就是未定义的；但是在定义它的文件中类型是T。但是对于全局变量来说，在定义它的文件中，其符号类型为C，在使用它的文件中，其类型为U。</li>
+<li>V 该符号是一个weak object。</li>
+<li>W The symbol is a weak symbol that has not been specifically tagged as a weak object symbol.</li>
+<li>? 该符号类型没有定义</li>
+</ul>
+<h2 id="example"><a href="#example" class="headerlink" title="example"></a>example</h2><ul>
+<li><code>nm -uCA *.o|grep foo</code>:等价于<code>objdump -t; readelf -s</code></li>
+<li><code>nm -e a.out</code>:对象文件的静态和外部符</li>
+<li><code>nm -xv a.out</code>:以十六进制显示符号大小和值并且按值排序符号</li>
+<li><code>nm -X64 /usr/lib/libc.a</code>:显示 libc.a 中所有 64 位对象符号，忽略所有 32 位对象</li>
+</ul>
+<h1 id="size"><a href="#size" class="headerlink" title="size"></a>size</h1><p>查看程序被映射到内存中的映像所占用的大小信息。</p>
+<h2 id="各个段"><a href="#各个段" class="headerlink" title="各个段"></a>各个段</h2><p>程序映射到内存中，从低地址到高地址依次为下列段:</p>
+<ul>
+<li>代码段： 只读，可共享; 代码段（code segment&#x2F;text segment ）通常是指用来存放程序执行代码的一块内存区域。这部分区域的大小在程序运行前就已经确定，并且内存区域通常属于只读, 某些架构也允许代码段为可写，即允许修改程序。在代码段中，也有可能包含一些只读的常数变量，例如字符串常量等。</li>
+<li>数据段： 储存已被初始化了的静态数据。数据段（data segment ）通常是指用来存放程序中已初始化的全局变量的一块内存区域。数据段属于静态内存分配。</li>
+<li>BSS 段：未初始化的数据段. BSS 段（bss segment ）通常是指用来存放程序中未初始化的全局变量的一块内存区域。BSS 是英文Block Started by Symbol 的简称。BSS 段属于静态内存分配。</li>
+<li>堆（heap ）： 堆是用于存放进程运行中被动态分配的内存段，它的大小并不固定，可动态扩张或缩减。当进程调用malloc 等函数分配内存时，新分配的内存就被动态添加到堆上（堆被扩张）；当利用free 等函数释放内存时，被释放的内存从堆中被剔除（堆被缩减）</li>
+<li>栈(stack) ：栈又称堆栈，是用户存放程序临时创建的局部变量，也就是说我们函数括弧“{} ”中定义的变量（但不包括static 声明的变量，static 意味着在数据段中存放变量）。除此以外，在函数被调用时，其参数也会被压入发起调用的进程栈中，并且待到调用结束后，函数的返回值也会被存放回栈中。由于栈的先进先出特点，所以栈特别方便用来保存&#x2F; 恢复调用现场。从这个意义上讲，我们可以把堆栈看成一个寄存、交换临时数据的内存区。</li>
+</ul>
+<h1 id="readelf"><a href="#readelf" class="headerlink" title="readelf"></a>readelf</h1><ul>
+<li><code>readelf</code>:displays information about ELF format object files<br>这个工具和objdump命令提供的功能类似，但是它显示的信息更为具体，并且它不依赖BFD库</li>
+</ul>
+<h2 id="elf文件种类"><a href="#elf文件种类" class="headerlink" title="elf文件种类"></a>elf文件种类</h2><ul>
+<li>可重定位的对象文件：由汇编器生成的.o文件</li>
+<li>可执行对象文件</li>
+<li>动态库文件</li>
+</ul>
+<h2 id="参数-1"><a href="#参数-1" class="headerlink" title="参数"></a>参数</h2><table>
+<thead>
+<tr>
+<th align="center">短选项</th>
+<th align="center">长选项</th>
+<th align="center">comment</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">-a</td>
+<td align="center">–all</td>
+<td align="center">全部,Equivalent to: -h -l -S -s -r -d -V -A -I</td>
+</tr>
+<tr>
+<td align="center">-h</td>
+<td align="center">–file-header</td>
+<td align="center">文件头Display the ELF file header</td>
+</tr>
+<tr>
+<td align="center">-l</td>
+<td align="center">–program-headers&#x2F;-segments</td>
+<td align="center">程序Display the program headers</td>
+</tr>
+<tr>
+<td align="center">-S</td>
+<td align="center">–section-headers&#x2F;–sections</td>
+<td align="center">段头Display the sections’ header</td>
+</tr>
+<tr>
+<td align="center">-e</td>
+<td align="center">–headers</td>
+<td align="center">全部头Equivalent to: -h -l -S</td>
+</tr>
+<tr>
+<td align="center">-s</td>
+<td align="center">–syms&#x2F;–symbols</td>
+<td align="center">符号表 Display the symbol table</td>
+</tr>
+<tr>
+<td align="center">-n</td>
+<td align="center">–notes</td>
+<td align="center">内核注释 Display the core notes (if present)</td>
+</tr>
+<tr>
+<td align="center">-r</td>
+<td align="center">–relocs</td>
+<td align="center">重定位 Display the relocations (if present)</td>
+</tr>
+<tr>
+<td align="center">-u</td>
+<td align="center">–unwind</td>
+<td align="center">Display the unwind info (if present)</td>
+</tr>
+<tr>
+<td align="center">-d</td>
+<td align="center">–dynamic</td>
+<td align="center">动态段 Display the dynamic segment (if present)</td>
+</tr>
+<tr>
+<td align="center">-V</td>
+<td align="center">–version-info</td>
+<td align="center">版本 Display the version sections (if present)</td>
+</tr>
+<tr>
+<td align="center">-A</td>
+<td align="center">–arch-specific</td>
+<td align="center">CPU构架 Display architecture specific information (if any).</td>
+</tr>
+<tr>
+<td align="center">-D</td>
+<td align="center">–use-dynamic</td>
+<td align="center">动态段 Use the dynamic section info when displaying symbols</td>
+</tr>
+<tr>
+<td align="center">-x</td>
+<td align="center">–hex-dump&#x3D;<number></td>
+<td align="center">显示 段内内容Dump the contents of section <number></td>
+</tr>
+<tr>
+<td align="center">-I</td>
+<td align="center">–histogram</td>
+<td align="center">Display histogram of bucket list lengths</td>
+</tr>
+<tr>
+<td align="center">-W</td>
+<td align="center">–wide</td>
+<td align="center">宽行输出 Allow output width to exceed 80 characters</td>
+</tr>
+<tr>
+<td align="center">-H</td>
+<td align="center">–help</td>
+<td align="center">Display this information</td>
+</tr>
+<tr>
+<td align="center">-v</td>
+<td align="center">–version</td>
+<td align="center">Display the version number of readelf</td>
+</tr>
+</tbody></table>
+<h2 id="常见输出信息"><a href="#常见输出信息" class="headerlink" title="常见输出信息"></a>常见输出信息</h2><ul>
+<li>.text section 里装载了可执行代码；</li>
+<li>.data section 里面装载了被初始化的数据；</li>
+<li>.bss section 里面装载了未被初始化的数据；</li>
+<li>以 .rec 打头的 sections 里面装载了重定位条目；</li>
+<li>.symtab 或者 .dynsym section 里面装载了符号信息；</li>
+<li>.strtab 或者 .dynstr section 里面装载了字符串信息；<br>more:<img src="http://www.cnblogs.com/xmphoenix/archive/2011/10/23/2221879.html" srcset="/images/loading.gif" lazyload></li>
+</ul>
+<h2 id="example-1"><a href="#example-1" class="headerlink" title="example"></a>example</h2><ul>
+<li><code>readelf -h main| grep Machine</code>:查看程序的可运行的架构平台</li>
+<li><code>readelf -S main|grep debug</code>:编译时是否使用了-g选项</li>
+</ul>
+<h1 id="objdump"><a href="#objdump" class="headerlink" title="objdump"></a>objdump</h1><ul>
+<li><code>objdump</code>:displays information about object files</li>
+</ul>
+<h2 id="参数-2"><a href="#参数-2" class="headerlink" title="参数"></a>参数</h2><p>-f 显示文件头信息<br>-D 反汇编所有section (-d反汇编特定section)<br>-h 显示目标文件各个section的头部摘要信息<br>-x 显示所有可用的头信息，包括符号表、重定位入口。-x 等价于 -a -f -h -r -t 同时指定。<br>-i 显示对于 -b 或者 -m 选项可用的架构和目标格式列表。<br>-r 显示文件的重定位入口。如果和-d或者-D一起使用，重定位部分以反汇编后的格式显示出来。<br>-R 显示文件的动态重定位入口，仅仅对于动态目标文件有意义，比如某些共享库。<br>-S 尽可能反汇编出源代码，尤其当编译的时候指定了-g这种调试参数时，效果比较明显。隐含了-d参数。<br>-t 显示文件的符号表入口。类似于nm -s提供的信息</p>
+<h2 id="example-2"><a href="#example-2" class="headerlink" title="example"></a>example</h2><ul>
+<li><code>objdump -i</code>:查看本机目标结构(大小端)</li>
+<li><code>objdump -d main.o</code>:反汇编程序</li>
+<li><code>objdump -t main.o</code>:显示符号表入口</li>
+<li>below:<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs bash">$ objdump -t -C something.so | c++filt<br>... <span class="hljs-built_in">df</span> *ABS* ... prog.cpp<br>... O .rodata ... CC1<br>... O .rodata ... CC2<br>... F .text ... g()<br>... O .rodata ... (anonymous namespace)::CC3<br>... O .rodata ... (anonymous namespace)::CC4<br>... F .text ... (anonymous namespace)::h()<br>... F .text ... (anonymous namespace)::B::j1()<br>... F .text ... (anonymous namespace)::B::j2()<br></code></pre></td></tr></table></figure></li>
+</ul>
+<h1 id="cppcheck"><a href="#cppcheck" class="headerlink" title="cppcheck"></a>cppcheck</h1><h1 id="gcovr-有bug"><a href="#gcovr-有bug" class="headerlink" title="gcovr(有bug)"></a>gcovr(有bug)</h1><p>覆盖率工具，需要配合g++的<code>--coverage</code>选项</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs bash">$ gcc -g --coverage program.cpp -o program<br>$ ./program 9<br>first<br>$ gcovr -r --html --html-details &lt;path&gt; <span class="hljs-comment"># generate html</span><br></code></pre></td></tr></table></figure>
+<h1 id="clang-tidy"><a href="#clang-tidy" class="headerlink" title="clang-tidy"></a>clang-tidy</h1><p>代码风格及静态检查</p>
+<h1 id="doxygen"><a href="#doxygen" class="headerlink" title="doxygen"></a>doxygen</h1><p>生成帮助文档，配置文件Doxyfile</p>
+<ul>
+<li><code>doxygen -g</code></li>
+<li>comment the code with <code>///</code> or <code>/** comment *</code></li>
+<li>generate doxygen base configuration file</li>
+</ul>
+<h2 id="注释关键字"><a href="#注释关键字" class="headerlink" title="注释关键字"></a>注释关键字</h2><ul>
+<li><code>@file</code> Document a file</li>
+<li><code>@brief</code> Brief description for an entity</li>
+<li><code>@param</code> Run-time parameter description</li>
+<li><code>@tparam</code> Template parameter description</li>
+<li><code>@return</code> Return value description</li>
+</ul>
+<h2 id="配置信息"><a href="#配置信息" class="headerlink" title="配置信息"></a>配置信息</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs bash">HAVE DOT = YES<br>GRAPHICAL HIERARCHY = YES<br>CALL GRAPH = YES<br>CALLER GRAPH = YES<br></code></pre></td></tr></table></figure>
+<h2 id="example-3"><a href="#example-3" class="headerlink" title="example"></a>example</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs C++"><span class="hljs-comment">/**</span><br><span class="hljs-comment">* @file</span><br><span class="hljs-comment">* @copyright MyProject</span><br><span class="hljs-comment">* license BSD3, Apache, MIT, etc.</span><br><span class="hljs-comment">* @author MySelf</span><br><span class="hljs-comment">* @version v3.14159265359</span><br><span class="hljs-comment">* @date March, 2018</span><br><span class="hljs-comment">*/</span><br><span class="hljs-comment">/// @brief Namespace brief description</span><br><span class="hljs-keyword">namespace</span> my_namespace &#123;<br><span class="hljs-comment">/// @brief &quot;Class brief description&quot;</span><br><span class="hljs-comment">/// @tparam R &quot;Class template for&quot;</span><br><span class="hljs-keyword">template</span>&lt;<span class="hljs-keyword">typename</span> R&gt;<br><span class="hljs-keyword">class</span> <span class="hljs-title class_">A</span> &#123;<br></code></pre></td></tr></table></figure>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><code class="hljs C++"><span class="hljs-comment">/**</span><br><span class="hljs-comment">* @brief &quot;What the function does?&quot;</span><br><span class="hljs-comment">* @details &quot;Some additional details&quot;,</span><br><span class="hljs-comment">* Latex/MathJax: $\sqrt a$</span><br><span class="hljs-comment">* @tparam T Type of input and output</span><br><span class="hljs-comment">* @param[in] input Input array</span><br><span class="hljs-comment">* @param[out] output Output array</span><br><span class="hljs-comment">* @return `true` if correct,</span><br><span class="hljs-comment">* `false` otherwise</span><br><span class="hljs-comment">* @remark it is *useful* if ...</span><br><span class="hljs-comment">* @warning the behavior is **undefined** if</span><br><span class="hljs-comment">* @p input is `nullptr`</span><br><span class="hljs-comment">* @see related_function</span><br><span class="hljs-comment">*/</span><br><span class="hljs-function"><span class="hljs-keyword">template</span>&lt;<span class="hljs-keyword">typename</span> T&gt;</span><br><span class="hljs-function"><span class="hljs-type">bool</span> <span class="hljs-title">my_function</span><span class="hljs-params">(<span class="hljs-type">const</span> T* input, T* output)</span></span>;<br><span class="hljs-comment">/// @brief</span><br><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">related_function</span><span class="hljs-params">()</span></span>;<br></code></pre></td></tr></table></figure>
+<h1 id="cloc"><a href="#cloc" class="headerlink" title="cloc"></a>cloc</h1><p>行数统计信息</p>
+<h1 id="lizard"><a href="#lizard" class="headerlink" title="lizard"></a>lizard</h1><p>圈复杂度分析工具<br><code>lizard my_project/</code></p>
+<h2 id="example-4"><a href="#example-4" class="headerlink" title="example"></a>example</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-variable">$lizard</span> my_project/<br>==============================================================<br>NLOC CCN token param <span class="hljs-keyword">function</span>@line@file<br>--------------------------------------------------------------<br>10 2 29 2 start_new_player@26@./html_game.c<br>6 1 3 0 set_shutdown_flag@449@./httpd.c<br>24 3 61 1 server_main@454@./httpd.c<br>--------------------------------------------------------------<br></code></pre></td></tr></table></figure>
+<ul>
+<li>CCN:圈复杂度</li>
+<li>NLOC：无注释的代码行数</li>
+<li>token：number of conditional statements</li>
+</ul>
+<h1 id="clang-format"><a href="#clang-format" class="headerlink" title="clang-format"></a>clang-format</h1><h1 id="pstack"><a href="#pstack" class="headerlink" title="pstack"></a>pstack</h1><p>pstack是一个脚本工具，可显示每个进程的栈跟踪。pstack命令必须由相应进程的属主或root运行<br><code>pstrack &lt;program-pid&gt;</code></p>
+<h1 id="compiler-explorer"><a href="#compiler-explorer" class="headerlink" title="compiler explorer"></a>compiler explorer</h1><p>编码实时二进制查看</p>
+<h1 id="cppinsights"><a href="#cppinsights" class="headerlink" title="cppinsights"></a>cppinsights</h1><p>编译器实时查看</p>
+<h1 id="AI补全工具"><a href="#AI补全工具" class="headerlink" title="AI补全工具"></a>AI补全工具</h1><ul>
+<li>CoPilot</li>
+<li>TabNine</li>
+<li>Kite</li>
+</ul>
+<h1 id="代码在线搜索"><a href="#代码在线搜索" class="headerlink" title="代码在线搜索"></a>代码在线搜索</h1><ul>
+<li><a target="_blank" rel="noopener" href="https://searchcode.com/">searchcode</a></li>
+<li><a target="_blank" rel="noopener" href="https://grep.app/">grep.app</a></li>
+</ul>
+<h1 id="在线代码段性能比较"><a href="#在线代码段性能比较" class="headerlink" title="在线代码段性能比较"></a>在线代码段性能比较</h1><ul>
+<li><a target="_blank" rel="noopener" href="http://quick-bench.com/">benchmark</a></li>
+</ul>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>c++_tools</div>
+      <div>http://example.com/2024/04/05/c-tools/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Nanbert</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2024年4月5日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2024/04/05/cmake/" title="cmake">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">cmake</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2024/03/30/translation-unit/" title="translation_unit">
+                        <span class="hidden-mobile">translation_unit</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

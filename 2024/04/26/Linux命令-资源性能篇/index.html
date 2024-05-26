@@ -1,0 +1,879 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/images/favicon.png">
+  <link rel="icon" href="/images/favicon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Nanbert">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="uptime该命令输出如下： 123:51:26 up 21:31, 1 user, load average: 30.02, 26.43, 19.02 该平均负载指标了要运行的任务(进程)数量，包括要在CPU上运行的进程以及在不中断IO(磁盘IO)中阻塞的进程。三个值分别代表了1min，5min,15min的平均值 dmesg操作系统消息日志 free vmstatvmstat [-V] [-n">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Linux命令_资源性能篇">
+<meta property="og:url" content="http://example.com/2024/04/26/Linux%E5%91%BD%E4%BB%A4-%E8%B5%84%E6%BA%90%E6%80%A7%E8%83%BD%E7%AF%87/index.html">
+<meta property="og:site_name" content="Nanbert&#39;s blog">
+<meta property="og:description" content="uptime该命令输出如下： 123:51:26 up 21:31, 1 user, load average: 30.02, 26.43, 19.02 该平均负载指标了要运行的任务(进程)数量，包括要在CPU上运行的进程以及在不中断IO(磁盘IO)中阻塞的进程。三个值分别代表了1min，5min,15min的平均值 dmesg操作系统消息日志 free vmstatvmstat [-V] [-n">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://linuxtools-rst.readthedocs.io/zh-cn/latest/tool/free.html">
+<meta property="article:published_time" content="2024-04-25T19:52:39.000Z">
+<meta property="article:modified_time" content="2024-05-05T21:52:38.074Z">
+<meta property="article:author" content="Nanbert">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://linuxtools-rst.readthedocs.io/zh-cn/latest/tool/free.html">
+  
+  
+  
+  <title>Linux命令_资源性能篇 - Nanbert&#39;s blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.6","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/images/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.0.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Nanbert</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/images/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="Linux命令_资源性能篇"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2024-04-26 03:52" pubdate>
+          2024年4月26日 凌晨
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          4.8k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          41 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">Linux命令_资源性能篇</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="uptime"><a href="#uptime" class="headerlink" title="uptime"></a>uptime</h1><p>该命令输出如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">23:51:26 up 21:31, 1 user, load average: 30.02, 26.43, 19.02<br></code></pre></td></tr></table></figure>
+<p>该平均负载指标了<strong>要</strong>运行的任务(进程)数量，包括要在CPU上运行的进程以及在不中断IO(磁盘IO)中阻塞的进程。<br>三个值分别代表了1min，5min,15min的平均值</p>
+<h1 id="dmesg"><a href="#dmesg" class="headerlink" title="dmesg"></a>dmesg</h1><p>操作系统消息日志</p>
+<h1 id="free"><a href="#free" class="headerlink" title="free"></a>free</h1><p><img src="https://linuxtools-rst.readthedocs.io/zh-cn/latest/tool/free.html" srcset="/images/loading.gif" lazyload></p>
+<h1 id="vmstat"><a href="#vmstat" class="headerlink" title="vmstat"></a>vmstat</h1><p><code>vmstat [-V] [-n] [delay [count]]</code></p>
+<ul>
+<li>-V表示打印出版本信息；</li>
+<li>-n表示在周期性循环输出时，输出的头部信息仅显示一次；</li>
+<li>delay是两次输出之间的延迟时间；</li>
+<li>count是指按照这个时间间隔统计的次数。</li>
+</ul>
+<h2 id="输出信息"><a href="#输出信息" class="headerlink" title="输出信息"></a>输出信息</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs bash">$ vmstat 1<br>procs ---------memory---------- ---swap-- -----io---- -system-- ------cpu-----<br> r  b swpd   free   buff  cache   si   so    bi    bo   <span class="hljs-keyword">in</span>   cs us sy <span class="hljs-built_in">id</span> wa st<br>34  0    0 200889792  73708 591828    0    0     0     5    6   10 96  1  3  0  0<br>32  0    0 200889920  73708 591860    0    0     0   592 13284 4282 98  1  1  0  0<br>32  0    0 200890112  73708 591860    0    0     0     0 9501 2154 99  1  0  0  0<br>32  0    0 200889568  73712 591856    0    0     0    48 11900 2459 99  0  0  0  0<br>32  0    0 200890208  73712 591860    0    0     0     0 15898 4840 98  1  1  0  0<br></code></pre></td></tr></table></figure>
+<h3 id="Procs-进程"><a href="#Procs-进程" class="headerlink" title="Procs(进程)"></a>Procs(进程)</h3><ul>
+<li><code>r</code>:在CPU上运行并等待回合的进程数。由于它不包含IO，因此它比指示CPU饱和的平均负载提供了更多的信息。一个大于CPU核数的r值就是饱和的。</li>
+<li><code>b</code>:等待IO的进程数量</li>
+</ul>
+<h3 id="Memory-内存"><a href="#Memory-内存" class="headerlink" title="Memory(内存)"></a>Memory(内存)</h3><ul>
+<li>free:空闲的内存(单位KB)</li>
+<li>swpd: 使用虚拟内存大小</li>
+<li>buff: 用作缓冲的内存大小</li>
+<li>cache: 用作缓存的内存大小</li>
+</ul>
+<h3 id="Swap"><a href="#Swap" class="headerlink" title="Swap"></a>Swap</h3><ul>
+<li>si: 每秒从交换区写到内存的大小</li>
+<li>so: 每秒写入交换区的内存大小<br>这两个非空，说明物理内存用完了，现在使用交换内存</li>
+</ul>
+<h3 id="IO"><a href="#IO" class="headerlink" title="IO"></a>IO</h3><ul>
+<li>bi: 每秒读取的块数</li>
+<li>bo: 每秒写入的块数(每块1024bytes)</li>
+</ul>
+<h3 id="system"><a href="#system" class="headerlink" title="system"></a>system</h3><ul>
+<li>in: 每秒中断数，包括时钟中断</li>
+<li>cs: 每秒上下文切换数</li>
+</ul>
+<h3 id="CPU"><a href="#CPU" class="headerlink" title="CPU"></a>CPU</h3><p>显示的是所有cpu的平均值</p>
+<ul>
+<li><code>us、sy、id、wa、st</code>:这些是CPU时间的分类，</li>
+<li>us: 用户进程执行时间(user time)</li>
+<li>sy: 系统进程执行时间(system time)</li>
+<li>id: 空闲时间(包括IO等待时间)</li>
+<li>wa: 等待IO时间</li>
+<li>st: 被偷窃时间（被其它宾客系统进行使用，或宾客系统隔离的驱动程序域Xen）<br>通过将用户时间和系统时间这两个分类相加，即可判断CPU是否繁忙。一定的等待IO时间说明磁盘有可能是性能瓶颈。你可以认为等待IO时间是另一种形式的空闲时间，它提供了它是如何空闲的线索。 IO处理需要占用CPU系统时间。一个较高的CPU系统时间（超过20%）可能会很有趣，有必要进一步研究：也许内核在很低效地处理IO。</li>
+</ul>
+<h1 id="mpstat"><a href="#mpstat" class="headerlink" title="mpstat"></a>mpstat</h1><p><code>mpstat -P ALL 1</code>：显示每个CPU的时间明细，用于检查不平衡状况</p>
+<h1 id="iostat"><a href="#iostat" class="headerlink" title="iostat"></a>iostat</h1><p><code>iostat [参数][时间][次数]</code><br>这是了解块设备（磁盘），应用的工作负载和产生的性能影响的绝佳工具。</p>
+<h2 id="命令参数"><a href="#命令参数" class="headerlink" title="命令参数"></a>命令参数</h2><p>-C 显示CPU使用情况<br>-d 显示磁盘使用情况<br>-k 以 KB 为单位显示<br>-m 以 M 为单位显示<br>-N 显示磁盘阵列(LVM) 信息<br>-n 显示NFS 使用情况<br>-p[磁盘] 显示磁盘和分区的情况<br>-t 显示终端和CPU的信息<br>-x 显示详细信息<br>-V 显示版本信息</p>
+<h2 id="输出"><a href="#输出" class="headerlink" title="输出"></a>输出</h2><p><code>iostat -xz 1</code></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs bash">Linux 3.13.0-49-generic (titanclusters-xxxxx)  07/14/2015  _x86_64_ (32 CPU)<br>avg-cpu:  %user   %<span class="hljs-built_in">nice</span> %system %iowait  %steal   %idle<br>          73.96    0.00    3.73    0.03    0.06   22.21<br>Device:   rrqm/s   wrqm/s     r/s     w/s    rkB/s    wkB/s avgrq-sz avgqu-sz   await r_await w_await  svctm  %util<br>xvda        0.00     0.23    0.21    0.18     4.52     2.08    34.37     0.00    9.98   13.80    5.42   2.44   0.09<br>xvdb        0.01     0.00    1.02    8.94   127.97   598.53   145.79     0.00    0.43    1.78    0.28   0.25   0.25<br>xvdc        0.01     0.00    1.02    8.86   127.79   595.94   146.50     0.00    0.45    1.82    0.30   0.27   0.26<br>dm-0        0.00     0.00    0.69    2.32    10.47    31.69    28.01     0.01    3.23    0.71    3.98   0.13   0.04<br>dm-1        0.00     0.00    0.00    0.94     0.01     3.78     8.00     0.33  345.84    0.04  346.81   0.01   0.00<br>dm-2        0.00     0.00    0.09    0.07     1.35     0.36    22.50     0.00    2.55    0.23    5.62   1.78   0.03<br></code></pre></td></tr></table></figure>
+<h3 id="cpu属性值"><a href="#cpu属性值" class="headerlink" title="cpu属性值"></a>cpu属性值</h3><ul>
+<li>%user：CPU处在用户模式下的时间百分比。</li>
+<li>%nice：CPU处在带NICE值的用户模式下的时间百分比。</li>
+<li>%system：CPU处在系统模式下的时间百分比。</li>
+<li>%iowait：CPU等待输入输出完成时间的百分比。</li>
+<li>%steal：管理程序维护另一个虚拟处理器时，虚拟CPU的无意识等待时间百分比。</li>
+<li>%idle：CPU空闲时间百分比。<br>如果%iowait的值过高，表示硬盘存在I&#x2F;O瓶颈，%idle值高，表示CPU较空闲，如果%idle值高但系统响应慢时，有可能是CPU等待分配内存，此时应加大内存容量。%idle值如果持续低于10，那么系统的CPU处理能力相对较低，表明系统中最需要解决的资源是CPU。</li>
+</ul>
+<h3 id="disk属性值"><a href="#disk属性值" class="headerlink" title="disk属性值"></a>disk属性值</h3><ul>
+<li>rrqm&#x2F;s: 每秒进行 merge 的读操作数目。即 rmerge&#x2F;s</li>
+<li>wrqm&#x2F;s: 每秒进行 merge 的写操作数目。即 wmerge&#x2F;s</li>
+<li>r&#x2F;s: 每秒完成的读 I&#x2F;O 设备次数。即 rio&#x2F;s</li>
+<li>w&#x2F;s: 每秒完成的写 I&#x2F;O 设备次数。即 wio&#x2F;s</li>
+<li>rsec&#x2F;s: 每秒读扇区数。即 rsect&#x2F;s</li>
+<li>wsec&#x2F;s: 每秒写扇区数。即 wsect&#x2F;s</li>
+<li>rkB&#x2F;s: 每秒读K字节数。是 rsect&#x2F;s 的一半，因为每扇区大小为512字节。</li>
+<li>wkB&#x2F;s: 每秒写K字节数。是 wsect&#x2F;s 的一半。</li>
+<li>avgrq-sz: 平均每次设备I&#x2F;O操作的数据大小 (扇区)。</li>
+<li>avgqu-sz: 平均I&#x2F;O队列长度。发给设备的平均请求数。值大于1可以表明已达到饱和状态（尽管设备通常可以并行处理请求，尤其是在多个后端磁盘所组成的前端虚拟设备的情况下）。</li>
+<li>await: 平均每次设备I&#x2F;O操作的等待时间 (毫秒)。这是应用程序所感受到的时间，它包括IO排队时间和IO服务时间。大于预期的平均时间可能表示块设备饱和或设备出现问题了。</li>
+<li>svctm: 平均每次设备I&#x2F;O操作的服务时间 (毫秒)。</li>
+<li>%util: 一秒中有百分之多少的时间用于 I&#x2F;O 操作，即被io消耗的cpu百分比，设备利用率。这是一个表征繁忙度的百分比，它表示设备每秒工作的时间。尽管它的值取决于设备，但值大于60%通常会导致性能不佳（也会通过await的值观察到）。接近100␐%的值通常表示饱和。</li>
+</ul>
+<h3 id="信息意义"><a href="#信息意义" class="headerlink" title="信息意义"></a>信息意义</h3><ul>
+<li>如果%iowait的值过高，表示硬盘存在I&#x2F;O瓶颈。</li>
+<li>如果 %util 接近 100%，说明产生的I&#x2F;O请求太多，I&#x2F;O系统已经满负荷，该磁盘可能存在瓶颈。</li>
+<li>如果 svctm 比较接近 await，说明 I&#x2F;O 几乎没有等待时间；</li>
+<li>如果 await 远大于 svctm，说明I&#x2F;O 队列太长，io响应太慢，则需要进行必要优化。</li>
+<li>如果avgqu-sz比较大，也表示有大量io在等待。</li>
+</ul>
+<h1 id="sar"><a href="#sar" class="headerlink" title="sar"></a>sar</h1><p>sar是System Activity Reporter（系统活动情况报告）的缩写。sar工具将对系统当前的状态进行取样，然后通过计算数据和比例来表达系统的当前运行状态。需要启动service(systemctl start sysstat.service),并保存相关日志到文件</p>
+<h2 id="参数"><a href="#参数" class="headerlink" title="参数"></a>参数</h2><ul>
+<li>-A 汇总所有的报告</li>
+<li>-a 报告文件读写使用情况</li>
+<li>-B 报告附加的缓存的使用情况</li>
+<li>-b 报告缓存的使用情况</li>
+<li>-c 报告系统调用的使用情况</li>
+<li>-d 报告磁盘的使用情况</li>
+<li>-g 报告串口的使用情况</li>
+<li>-h 报告关于buffer使用的统计数据</li>
+<li>-m 报告IPC消息队列和信号量的使用情况</li>
+<li>-n 报告命名cache的使用情况</li>
+<li>-p 报告调页活动的使用情况</li>
+<li>-q 报告运行队列和交换队列的平均长度</li>
+<li>-R 报告进程的活动情况</li>
+<li>-r 报告没有使用的内存页面和硬盘块</li>
+<li>-u 报告CPU的利用率</li>
+<li>-v 报告进程、i节点、文件和锁表状态</li>
+<li>-w 报告系统交换活动状况</li>
+<li>-y 报告TTY设备活动状况</li>
+</ul>
+<h2 id="example"><a href="#example" class="headerlink" title="example"></a>example</h2><h3 id="sar-n-DEV-1"><a href="#sar-n-DEV-1" class="headerlink" title="sar -n DEV 1"></a><code>sar -n DEV 1</code></h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs bash">Linux 3.13.0-49-generic (titanclusters-xxxxx)  07/14/2015     _x86_64_    (32 CPU)<br>12:16:48 AM     IFACE   rxpck/s   txpck/s    rxkB/s    txkB/s   rxcmp/s   txcmp/s  rxmcst/s   %ifutil<br>12:16:49 AM      eth0  18763.00   5032.00  20686.42    478.30      0.00      0.00      0.00      0.00<br>12:16:49 AM        lo     14.00     14.00      1.36      1.36      0.00      0.00      0.00      0.00<br>12:16:49 AM   docker0      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00<br>12:16:49 AM     IFACE   rxpck/s   txpck/s    rxkB/s    txkB/s   rxcmp/s   txcmp/s  rxmcst/s   %ifutil<br>12:16:50 AM      eth0  19763.00   5101.00  21999.10    482.56      0.00      0.00      0.00      0.00<br>12:16:50 AM        lo     20.00     20.00      3.25      3.25      0.00      0.00      0.00      0.00<br>12:16:50 AM   docker0      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00<br></code></pre></td></tr></table></figure>
+<p>此命令可以检查网络接口的吞吐量：rxkB&#x2F;s和txkB&#x2F;s，作为工作负载的度量，还可以检查是否已达到网络接口的限制。在上面的示例中，eth0接收速率达到22MB&#x2F;s，即176Mbit&#x2F;s（远低于1Gbit&#x2F;s的网络接口限制，假设是千兆网卡）。</p>
+<h3 id="sar-n-TCP-ETCP-1"><a href="#sar-n-TCP-ETCP-1" class="headerlink" title="sar -n TCP,ETCP 1"></a><code>sar -n TCP,ETCP 1</code></h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs bash">Linux 3.13.0-49-generic (titanclusters-xxxxx)  07/14/2015    _x86_64_    (32 CPU)<br>12:17:19 AM  active/s passive/s    iseg/s    oseg/s<br>12:17:20 AM      1.00      0.00  10233.00  18846.00<br>12:17:19 AM  atmptf/s  estres/s retrans/s isegerr/s   orsts/s<br>12:17:20 AM      0.00      0.00      0.00      0.00      0.00<br></code></pre></td></tr></table></figure>
+<p>这是一些关键的TCP指标的摘要，包括：</p>
+<ul>
+<li><code>active/s</code>：每秒本地启动的TCP连接数（例如，通过connect（））。</li>
+<li><code>passive/s</code>：每秒远程启动的TCP连接数（例如，通过accept（））。</li>
+<li><code>retrans/s</code>：每秒TCP重传的次数。<br>主动和被动计数通常作为服务器TCP负载的粗略度量：新接受的连接数（被动）和新出站的连接数（主动）。将主动视为出站，将被动视为入站可能对理解这两个指标有些帮助，但这并不是严格意义上的（例如，考虑从localhost到localhost的连接）。<br>重新传输是网络或服务器问题的迹象；它可能是不可靠的网络（例如，公共Internet），也可能是由于服务器过载并丢弃了数据包。上面的示例仅显示每秒一个新的TCP连接。</li>
+</ul>
+<h3 id="sar-u-1-2"><a href="#sar-u-1-2" class="headerlink" title="sar -u 1 2"></a><code>sar -u 1 2</code></h3><p>cpu使用率</p>
+<ul>
+<li>%user 用户模式下消耗的CPU时间的比例；</li>
+<li>%nice 通过nice改变了进程调度优先级的进程，在用户模式下消耗的CPU时间的比例</li>
+<li>%system 系统模式下消耗的CPU时间的比例；</li>
+<li>%iowait CPU等待磁盘I&#x2F;O导致空闲状态消耗的时间比例；</li>
+<li>%steal 利用Xen等操作系统虚拟化技术，等待其它虚拟CPU计算占用的时间比例；</li>
+<li>%idle CPU空闲时间比例；</li>
+</ul>
+<h3 id="sar-q-1-2"><a href="#sar-q-1-2" class="headerlink" title="sar -q 1 2"></a><code>sar -q 1 2</code></h3><h2 id="cpu平均负载-runq-sz：运行队列的长度（等待运行的进程数）-plist-sz：进程列表中进程（processes）和线程（threads）的数量-ldavg-1：最后1分钟的系统平均负载-ldavg-5：过去5分钟的系统平均负载-ldavg-15：过去15分钟的系统平均负载-sar-r-1-2内存情况-kbmemfree：这个值和free命令中的free值基本一致-所以它不包括buffer和cache的空间-kbmemused：这个值和free命令中的used值基本一致-所以它包括buffer和cache的空间-memused：物理内存使用率，这个值是kbmemused和内存总量-不包括swap-的一个百分比-kbbuffers和kbcached：这两个值就是free命令中的buffer和cache-kbcommit：保证当前系统所需要的内存-即为了确保不溢出而需要的内存-RAM-swap-commit：这个值是kbcommit与内存总量-包括swap-的一个百分比-sar-W-1-2页面交换情况pswpin-s：每秒系统换入的交换页面（swap-page）数量pswpout-s：每秒系统换出的交换页面（swap-page）数量-summary-怀疑CPU存在瓶颈，可用-sar-u-和-sar-q-等来查看-怀疑内存存在瓶颈，可用sar-B、sar-r-和-sar-W-等来查看-怀疑I-O存在瓶颈，可用-sar-b、sar-u-和-sar-d-等来查看-ipcs-ipcs-m-共享内存资源-ipcs-q-队列资源-ipcs-s-信号量资源-ipcs-l-类似于ulimit-列出系统资源限制-修改ipc资源限制修改保存后使用sysctl-p-清除IPC资源-ipcrm-M-shmkey-移除用shmkey创建的共享内存段-ipcrm-m-shmid-移除用shmid标识的共享内存段-ipcrm-Q-msgkey-移除用msqkey创建的消息队列-ipcrm-q-msqid-移除用msqid标识的消息队列-ipcrm-S-semkey-移除用semkey创建的信号-ipcrm-s-semid-移除用semid标识的信号-example-清除当前用户创建的所有的IPC资源-fuser显示所有正在使用着指定file-file-system或sockets的进程信息fuser-m-u-redis-server用来查找所有正在使用redis-server的所有进程的PID以及该进程的OWNERfuser-–k-path-to-your-filename-kill所有正在使用某一指定的file-file-system-or-sockets的进程-top-htop更强大的替换工具-输出信息以上为例子-第一行-09-14-56-：-系统当前时间-264-days-20-56-：-系统开机到现在经过了多少时间-1-users-：-当前2用户在线-load-average-0-02-0-04-0-00：-系统1分钟、5分钟、15分钟的CPU负载信息-Tasks-87-total：很好理解，就是当前有87个任务，也就是87个进程。-1-running：1个进程正在运行-86-sleeping：86个进程睡眠-0-stopped：停止的进程数-0-zombie：僵死的进程数-Cpu-s-0-0-us：用户态进程占用CPU时间百分比，不包含renice值为负的任务占用的CPU的时间。-0-7-sy：内核占用CPU时间百分比-0-0-ni：改变过优先级的进程占用CPU的百分比-99-3-id：空闲CPU时间百分比-0-0-wa：等待I-O的CPU时间百分比-0-0-hi：CPU硬中断时间百分比-0-0-si：CPU软中断时间百分比注：这里显示数据是所有cpu的平均值，如果想看每一个cpu的处理情况，按1即可；折叠，再次按1；-Men：内存-8175320kk-total：物理内存总量-8058868k-used：使用的物理内存量-116452k-free：空闲的物理内存量-283084k-buffers：用作内核缓存的物理内存量-Swap：交换空间-6881272k-total：交换区总量-4010444k-used：使用的交换区量-2870828k-free：空闲的交换区量-4336992k-cached：缓冲交换区总量-进程信息-PID：进程的ID-USER：进程所有者-PR：进程的优先级别，越小越优先被执行-NInice：值-VIRT：进程占用的虚拟内存-RES：进程占用的物理内存-SHR：进程使用的共享内存-S：进程的状态。S表示休眠，R表示正在运行，Z表示僵死状态，N表示该进程优先值为负数-CPU：进程占用CPU的使用率-MEM：进程使用的物理内存和总内存的百分比-TIME-：该进程启动后占用的总的CPU时间，即占用CPU使用时间的累加值。-COMMAND：进程启动命令名称-交互模式-q：退出top命令-：立即刷新-s：设置刷新时间间隔-c：显示命令完全模式-t-：显示或隐藏进程和CPU状态信息-m：显示或隐藏内存状态信息-l：显示或隐藏uptime信息-f：增加或减少进程显示标志-S：累计模式，会把已完成或退出的子进程占用的CPU时间累计到父进程的MITE-P：按-CPU使用率排行-T：按MITE-排行-M：按-MEM排行-u：指定显示用户进程-r：修改进程renice值-kkill：进程-i：只显示正在运行的进程-W：保存对top的设置到文件-toprc，下次启动将自动调用toprc文件的设置。-h：帮助命令。-1-显示各个Cpu信息-example-top-p-pid-显示指定进程信息-支持pid-pid多个进程id"><a href="#cpu平均负载-runq-sz：运行队列的长度（等待运行的进程数）-plist-sz：进程列表中进程（processes）和线程（threads）的数量-ldavg-1：最后1分钟的系统平均负载-ldavg-5：过去5分钟的系统平均负载-ldavg-15：过去15分钟的系统平均负载-sar-r-1-2内存情况-kbmemfree：这个值和free命令中的free值基本一致-所以它不包括buffer和cache的空间-kbmemused：这个值和free命令中的used值基本一致-所以它包括buffer和cache的空间-memused：物理内存使用率，这个值是kbmemused和内存总量-不包括swap-的一个百分比-kbbuffers和kbcached：这两个值就是free命令中的buffer和cache-kbcommit：保证当前系统所需要的内存-即为了确保不溢出而需要的内存-RAM-swap-commit：这个值是kbcommit与内存总量-包括swap-的一个百分比-sar-W-1-2页面交换情况pswpin-s：每秒系统换入的交换页面（swap-page）数量pswpout-s：每秒系统换出的交换页面（swap-page）数量-summary-怀疑CPU存在瓶颈，可用-sar-u-和-sar-q-等来查看-怀疑内存存在瓶颈，可用sar-B、sar-r-和-sar-W-等来查看-怀疑I-O存在瓶颈，可用-sar-b、sar-u-和-sar-d-等来查看-ipcs-ipcs-m-共享内存资源-ipcs-q-队列资源-ipcs-s-信号量资源-ipcs-l-类似于ulimit-列出系统资源限制-修改ipc资源限制修改保存后使用sysctl-p-清除IPC资源-ipcrm-M-shmkey-移除用shmkey创建的共享内存段-ipcrm-m-shmid-移除用shmid标识的共享内存段-ipcrm-Q-msgkey-移除用msqkey创建的消息队列-ipcrm-q-msqid-移除用msqid标识的消息队列-ipcrm-S-semkey-移除用semkey创建的信号-ipcrm-s-semid-移除用semid标识的信号-example-清除当前用户创建的所有的IPC资源-fuser显示所有正在使用着指定file-file-system或sockets的进程信息fuser-m-u-redis-server用来查找所有正在使用redis-server的所有进程的PID以及该进程的OWNERfuser-–k-path-to-your-filename-kill所有正在使用某一指定的file-file-system-or-sockets的进程-top-htop更强大的替换工具-输出信息以上为例子-第一行-09-14-56-：-系统当前时间-264-days-20-56-：-系统开机到现在经过了多少时间-1-users-：-当前2用户在线-load-average-0-02-0-04-0-00：-系统1分钟、5分钟、15分钟的CPU负载信息-Tasks-87-total：很好理解，就是当前有87个任务，也就是87个进程。-1-running：1个进程正在运行-86-sleeping：86个进程睡眠-0-stopped：停止的进程数-0-zombie：僵死的进程数-Cpu-s-0-0-us：用户态进程占用CPU时间百分比，不包含renice值为负的任务占用的CPU的时间。-0-7-sy：内核占用CPU时间百分比-0-0-ni：改变过优先级的进程占用CPU的百分比-99-3-id：空闲CPU时间百分比-0-0-wa：等待I-O的CPU时间百分比-0-0-hi：CPU硬中断时间百分比-0-0-si：CPU软中断时间百分比注：这里显示数据是所有cpu的平均值，如果想看每一个cpu的处理情况，按1即可；折叠，再次按1；-Men：内存-8175320kk-total：物理内存总量-8058868k-used：使用的物理内存量-116452k-free：空闲的物理内存量-283084k-buffers：用作内核缓存的物理内存量-Swap：交换空间-6881272k-total：交换区总量-4010444k-used：使用的交换区量-2870828k-free：空闲的交换区量-4336992k-cached：缓冲交换区总量-进程信息-PID：进程的ID-USER：进程所有者-PR：进程的优先级别，越小越优先被执行-NInice：值-VIRT：进程占用的虚拟内存-RES：进程占用的物理内存-SHR：进程使用的共享内存-S：进程的状态。S表示休眠，R表示正在运行，Z表示僵死状态，N表示该进程优先值为负数-CPU：进程占用CPU的使用率-MEM：进程使用的物理内存和总内存的百分比-TIME-：该进程启动后占用的总的CPU时间，即占用CPU使用时间的累加值。-COMMAND：进程启动命令名称-交互模式-q：退出top命令-：立即刷新-s：设置刷新时间间隔-c：显示命令完全模式-t-：显示或隐藏进程和CPU状态信息-m：显示或隐藏内存状态信息-l：显示或隐藏uptime信息-f：增加或减少进程显示标志-S：累计模式，会把已完成或退出的子进程占用的CPU时间累计到父进程的MITE-P：按-CPU使用率排行-T：按MITE-排行-M：按-MEM排行-u：指定显示用户进程-r：修改进程renice值-kkill：进程-i：只显示正在运行的进程-W：保存对top的设置到文件-toprc，下次启动将自动调用toprc文件的设置。-h：帮助命令。-1-显示各个Cpu信息-example-top-p-pid-显示指定进程信息-支持pid-pid多个进程id" class="headerlink" title="cpu平均负载- runq-sz：运行队列的长度（等待运行的进程数）- plist-sz：进程列表中进程（processes）和线程（threads）的数量- ldavg-1：最后1分钟的系统平均负载 ldavg-5：过去5分钟的系统平均负载- ldavg-15：过去15分钟的系统平均负载### sar -r 1 2内存情况- kbmemfree：这个值和free命令中的free值基本一致,所以它不包括buffer和cache的空间.- kbmemused：这个值和free命令中的used值基本一致,所以它包括buffer和cache的空间.- %memused：物理内存使用率，这个值是kbmemused和内存总量(不包括swap)的一个百分比.- kbbuffers和kbcached：这两个值就是free命令中的buffer和cache.- kbcommit：保证当前系统所需要的内存,即为了确保不溢出而需要的内存(RAM+swap).- %commit：这个值是kbcommit与内存总量(包括swap)的一个百分比.### sar -W 1 2页面交换情况pswpin&#x2F;s：每秒系统换入的交换页面（swap page）数量pswpout&#x2F;s：每秒系统换出的交换页面（swap page）数量### summary- 怀疑CPU存在瓶颈，可用 sar -u 和 sar -q 等来查看- 怀疑内存存在瓶颈，可用sar -B、sar -r 和 sar -W 等来查看- 怀疑I&#x2F;O存在瓶颈，可用 sar -b、sar -u 和 sar -d 等来查看# ipcs- ipcs -m:共享内存资源- ipcs -q:队列资源- ipcs -s:信号量资源- ipcs -l:类似于ulimit,列出系统资源限制## 修改ipc资源限制修改保存后使用sysctl -p## 清除IPC资源- ipcrm -M shmkey  移除用shmkey创建的共享内存段- ipcrm -m shmid    移除用shmid标识的共享内存段- ipcrm -Q msgkey  移除用msqkey创建的消息队列- ipcrm -q msqid  移除用msqid标识的消息队列- ipcrm -S semkey  移除用semkey创建的信号- ipcrm -s semid  移除用semid标识的信号## example- 清除当前用户创建的所有的IPC资源# fuser显示所有正在使用着指定file,file system或sockets的进程信息fuser -m -u redis-server用来查找所有正在使用redis-server的所有进程的PID以及该进程的OWNERfuser –k /path/to/your/filename:kill所有正在使用某一指定的file, file system or sockets的进程# top(htop更强大的替换工具)## 输出信息以上为例子### 第一行- 09:14:56 ： 系统当前时间- 264 days, 20:56 ： 系统开机到现在经过了多少时间- 1 users ： 当前2用户在线- load average: 0.02, 0.04, 0.00： 系统1分钟、5分钟、15分钟的CPU负载信息### Tasks- 87 total：很好理解，就是当前有87个任务，也就是87个进程。- 1 running：1个进程正在运行- 86 sleeping：86个进程睡眠- 0 stopped：停止的进程数- 0 zombie：僵死的进程数### Cpu(s)- 0.0%us：用户态进程占用CPU时间百分比，不包含renice值为负的任务占用的CPU的时间。- 0.7%sy：内核占用CPU时间百分比- 0.0%ni：改变过优先级的进程占用CPU的百分比- 99.3%id：空闲CPU时间百分比- 0.0%wa：等待I&#x2F;O的CPU时间百分比- 0.0%hi：CPU硬中断时间百分比- 0.0%si：CPU软中断时间百分比注：这里显示数据是所有cpu的平均值，如果想看每一个cpu的处理情况，按1即可；折叠，再次按1；### Men：内存- 8175320kk total：物理内存总量- 8058868k used：使用的物理内存量- 116452k free：空闲的物理内存量- 283084k buffers：用作内核缓存的物理内存量### Swap：交换空间- 6881272k total：交换区总量- 4010444k used：使用的交换区量- 2870828k free：空闲的交换区量- 4336992k cached：缓冲交换区总量### 进程信息- PID：进程的ID- USER：进程所有者- PR：进程的优先级别，越小越优先被执行- NInice：值- VIRT：进程占用的虚拟内存- RES：进程占用的物理内存- SHR：进程使用的共享内存- S：进程的状态。S表示休眠，R表示正在运行，Z表示僵死状态，N表示该进程优先值为负数- %CPU：进程占用CPU的使用率- %MEM：进程使用的物理内存和总内存的百分比- TIME+：该进程启动后占用的总的CPU时间，即占用CPU使用时间的累加值。- COMMAND：进程启动命令名称## 交互模式- q：退出top命令- ：立即刷新- s：设置刷新时间间隔- c：显示命令完全模式- t:：显示或隐藏进程和CPU状态信息- m：显示或隐藏内存状态信息- l：显示或隐藏uptime信息- f：增加或减少进程显示标志- S：累计模式，会把已完成或退出的子进程占用的CPU时间累计到父进程的MITE+- P：按%CPU使用率排行- T：按MITE+排行- M：按%MEM排行- u：指定显示用户进程- r：修改进程renice值- kkill：进程- i：只显示正在运行的进程- W：保存对top的设置到文件^&#x2F;.toprc，下次启动将自动调用toprc文件的设置。- h：帮助命令。- 1: 显示各个Cpu信息## example- top -p pid:显示指定进程信息(支持pid,pid多个进程id)"></a>cpu平均负载<br>- runq-sz：运行队列的长度（等待运行的进程数）<br>- plist-sz：进程列表中进程（processes）和线程（threads）的数量<br>- ldavg-1：最后1分钟的系统平均负载 ldavg-5：过去5分钟的系统平均负载<br>- ldavg-15：过去15分钟的系统平均负载<br>### <code>sar -r 1 2</code><br>内存情况<br>- kbmemfree：这个值和free命令中的free值基本一致,所以它不包括buffer和cache的空间.<br>- kbmemused：这个值和free命令中的used值基本一致,所以它包括buffer和cache的空间.<br>- %memused：物理内存使用率，这个值是kbmemused和内存总量(不包括swap)的一个百分比.<br>- kbbuffers和kbcached：这两个值就是free命令中的buffer和cache.<br>- kbcommit：保证当前系统所需要的内存,即为了确保不溢出而需要的内存(RAM+swap).<br>- %commit：这个值是kbcommit与内存总量(包括swap)的一个百分比.<br>### <code>sar -W 1 2</code><br>页面交换情况<br>pswpin&#x2F;s：每秒系统换入的交换页面（swap page）数量<br>pswpout&#x2F;s：每秒系统换出的交换页面（swap page）数量<br>### summary<br>- 怀疑CPU存在瓶颈，可用 sar -u 和 sar -q 等来查看<br>- 怀疑内存存在瓶颈，可用sar -B、sar -r 和 sar -W 等来查看<br>- 怀疑I&#x2F;O存在瓶颈，可用 sar -b、sar -u 和 sar -d 等来查看<br># ipcs<br>- <code>ipcs -m</code>:共享内存资源<br>- <code>ipcs -q</code>:队列资源<br>- <code>ipcs -s</code>:信号量资源<br>- <code>ipcs -l</code>:类似于ulimit,列出系统资源限制<br>## 修改ipc资源限制<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-variable">$cat</span> /etc/sysctl.conf<br><span class="hljs-comment"># 一个消息的最大长度</span><br>kernel.msgmax = 524288<br><br><span class="hljs-comment"># 一个消息队列上的最大字节数</span><br><span class="hljs-comment"># 524288*10</span><br>kernel.msgmnb = 5242880<br><br><span class="hljs-comment">#最大消息队列的个数</span><br>kernel.msgmni=2048<br><br><span class="hljs-comment">#一个共享内存区的最大字节数</span><br>kernel.shmmax = 17179869184<br><br><span class="hljs-comment">#系统范围内最大共享内存标识数</span><br>kernel.shmmni=4096<br><br><span class="hljs-comment">#每个信号灯集的最大信号灯数 系统范围内最大信号灯数 每个信号灯支持的最大操作数 系统范围内最大信号灯集数</span><br><span class="hljs-comment">#此参数为系统默认，可以不用修改</span><br><span class="hljs-comment">#kernel.sem = &lt;semmsl&gt; &lt;semmni&gt;*&lt;semmsl&gt; &lt;semopm&gt; &lt;semmni&gt;</span><br>kernel.sem = 250 32000 32 128<br></code></pre></td></tr></table></figure><br>修改保存后使用sysctl -p<br>## 清除IPC资源<br>- ipcrm -M shmkey  移除用shmkey创建的共享内存段<br>- ipcrm -m shmid    移除用shmid标识的共享内存段<br>- ipcrm -Q msgkey  移除用msqkey创建的消息队列<br>- ipcrm -q msqid  移除用msqid标识的消息队列<br>- ipcrm -S semkey  移除用semkey创建的信号<br>- ipcrm -s semid  移除用semid标识的信号<br>## example<br>- 清除当前用户创建的所有的IPC资源<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs bash">ipcs -q | awk <span class="hljs-string">&#x27;&#123; print &quot;ipcrm -q &quot;$2&#125;&#x27;</span> | sh &gt; /dev/null 2&gt;&amp;1;<br>ipcs -m | awk <span class="hljs-string">&#x27;&#123; print &quot;ipcrm -m &quot;$2&#125;&#x27;</span> | sh &gt; /dev/null 2&gt;&amp;1;<br>ipcs -s | awk <span class="hljs-string">&#x27;&#123; print &quot;ipcrm -s &quot;$2&#125;&#x27;</span> | sh &gt; /dev/null 2&gt;&amp;1;<br></code></pre></td></tr></table></figure><br># fuser<br>显示所有正在使用着指定file,file system或sockets的进程信息<br><code>fuser -m -u redis-server</code>用来查找所有正在使用redis-server的所有进程的PID以及该进程的OWNER<br><code>fuser –k /path/to/your/filename</code>:kill所有正在使用某一指定的file, file system or sockets的进程<br># top(htop更强大的替换工具)<br>## 输出信息<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-variable">$top</span><br>    top - 09:14:56 up 264 days, 20:56,  1 user,  load average: 0.02, 0.04, 0.00<br>    Tasks:  87 total,   1 running,  86 sleeping,   0 stopped,   0 zombie<br>    Cpu(s):  0.0%us,  0.2%sy,  0.0%ni, 99.7%<span class="hljs-built_in">id</span>,  0.0%wa,  0.0%hi,  0.0%si,  0.2%st<br>    Mem:    377672k total,   322332k used,    55340k free,    32592k buffers<br>    Swap:   397308k total,    67192k used,   330116k free,    71900k cached<br>    PID USER      PR  NI  VIRT  RES  SHR S %CPU %MEM    TIME+  COMMAND<br>    1 root      20   0  2856  656  388 S  0.0  0.2   0:49.40 init<br>    2 root      20   0     0    0    0 S  0.0  0.0   0:00.00 kthreadd<br>    3 root      20   0     0    0    0 S  0.0  0.0   7:15.20 ksoftirqd/0<br>    4 root      RT   0     0    0    0 S  0.0  0.0   0:00.00 migration/0<br></code></pre></td></tr></table></figure><br>以上为例子<br>### 第一行<br>- 09:14:56 ： 系统当前时间<br>- 264 days, 20:56 ： 系统开机到现在经过了多少时间<br>- 1 users ： 当前2用户在线<br>- load average: 0.02, 0.04, 0.00： 系统1分钟、5分钟、15分钟的CPU负载信息<br>### Tasks<br>- 87 total：很好理解，就是当前有87个任务，也就是87个进程。<br>- 1 running：1个进程正在运行<br>- 86 sleeping：86个进程睡眠<br>- 0 stopped：停止的进程数<br>- 0 zombie：僵死的进程数<br>### Cpu(s)<br>- 0.0%us：用户态进程占用CPU时间百分比，不包含renice值为负的任务占用的CPU的时间。<br>- 0.7%sy：内核占用CPU时间百分比<br>- 0.0%ni：改变过优先级的进程占用CPU的百分比<br>- 99.3%id：空闲CPU时间百分比<br>- 0.0%wa：等待I&#x2F;O的CPU时间百分比<br>- 0.0%hi：CPU硬中断时间百分比<br>- 0.0%si：CPU软中断时间百分比<br>注：这里显示数据是所有cpu的平均值，如果想看每一个cpu的处理情况，按1即可；折叠，再次按1；<br>### Men：内存<br>- 8175320kk total：物理内存总量<br>- 8058868k used：使用的物理内存量<br>- 116452k free：空闲的物理内存量<br>- 283084k buffers：用作内核缓存的物理内存量<br>### Swap：交换空间<br>- 6881272k total：交换区总量<br>- 4010444k used：使用的交换区量<br>- 2870828k free：空闲的交换区量<br>- 4336992k cached：缓冲交换区总量<br>### 进程信息<br>- PID：进程的ID<br>- USER：进程所有者<br>- PR：进程的优先级别，越小越优先被执行<br>- NInice：值<br>- VIRT：进程占用的虚拟内存<br>- RES：进程占用的物理内存<br>- SHR：进程使用的共享内存<br>- S：进程的状态。S表示休眠，R表示正在运行，Z表示僵死状态，N表示该进程优先值为负数<br>- %CPU：进程占用CPU的使用率<br>- %MEM：进程使用的物理内存和总内存的百分比<br>- TIME+：该进程启动后占用的总的CPU时间，即占用CPU使用时间的累加值。<br>- COMMAND：进程启动命令名称<br>## 交互模式<br>- q：退出top命令<br>- <Space>：立即刷新<br>- s：设置刷新时间间隔<br>- c：显示命令完全模式<br>- t:：显示或隐藏进程和CPU状态信息<br>- m：显示或隐藏内存状态信息<br>- l：显示或隐藏uptime信息<br>- f：增加或减少进程显示标志<br>- S：累计模式，会把已完成或退出的子进程占用的CPU时间累计到父进程的MITE+<br>- P：按%CPU使用率排行<br>- T：按MITE+排行<br>- M：按%MEM排行<br>- u：指定显示用户进程<br>- r：修改进程renice值<br>- kkill：进程<br>- i：只显示正在运行的进程<br>- W：保存对top的设置到文件^&#x2F;.toprc，下次启动将自动调用toprc文件的设置。<br>- h：帮助命令。<br>- 1: 显示各个Cpu信息<br>## example<br>- <code>top -p pid</code>:显示指定进程信息(支持pid,pid多个进程id)</h2><h1 id="查询软硬件信息"><a href="#查询软硬件信息" class="headerlink" title="查询软硬件信息"></a>查询软硬件信息</h1><ul>
+<li><code>uname -a</code>,<code>lsb_release -a</code>linux系统版本</li>
+<li><code>more /etc/release</code>操作系统版本</li>
+<li><code>neofetch</code>系统概览</li>
+<li><code>cat /proc/cpuinfo</code>:cpu信息</li>
+<li><code>cat /proc/meminfo</code>:内存信息</li>
+<li><code>pagesize</code>:显示内存page大小(kb)</li>
+<li><code>ulimit -a</code>:显示系统资源限制信息</li>
+</ul>
+<h1 id="lsof"><a href="#lsof" class="headerlink" title="lsof"></a>lsof</h1><h2 id="命令参数-1"><a href="#命令参数-1" class="headerlink" title="命令参数"></a>命令参数</h2><ul>
+<li>-p:指定进程ID</li>
+<li>-d:指定要显示的文件描述符编号</li>
+<li>-a:列出打开文件存在的进程</li>
+<li>-c&lt;进程名&gt;:列出指定进程所打开的文件</li>
+<li>-g:列出GID号进程详情</li>
+<li>-d&lt;文件号&gt;:列出占用该文件号的进程</li>
+<li>+d&lt;目录&gt;:列出目录下被打开的文件</li>
+<li>+D&lt;目录&gt;:递归列出目录下被打开的文件</li>
+<li>-n&lt;目录&gt;:列出使用NFS的文件</li>
+<li>-i&lt;条件&gt;:列出符合条件的进程。（4、6、协议、:端口、 @ip ）</li>
+<li>-p&lt;进程号&gt;:列出指定进程号所打开的文件</li>
+<li>-u:列出UID号进程详情</li>
+<li>-h:显示帮助信息</li>
+<li>-v:显示版本信息</li>
+</ul>
+<h2 id="列信息"><a href="#列信息" class="headerlink" title="列信息"></a>列信息</h2><ul>
+<li>COMMAND 正在运行的命令名字的前 9 个字符</li>
+<li>PID 进程的 PID</li>
+<li>USER 进程属主的登录名</li>
+<li>DEVICE 设备的设备号（主设备号和从设备号）</li>
+<li>SIZE 如果有的话，表示文件的大小</li>
+<li>NODE 本地文件的节点号</li>
+<li>NAME 文件名</li>
+</ul>
+<h3 id="TYPE"><a href="#TYPE" class="headerlink" title="TYPE"></a>TYPE</h3><p>TYPE 文件的类型</p>
+<ol>
+<li>DIR：表示目录</li>
+<li>CHR：表示字符类型</li>
+<li>BLK：块设备类型</li>
+<li>UNIX： UNIX 域套接字</li>
+<li>FIFO：先进先出 (FIFO) 队列</li>
+<li>IPv4：网际协议 (IP) 套接字</li>
+<li>REG: 常规文件</li>
+</ol>
+<h3 id="FD"><a href="#FD" class="headerlink" title="FD"></a>FD</h3><p>FD 文件描述符号以及访问类型<br>1)cwd：表示current work dirctory，即：应用程序的当前工作目录，这是该应用程序启动的目录，除非它本身对这个目录进行更改<br>2)txt ：该类型的文件是程序代码，如应用程序二进制文件本身或共享库，如上列表中显示的 &#x2F;sbin&#x2F;init 程序<br>3)lnn：library references (AIX);<br>4)er：FD information error (see NAME column);<br>5)jld：jail directory (FreeBSD);<br>6)ltx：shared library text (code and data);<br>7)mxx ：hex memory-mapped type number xx.<br>8)m86：DOS Merge mapped file;<br>9)mem：memory-mapped file;<br>10)mmap：memory-mapped device;<br>11)pd：parent directory;<br>12)rtd：root directory;<br>13)tr：kernel trace file (OpenBSD);<br>14)v86  VP&#x2F;ix mapped file;<br>15)0：表示标准输入<br>16)1：表示标准输出<br>17)2：表示标准错误<br>一般在标准输出、标准错误、标准输入后还跟着文件状态模式：r、w、u等<br>1)u：表示该文件被打开并处于读取&#x2F;写入模式<br>2)r：表示该文件被打开并处于只读模式<br>3)w：表示该文件被打开并处于<br>4)空格：表示该文件的状态模式为unknow，且没有锁定<br>5)-：表示该文件的状态模式为unknow，且被锁定<br>同时在文件状态模式后面，还跟着相关的锁<br>1)N：for a Solaris NFS lock of unknown type;<br>2)r：for read lock on part of the file;<br>3)R：for a read lock on the entire file;<br>4)w：for a write lock on part of the file;文件的部分写锁)<br>5)W：for a write lock on the entire file;整个文件的写锁)<br>6)u：for a read and write lock of any length;<br>7)U：for a lock of unknown type;<br>8)x：for an SCO OpenServer Xenix lock on part      of the file;<br>9)X：for an SCO OpenServer Xenix lock on the      entire file;<br>10)space：if there is no lock.</p>
+<h2 id="example-1"><a href="#example-1" class="headerlink" title="example"></a>example</h2><ul>
+<li><code>lsof -a -p $$ -d 0,1,2</code>显示当前进程0,1,2的文件描述符信息,信息含义如下:</li>
+<li><code>lsof -i tcp</code>:列出所有tcp网络连接信息</li>
+<li><code>lsof - i :3306</code>:列出谁在使用某个端口</li>
+<li><code>lsof -a -u test -i</code>:列出某个用户的所有活跃的网络端口</li>
+<li><code>lsof -i @nf5260i5-td:20,21,80 -r 3</code>:列出目前连接主机nf5260i5-td上端口为：20，21，80相关的所有文件信息，且每隔3秒重复执行</li>
+<li><code>lsof -i 4 -a -p 1234</code>:列出被进程号为1234的进程所打开的所有IPV4 network files</li>
+</ul>
+<h1 id="ps"><a href="#ps" class="headerlink" title="ps"></a>ps</h1><h2 id="命令参数-2"><a href="#命令参数-2" class="headerlink" title="命令参数"></a>命令参数</h2><ul>
+<li>a 显示所有进程</li>
+<li>-a 显示同一终端下的所有程序</li>
+<li>-A 显示所有进程</li>
+<li>c 显示进程的真实名称</li>
+<li>-N 反向选择</li>
+<li>-e 等于“-A”</li>
+<li>e 显示环境变量</li>
+<li>f 显示程序间的关系</li>
+<li>-H 显示树状结构</li>
+<li>r 显示当前终端的进程</li>
+<li>T 显示当前终端的所有程序</li>
+<li>u 指定用户的所有进程</li>
+<li>-au 显示较详细的资讯</li>
+<li>-aux 显示所有包含其他使用者的行程</li>
+<li>-C&lt;命令&gt; 列出指定命令的状况</li>
+<li>–lines&lt;行数&gt; 每页显示的行数</li>
+<li>–width&lt;字符数&gt; 每页显示的字符数</li>
+<li>–help 显示帮助信息</li>
+<li>–version 显示版本显示</li>
+</ul>
+<h2 id="输出列"><a href="#输出列" class="headerlink" title="输出列"></a>输出列</h2><ul>
+<li>F 代表这个程序的旗标 (flag)， 4 代表使用者为 super user</li>
+<li>S 代表这个程序的状态 (STAT)</li>
+<li>UID 程序被该 UID 所拥有</li>
+<li>PID 进程的ID</li>
+<li>PPID 则是其上级父程序的ID</li>
+<li>C CPU 使用的资源百分比</li>
+<li>PRI 这个是 Priority (优先执行序) 的缩写，详细后面介绍</li>
+<li>NI 这个是 Nice 值</li>
+<li>ADDR 这个是 kernel function，指出该程序在内存的那个部分。如果是个 running的程序，一般就是 “-“</li>
+<li>SZ 使用掉的内存大小</li>
+<li>WCHAN 目前这个程序是否正在运作当中，若为 - 表示正在运作</li>
+<li>TTY 登入者的终端机位置</li>
+<li>TIME 使用掉的 CPU 时间。</li>
+<li>CMD 所下达的指令为何</li>
+</ul>
+<h3 id="STAT"><a href="#STAT" class="headerlink" title="STAT"></a>STAT</h3><ul>
+<li>D 不可中断 uninterruptible sleep (usually IO)</li>
+<li>R 运行 runnable (on run queue)</li>
+<li>S 中断 sleeping</li>
+<li>T 停止 traced or stopped</li>
+<li>Z 僵死 a defunct (”zombie”) process</li>
+</ul>
+<h3 id="example-2"><a href="#example-2" class="headerlink" title="example"></a>example</h3><ul>
+<li><code>ps -ef</code>:显示所有进程信息，连同命令行</li>
+<li><code>ps aux</code>:列出目前所有的正在内存中的程序</li>
+</ul>
+<h1 id="strace"><a href="#strace" class="headerlink" title="strace"></a>strace</h1><p>strace常用来跟踪进程执行时的系统调用和所接收的信号</p>
+<h2 id="输出信息-1"><a href="#输出信息-1" class="headerlink" title="输出信息"></a>输出信息</h2><p>每一行都是一条系统调用，等号左边是系统调用的函数名及其参数，右边是该调用的返回值。</p>
+<h2 id="参数-1"><a href="#参数-1" class="headerlink" title="参数"></a>参数</h2><ul>
+<li>-c 统计每一系统调用的所执行的时间,次数和出错的次数等.</li>
+<li>-d 输出strace关于标准错误的调试信息.</li>
+<li>-f 跟踪由fork调用所产生的子进程.</li>
+<li>-ff 如果提供-o filename,则所有进程的跟踪结果输出到相应的filename.pid中,pid是各进程的进程号.</li>
+<li>-F 尝试跟踪vfork调用.在-f时,vfork不被跟踪.</li>
+<li>-h 输出简要的帮助信息.</li>
+<li>-i 输出系统调用的入口指针.</li>
+<li>-q 禁止输出关于脱离的消息.</li>
+<li>-r 打印出相对时间关于,,每一个系统调用.</li>
+<li>-t 在输出中的每一行前加上时间信息.</li>
+<li>-tt 在输出中的每一行前加上时间信息,微秒级.</li>
+<li>-ttt 微秒级输出,以秒了表示时间.</li>
+<li>-T 显示每一调用所耗的时间.</li>
+<li>-v 输出所有的系统调用.一些调用关于环境变量,状态,输入输出等调用由于使用频繁,默认不输出.</li>
+<li>-V 输出strace的版本信息.</li>
+<li>-x 以十六进制形式输出非标准字符串</li>
+<li>-xx 所有字符串以十六进制形式输出.</li>
+<li>-a <column>设置返回值的输出位置.默认 为40.<br>输出写入到指定文件中的数据.</li>
+<li>-o filename 将strace的输出写入文件filename</li>
+<li>-p pid 跟踪指定的进程pid.</li>
+<li>-s strsize 指定输出的字符串的最大长度.默认为32.文件名一直全部输出.</li>
+<li>-u username 以username 的UID和GID执行被跟踪的命令</li>
+</ul>
+<h3 id="e"><a href="#e" class="headerlink" title="-e"></a>-e</h3><p>-e expr 指定一个表达式,用来控制如何跟踪.格式如下:<br><code>[qualifier=][!]value1[,value2]...</code><br>qualifier只能是 trace,abbrev,verbose,raw,signal,read,write其中之一.value是用来限定的符号或数字.默认的 qualifier是 trace.感叹号是否定符号.例如:<br>-eopen等价于 -e trace&#x3D;open,表示只跟踪open调用.而-etrace!&#x3D;open表示跟踪除了open以外的其他调用.有两个特殊的符号 all 和 none.<br>注意有些shell使用!来执行历史记录里的命令,所以要使用\.</p>
+<ul>
+<li>-e trace&#x3D;<set><br>只跟踪指定的系统 调用.例如:-e trace&#x3D;open,close,rean,write表示只跟踪这四个系统调用.默认的为set&#x3D;all.<ul>
+<li>-e trace&#x3D;file 只跟踪有关文件操作的系统调用.</li>
+<li>-e trace&#x3D;process 只跟踪有关进程控制的系统调用.</li>
+<li>-e trace&#x3D;network 跟踪与网络有关的所有系统调用.</li>
+<li>-e strace&#x3D;signal 跟踪所有与系统信号有关的 系统调用</li>
+<li>-e strace&#x3D;ipc 跟踪所有与进程通讯有关的系统调用</li>
+</ul>
+</li>
+<li>-e abbrev&#x3D;<set> 设定 strace输出的系统调用的结果集.<code>-v</code>等价于<code>abbrev=none</code>.默认为abbrev&#x3D;all.</li>
+<li>-e raw&#x3D;<set> 将指定的系统调用的参数以十六进制显示.</li>
+<li>-e signal&#x3D;<set> 指定跟踪的系统信号.默认为all.如 signal&#x3D;!SIGIO(或者signal&#x3D;!io),表示不跟踪SIGIO信号.<br>-e read&#x3D;<set> 输出从指定文件中读出 的数据.例如:<br>  -e read&#x3D;3,5.从文件描述符3,5读出的系统调用<br>  -e write&#x3D;<set></li>
+</ul>
+<h2 id="example-3"><a href="#example-3" class="headerlink" title="example"></a>example</h2><p><code>strace -o output.txt -T -tt -e trace=all -p 28979</code><br><code>strace -p &lt;process-pid&gt;</code>:实时输出程序的系统调用<br><code>strace -f -F -o ~/straceout.txt myserver</code>:跟踪可执行程序</p>
+<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><p><a target="_blank" rel="noopener" href="https://jeremyxu2010.github.io/2019/12/60%E7%A7%92%E5%AE%8C%E6%88%90linux%E7%B3%BB%E7%BB%9F%E7%9A%84%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90%E8%AF%91/"></a></p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>Linux命令_资源性能篇</div>
+      <div>http://example.com/2024/04/26/Linux命令-资源性能篇/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Nanbert</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2024年4月26日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2024/04/29/Linux%E5%91%BD%E4%BB%A4-%E7%BD%91%E7%BB%9C/" title="Linux命令_网络">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">Linux命令_网络</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2024/04/18/C-%E6%80%A7%E8%83%BD%E7%AF%87/" title="C++性能篇">
+                        <span class="hidden-mobile">C++性能篇</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

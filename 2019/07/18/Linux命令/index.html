@@ -25,7 +25,7 @@
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="http://example.com/images/linuxCmd.jpeg">
 <meta property="article:published_time" content="2019-07-18T08:15:42.000Z">
-<meta property="article:modified_time" content="2023-12-12T06:29:01.371Z">
+<meta property="article:modified_time" content="2024-04-30T22:02:19.555Z">
 <meta property="article:author" content="Nanbert">
 <meta property="article:tag" content="命令">
 <meta name="twitter:card" content="summary_large_image">
@@ -233,7 +233,7 @@
         
         
         
-          22 分钟
+          21 分钟
         
       </span>
     
@@ -619,11 +619,15 @@
 <li>&#x2F;etc&#x2F;at.allow,默认不存在,只要存在的用户才能执行</li>
 </ul>
 </li>
-<li><p>crontab服务定时任务计划</p>
-<ul>
-<li><code>sudo systemctl start cronie.service</code>启动服务</li>
-<li><code>crontab -e</code>新增任务或编辑任务<br>格式如下: <code>&lt;minute&gt; &lt;hour&gt; &lt;day&gt; &lt;month&gt; &lt;week&gt; &lt;command&gt;</code></li>
 </ul>
+<h1 id="crontab服务定时任务计划"><a href="#crontab服务定时任务计划" class="headerlink" title="crontab服务定时任务计划"></a>crontab服务定时任务计划</h1><ul>
+<li><code>sudo systemctl start cronie.service</code>启动服务</li>
+<li><code>crontab -e</code>新增任务或编辑任务</li>
+<li><code>crontab -l</code>显示crontab文件</li>
+<li><code>crontab -r</code>删除crontab文件</li>
+<li><code>crontab -ir</code>删除crontab文件前提醒用户</li>
+</ul>
+<h2 id="内容格式"><a href="#内容格式" class="headerlink" title="内容格式"></a>内容格式</h2><p>格式如下: <code>&lt;minute&gt; &lt;hour&gt; &lt;day&gt; &lt;month&gt; &lt;week&gt; &lt;command&gt;</code></p>
 <table>
 <thead>
 <tr>
@@ -655,51 +659,34 @@
 <td align="center">command</td>
 <td align="center">执行的命令</td>
 </tr>
-<tr>
-<td align="center">(*)代表所有可能值</td>
-<td align="center"></td>
-</tr>
 </tbody></table>
-<p>(,)一个列表范围</p>
-<p>(-)表示一个整数范围</p>
-<p>(&#x2F;)指定时间间隔的频率,比如”0-23&#x2F;2”表示每两小时执行</p>
 <ul>
-<li><code>crontab -l</code>显示crontab文件</li>
-<li><code>crontab -r</code>删除crontab文件</li>
-<li><code>crontab -ir</code>删除crontab文件前提醒用户</li>
+<li><code>*</code>代表所有可能值</li>
+<li><code>,</code>一个列表范围</li>
+<li><code>-</code>表示一个整数范围</li>
+<li><code>/</code>指定时间间隔的频率,比如”0-23&#x2F;2”表示每两小时执行</li>
 </ul>
-<p>如果对时间精读要求不高,可以把脚本复制到&#x2F;etc&#x2F;cron.daily等目录下</p>
-<p>anacron是对该程序的一个补充,它会自动运行crontab原本应该运行但由于关机等原因造成的程序,但它只会处理位于&#x2F;etc&#x2F;cron.daily、&#x2F;etc&#x2F;cron.weekly、&#x2F;etc&#x2F;cron.monthly下的脚本文件,它的配置文件位于&#x2F;etc&#x2F;anacrontab</p>
-</li>
+<h2 id="example"><a href="#example" class="headerlink" title="example"></a>example</h2><p>如果对时间精读要求不高,可以把脚本复制到&#x2F;etc&#x2F;cron.daily等目录下</p>
+<ul>
+<li><code>* * * * * myCommand</code>:每分钟执行一次</li>
+<li><code>3,15 * * * * myCommand</code>:每小时的第3和第15分钟执行</li>
+<li><code>3,15 8-11 * * * myCommand</code>:在上午8点到11点的第3和第15分钟执行</li>
+<li><code>3,15 8-11 */2  *  * myCommand</code>:每隔两天的上午8点到11点的第3和第15分钟执行</li>
+<li><code>3,15 8-11 * * 1 myCommand</code>:每周一上午8点到11点的第3和第15分钟执行</li>
+<li><code>30 21 * * * /etc/init.d/smb restart</code>:每晚的21:30重启smb</li>
+<li><code>45 4 1,10,22 * * /etc/init.d/smb restart</code>:每月1、10、22日的4 : 45重启smb</li>
+<li><code>10 1 * * 6,0 /etc/init.d/smb restart</code>:每周六、周日的1 : 10重启smb</li>
+<li><code>0,30 18-23 * * * /etc/init.d/smb restart</code>:每天18 : 00至23 : 00之间每隔30分钟重启smb</li>
+<li><code>0 23 * * 6 /etc/init.d/smb restart</code>:每星期六的晚上11 : 00 pm重启smb</li>
+<li><code>* */1 * * * /etc/init.d/smb restart</code>:每一小时重启smb</li>
+<li><code>0 23-7 * * * /etc/init.d/smb restart</code>晚上11点到早上7点之间，每隔一小时重启smb</li>
 </ul>
-<p>anacron是自动运行的?(有待研究)</p>
+<h2 id="anacron"><a href="#anacron" class="headerlink" title="anacron"></a>anacron</h2><p>anacron是对该程序的一个补充,它会自动运行crontab原本应该运行但由于关机等原因造成的程序,但它只会处理位于&#x2F;etc&#x2F;cron.daily、&#x2F;etc&#x2F;cron.weekly、&#x2F;etc&#x2F;cron.monthly下的脚本文件,它的配置文件位于&#x2F;etc&#x2F;anacrontab<br>anacron是自动运行的?(有待研究)</p>
 <ul>
 <li><p>run-parts一个接一个运行同一目录下的脚本</p>
 <ul>
 <li><code>run-parts&lt;directory-path&gt;</code></li>
 <li><code>run-parts --list --regex  &#39;^s.\*sh$&#39; &lt;directory&gt; </code></li>
-</ul>
-</li>
-<li><p>ffmpeg</p>
-<ul>
-<li>裁剪:<code>ffmpeg -i xx.mp4 -vcodec copy -acodec copy -ss 00:00:00 -to 01:18:08 output.mp4</code></li>
-<li>合并:<br>先建立个文本文档file,格式如下:<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs bash">file <span class="hljs-string">&#x27;1.mp4&#x27;</span><br>file <span class="hljs-string">&#x27;2.mp4&#x27;</span><br></code></pre></td></tr></table></figure>
-<code>ffmpeg -f concat -i file -c copy output.mkv</code></li>
-</ul>
-<p>或者支持不好先转换ts</p>
-<p><code>ffmpeg -i 1.mp4 -vcodec copy -acodec copy -vbsf h264_mp4toannexb 1.ts</code></p>
-<p><code>ffmpeg -i 2.mp4 -vcodec copy -acodec copy -vbsf h264_mp4toannexb 2.ts</code></p>
-<p><code>ffmpeg -i &quot;concat:1.ts|2.ts&quot; -acodec copy -vcodec copy -absf aac_adtstoasc output.mp4</code></p>
-<ul>
-<li>rmvb-&gt;mp4:<br><code>ffmpeg -i name1.rmvb -c:v libx264 -strict -2 name2.mp4 </code></li>
-<li>添加字幕:<br><code>ffmpeg -i 2020-07-13\ 08-20-26.mkv -vf subtitles=test.srt -y output.mkv</code></li>
-</ul>
-<p>srt格式:</p>
-<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">1</span><br><span class="hljs-attribute">00</span>:<span class="hljs-number">00</span>:<span class="hljs-number">03</span>,<span class="hljs-number">000</span> --&gt; <span class="hljs-number">00</span>:<span class="hljs-number">00</span>:<span class="hljs-number">06</span>,<span class="hljs-number">000</span><br><span class="hljs-attribute">Hi</span>,I am Nanbert Don De Niro<br><br><span class="hljs-attribute">2</span><br><span class="hljs-attribute">00</span>:<span class="hljs-number">00</span>:<span class="hljs-number">06</span>,<span class="hljs-number">000</span> --&gt; <span class="hljs-number">00</span>:<span class="hljs-number">00</span>:<span class="hljs-number">08</span>,<span class="hljs-number">000</span><br><span class="hljs-attribute">Hi</span>,I am Donald Trump<br><br><span class="hljs-attribute">3</span><br><span class="hljs-attribute">00</span>:<span class="hljs-number">00</span>:<span class="hljs-number">08</span>,<span class="hljs-number">444</span> --&gt; <span class="hljs-number">00</span>:<span class="hljs-number">00</span>:<span class="hljs-number">10</span>,<span class="hljs-number">000</span><br><span class="hljs-attribute">It</span>&#x27;s you,Assole!<br></code></pre></td></tr></table></figure>
-<ul>
-<li>静音:<code>ffmpeg -i 10.mp4 -af &quot;volume=0&quot; 10Silent.mp4</code></li>
-<li>静音一部分:<code>ffmpeg -i 10.mp4 -af &quot;volume=enable=&#39;between(t,0,8)&#39;:volume=0&quot; 10Silent.mp4</code></li>
-<li>一边播放一边保存流媒体:<code>ffmpeg -i host/input.m3u8 -c copy out.mkv -c copy -f matroska - | ffplay - </code></li>
 </ul>
 </li>
 <li><p><code>type &lt;command&gt;</code>识别命令,有以下几种</p>
@@ -733,24 +720,6 @@
 </li>
 <li><p>coproc(这就是协程?)<br><code>coproc [job_name(可选)] [command]</code>等价于<code>( command )&amp;</code><br>即生成后台子shell，并在子shell中执行命令。command本身可以是小括号命令集(嵌套子shell)或大括号命令集</p>
 </li>
-<li><p>lsof列出打开的文件描述符</p>
-<ul>
-<li>-p:指定进程ID</li>
-<li>-d:指定要显示的文件描述符编号</li>
-<li><code>lsof -a -p $$ -d 0,1,2</code>显示当前进程0,1,2的文件描述符信息,信息含义如下:<ul>
-<li>COMMAND 正在运行的命令名的前 9 个字符</li>
-<li>PID 进程的 PID</li>
-<li>USER 进程属主的登录名</li>
-<li>FD 文件描述符号以及访问类型（r 代表读，w 代表写，u 代表读写）</li>
-<li>TYPE 文件的类型（CHR 代表字符型，BLK 代表块型，DIR 代表目录，REG 代表常规文件）</li>
-<li>DEVICE 设备的设备号（主设备号和从设备号）</li>
-<li>SIZE 如果有的话，表示文件的大小</li>
-<li>NODE 本地文件的节点号</li>
-<li>NAME 文件名</li>
-</ul>
-</li>
-</ul>
-</li>
 <li><p>mktemp</p>
 <p>mktemp可以用来创建临时文件,成功会输出文件路径</p>
 <p><code>mktemp [module]</code>不指定[module]会在&#x2F;tmp中创建唯一临时文件,有用户有读写权限(不使用umask值),若指定[module],则会在当前文件夹下产生模板临时文件(会用任意字符替换模板值中的X),如<code>mktemp test.XXX</code>可能会在当前文件夹下产生文件test.UGH</p>
@@ -760,8 +729,6 @@
 <li><p>nice以某个优先级来运行某个程序<br><code>nice -[num] [command]</code>,num值越大,优先级越低,可以通过”ps -o ni”查看优先级,只能降低,不能提高优先级,</p>
 </li>
 <li><p>renice调整某个程序优先级<br><code>renice -[num] -p [process id]</code>普通用户只能降低优先级,root可以任意调整</p>
-</li>
-<li><p>neofetch<br>显示arch linux系统信息</p>
 </li>
 <li><p>ntpd<br><code>sudo ntpd -qg</code>可以校准时间</p>
 </li>
