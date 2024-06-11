@@ -2,6 +2,8 @@
 title: cmake
 date: 2024-04-05 07:06:41
 tags:
+banner_img: /images/cmake.png
+index_img: /images/cmake.png
 ---
 [19 reasons why cmake is actually awesome](https://kubasejdak.com/19-reasons-why-cmake-is-actually-awesome)
 [an introduction to modern cmake](https://cliutils.gitlab.io/modern-cmake/)

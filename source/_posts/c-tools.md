@@ -2,6 +2,8 @@
 title: c++_tools
 date: 2024-04-05 04:05:08
 tags:
+index_img: /images/cpp_eco.jpg
+banner_img: /images/cpp_eco.jpg
 ---
 
 # valgrind

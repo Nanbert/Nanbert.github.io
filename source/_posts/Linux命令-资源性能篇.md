@@ -2,6 +2,8 @@
 title: Linux命令_资源性能篇
 date: 2024-04-26 03:52:39
 tags:
+index_img: /images/linux_performance.jpeg
+banner_img: /images/linux_performance.jpeg
 ---
 
 # uptime

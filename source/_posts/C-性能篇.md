@@ -2,6 +2,8 @@
 title: C++性能篇
 date: 2024-04-18 03:55:26
 tags:
+index_img: /images/performance.jpeg
+banner_img: /images/performance.jpeg
 ---
 
 # IO

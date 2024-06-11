@@ -2,6 +2,8 @@
 title: ffmpeg
 date: 2024-04-07 04:03:15
 tags:
+index_img: /images/ffmpeg.jpeg
+banner_img: /images/ffmpeg.jpeg
 ---
 # 视频剪裁
 - 裁剪:`ffmpeg -i xx.mp4 -vcodec copy -acodec copy -ss 00:00:00 -to 01:18:08 output.mp4`

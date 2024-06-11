@@ -2,6 +2,8 @@
 title: Linux命令_网络
 date: 2024-04-29 04:14:32
 tags:
+index_img: /images/linuc_network.png
+banner_img: /images/linuc_network.png
 ---
 # netstat
 - `netstat -a`:列出所有端口(包括监听和未监听)
