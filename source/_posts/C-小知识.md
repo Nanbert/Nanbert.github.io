@@ -503,3 +503,28 @@ return static_cast<unsigned>(str[INDEX] - '0');
 }
 };
 ```
+## 删除vector某个元素
+```
+swap(v[3], v[v.size()-1]);
+v.pop_back();
+```
+## 批量删除vector元素
+以下方法都是类似于把元素移到末尾，然后统一删除
+- 删除所有值为42的：`v.erase(remove(v.begin(), v.end(), 42), v.end());`
+- 删除所有值大于0的:
+```C++
+vector<int> v;
+v.erase(remove_if(v.begin(), v.end(), [](int x) {
+    return x > 0;
+}), v.end());
+```
+- c++20
+```C++
+vector<int> v;
+erase(v, 42);       // 删除所有值为 42 的元素
+erase_if(v, [](int x) {
+    return x > 0;   // 删除所有值大于 0 的元素
+});
+```
+## 维护有序的vector
+`s.insert(lower_bound(s.begin(),s.end(),3), 3)`

@@ -134,3 +134,93 @@ H,M,L,分别是移动到屏幕行的顶,中,尾
 |:imap|:inoremap|insert|
 39.
 在.vim/bundle/YouCompleteMe/.ycm_extra_conf.py配置c++20
+# 打造IDE
+## 单文件运行
+- 插件:skywind3000/asynctasks.vim,skywind3000/asyncrun.vim
+- 链接:[asyncrun](https://github.com/skywind3000/asyncrun.vim),[asynctasks](https://github.com/skywind3000/asynctasks.vim)
+
+|快捷键|作用|
+|:-:|:-:|
+|`F7`|编译并运行文件，这会打开一个运行shell的窗口|
+|`Ctrl+d`|关闭shell窗口|
+|`Ctrl+t`|隐藏/显示shell窗口|
+|`Ctrl+\Ctrl+n`|把shell窗口的所有文字进入编辑模式，这样就能像操作文本一样操作该窗口(只读窗口)|
+|`Ctrl+w+""`|前提先用y命令复制文本，然后进入shell窗口，按此快捷键就会粘贴|
+
+## NerdTree
+- 插件:'preservim/nerdtree'
+- 链接:[NerdTree](https://github.com/preservim/nerdtree)
+
+|快捷键|作用|
+|:-:|:-:|
+|`,nn`|打开nerdTree|
+
+## 对齐线
+- 插件:'nathanaelkane/vim-indent-guides'
+- 链接:[vim-indent-guides](https://github.com/preservim/vim-indent-guides)
+
+|快捷键|作用|
+|`,ig`|使用对齐线|
+
+## 成对元素
+- 插件:'tpope/vim-surround'
+- 链接:[vim-surround](https://github.com/tpope/vim-surround)
+
+|快捷键|作用|
+|:-:|:-:|
+|`cs"'`|在一个有`"`元素包围的字段上，更改`"`为`'`|
+|`ds"`|在一个有`"`元素包围的字段上，删除`"`|
+|`ysiw]`|用中括号包围一个单词|
+|`yss)]`|一行加括号|
+|`S<p class="important">`|V选中一行,然后输入，会包围该行|
+
+- 左括号会有空格
+- b可以代表作括号，B代表左花括号
+
+## 快速查找文件
+- 插件:'kien/ctrlp.vim'
+- 链接:[ctrlp](https://github.com/ctrlpvim/ctrlp.vim?tab=readme-ov-file)
+
+|快捷键|作用|
+|:-:|:-:|
+|`,j`|快速查找磁盘文件|
+|`,b`|快速查找缓冲区文件|
+
+## 多行模式(有待研究)
+- 插件:'mq979/vim-visual-multi'
+- 链接:[vim-visual-multi](https://github.com/mg979/vim-visual-multi)
+
+|快捷键|作用|
+|:-:|:-:|
+|`Ctrl+Down/Up`|插入光标进入cursor mode等价于normal mode,Tab键可以切换到extend mode|
+|`Ctrl+n`|选中一个单词进入extend mode等价于visual mode,Tab键可以切换到cursor mode|
+|`Ctrl+Arrows`|选中字符|
+|`Q`|放弃当前的选中|
+
+## 注释
+- 插件:'tpope/vim-commentary'
+- 链接:[vim-commentary](https://github.com/tpope/vim-commentary)
+
+|快捷键|作用|
+|:-:|:-:|
+|`gcc`|快速注释一行|
+|`gcap`|注释一段|
+|`:7,17Commentary`|注释7,17行|
+|`:g/TODO/Commentary`|注释含有TODO行|
+
+## 快速ack(grep)
+- 插件:`mileszs/ack.vim`
+- 链接:[ack](https://github.com/mileszs/ack.vim?tab=readme-ov-file)
+- 前提:需要安装ack，他是高级版的grep
+
+## 其他
+
+|快捷键|作用|插件|
+|:-:|:-:|:-:|
+|`,sf`|列出当前文件所有函数|Plug 'Yggdroot/LeaderF', { 'do': ':LeaderfInstallCExtension' }|
+|`,o`|查看缓冲区列表|jlanzarotta/bufexplorer|
+|`,bd`|关闭当前缓冲区|jlanzarotta/bufexplorer|
+|`,ba`|关闭所有缓冲区|jlanzarotta/bufexplorer|
+|`,bl`|切换缓冲区|jlanzarotta/bufexplorer|
+|`,bh`|切换缓冲区|jlanzarotta/bufexplorer|
+|`+/_`|智能扩展选中区域|terryma/vim-expand-region|

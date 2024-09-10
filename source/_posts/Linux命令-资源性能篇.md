@@ -16,7 +16,7 @@ banner_img: /images/linux_performance.jpeg
 # dmesg
 操作系统消息日志
 # free
-![](https://linuxtools-rst.readthedocs.io/zh-cn/latest/tool/free.html)
+[linuxtools-free](https://linuxtools-rst.readthedocs.io/zh-cn/latest/tool/free.html)
 # vmstat
 `vmstat [-V] [-n] [delay [count]]`
 - -V表示打印出版本信息；
@@ -262,7 +262,7 @@ $top
     3 root      20   0     0    0    0 S  0.0  0.0   7:15.20 ksoftirqd/0
     4 root      RT   0     0    0    0 S  0.0  0.0   0:00.00 migration/0
 ```
-以上为例子
+
 ### 第一行
 - 09:14:56 ： 系统当前时间
 - 264 days, 20:56 ： 系统开机到现在经过了多少时间
@@ -510,6 +510,3 @@ qualifier只能是 trace,abbrev,verbose,raw,signal,read,write其中之一.value�
 `strace -p <process-pid>`:实时输出程序的系统调用
 `strace -f -F -o ~/straceout.txt myserver`:跟踪可执行程序
 
-
-# 参考
-[](https://jeremyxu2010.github.io/2019/12/60%E7%A7%92%E5%AE%8C%E6%88%90linux%E7%B3%BB%E7%BB%9F%E7%9A%84%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90%E8%AF%91/)
