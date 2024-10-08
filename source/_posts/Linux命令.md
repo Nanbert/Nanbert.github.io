@@ -18,6 +18,8 @@ banner_img: /images/linuxCmd.jpeg
   |ctrl+f|前移一个字符|
   |ctrl+b|后移一个字符|
   |ctrl+l|等价于clear|
+  |ctrl+n|向下翻页|
+  |ctrl+p|向上翻页|
   |alt+f|前移一个字|
   |alt+b|后移一个字|
   |alt+c|单词首字符大写|
@@ -40,7 +42,7 @@ banner_img: /images/linuxCmd.jpeg
   |ctrl+u|剪切从光标到行首的文本|
   |ctrl+v|输入特殊字符|
   |ctrl+r|搜索词,再次按该组合键可以循环搜索,回车选中,ctrl+G不做任何操作返回终端|
-  |ctrl+x ctrl+e|在文本编辑器中快速打开当前命令,退出编辑器后，自动执行|
+  |ctrl+x+ctrl+e|在文本编辑器中快速打开当前命令,退出编辑器后，自动执行|
   |set -o vi |设置vi风格|
   |!$|重新使用上一个命令中的最后一项(最好用`alt+.`可以跳转上几次)|
   |!number|重复历史表中第number行命令|
@@ -143,24 +145,26 @@ banner_img: /images/linuxCmd.jpeg
 - `--`显示终止选项命令
   `rm -- -i`表示删除名为'-i'的文件
 - 在任何命令前加`time`,可以计时运行时间
-- xargs命令
+# xargs命令
+将标准输入构造为命令的命令行参数,如果命令行参数过多,会启动多个进程,与单一普通管道相比就是批处理
+## 举例
+- 打印c语言文件含有--hlep的行：`find src -name \*.c -print | xargs grep -n -- --help`
+- 只打印不执行命令，用于确认：`ls|xargs -L1 -p head`
+- 移动文件到文件夹:`find . -name "*.bak" -print 0|xargs -0 -I file mv file ~/old`
 
-  将标准输入构造为命令的命令行参数,如果命令行参数过多,会启动多个进程,与单一普通管道相比就是批处理
-  举例:`find src -name \*.c -print | xargs grep -n -- --help`
-- 输入重定向
-  - `cat < filename`打印名为filename的文件内容
-  - `cat << END`接下来直到END之间的内容
-  - `cat <<< filename`打印filename这个单词
-  - `> 文件名`清空文件
-- tee
-
+# 输入重定向
+- `cat < filename`打印名为filename的文件内容
+- `cat << END`接下来直到END之间的内容
+- `cat <<< filename`打印filename这个单词
+- `> 文件名`清空文件
+# tee
   从Stdin读取数据，并同时输出到Stdout和文件 `ls /usr/bin | tee ls.txt |grep zip`
-- du命令  
-  - `du -sh * | sort -rh`查看当前目录下所有文件大小并排序
-  - `du -sh`统计当前目录大小
-  - `du -h --max-depth=1 | sort`查看当前所有一级子目录大小并排序
+# du命令  
+- `du -sh * | sort -rh`查看当前目录下所有文件大小并排序
+- `du -sh`统计当前目录大小
+- `du -h --max-depth=1 | sort`查看当前所有一级子目录大小并排序
 
-- at
+# at
   - `systemctl start atd.service`启动服务
   - `at <时间点>`时间点格式举例:19:33、3pm+7 days、20:00 tomorrow 之后进入交互界面,输入命令,ctrl+D退出
   - `at -l 或者 atq`查看列表
@@ -304,3 +308,5 @@ parallel用法复杂，建议读man
 ![](/images/flameLinux2.jpg)
 ![](/images/flameLinux3.jpg)
 ![](/images/flameLinux4.jpg)
+- factor
+分解一个数字的因子

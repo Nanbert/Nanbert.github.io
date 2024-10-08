@@ -196,5 +196,15 @@ alsa使用于linux alsa声卡，`hw:2`是当前电脑上的设备，可以用`ar
 - 5秒处截图：`ffmpeg -ss 00:00:05 -i xx.mp4 xx.jpg -r 1 -vframes 1 -an -vodec mjpeg`
 - 每一帧输出图片：`ffmpeg -i xx.mp4 image_%d.jpg`
 - 图片转为视频：`ffmpeg -f image2 -i image_%d.jpg video.mpg`
-
+# 视频格式的默认编码
+- .avi: Audio Codec: mp3, Video Codec: mpeg4
+- .mkv: Audio Codec: ac3, Video Codec: H.264
+- .mov: Audio Codec: AAC, Video Codec: H.264
+- .mp4: Audio Codec: AAC, Video Codec: H.264
+- .mpg: Audio Codec: mp2, Video Codec: mpeg1video
+- .mxf: Audio Codec: pcm_s16le, Video Codec: mpeg2video
+- .wav: Audio Codec: pcm_s16le (16 bit PCM)
+# 链接
+[ffmprovisr](https://amiaopensource.github.io/ffmprovisr/#SD_HD)
+[ffmpeg中文教程](https://ffmpeg.xianwaizhiyin.net/)
 
