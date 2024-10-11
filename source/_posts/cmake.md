@@ -35,11 +35,53 @@ index_img: /images/cmake.png
 ||`-E <command> [options]`|以平台无关的方式运行单个命令——例如复制文件或计算校验和|
 
 # 内置变量
-|变量名|含义|
+|变量名|类型|含义|
 |:-:|:-:|
 |`CMAKE_GENERATOR_TOOLSET`||
 |`CMAKE_GENERATOR_PLATFORM`||
 |`CMAKE_BUILD_TYPE`|可选值Debug,Release,MinSizeRel,RelWithDebInfo|
+## 主机系统变量
+|变量名|类型|含义|
+|:-:|:-:|:-:|
+|`CMAKE_SIZEOF_VOID_P`|Int|8代表64位，4代表32位|
+|`CMAKE_<LANG>_BYTE_ORDER`||Lang可选C，CXX等,存放字节序,值有可能是`LITTLE_ENDIAN`和`BIG_ENDIAN`|
+|`CMAKE_SYSTEM_NAME`|String|存放操作系统类型：`Linux,Darwin,Windows,AIX`|
+|`ANDROID,APPLE,CYGWIN,UNIX,IOS,WIN32,WINCE,WINDOWS_PHONE`|Bool||
+|`HOSTNAME`|String|主机名|
+|`FQDN`|String| 完全限定域名|
+|`TOTAL_VIRTUAL_MEMORY`|String| 以 MiB 为单位的虚拟内存总量|
+|`AVAILABLE_VIRTUAL_MEMORY`|String| 以 MiB 为单位的可用虚拟内存|
+|`TOTAL_PHYSICAL_MEMORY`|String| 以 MiB 为单位的总物理内存|
+|`AVAILABLE_PHYSICAL_MEMORY`|String| 以 MiB 为单位的可用物理内存|
+|`OS_NAME`|String| 如果存在，则输出 uname -s; 无论是 Windows、Linux，还是 Darwin|
+|`OS_RELEASE`|| 操作系统子类型，如 Windows Professional|
+|`OS_VERSION`|String| 操作系统构建 ID|
+|`OS_PLATFORM`|String| 在 Windows 上和 $ENV{PROCESSOR_ARCHITECTURE} 的值一样. 在 Unix/macOS 上和 uname -m 一样|
+|`NUMBER_OF_LOGICAL_CORES`|| 逻辑核数|
+|`NUMBER_OF_PHYSICAL_CORES`|| 物理核数|
+|`HAS_SERIAL_NUMBER`|| 如果处理器有序列号，则为 1|
+|`PROCESSOR_SERIAL_NUMBER`|| 处理器序列号|
+|`PROCESSOR_NAME`|| 可读的处理器名称|
+|`PROCESSOR_DESCRIPTION`|| 可读的完整处理器描述|
+|`IS_64BIT`|| 如果处理器是 64 位的为 1|
+|`HAS_FPU`|| 如果处理器有浮点单元为 1|
+|`HAS_MMX`|| 如果处理器支持 MMX 指令为 1|
+|`HAS_MMX_PLUS`|| 如果处理器支持 Ext. MMX 指令为 1|
+|`HAS_SSE`|| 如果处理器支持 SSE 指令为 1|
+|`HAS_SSE2`|| 如果处理器支持 SSE2 指令为 1|
+|`HAS_SSE_FP`|| 如果处理器支持 SSE FP 指令为 1|
+|`HAS_SSE_MMX`|| 如果处理器支持 SSE MMX 指令为 1|
+|`HAS_AMD_3DNOW`|| 如果处理器支持 3DNow 指令为 1|
+|`HAS_AMD_3DNOW_PLUS`|| 如果处理器支持 3DNow+ 指令为 1|
+|`HAS_IA64`|| 如果 IA64 处理器模拟 x86，则为 1|
+
+# 常见操作
+## C++标准
+- `set(CMAKE_CXX_STANDARD <version>)`
+- `set_property(Target <target> PROPERTY CXX_STANDARD <version>)`
+- `set_target_properties(<targets> PROPERTIES CXX_STANDARD <version>)`
+version可选值有：98,11,14,17,20,23,26
+强制应用标准：`set(CMAKE_CXX_STANDARD_REQUIRED ON)`
 
 # 语法命令
 ## cmake_minimum-required
@@ -74,6 +116,13 @@ project(<PROJECT-NAME>
 类似设置DESCRIPTION和HOMEPAGE_URL将设置以下变量
 - `PROJECT_DESCRIPTION, <PROJECT-NAME>_DESCRIPTION`
 - `PROJECT_HOMEPAGE_URL, <PROJECT-NAME>_HOMEPAGE_URL`
+## add_subdirectory
+- 格式：`add_subdirectory(source_dir [binary_dir] [EXCLUDE_FROM_ALL])`
+- 意义：`将计算source_dir 路径（相对于当前目录）并解析其中的CMakeLists.txt 文件`
+- **[binary_dir]**: 构建的文件将写入该路径，默认是构建树
+- **[EXCLUDE_FROM_ALL]**: 禁用子目录中定义的目标的自动构建
+## add_library
+- 意义：`生成全局可见的目标`
 
 # 参考连接
 [19 reasons why cmake is actually awesome](https://kubasejdak.com/19-reasons-why-cmake-is-actually-awesome)
