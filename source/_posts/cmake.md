@@ -82,6 +82,29 @@ index_img: /images/cmake.png
 - `set_target_properties(<targets> PROPERTIES CXX_STANDARD <version>)`
 version可选值有：98,11,14,17,20,23,26
 强制应用标准：`set(CMAKE_CXX_STANDARD_REQUIRED ON)`
+## 检查支持的编译特性
+```cmake
+list(FIND CMAKE_CXX_COMPILE_FEATURES cxx_variable_templates result)
+if(result EQUAL -1)
+    message(FATAL_ERROR "Variable templates are required for compilation.")
+endif()
+```
+可以在[c++支持特性列表里找到特性的完整列表](https://cmake.org/cmake/help/latest/prop_gbl/CMAKE_CXX_KNOWN_FEATURES.html)
+## 过程间优化(ipo)
+```cmake
+include(CheckIPOSupported)
+check_ipo_supported(RESULT ipo_supported)
+set(CMAKE_INTERPROCEDURAL_OPTIMIZATION ${ipo_supported})
+```
+## 禁用源内构建
+```cmake
+cmake_minimum_required(VERSION 3.26.0)
+project(NoInSource CXX)
+if(PROJECT_SOURCE_DIR STREQUAL PROJECT_BINARY_DIR)
+    message(FATAL_ERROR "In-source builds are not allowed")
+endif()
+message("Build successful!")
+```
 
 # 语法命令
 ## cmake_minimum-required
