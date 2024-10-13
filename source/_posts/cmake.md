@@ -80,7 +80,9 @@ index_img: /images/cmake.png
 - `set(CMAKE_CXX_STANDARD <version>)`
 - `set_property(Target <target> PROPERTY CXX_STANDARD <version>)`
 - `set_target_properties(<targets> PROPERTIES CXX_STANDARD <version>)`
+- `target_compile_features(<target> PUBLIC cxx_std_26)`
 version可选值有：98,11,14,17,20,23,26
+使用target_compile_features可选值有cxx_std_14...
 强制应用标准：`set(CMAKE_CXX_STANDARD_REQUIRED ON)`
 ## 检查支持的编译特性
 ```cmake
@@ -105,7 +107,11 @@ if(PROJECT_SOURCE_DIR STREQUAL PROJECT_BINARY_DIR)
 endif()
 message("Build successful!")
 ```
-
+## 生成目标依赖图
+- 使用命令`cmake --graphviz=test.dot .`
+- 更多信息见官网**CMakeGraphVizOptions**模块,
+- 默认自定义目标不会出现在图中，可以创建一个**CMakeGraphVizOptions.cmake**文件，里面设置`set(GRAPHVIZ_CUSTOM_TARGETS TRUE)`
+- 生成的dot文件可以在线查看[Graphviz](https://dreampuf.github.io/GraphvizOnline/)
 # 语法命令
 ## cmake_minimum-required
 - 格式：`cmake_minimum_required(VERSION <x.xx>)`
@@ -144,8 +150,115 @@ project(<PROJECT-NAME>
 - 意义：`将计算source_dir 路径（相对于当前目录）并解析其中的CMakeLists.txt 文件`
 - **[binary_dir]**: 构建的文件将写入该路径，默认是构建树
 - **[EXCLUDE_FROM_ALL]**: 禁用子目录中定义的目标的自动构建
+## add_executable
+- 格式：`add_executable(<name> [WIN32] [MACOSX_BUNDLE] [EXCLUDE_FROM_ALL] [source1 source2...])`
+- [WIN32],[MACOSX_BUNDLE]分别生成win和mac下的gui程序
+- [EXCLUDE_FROM_ALL]将使得该目标在默认构建中排除在外，必须-t明确指明
 ## add_library
-- 意义：`生成全局可见的目标`
+- 格式：`add_library(<name> [STATIC|SHARED|MODULE] [EXCLUDE_FROM_ALL] [source1 source2...])`
+- [STATIC|SHARED|MODULE],分别对应静态，动态，模块
+## add_custom_target
+- 格式：`add_custom_target(Name [ALL] [COMMAND command2 [args2...] ...])`
+[ALL]与[EXCLUDE_FROM_ALL]含义相反，自定义目标默认不生成,自定义目标通常用于以下场景：
+- 计算其他二进制文件的校验和
+- 运行代码消毒器并收集结果
+- 将编译报告发送到指标通道
+```cmake
+cmake_minimum_required(VERSION 3.26)
+project(BankApp CXX)
+add_executable(terminal_app terminal_app.cpp)
+add_executable(gui_app gui_app.cpp)
+target_link_libraries(terminal_app calculations)
+target_link_libraries(gui_app calculations drawing)
+add_library(calculations calculations.cpp)
+add_library(drawing drawing.cpp)
+add_custom_target(checksum ALL
+    COMMAND sh -c "cksum terminal_app>terminal.ck"
+    COMMAND sh -c "cksum gui_app>gui.ck"
+    BYPRODUCTS terminal.ck gui.ck
+    COMMENT "Checking the sums..."
+)
+```
+## 伪目标
+### 别名目标
+别名目标的确切作用就是你所期望的——为目标创建另一个不同的名称引用
+- `add_executable(<name> ALIAS <target>)`
+- `add_library(<name> ALIAS <target>)`
+### 接口库
+- `add_library(<name> INTERFACE [item1 ...])`
+有两个作用：一是**代表仅包含头文件的库**,二是**将一堆传播属性打包成一个逻辑单元**
+例子一：
+```cmake
+add_library(Eigen INTERFACE
+  src/eigen.h src/vector.h src/matrix.h
+)
+target_include_directories(Eigen INTERFACE
+  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/src>
+  $<INSTALL_INTERFACE:include/Eigen>
+)
+target_link_libraries(executable Eigen)
+```
+例子二：
+```cmake
+add_library(warning_properties INTERFACE)
+target_compile_options(warning_properties INTERFACE
+    -Wall -Wextra -Wpedantic
+)
+5 target_link_libraries(executable warning_properties)
+```
+## 对象库
+即.o对象文件
+- `add_library(<target> OBJECT <sources>)`
+可以使用target_link_libraries()作为依赖添加，抑或是如下：
+```cmake
+add_library(... $<TARGET_OBJECTS:objname> ...)
+add_executable(... $<TARGET_OBJECTS:objname> ...)
+```
+## target_include_directories
+```cmake
+target_include_directories(<target> [SYSTEM] [AFTER|BEFORE]
+<INTERFACE|PUBLIC|PRIVATE> [item1...]
+[<INTERFACE|PUBLIC|PRIVATE> [item2...]
+...])
+```
+SYSTEM 关键字告诉编译器给定的目录应该视为标准系统目录（与尖括号形式一起使用）。
+BEFORE或AFTER决定是否将这些头文件放在已有的路径之前或之后
+## target——compile_definitions
+- ``
+定义宏变量,相当于-D传递
+# 目标的属性
+- 获取属性值:`get_target_property(<var> <target> <property-name>)`
+- 设置属性:`set_target_properties(<target1> <target2> ...  PROPERTIES <prop1-name> <value1> <prop2-name> <value2> ...)`或 `set_property(Target <target> PROPERTY <prop-name> <value>)`
+## 属性传播
+- PRIVATE:设置源目标属性
+- INTERFACE:设置使用目标的目标属性
+- PUBLIC：设置源目标和使用目标属性
+当指定 PRIVATE 或 PUBLIC 关键字时，CMake 将在目 标的属性中存储提供的值，COMPILE_DEFINITIONS。此外，关键字是 INTERFACE 或 PUBLIC， 将在具有 INTERFACE_前缀的属性中存储值——INTERFACE_COMPILE_DEFINITIONS。配置阶 段，CMake 将读取源目标的接口属性，并将其内容附加到目标目标。就这样传播属性，或 CMake 所说的传递目标的使用要求。
+设置属性时需要指定上述关键字，如`target_compile_definitions(<source> <INTERFACE|PUBLIC|PRIVATE> [items1...])`, `target_link_libraries(<target> <PRIVATE|PUBLIC|INTERFACE> <item1> [<PRIVATE|PUBLIC|INTERFACE> <item>...])`这个命令也需要传播关键字
+## 自定义属性的传播
+CMake 默认不会传播自定义属性（这个机制只适用 于内置目标属性），必须明确地将自定义属性添加到“兼容”属性列表中。
+每个目标都有四个这样的列表：
+- COMPATIBLE_INTEERFACE_BOOL
+- COMPATIBLE_INTERFACE_STRING
+- COMPATIBLE_INTERFACE_NUMBER_MAX
+- COMPATIBLE_INTERFACE_NUMBER_MIN
+将属性添加到它们中的任何一个，都会触发传播和兼容性检查。BOOL 列表将检查所有传递到 目标目标的属性是否评估为相同的布尔值。类似地，STRING 将评估为字符串。NUMBER_MAX 和 NUMBER_MIN 略有不同——传递的值不必匹配，但目标目标将只接收最高或最低值。
+### 例子
+```cmake
+cmake_minimum_required(VERSION 3.26)
+ project(PropagatedProperties CXX)
+
+add_library(source1 empty.cpp)
+set_property(TARGET source1 PROPERTY INTERFACE_LIB_VERSION 4)
+set_property(TARGET source1 APPEND PROPERTY
+    COMPATIBLE_INTERFACE_STRING LIB_VERSION)
+
+add_library(source2 empty.cpp)
+set_property(TARGET source2 PROPERTY INTERFACE_LIB_VERSION 4)
+add_library(destination empty.cpp)
+target_link_libraries(destination source1 source2)
+```
+CMake 将这个自定义属性传播到相应目标，并检查所有源目标的版本是否完全匹配（兼容性属性只需在目标目标上设置一次）。
 
 # 参考连接
 [19 reasons why cmake is actually awesome](https://kubasejdak.com/19-reasons-why-cmake-is-actually-awesome)
