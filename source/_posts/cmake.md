@@ -179,6 +179,15 @@ add_custom_target(checksum ALL
     COMMENT "Checking the sums..."
 )
 ```
+## find_package
+- `find_package(<Name> [version] [EXACT] [QUIET] [REQUIRED])`
+[version]可以指定一个范围，如`1.22...1.40.1`,EXACT指定确切版本，而不是更新,QUIET抑制包被找到的信息
+当找到库后，cmake将会自动设置以下变量：
+- `<PKG_NAME>_FOUND`: 这表明是否成功找到了包。
+- `<PKG_NAME>_INCLUDE_DIRS 或 <PKG_NAME>_INCLUDES`: 这指向包的头文件所在的目
+录。
+- `<PKG_NAME>_LIBRARIES 或 <PKG_NAME>_LIBS`: 这些是要链接的库的列表。
+可以设置扫描路径`CMAKE_MODULE_PATH`，而不是系统默认的
 ## 伪目标
 ### 别名目标
 别名目标的确切作用就是你所期望的——为目标创建另一个不同的名称引用
@@ -223,9 +232,21 @@ target_include_directories(<target> [SYSTEM] [AFTER|BEFORE]
 ```
 SYSTEM 关键字告诉编译器给定的目录应该视为标准系统目录（与尖括号形式一起使用）。
 BEFORE或AFTER决定是否将这些头文件放在已有的路径之前或之后
-## target——compile_definitions
-- ``
-定义宏变量,相当于-D传递
+## target_compile_definitions
+- `target_compile_definitions(<target> [PRIVATE|PUBLIC|INTERFACE] [var1 "var2=value" ...])`
+定义宏变量,相当于-D传递,也可以传递-D选项
+```cmake
+target_compile_definitions(defined PRIVATE ABC "DEF=${VAR}")
+target_compile_definitions(hello PRIVATE -DFOO)
+target_compile_definitions(hello PRIVATE -D FOO)
+```
+## target_compile_options
+- 传递编译器参数
+- `target_compile_options(<target> [BEFORE] <INTERFACE|PUBLIC|PRIVATE> [items1...] <INTERFACE|PUBLIC|PRIVATE> [items2...]`
+## target_precompile_headers
+- 预编译头文件
+- `target_precompile_headers(<target> <INTERFACE|PUBLIC|PRIVATE> [header1...] [<INTERFACE|PUBLIC|PRIVATE> [header2...] ...])`
+添加的头文件列表存储在PRECOMPILE_HEADERS属性中,不应该对使用install命令导出的目标执行此操作
 # 目标的属性
 - 获取属性值:`get_target_property(<var> <target> <property-name>)`
 - 设置属性:`set_target_properties(<target1> <target2> ...  PROPERTIES <prop1-name> <value1> <prop2-name> <value2> ...)`或 `set_property(Target <target> PROPERTY <prop-name> <value>)`
