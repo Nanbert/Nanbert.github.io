@@ -112,6 +112,93 @@ message("Build successful!")
 - 更多信息见官网**CMakeGraphVizOptions**模块,
 - 默认自定义目标不会出现在图中，可以创建一个**CMakeGraphVizOptions.cmake**文件，里面设置`set(GRAPHVIZ_CUSTOM_TARGETS TRUE)`
 - 生成的dot文件可以在线查看[Graphviz](https://dreampuf.github.io/GraphvizOnline/)
+# 基本语法
+## 注释
+- 单行注释：行首添加`#`
+- 多行注释：以#开始，后跟方括号，任意数量等号=可以是0个，以及另一个方括号,并以相同数量等号及方括号关闭
+```cmake
+ #[=[
+2 bracket comment
+    3 #[[
+        4 nested bracket comment
+    5 #]]
+6 #]=]
+```
+## 参数
+### 括号参数
+括号参数与多行注释格式类似，但它不能嵌套
+```cmake
+message([[multiline
+    bracket
+    argument
+]])
+message([==[
+    because we used two equal-signs "=="
+    this command receives only a single argument
+    even if it includes two square brackets in a row
+    { "petsArray" = [["mouse","cat"],["dog"]] }
+]==])
+```
+### 引号参数
+```cmake
+message("1. escape sequence: \" \n in a quoted argument")
+message("2. multi...
+line")
+message("3. and a variable reference: ${CMAKE_VERSION}")
+```
+### 非引号参数
+```cmake
+message(a\ single\ argument)
+message(two arguments)
+message(three;separated arguments)
+message(${CMAKE_VERSION}) # a variable reference
+```
+## 使用变量
+- 设置与读取：
+```cmake
+set(MyString1 "Text1")
+set([[My String2]] "Text2")
+set("My String 3" "Text3")
+message(${MyString1})
+message(${My\ String2})
+message(${My\ String\ 3})
+```
+- 取消：`unset(MyString1)`
+- 环境变量：`$ENV{}`
+- 缓存变量：`$CACHE{}`
+### 缓存变量
+- 格式：`set(<variable> <value> CACHE <type> <docstring> [FORCE])`
+- BOOL: 一个布尔开关值。GUI 将显示一个复选框。
+- FILEPATH: 磁盘上一个文件的路径。GUI 将打开一个文件对话框。
+- PATH: 磁盘上一个目录的路径。GUI 将打开一个目录对话框。
+- STRING: 一 行 文 本。GUI 提 供 了 一 个 要 填 充 的 文 本 字 段， 可 以 通 过 调 用
+set_property(CACHE <variable> STRINGS <values>) 来替换为下拉控件。
+- INTERNAL: 一行文本。GUI 将跳过内部条目。内部条目可以用来在运行之间持久存储变量，
+使用此类型隐式添加 FORCE 关键字。
+`<doctring>` 值只是一个标签，GUI 将在字段旁边显示它，以便向用户提供此设置的更多细
+节。如果缓存文件中不存在该变量或指定了可选的 FORCE 参数，该值将持久化
+## 使用列表
+- `set(myList a list of five elements)`
+- `set(myList "a;list;of;five;elements")`
+- `set(myList a list "of;five;elements")`
+### list命令工具
+- list(LENGTH <list> <out-var>)
+- list(GET <list> <element index> [<index> ...] <out-var>)
+- list(JOIN <list> <glue> <out-var>)
+- list(SUBLIST <list> <begin> <length> <out-var>)
+- list(FIND <list> <value> <out-var>)
+- list(APPEND <list> [<element>...])
+- list(FILTER <list> {INCLUDE | EXCLUDE} REGEX <regex>)
+- list(INSERT <list> <index> [<element>...])
+- list(POP_BACK <list> [<out-var>...])
+- list(POP_FRONT <list> [<out-var>...])
+- list(PREPEND <list> [<element>...])
+- list(REMOVE_ITEM <list> <value>...)
+- list(REMOVE_AT <list> <index>...)
+- list(REMOVE_DUPLICATES <list>)
+- list(TRANSFORM <list> <ACTION> [...])
+- list(REVERSE <list>)
+- list(SORT <list> [...])
 # 语法命令
 ## cmake_minimum-required
 - 格式：`cmake_minimum_required(VERSION <x.xx>)`
