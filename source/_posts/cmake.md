@@ -199,7 +199,98 @@ set_property(CACHE <variable> STRINGS <values>) 来替换为下拉控件。
 - list(TRANSFORM <list> <ACTION> [...])
 - list(REVERSE <list>)
 - list(SORT <list> [...])
-# 语法命令
+## 条件语句
+```cmake
+if(<condition>)
+<commands>
+elseif(<condition>) # optional block, can be repeated
+<commands>
+else() # optional block
+<commands>
+endif()
+```
+### 条件格式
+- `<condition> AND <condition>`
+- `<condition> OR <condition>`
+- `NOT <condition>`
+- `DEFINED <variable>`
+- `DEFINED CACHE<variable>`
+- `DEFINED ENV<variable>`
+- `if(FOO)`:在以下情况才为假:
+    - OFF, NO, FALSE, N, IGNORE 或 NOTFOUND
+    - 以-NOTFOUND 结尾的字符串
+    - 空字符串
+    - 零
+- `if($(QUX))`字符串只有在等于 ON、Y、YES、TRUE 或非零数字，才可视为真（这些比较不区分大小写）。
+- `1 LESS/LESS_EQUAL/GREATER/GREATER_EQUAL/EQUAL 2`
+- `1.3.4 VERSION_LESS_EQUAL 1.4`
+- `"str1" STREQUAL "${B}"`
+- `<VARIABLE|STRING> MATCHES <regex>`
+- `<VARIABLE|STRING> IN_LIST <VARIABLE>`
+- `COMMAND <command-name>`是否可以调用某个cmake命令
+- `POLICY <policy-id>`是否存在cmake策略
+- `TEST <test-name>`是否add_test()添加了CTest测试
+- `TARGET <target-name>`是否定义了一个构建目标
+- `EXISTS <path-to-file-or-directory>`
+- `<file1> IS_NEWER_THAN <file2>:`
+- `IS_DIRECTORY <path-to-directory>`
+- `IS_SYMLINK <file-name>`
+- `IS_ABSOLUTE <path>`
+## 循环
+循环体支持`break()和continue()`
+### while
+```cmake
+while(<condition>)
+<commands>
+endwhile()
+```
+### foreach
+```cmake
+foreach(<loop_var> RANGE <max>)#CMake 将从 0 迭代到 <max>（包括）。
+    <commands>
+endforeach()
+```
+- `foreach(<loop_var> RANGE <min> <max> [<step>])`
+- `foreach(<loop_variable> IN [LISTS <lists>] [ITEMS <items>])`
+- `foreach(<loop_var>... IN ZIP_LISTS <lists>)`
+
+```cmake
+set(MyList 1 2 3)
+foreach(VAR IN LISTS MyList ITEMS e f)#等价于foreach(VAR 1 2 3 e f)
+    message(${VAR})
+endforeach()
+```
+```cmake
+set(L1 "one;two;three;four")
+set(L2 "1;2;3;4;5")
+foreach(num IN ZIP_LISTS L1 L2)
+    message("word=${num_0}, num=${num_1}")
+endforeach()
+# 等价于下面
+# foreach(word num IN ZIP_LISTS L1 L2)
+#    message("word=${word}, num=${num}")
+```
+## function
+```cmake
+function(<name> [<argument>...])
+<commands>
+endfunction()
+```
+```cmake
+function(MyFunction FirstArg)
+    message("Function: ${CMAKE_CURRENT_FUNCTION}")
+    message("File: ${CMAKE_CURRENT_FUNCTION_LIST_FILE}")
+    message("FirstArg: ${FirstArg}")
+    set(FirstArg "new value")
+    message("FirstArg again: ${FirstArg}")
+    message("ARGV0: ${ARGV0} ARGV1: ${ARGV1} ARGC: ${ARGC}")
+endfunction()
+set(FirstArg "first value")
+MyFunction("Value1" "Value2")
+message("FirstArg in global scope: ${FirstArg}")
+```
+
+# 命令
 ## cmake_minimum-required
 - 格式：`cmake_minimum_required(VERSION <x.xx>)`
 - 意义：设置cmake期望的版本
