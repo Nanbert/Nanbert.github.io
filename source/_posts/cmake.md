@@ -366,6 +366,31 @@ add_custom_target(checksum ALL
 录。
 - `<PKG_NAME>_LIBRARIES 或 <PKG_NAME>_LIBS`: 这些是要链接的库的列表。
 可以设置扫描路径`CMAKE_MODULE_PATH`，而不是系统默认的
+## message
+- `message(<MODE> ”text to print”)`
+MODE可选以下：
+- FATAL_ERROR: 停止处理和生成。
+- SEND_ERROR: 继续处理，但跳过生成。
+- WARNING: 继续处理。
+- AUTHOR_WARNING: 输出警告，但继续处理。
+- DEPRECATION: 如 果 启 用 了 CMAKE_ERROR_DEPRECATED 或 CMAKE_WARN_DEPRECATED，则输出相应地信息。
+- NOTICE 或省略模式（默认）: 输出消息到 stderr，以吸引使用者的注意。
+- STATUS: 继续处理，推荐用于向用户显示的主要消息。
+- VERBOSE: 继续处理，应用于更详细的信息，通常不是非常必要。
+- DEBUG: 继续处理，应包含项目出现问题时，对处理问题有帮助的详细信息。
+- TRACE: 继续处理，建议在项目开发期间输出消息。通常，这类消息会在发布项目之前移除。
+## file
+- file(READ <filename> <out-var> [...])
+- file({WRITE | APPEND} <filename> <content>...)
+- file(DOWNLOAD <url> [<file>] [...])
+## execute_process()
+- `execute_process(COMMAND <cmd1> [<arguments>]... [OPTIONS])`
+可选地 TIMEOUT 参数，用来在进程未在所需限制内完成任务时终止该进程，并且可以根据
+需要设置 WORKING_DIRECTORY 。
+所有任务的退出代码可以通过提供 RESULTS_VARIABLE 参数来收集到一个列表中。如果只
+对最后执行的命令的结果感兴趣，请使用单数形式：RESULT_VARIABLE 。
+为了收集输出，CMake 提供了两个参数：OUTPUT_VARIABLE 和 ERROR_VARIABLE（用法
+类似）。如果想合并 stdout 和 stderr，请为这两个参数使用相同的变量。
 ## 伪目标
 ### 别名目标
 别名目标的确切作用就是你所期望的——为目标创建另一个不同的名称引用
