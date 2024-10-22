@@ -16,16 +16,16 @@
   <meta name="author" content="Nanbert">
   <meta name="keywords" content="">
   
-    <meta name="description" content="同时对某个目录下多个文件操作用&#123;a,b&#125;  搜索某个软件包 sudo apt-cache search &lt;关键字&gt;  终端快捷键:    按键 功能    ctrl+a 命令行首部   ctrl+e 命令行尾部   ctrl+f 前移一个字符   ctrl+b 后移一个字符   ctrl+l 等价于clear   alt+f 前移一个字   alt+b 后移一个字">
+    <meta name="description" content="同时对某个目录下多个文件操作用&#123;a,b&#125;  搜索某个软件包 sudo apt-cache search &lt;关键字&gt;  终端快捷键:    按键 功能    ctrl+a 命令行首部   ctrl+e 命令行尾部   ctrl+f 前移一个字符   ctrl+b 后移一个字符   ctrl+l 等价于clear   ctrl+n 向下翻页   ctrl+p 向上翻页">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Linux命令">
 <meta property="og:url" content="http://example.com/2019/07/18/Linux%E5%91%BD%E4%BB%A4/index.html">
 <meta property="og:site_name" content="Nanbert&#39;s blog">
-<meta property="og:description" content="同时对某个目录下多个文件操作用&#123;a,b&#125;  搜索某个软件包 sudo apt-cache search &lt;关键字&gt;  终端快捷键:    按键 功能    ctrl+a 命令行首部   ctrl+e 命令行尾部   ctrl+f 前移一个字符   ctrl+b 后移一个字符   ctrl+l 等价于clear   alt+f 前移一个字   alt+b 后移一个字">
+<meta property="og:description" content="同时对某个目录下多个文件操作用&#123;a,b&#125;  搜索某个软件包 sudo apt-cache search &lt;关键字&gt;  终端快捷键:    按键 功能    ctrl+a 命令行首部   ctrl+e 命令行尾部   ctrl+f 前移一个字符   ctrl+b 后移一个字符   ctrl+l 等价于clear   ctrl+n 向下翻页   ctrl+p 向上翻页">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="http://example.com/images/linuxCmd.jpeg">
 <meta property="article:published_time" content="2019-07-18T08:15:42.000Z">
-<meta property="article:modified_time" content="2024-04-30T22:02:19.555Z">
+<meta property="article:modified_time" content="2024-10-07T01:18:45.225Z">
 <meta property="article:author" content="Nanbert">
 <meta property="article:tag" content="命令">
 <meta name="twitter:card" content="summary_large_image">
@@ -309,6 +309,14 @@
 <td align="center">等价于clear</td>
 </tr>
 <tr>
+<td align="center">ctrl+n</td>
+<td align="center">向下翻页</td>
+</tr>
+<tr>
+<td align="center">ctrl+p</td>
+<td align="center">向上翻页</td>
+</tr>
+<tr>
 <td align="center">alt+f</td>
 <td align="center">前移一个字</td>
 </tr>
@@ -397,7 +405,7 @@
 <td align="center">搜索词,再次按该组合键可以循环搜索,回车选中,ctrl+G不做任何操作返回终端</td>
 </tr>
 <tr>
-<td align="center">ctrl+x ctrl+e</td>
+<td align="center">ctrl+x+ctrl+e</td>
 <td align="center">在文本编辑器中快速打开当前命令,退出编辑器后，自动执行</td>
 </tr>
 <tr>
@@ -585,29 +593,26 @@
 </li>
 <li><p>在任何命令前加<code>time</code>,可以计时运行时间</p>
 </li>
-<li><p>xargs命令</p>
-<p>将标准输入构造为命令的命令行参数,如果命令行参数过多,会启动多个进程,与单一普通管道相比就是批处理<br>举例:<code>find src -name \*.c -print | xargs grep -n -- --help</code></p>
-</li>
-<li><p>输入重定向</p>
-<ul>
+</ul>
+<h1 id="xargs命令"><a href="#xargs命令" class="headerlink" title="xargs命令"></a>xargs命令</h1><p>将标准输入构造为命令的命令行参数,如果命令行参数过多,会启动多个进程,与单一普通管道相比就是批处理</p>
+<h2 id="举例"><a href="#举例" class="headerlink" title="举例"></a>举例</h2><ul>
+<li>打印c语言文件含有–hlep的行：<code>find src -name \*.c -print | xargs grep -n -- --help</code></li>
+<li>只打印不执行命令，用于确认：<code>ls|xargs -L1 -p head</code></li>
+<li>移动文件到文件夹:<code>find . -name &quot;*.bak&quot; -print 0|xargs -0 -I file mv file ~/old</code></li>
+</ul>
+<h1 id="输入重定向"><a href="#输入重定向" class="headerlink" title="输入重定向"></a>输入重定向</h1><ul>
 <li><code>cat &lt; filename</code>打印名为filename的文件内容</li>
 <li><code>cat &lt;&lt; END</code>接下来直到END之间的内容</li>
 <li><code>cat &lt;&lt;&lt; filename</code>打印filename这个单词</li>
 <li><code>&gt; 文件名</code>清空文件</li>
 </ul>
-</li>
-<li><p>tee</p>
-<p>从Stdin读取数据，并同时输出到Stdout和文件 <code>ls /usr/bin | tee ls.txt |grep zip</code></p>
-</li>
-<li><p>du命令  </p>
-<ul>
+<h1 id="tee"><a href="#tee" class="headerlink" title="tee"></a>tee</h1><p>  从Stdin读取数据，并同时输出到Stdout和文件 <code>ls /usr/bin | tee ls.txt |grep zip</code></p>
+<h1 id="du命令"><a href="#du命令" class="headerlink" title="du命令"></a>du命令</h1><ul>
 <li><code>du -sh * | sort -rh</code>查看当前目录下所有文件大小并排序</li>
 <li><code>du -sh</code>统计当前目录大小</li>
 <li><code>du -h --max-depth=1 | sort</code>查看当前所有一级子目录大小并排序</li>
 </ul>
-</li>
-<li><p>at</p>
-<ul>
+<h1 id="at"><a href="#at" class="headerlink" title="at"></a>at</h1><ul>
 <li><code>systemctl start atd.service</code>启动服务</li>
 <li><code>at &lt;时间点&gt;</code>时间点格式举例:19:33、3pm+7 days、20:00 tomorrow 之后进入交互界面,输入命令,ctrl+D退出</li>
 <li><code>at -l 或者 atq</code>查看列表</li>
@@ -617,8 +622,6 @@
 <li><code>-M</code>忽略产生的任何输出</li>
 <li>&#x2F;etc&#x2F;at.deny,文件中的用户不能执行at(系统默认存在)</li>
 <li>&#x2F;etc&#x2F;at.allow,默认不存在,只要存在的用户才能执行</li>
-</ul>
-</li>
 </ul>
 <h1 id="crontab服务定时任务计划"><a href="#crontab服务定时任务计划" class="headerlink" title="crontab服务定时任务计划"></a>crontab服务定时任务计划</h1><ul>
 <li><code>sudo systemctl start cronie.service</code>启动服务</li>
@@ -829,6 +832,7 @@
 <ul>
 <li>使用python快速搭建web服务器<code>python3 -m http.server 8080</code></li>
 <li>Linux性能分析火焰图<br><img src="/images/flameLinux1.jpg" srcset="/images/loading.gif" lazyload><br><img src="/images/flameLinux2.jpg" srcset="/images/loading.gif" lazyload><br><img src="/images/flameLinux3.jpg" srcset="/images/loading.gif" lazyload><br><img src="/images/flameLinux4.jpg" srcset="/images/loading.gif" lazyload></li>
+<li>factor<br>分解一个数字的因子</li>
 </ul>
 
                 

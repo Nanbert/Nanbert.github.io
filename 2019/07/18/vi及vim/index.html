@@ -25,7 +25,7 @@
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="http://example.com/images/vim.png">
 <meta property="article:published_time" content="2019-07-18T08:53:33.000Z">
-<meta property="article:modified_time" content="2023-12-12T06:29:01.371Z">
+<meta property="article:modified_time" content="2024-07-17T19:57:45.346Z">
 <meta property="article:author" content="Nanbert">
 <meta property="article:tag" content="命令">
 <meta name="twitter:card" content="summary_large_image">
@@ -222,7 +222,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          971 字
+          1.4k 字
         
       </span>
     
@@ -233,7 +233,7 @@
         
         
         
-          9 分钟
+          12 分钟
         
       </span>
     
@@ -465,6 +465,220 @@
 <td align="center">在.vim&#x2F;bundle&#x2F;YouCompleteMe&#x2F;.ycm_extra_conf.py配置c++20</td>
 <td align="center"></td>
 <td align="center"></td>
+</tr>
+</tbody></table>
+<h1 id="打造IDE"><a href="#打造IDE" class="headerlink" title="打造IDE"></a>打造IDE</h1><h2 id="单文件运行"><a href="#单文件运行" class="headerlink" title="单文件运行"></a>单文件运行</h2><ul>
+<li>插件:skywind3000&#x2F;asynctasks.vim,skywind3000&#x2F;asyncrun.vim</li>
+<li>链接:<a target="_blank" rel="noopener" href="https://github.com/skywind3000/asyncrun.vim">asyncrun</a>,<a target="_blank" rel="noopener" href="https://github.com/skywind3000/asynctasks.vim">asynctasks</a></li>
+</ul>
+<table>
+<thead>
+<tr>
+<th align="center">快捷键</th>
+<th align="center">作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center"><code>F7</code></td>
+<td align="center">编译并运行文件，这会打开一个运行shell的窗口</td>
+</tr>
+<tr>
+<td align="center"><code>Ctrl+d</code></td>
+<td align="center">关闭shell窗口</td>
+</tr>
+<tr>
+<td align="center"><code>Ctrl+t</code></td>
+<td align="center">隐藏&#x2F;显示shell窗口</td>
+</tr>
+<tr>
+<td align="center"><code>Ctrl+\Ctrl+n</code></td>
+<td align="center">把shell窗口的所有文字进入编辑模式，这样就能像操作文本一样操作该窗口(只读窗口)</td>
+</tr>
+<tr>
+<td align="center"><code>Ctrl+w+&quot;&quot;</code></td>
+<td align="center">前提先用y命令复制文本，然后进入shell窗口，按此快捷键就会粘贴</td>
+</tr>
+</tbody></table>
+<h2 id="NerdTree"><a href="#NerdTree" class="headerlink" title="NerdTree"></a>NerdTree</h2><ul>
+<li>插件:’preservim&#x2F;nerdtree’</li>
+<li>链接:<a target="_blank" rel="noopener" href="https://github.com/preservim/nerdtree">NerdTree</a></li>
+</ul>
+<table>
+<thead>
+<tr>
+<th align="center">快捷键</th>
+<th align="center">作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center"><code>,nn</code></td>
+<td align="center">打开nerdTree</td>
+</tr>
+</tbody></table>
+<h2 id="对齐线"><a href="#对齐线" class="headerlink" title="对齐线"></a>对齐线</h2><ul>
+<li>插件:’nathanaelkane&#x2F;vim-indent-guides’</li>
+<li>链接:<a target="_blank" rel="noopener" href="https://github.com/preservim/vim-indent-guides">vim-indent-guides</a></li>
+</ul>
+<p>|快捷键|作用|<br>|<code>,ig</code>|使用对齐线|</p>
+<h2 id="成对元素"><a href="#成对元素" class="headerlink" title="成对元素"></a>成对元素</h2><ul>
+<li>插件:’tpope&#x2F;vim-surround’</li>
+<li>链接:<a target="_blank" rel="noopener" href="https://github.com/tpope/vim-surround">vim-surround</a></li>
+</ul>
+<table>
+<thead>
+<tr>
+<th align="center">快捷键</th>
+<th align="center">作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center"><code>cs&quot;&#39;</code></td>
+<td align="center">在一个有<code>&quot;</code>元素包围的字段上，更改<code>&quot;</code>为<code>&#39;</code></td>
+</tr>
+<tr>
+<td align="center"><code>ds&quot;</code></td>
+<td align="center">在一个有<code>&quot;</code>元素包围的字段上，删除<code>&quot;</code></td>
+</tr>
+<tr>
+<td align="center"><code>ysiw]</code></td>
+<td align="center">用中括号包围一个单词</td>
+</tr>
+<tr>
+<td align="center"><code>yss)]</code></td>
+<td align="center">一行加括号</td>
+</tr>
+<tr>
+<td align="center"><code>S&lt;p class=&quot;important&quot;&gt;</code></td>
+<td align="center">V选中一行,然后输入，会包围该行</td>
+</tr>
+</tbody></table>
+<ul>
+<li>左括号会有空格</li>
+<li>b可以代表作括号，B代表左花括号</li>
+</ul>
+<h2 id="快速查找文件"><a href="#快速查找文件" class="headerlink" title="快速查找文件"></a>快速查找文件</h2><ul>
+<li>插件:’kien&#x2F;ctrlp.vim’</li>
+<li>链接:<a target="_blank" rel="noopener" href="https://github.com/ctrlpvim/ctrlp.vim?tab=readme-ov-file">ctrlp</a></li>
+</ul>
+<table>
+<thead>
+<tr>
+<th align="center">快捷键</th>
+<th align="center">作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center"><code>,j</code></td>
+<td align="center">快速查找磁盘文件</td>
+</tr>
+<tr>
+<td align="center"><code>,b</code></td>
+<td align="center">快速查找缓冲区文件</td>
+</tr>
+</tbody></table>
+<h2 id="多行模式-有待研究"><a href="#多行模式-有待研究" class="headerlink" title="多行模式(有待研究)"></a>多行模式(有待研究)</h2><ul>
+<li>插件:’mq979&#x2F;vim-visual-multi’</li>
+<li>链接:<a target="_blank" rel="noopener" href="https://github.com/mg979/vim-visual-multi">vim-visual-multi</a></li>
+</ul>
+<table>
+<thead>
+<tr>
+<th align="center">快捷键</th>
+<th align="center">作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center"><code>Ctrl+Down/Up</code></td>
+<td align="center">插入光标进入cursor mode等价于normal mode,Tab键可以切换到extend mode</td>
+</tr>
+<tr>
+<td align="center"><code>Ctrl+n</code></td>
+<td align="center">选中一个单词进入extend mode等价于visual mode,Tab键可以切换到cursor mode</td>
+</tr>
+<tr>
+<td align="center"><code>Ctrl+Arrows</code></td>
+<td align="center">选中字符</td>
+</tr>
+<tr>
+<td align="center"><code>Q</code></td>
+<td align="center">放弃当前的选中</td>
+</tr>
+</tbody></table>
+<h2 id="注释"><a href="#注释" class="headerlink" title="注释"></a>注释</h2><ul>
+<li>插件:’tpope&#x2F;vim-commentary’</li>
+<li>链接:<a target="_blank" rel="noopener" href="https://github.com/tpope/vim-commentary">vim-commentary</a></li>
+</ul>
+<table>
+<thead>
+<tr>
+<th align="center">快捷键</th>
+<th align="center">作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center"><code>gcc</code></td>
+<td align="center">快速注释一行</td>
+</tr>
+<tr>
+<td align="center"><code>gcap</code></td>
+<td align="center">注释一段</td>
+</tr>
+<tr>
+<td align="center"><code>:7,17Commentary</code></td>
+<td align="center">注释7,17行</td>
+</tr>
+<tr>
+<td align="center"><code>:g/TODO/Commentary</code></td>
+<td align="center">注释含有TODO行</td>
+</tr>
+</tbody></table>
+<h2 id="快速ack-grep"><a href="#快速ack-grep" class="headerlink" title="快速ack(grep)"></a>快速ack(grep)</h2><ul>
+<li>插件:<code>mileszs/ack.vim</code></li>
+<li>链接:<a target="_blank" rel="noopener" href="https://github.com/mileszs/ack.vim?tab=readme-ov-file">ack</a></li>
+<li>前提:需要安装ack，他是高级版的grep</li>
+</ul>
+<h2 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h2><table>
+<thead>
+<tr>
+<th align="center">快捷键</th>
+<th align="center">作用</th>
+<th align="center">插件</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center"><code>,sf</code></td>
+<td align="center">列出当前文件所有函数</td>
+<td align="center">Plug ‘Yggdroot&#x2F;LeaderF’, { ‘do’: ‘:LeaderfInstallCExtension’ }</td>
+</tr>
+<tr>
+<td align="center"><code>,o</code></td>
+<td align="center">查看缓冲区列表</td>
+<td align="center">jlanzarotta&#x2F;bufexplorer</td>
+</tr>
+<tr>
+<td align="center"><code>,bd</code></td>
+<td align="center">关闭当前缓冲区</td>
+<td align="center">jlanzarotta&#x2F;bufexplorer</td>
+</tr>
+<tr>
+<td align="center"><code>,ba</code></td>
+<td align="center">关闭所有缓冲区</td>
+<td align="center">jlanzarotta&#x2F;bufexplorer</td>
+</tr>
+<tr>
+<td align="center"><code>,bl</code></td>
+<td align="center">切换缓冲区</td>
+<td align="center">jlanzarotta&#x2F;bufexplorer</td>
+</tr>
+<tr>
+<td align="center"><code>,bh</code></td>
+<td align="center">切换缓冲区</td>
+<td align="center">jlanzarotta&#x2F;bufexplorer</td>
+</tr>
+<tr>
+<td align="center"><code>+/_</code></td>
+<td align="center">智能扩展选中区域</td>
+<td align="center">terryma&#x2F;vim-expand-region</td>
 </tr>
 </tbody></table>
 

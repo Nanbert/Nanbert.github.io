@@ -16,16 +16,16 @@
   <meta name="author" content="Nanbert">
   <meta name="keywords" content="">
   
-    <meta name="description" content="19 reasons why cmake is actually awesomean introduction to modern cmakeeffective modern cmakeawesome cmakeuseful variables CTesttesting tool(integrated in CMake)">
+    <meta name="description" content="命令行 cmake -S . -B build:构建build树 cmake --build:build二进制 cmake --fresh -S &lt;source tree&gt; -B &lt;build tree&gt;:确保重头开始cmake     长选项 短选项 含义    --source &lt;dir&gt; -S &lt;dir&gt; 指定源码路径    -B &lt;di">
 <meta property="og:type" content="article">
 <meta property="og:title" content="cmake">
 <meta property="og:url" content="http://example.com/2024/04/05/cmake/index.html">
 <meta property="og:site_name" content="Nanbert&#39;s blog">
-<meta property="og:description" content="19 reasons why cmake is actually awesomean introduction to modern cmakeeffective modern cmakeawesome cmakeuseful variables CTesttesting tool(integrated in CMake)">
+<meta property="og:description" content="命令行 cmake -S . -B build:构建build树 cmake --build:build二进制 cmake --fresh -S &lt;source tree&gt; -B &lt;build tree&gt;:确保重头开始cmake     长选项 短选项 含义    --source &lt;dir&gt; -S &lt;dir&gt; 指定源码路径    -B &lt;di">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="http://example.com/images/cmake.png">
 <meta property="article:published_time" content="2024-04-04T23:06:41.000Z">
-<meta property="article:modified_time" content="2024-06-10T14:24:01.065Z">
+<meta property="article:modified_time" content="2024-10-18T13:07:47.787Z">
 <meta property="article:author" content="Nanbert">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="http://example.com/images/cmake.png">
@@ -221,7 +221,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          0 字
+          2.4k 字
         
       </span>
     
@@ -232,7 +232,7 @@
         
         
         
-          1 分钟
+          20 分钟
         
       </span>
     
@@ -274,7 +274,508 @@
             
               <div class="markdown-body">
                 
-                <p><a target="_blank" rel="noopener" href="https://kubasejdak.com/19-reasons-why-cmake-is-actually-awesome">19 reasons why cmake is actually awesome</a><br><a target="_blank" rel="noopener" href="https://cliutils.gitlab.io/modern-cmake/">an introduction to modern cmake</a><br><a target="_blank" rel="noopener" href="https://gist.github.com/mbinna/c61dbb39bca0e4fb7d1f73b0d66a4fd1">effective modern cmake</a><br><a target="_blank" rel="noopener" href="https://github.com/onqtam/awesome-cmake">awesome cmake</a><br><a target="_blank" rel="noopener" href="https://gitlab.kitware.com/cmake/community/wikis/doc/cmake/Useful-Variables">useful variables</a></p>
+                <h1 id="命令行"><a href="#命令行" class="headerlink" title="命令行"></a>命令行</h1><ul>
+<li><code>cmake -S . -B build</code>:构建build树</li>
+<li><code>cmake --build</code>:build二进制</li>
+<li><code>cmake --fresh -S &lt;source tree&gt; -B &lt;build tree&gt;</code>:确保重头开始cmake</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th align="center">长选项</th>
+<th align="center">短选项</th>
+<th align="center">含义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center"><code>--source &lt;dir&gt;</code></td>
+<td align="center"><code>-S &lt;dir&gt;</code></td>
+<td align="center">指定源码路径</td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center"><code>-B &lt;dir&gt;</code></td>
+<td align="center">build树路径，若不存在创建目录</td>
+</tr>
+<tr>
+<td align="center"><code>-build &lt;dir&gt;</code></td>
+<td align="center"></td>
+<td align="center">build二进制路径</td>
+</tr>
+<tr>
+<td align="center"><code>--parallel &lt;number-of-jobs&gt;</code></td>
+<td align="center"><code>-j &lt;number-of-jobs&gt;</code></td>
+<td align="center">多核运行</td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center"><code>-G &lt;generator name&gt;</code></td>
+<td align="center">指定生成器，可以–help查看系统上支持的生成器</td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center"><code>-C &lt;initial cache script&gt;</code></td>
+<td align="center">预填充缓存信息</td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center"><code>-D &lt;var&gt;[:&lt;type&gt;]=&lt;value&gt;</code></td>
+<td align="center">指定变量值,type可选以下值：BOOL，FILEPATH，PATH，STRING 或 INTERNAL</td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center"><code>-L</code></td>
+<td align="center">列出缓存变量，-D指定的不会打印, -LH则还会打印变量提供的帮助信息</td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center"><code>-U &lt;globbing_expr&gt;</code></td>
+<td align="center">删除一个变量</td>
+</tr>
+<tr>
+<td align="center"><code>--system-information [file]</code></td>
+<td align="center"></td>
+<td align="center">获取关于变量、命令、宏和其他设置的通用信息,可保存在file中</td>
+</tr>
+<tr>
+<td align="center"><code>--log-level=&lt;level&gt;</code></td>
+<td align="center"></td>
+<td align="center">可以是ERROR，WARNING，NOTICE，STATUS，VERBOSE，DEBUG，TRACE，输出打印级别</td>
+</tr>
+<tr>
+<td align="center"><code>--trace</code></td>
+<td align="center"></td>
+<td align="center">它会打印每个执行的命令及其文件名、调用它的行号，以及传递的参数列表</td>
+</tr>
+<tr>
+<td align="center"><code>--list-presets</code></td>
+<td align="center"></td>
+<td align="center">列出所有可用的预设</td>
+</tr>
+<tr>
+<td align="center"><code>--fresh</code></td>
+<td align="center"></td>
+<td align="center">清理目录，等价于手动删除</td>
+</tr>
+<tr>
+<td align="center"><code>--target &lt;target&gt;</code></td>
+<td align="center"><code>-t &lt;target&gt;</code></td>
+<td align="center">指定生成的目标（这些目标通常排除在正常构建外）</td>
+</tr>
+<tr>
+<td align="center"><code>--clean-first</code></td>
+<td align="center"><code>-t clean</code></td>
+<td align="center">只影响目标产物而不影响其他，如缓存</td>
+</tr>
+<tr>
+<td align="center"><code>--config &lt;cfg&gt;</code></td>
+<td align="center"></td>
+<td align="center">指定构建类型，只有visual studio等多配置生成器可用，也可以用<code>CMAKE_BUILD_TYPE</code>指定</td>
+</tr>
+<tr>
+<td align="center"><code>--install &lt;build tree&gt; --install-prefix &lt;prefix&gt;</code></td>
+<td align="center"></td>
+<td align="center">指定安装路径，prefix是前缀路径</td>
+</tr>
+<tr>
+<td align="center"><code>--verbose</code></td>
+<td align="center"><code>-v</code></td>
+<td align="center">输出细节</td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center"><code>-E &lt;command&gt; [options]</code></td>
+<td align="center">以平台无关的方式运行单个命令——例如复制文件或计算校验和</td>
+</tr>
+</tbody></table>
+<h1 id="内置变量"><a href="#内置变量" class="headerlink" title="内置变量"></a>内置变量</h1><p>|变量名|类型|含义|<br>|:-:|:-:|<br>|<code>CMAKE_GENERATOR_TOOLSET</code>||<br>|<code>CMAKE_GENERATOR_PLATFORM</code>||<br>|<code>CMAKE_BUILD_TYPE</code>|可选值Debug,Release,MinSizeRel,RelWithDebInfo|</p>
+<h2 id="主机系统变量"><a href="#主机系统变量" class="headerlink" title="主机系统变量"></a>主机系统变量</h2><table>
+<thead>
+<tr>
+<th align="center">变量名</th>
+<th align="center">类型</th>
+<th align="center">含义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center"><code>CMAKE_SIZEOF_VOID_P</code></td>
+<td align="center">Int</td>
+<td align="center">8代表64位，4代表32位</td>
+</tr>
+<tr>
+<td align="center"><code>CMAKE_&lt;LANG&gt;_BYTE_ORDER</code></td>
+<td align="center"></td>
+<td align="center">Lang可选C，CXX等,存放字节序,值有可能是<code>LITTLE_ENDIAN</code>和<code>BIG_ENDIAN</code></td>
+</tr>
+<tr>
+<td align="center"><code>CMAKE_SYSTEM_NAME</code></td>
+<td align="center">String</td>
+<td align="center">存放操作系统类型：<code>Linux,Darwin,Windows,AIX</code></td>
+</tr>
+<tr>
+<td align="center"><code>ANDROID,APPLE,CYGWIN,UNIX,IOS,WIN32,WINCE,WINDOWS_PHONE</code></td>
+<td align="center">Bool</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center"><code>HOSTNAME</code></td>
+<td align="center">String</td>
+<td align="center">主机名</td>
+</tr>
+<tr>
+<td align="center"><code>FQDN</code></td>
+<td align="center">String</td>
+<td align="center">完全限定域名</td>
+</tr>
+<tr>
+<td align="center"><code>TOTAL_VIRTUAL_MEMORY</code></td>
+<td align="center">String</td>
+<td align="center">以 MiB 为单位的虚拟内存总量</td>
+</tr>
+<tr>
+<td align="center"><code>AVAILABLE_VIRTUAL_MEMORY</code></td>
+<td align="center">String</td>
+<td align="center">以 MiB 为单位的可用虚拟内存</td>
+</tr>
+<tr>
+<td align="center"><code>TOTAL_PHYSICAL_MEMORY</code></td>
+<td align="center">String</td>
+<td align="center">以 MiB 为单位的总物理内存</td>
+</tr>
+<tr>
+<td align="center"><code>AVAILABLE_PHYSICAL_MEMORY</code></td>
+<td align="center">String</td>
+<td align="center">以 MiB 为单位的可用物理内存</td>
+</tr>
+<tr>
+<td align="center"><code>OS_NAME</code></td>
+<td align="center">String</td>
+<td align="center">如果存在，则输出 uname -s; 无论是 Windows、Linux，还是 Darwin</td>
+</tr>
+<tr>
+<td align="center"><code>OS_RELEASE</code></td>
+<td align="center"></td>
+<td align="center">操作系统子类型，如 Windows Professional</td>
+</tr>
+<tr>
+<td align="center"><code>OS_VERSION</code></td>
+<td align="center">String</td>
+<td align="center">操作系统构建 ID</td>
+</tr>
+<tr>
+<td align="center"><code>OS_PLATFORM</code></td>
+<td align="center">String</td>
+<td align="center">在 Windows 上和 $ENV{PROCESSOR_ARCHITECTURE} 的值一样. 在 Unix&#x2F;macOS 上和 uname -m 一样</td>
+</tr>
+<tr>
+<td align="center"><code>NUMBER_OF_LOGICAL_CORES</code></td>
+<td align="center"></td>
+<td align="center">逻辑核数</td>
+</tr>
+<tr>
+<td align="center"><code>NUMBER_OF_PHYSICAL_CORES</code></td>
+<td align="center"></td>
+<td align="center">物理核数</td>
+</tr>
+<tr>
+<td align="center"><code>HAS_SERIAL_NUMBER</code></td>
+<td align="center"></td>
+<td align="center">如果处理器有序列号，则为 1</td>
+</tr>
+<tr>
+<td align="center"><code>PROCESSOR_SERIAL_NUMBER</code></td>
+<td align="center"></td>
+<td align="center">处理器序列号</td>
+</tr>
+<tr>
+<td align="center"><code>PROCESSOR_NAME</code></td>
+<td align="center"></td>
+<td align="center">可读的处理器名称</td>
+</tr>
+<tr>
+<td align="center"><code>PROCESSOR_DESCRIPTION</code></td>
+<td align="center"></td>
+<td align="center">可读的完整处理器描述</td>
+</tr>
+<tr>
+<td align="center"><code>IS_64BIT</code></td>
+<td align="center"></td>
+<td align="center">如果处理器是 64 位的为 1</td>
+</tr>
+<tr>
+<td align="center"><code>HAS_FPU</code></td>
+<td align="center"></td>
+<td align="center">如果处理器有浮点单元为 1</td>
+</tr>
+<tr>
+<td align="center"><code>HAS_MMX</code></td>
+<td align="center"></td>
+<td align="center">如果处理器支持 MMX 指令为 1</td>
+</tr>
+<tr>
+<td align="center"><code>HAS_MMX_PLUS</code></td>
+<td align="center"></td>
+<td align="center">如果处理器支持 Ext. MMX 指令为 1</td>
+</tr>
+<tr>
+<td align="center"><code>HAS_SSE</code></td>
+<td align="center"></td>
+<td align="center">如果处理器支持 SSE 指令为 1</td>
+</tr>
+<tr>
+<td align="center"><code>HAS_SSE2</code></td>
+<td align="center"></td>
+<td align="center">如果处理器支持 SSE2 指令为 1</td>
+</tr>
+<tr>
+<td align="center"><code>HAS_SSE_FP</code></td>
+<td align="center"></td>
+<td align="center">如果处理器支持 SSE FP 指令为 1</td>
+</tr>
+<tr>
+<td align="center"><code>HAS_SSE_MMX</code></td>
+<td align="center"></td>
+<td align="center">如果处理器支持 SSE MMX 指令为 1</td>
+</tr>
+<tr>
+<td align="center"><code>HAS_AMD_3DNOW</code></td>
+<td align="center"></td>
+<td align="center">如果处理器支持 3DNow 指令为 1</td>
+</tr>
+<tr>
+<td align="center"><code>HAS_AMD_3DNOW_PLUS</code></td>
+<td align="center"></td>
+<td align="center">如果处理器支持 3DNow+ 指令为 1</td>
+</tr>
+<tr>
+<td align="center"><code>HAS_IA64</code></td>
+<td align="center"></td>
+<td align="center">如果 IA64 处理器模拟 x86，则为 1</td>
+</tr>
+</tbody></table>
+<h1 id="常见操作"><a href="#常见操作" class="headerlink" title="常见操作"></a>常见操作</h1><h2 id="C-标准"><a href="#C-标准" class="headerlink" title="C++标准"></a>C++标准</h2><ul>
+<li><code>set(CMAKE_CXX_STANDARD &lt;version&gt;)</code></li>
+<li><code>set_property(Target &lt;target&gt; PROPERTY CXX_STANDARD &lt;version&gt;)</code></li>
+<li><code>set_target_properties(&lt;targets&gt; PROPERTIES CXX_STANDARD &lt;version&gt;)</code></li>
+<li><code>target_compile_features(&lt;target&gt; PUBLIC cxx_std_26)</code><br>version可选值有：98,11,14,17,20,23,26<br>使用target_compile_features可选值有cxx_std_14…<br>强制应用标准：<code>set(CMAKE_CXX_STANDARD_REQUIRED ON)</code></li>
+</ul>
+<h2 id="检查支持的编译特性"><a href="#检查支持的编译特性" class="headerlink" title="检查支持的编译特性"></a>检查支持的编译特性</h2><figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs cmake"><span class="hljs-keyword">list</span>(FIND CMAKE_CXX_COMPILE_FEATURES cxx_variable_templates result)<br><span class="hljs-keyword">if</span>(result <span class="hljs-keyword">EQUAL</span> -<span class="hljs-number">1</span>)<br>    <span class="hljs-keyword">message</span>(FATAL_ERROR <span class="hljs-string">&quot;Variable templates are required for compilation.&quot;</span>)<br><span class="hljs-keyword">endif</span>()<br></code></pre></td></tr></table></figure>
+<p>可以在<a target="_blank" rel="noopener" href="https://cmake.org/cmake/help/latest/prop_gbl/CMAKE_CXX_KNOWN_FEATURES.html">c++支持特性列表里找到特性的完整列表</a></p>
+<h2 id="过程间优化-ipo"><a href="#过程间优化-ipo" class="headerlink" title="过程间优化(ipo)"></a>过程间优化(ipo)</h2><figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs cmake"><span class="hljs-keyword">include</span>(CheckIPOSupported)<br>check_ipo_supported(RESULT ipo_supported)<br><span class="hljs-keyword">set</span>(CMAKE_INTERPROCEDURAL_OPTIMIZATION <span class="hljs-variable">$&#123;ipo_supported&#125;</span>)<br></code></pre></td></tr></table></figure>
+<h2 id="禁用源内构建"><a href="#禁用源内构建" class="headerlink" title="禁用源内构建"></a>禁用源内构建</h2><figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs cmake"><span class="hljs-keyword">cmake_minimum_required</span>(VERSION <span class="hljs-number">3.26</span>.<span class="hljs-number">0</span>)<br><span class="hljs-keyword">project</span>(NoInSource CXX)<br><span class="hljs-keyword">if</span>(PROJECT_SOURCE_DIR <span class="hljs-keyword">STREQUAL</span> PROJECT_BINARY_DIR)<br>    <span class="hljs-keyword">message</span>(FATAL_ERROR <span class="hljs-string">&quot;In-source builds are not allowed&quot;</span>)<br><span class="hljs-keyword">endif</span>()<br><span class="hljs-keyword">message</span>(<span class="hljs-string">&quot;Build successful!&quot;</span>)<br></code></pre></td></tr></table></figure>
+<h2 id="生成目标依赖图"><a href="#生成目标依赖图" class="headerlink" title="生成目标依赖图"></a>生成目标依赖图</h2><ul>
+<li>使用命令<code>cmake --graphviz=test.dot .</code></li>
+<li>更多信息见官网<strong>CMakeGraphVizOptions</strong>模块,</li>
+<li>默认自定义目标不会出现在图中，可以创建一个<strong>CMakeGraphVizOptions.cmake</strong>文件，里面设置<code>set(GRAPHVIZ_CUSTOM_TARGETS TRUE)</code></li>
+<li>生成的dot文件可以在线查看<a target="_blank" rel="noopener" href="https://dreampuf.github.io/GraphvizOnline/">Graphviz</a></li>
+</ul>
+<h1 id="基本语法"><a href="#基本语法" class="headerlink" title="基本语法"></a>基本语法</h1><h2 id="注释"><a href="#注释" class="headerlink" title="注释"></a>注释</h2><ul>
+<li>单行注释：行首添加<code>#</code></li>
+<li>多行注释：以#开始，后跟方括号，任意数量等号&#x3D;可以是0个，以及另一个方括号,并以相同数量等号及方括号关闭<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs cmake"> <span class="hljs-comment">#[=[</span><br><span class="hljs-number">2</span> bracket comment<br>    <span class="hljs-number">3</span> <span class="hljs-comment">#[[</span><br><span class="hljs-comment">        4 nested bracket comment</span><br><span class="hljs-comment">    5 #]]</span><br><span class="hljs-number">6</span> <span class="hljs-comment">#]=]</span><br></code></pre></td></tr></table></figure></li>
+</ul>
+<h2 id="参数"><a href="#参数" class="headerlink" title="参数"></a>参数</h2><h3 id="括号参数"><a href="#括号参数" class="headerlink" title="括号参数"></a>括号参数</h3><p>括号参数与多行注释格式类似，但它不能嵌套</p>
+<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs cmake"><span class="hljs-keyword">message</span>([[multiline<br>    bracket<br>    argument<br>]])<br><span class="hljs-keyword">message</span>([==[<br>    because we used two <span class="hljs-keyword">equal</span>-signs <span class="hljs-string">&quot;==&quot;</span><br>    this <span class="hljs-keyword">command</span> receives only a single argument<br>    even <span class="hljs-keyword">if</span> it includes two square brackets in a row<br>    &#123; <span class="hljs-string">&quot;petsArray&quot;</span> = [[<span class="hljs-string">&quot;mouse&quot;</span>,<span class="hljs-string">&quot;cat&quot;</span>],[<span class="hljs-string">&quot;dog&quot;</span>]] &#125;<br>]==])<br></code></pre></td></tr></table></figure>
+<h3 id="引号参数"><a href="#引号参数" class="headerlink" title="引号参数"></a>引号参数</h3><figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs cmake"><span class="hljs-keyword">message</span>(<span class="hljs-string">&quot;1. escape sequence: \&quot; \n in a quoted argument&quot;</span>)<br><span class="hljs-keyword">message</span>(<span class="hljs-string">&quot;2. multi...</span><br><span class="hljs-string">line&quot;</span>)<br><span class="hljs-keyword">message</span>(<span class="hljs-string">&quot;3. and a variable reference: $&#123;CMAKE_VERSION&#125;&quot;</span>)<br></code></pre></td></tr></table></figure>
+<h3 id="非引号参数"><a href="#非引号参数" class="headerlink" title="非引号参数"></a>非引号参数</h3><figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs cmake"><span class="hljs-keyword">message</span>(a\ single\ argument)<br><span class="hljs-keyword">message</span>(two arguments)<br><span class="hljs-keyword">message</span>(three;separated arguments)<br><span class="hljs-keyword">message</span>(<span class="hljs-variable">$&#123;CMAKE_VERSION&#125;</span>) <span class="hljs-comment"># a variable reference</span><br></code></pre></td></tr></table></figure>
+<h2 id="使用变量"><a href="#使用变量" class="headerlink" title="使用变量"></a>使用变量</h2><ul>
+<li>设置与读取：<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs cmake"><span class="hljs-keyword">set</span>(MyString1 <span class="hljs-string">&quot;Text1&quot;</span>)<br><span class="hljs-keyword">set</span>([[My String2]] <span class="hljs-string">&quot;Text2&quot;</span>)<br><span class="hljs-keyword">set</span>(<span class="hljs-string">&quot;My String 3&quot;</span> <span class="hljs-string">&quot;Text3&quot;</span>)<br><span class="hljs-keyword">message</span>(<span class="hljs-variable">$&#123;MyString1&#125;</span>)<br><span class="hljs-keyword">message</span>(<span class="hljs-variable">$&#123;My\ String2&#125;</span>)<br><span class="hljs-keyword">message</span>(<span class="hljs-variable">$&#123;My\ String\ 3&#125;</span>)<br></code></pre></td></tr></table></figure></li>
+<li>取消：<code>unset(MyString1)</code></li>
+<li>环境变量：<code>$ENV&#123;&#125;</code></li>
+<li>缓存变量：<code>$CACHE&#123;&#125;</code></li>
+</ul>
+<h3 id="缓存变量"><a href="#缓存变量" class="headerlink" title="缓存变量"></a>缓存变量</h3><ul>
+<li>格式：<code>set(&lt;variable&gt; &lt;value&gt; CACHE &lt;type&gt; &lt;docstring&gt; [FORCE])</code></li>
+<li>BOOL: 一个布尔开关值。GUI 将显示一个复选框。</li>
+<li>FILEPATH: 磁盘上一个文件的路径。GUI 将打开一个文件对话框。</li>
+<li>PATH: 磁盘上一个目录的路径。GUI 将打开一个目录对话框。</li>
+<li>STRING: 一 行 文 本。GUI 提 供 了 一 个 要 填 充 的 文 本 字 段， 可 以 通 过 调 用<br>set_property(CACHE <variable> STRINGS <values>) 来替换为下拉控件。</li>
+<li>INTERNAL: 一行文本。GUI 将跳过内部条目。内部条目可以用来在运行之间持久存储变量，<br>使用此类型隐式添加 FORCE 关键字。<br><code>&lt;doctring&gt;</code> 值只是一个标签，GUI 将在字段旁边显示它，以便向用户提供此设置的更多细<br>节。如果缓存文件中不存在该变量或指定了可选的 FORCE 参数，该值将持久化</li>
+</ul>
+<h2 id="使用列表"><a href="#使用列表" class="headerlink" title="使用列表"></a>使用列表</h2><ul>
+<li><code>set(myList a list of five elements)</code></li>
+<li><code>set(myList &quot;a;list;of;five;elements&quot;)</code></li>
+<li><code>set(myList a list &quot;of;five;elements&quot;)</code></li>
+</ul>
+<h3 id="list命令工具"><a href="#list命令工具" class="headerlink" title="list命令工具"></a>list命令工具</h3><ul>
+<li>list(LENGTH <list> <out-var>)</li>
+<li>list(GET <list> <element index> [<index> …] <out-var>)</li>
+<li>list(JOIN <list> <glue> <out-var>)</li>
+<li>list(SUBLIST <list> <begin> <length> <out-var>)</li>
+<li>list(FIND <list> <value> <out-var>)</li>
+<li>list(APPEND <list> [<element>…])</li>
+<li>list(FILTER <list> {INCLUDE | EXCLUDE} REGEX <regex>)</li>
+<li>list(INSERT <list> <index> [<element>…])</li>
+<li>list(POP_BACK <list> [<out-var>…])</li>
+<li>list(POP_FRONT <list> [<out-var>…])</li>
+<li>list(PREPEND <list> [<element>…])</li>
+<li>list(REMOVE_ITEM <list> <value>…)</li>
+<li>list(REMOVE_AT <list> <index>…)</li>
+<li>list(REMOVE_DUPLICATES <list>)</li>
+<li>list(TRANSFORM <list> <ACTION> […])</li>
+<li>list(REVERSE <list>)</li>
+<li>list(SORT <list> […])</li>
+</ul>
+<h2 id="条件语句"><a href="#条件语句" class="headerlink" title="条件语句"></a>条件语句</h2><figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs cmake"><span class="hljs-keyword">if</span>(&lt;condition&gt;)<br>&lt;commands&gt;<br><span class="hljs-keyword">elseif</span>(&lt;condition&gt;) <span class="hljs-comment"># optional block, can be repeated</span><br>&lt;commands&gt;<br><span class="hljs-keyword">else</span>() <span class="hljs-comment"># optional block</span><br>&lt;commands&gt;<br><span class="hljs-keyword">endif</span>()<br></code></pre></td></tr></table></figure>
+<h3 id="条件格式"><a href="#条件格式" class="headerlink" title="条件格式"></a>条件格式</h3><ul>
+<li><code>&lt;condition&gt; AND &lt;condition&gt;</code></li>
+<li><code>&lt;condition&gt; OR &lt;condition&gt;</code></li>
+<li><code>NOT &lt;condition&gt;</code></li>
+<li><code>DEFINED &lt;variable&gt;</code></li>
+<li><code>DEFINED CACHE&lt;variable&gt;</code></li>
+<li><code>DEFINED ENV&lt;variable&gt;</code></li>
+<li><code>if(FOO)</code>:在以下情况才为假:<ul>
+<li>OFF, NO, FALSE, N, IGNORE 或 NOTFOUND</li>
+<li>以-NOTFOUND 结尾的字符串</li>
+<li>空字符串</li>
+<li>零</li>
+</ul>
+</li>
+<li><code>if($(QUX))</code>字符串只有在等于 ON、Y、YES、TRUE 或非零数字，才可视为真（这些比较不区分大小写）。</li>
+<li><code>1 LESS/LESS_EQUAL/GREATER/GREATER_EQUAL/EQUAL 2</code></li>
+<li><code>1.3.4 VERSION_LESS_EQUAL 1.4</code></li>
+<li><code>&quot;str1&quot; STREQUAL &quot;$&#123;B&#125;&quot;</code></li>
+<li><code>&lt;VARIABLE|STRING&gt; MATCHES &lt;regex&gt;</code></li>
+<li><code>&lt;VARIABLE|STRING&gt; IN_LIST &lt;VARIABLE&gt;</code></li>
+<li><code>COMMAND &lt;command-name&gt;</code>是否可以调用某个cmake命令</li>
+<li><code>POLICY &lt;policy-id&gt;</code>是否存在cmake策略</li>
+<li><code>TEST &lt;test-name&gt;</code>是否add_test()添加了CTest测试</li>
+<li><code>TARGET &lt;target-name&gt;</code>是否定义了一个构建目标</li>
+<li><code>EXISTS &lt;path-to-file-or-directory&gt;</code></li>
+<li><code>&lt;file1&gt; IS_NEWER_THAN &lt;file2&gt;:</code></li>
+<li><code>IS_DIRECTORY &lt;path-to-directory&gt;</code></li>
+<li><code>IS_SYMLINK &lt;file-name&gt;</code></li>
+<li><code>IS_ABSOLUTE &lt;path&gt;</code></li>
+</ul>
+<h2 id="循环"><a href="#循环" class="headerlink" title="循环"></a>循环</h2><p>循环体支持<code>break()和continue()</code></p>
+<h3 id="while"><a href="#while" class="headerlink" title="while"></a>while</h3><figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs cmake"><span class="hljs-keyword">while</span>(&lt;condition&gt;)<br>&lt;commands&gt;<br><span class="hljs-keyword">endwhile</span>()<br></code></pre></td></tr></table></figure>
+<h3 id="foreach"><a href="#foreach" class="headerlink" title="foreach"></a>foreach</h3><figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs cmake"><span class="hljs-keyword">foreach</span>(&lt;loop_var&gt; RANGE &lt;max&gt;)<span class="hljs-comment">#CMake 将从 0 迭代到 &lt;max&gt;（包括）。</span><br>    &lt;commands&gt;<br><span class="hljs-keyword">endforeach</span>()<br></code></pre></td></tr></table></figure>
+<ul>
+<li><code>foreach(&lt;loop_var&gt; RANGE &lt;min&gt; &lt;max&gt; [&lt;step&gt;])</code></li>
+<li><code>foreach(&lt;loop_variable&gt; IN [LISTS &lt;lists&gt;] [ITEMS &lt;items&gt;])</code></li>
+<li><code>foreach(&lt;loop_var&gt;... IN ZIP_LISTS &lt;lists&gt;)</code></li>
+</ul>
+<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs cmake"><span class="hljs-keyword">set</span>(MyList <span class="hljs-number">1</span> <span class="hljs-number">2</span> <span class="hljs-number">3</span>)<br><span class="hljs-keyword">foreach</span>(VAR IN LISTS MyList ITEMS e f)<span class="hljs-comment">#等价于foreach(VAR 1 2 3 e f)</span><br>    <span class="hljs-keyword">message</span>(<span class="hljs-variable">$&#123;VAR&#125;</span>)<br><span class="hljs-keyword">endforeach</span>()<br></code></pre></td></tr></table></figure>
+<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs cmake"><span class="hljs-keyword">set</span>(L1 <span class="hljs-string">&quot;one;two;three;four&quot;</span>)<br><span class="hljs-keyword">set</span>(L2 <span class="hljs-string">&quot;1;2;3;4;5&quot;</span>)<br><span class="hljs-keyword">foreach</span>(num IN ZIP_LISTS L1 L2)<br>    <span class="hljs-keyword">message</span>(<span class="hljs-string">&quot;word=$&#123;num_0&#125;, num=$&#123;num_1&#125;&quot;</span>)<br><span class="hljs-keyword">endforeach</span>()<br><span class="hljs-comment"># 等价于下面</span><br><span class="hljs-comment"># foreach(word num IN ZIP_LISTS L1 L2)</span><br><span class="hljs-comment">#    message(&quot;word=$&#123;word&#125;, num=$&#123;num&#125;&quot;)</span><br></code></pre></td></tr></table></figure>
+<h2 id="function"><a href="#function" class="headerlink" title="function"></a>function</h2><figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs cmake"><span class="hljs-keyword">function</span>(&lt;name&gt; [&lt;argument&gt;...])<br>&lt;commands&gt;<br><span class="hljs-keyword">endfunction</span>()<br></code></pre></td></tr></table></figure>
+<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs cmake"><span class="hljs-keyword">function</span>(MyFunction FirstArg)<br>    <span class="hljs-keyword">message</span>(<span class="hljs-string">&quot;Function: $&#123;CMAKE_CURRENT_FUNCTION&#125;&quot;</span>)<br>    <span class="hljs-keyword">message</span>(<span class="hljs-string">&quot;File: $&#123;CMAKE_CURRENT_FUNCTION_LIST_FILE&#125;&quot;</span>)<br>    <span class="hljs-keyword">message</span>(<span class="hljs-string">&quot;FirstArg: $&#123;FirstArg&#125;&quot;</span>)<br>    <span class="hljs-keyword">set</span>(FirstArg <span class="hljs-string">&quot;new value&quot;</span>)<br>    <span class="hljs-keyword">message</span>(<span class="hljs-string">&quot;FirstArg again: $&#123;FirstArg&#125;&quot;</span>)<br>    <span class="hljs-keyword">message</span>(<span class="hljs-string">&quot;ARGV0: $&#123;ARGV0&#125; ARGV1: $&#123;ARGV1&#125; ARGC: $&#123;ARGC&#125;&quot;</span>)<br><span class="hljs-keyword">endfunction</span>()<br><span class="hljs-keyword">set</span>(FirstArg <span class="hljs-string">&quot;first value&quot;</span>)<br>MyFunction(<span class="hljs-string">&quot;Value1&quot;</span> <span class="hljs-string">&quot;Value2&quot;</span>)<br><span class="hljs-keyword">message</span>(<span class="hljs-string">&quot;FirstArg in global scope: $&#123;FirstArg&#125;&quot;</span>)<br></code></pre></td></tr></table></figure>
+
+<h1 id="命令"><a href="#命令" class="headerlink" title="命令"></a>命令</h1><h2 id="cmake-minimum-required"><a href="#cmake-minimum-required" class="headerlink" title="cmake_minimum-required"></a>cmake_minimum-required</h2><ul>
+<li>格式：<code>cmake_minimum_required(VERSION &lt;x.xx&gt;)</code></li>
+<li>意义：设置cmake期望的版本</li>
+</ul>
+<h2 id="project"><a href="#project" class="headerlink" title="project"></a>project</h2><ul>
+<li>格式一：<code>project(&lt;PROJECT-NAME&gt; [&lt;language-name&gt;...])</code></li>
+<li>格式二：<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs cmake"><span class="hljs-keyword">project</span>(&lt;<span class="hljs-keyword">PROJECT</span>-NAME&gt;<br>    [VERSION &lt;major&gt;[.&lt;minor&gt;[.&lt;patch&gt;[.&lt;tweak&gt;]]]]<br>    [DESCRIPTION &lt;<span class="hljs-keyword">project</span>-description-<span class="hljs-keyword">string</span>&gt;]<br>    [HOMEPAGE_URL &lt;url-<span class="hljs-keyword">string</span>&gt;]<br>    [LANGUAGES &lt;language-name&gt;...])<br></code></pre></td></tr></table></figure>
+此命令将设置以下变量:</li>
+<li><code>PROJECT_NAME</code></li>
+<li><code>CMAKE_PROJECT_NAME (only in the top-level CMakeLists.txt)</code></li>
+<li><code>PROJECT_IS_TOP_LEVEL, &lt;PROJECT-NAME&gt;_IS_TOP_LEVEL</code></li>
+<li><code>PROJECT_SOURCE_DIR, &lt;PROJECT-NAME&gt;_SOURCE_DIR</code></li>
+<li><code>PROJECT_BINARY_DIR, &lt;PROJECT-NAME&gt;_BINARY_DIR</code><br>支持语言(仅列常用的)</li>
+<li>C:C</li>
+<li>CXX: C++<br>指定VERSION关键字，将会设置以下变量:</li>
+<li><code>PROJECT_VERSION, &lt;PROJECT-NAME&gt;_VERSION</code></li>
+<li><code>CMAKE_PROJECT_VERSION (only in the top-level CMakeLists.txt)</code></li>
+<li><code>PROJECT_VERSION_MAJOR, &lt;PROJECT-NAME&gt;_VERSION_MAJOR</code></li>
+<li><code>PROJECT_VERSION_MINOR, &lt;PROJECT-NAME&gt;_VERSION_MINOR</code></li>
+<li><code>PROJECT_VERSION_PATCH, &lt;PROJECT-NAME&gt;_VERSION_PATCH</code></li>
+<li><code>PROJECT_VERSION_TWEAK, &lt;PROJECT-NAME&gt;_VERSION_TWEAK</code><br>类似设置DESCRIPTION和HOMEPAGE_URL将设置以下变量</li>
+<li><code>PROJECT_DESCRIPTION, &lt;PROJECT-NAME&gt;_DESCRIPTION</code></li>
+<li><code>PROJECT_HOMEPAGE_URL, &lt;PROJECT-NAME&gt;_HOMEPAGE_URL</code></li>
+</ul>
+<h2 id="add-subdirectory"><a href="#add-subdirectory" class="headerlink" title="add_subdirectory"></a>add_subdirectory</h2><ul>
+<li>格式：<code>add_subdirectory(source_dir [binary_dir] [EXCLUDE_FROM_ALL])</code></li>
+<li>意义：<code>将计算source_dir 路径（相对于当前目录）并解析其中的CMakeLists.txt 文件</code></li>
+<li><strong>[binary_dir]</strong>: 构建的文件将写入该路径，默认是构建树</li>
+<li><strong>[EXCLUDE_FROM_ALL]</strong>: 禁用子目录中定义的目标的自动构建</li>
+</ul>
+<h2 id="add-executable"><a href="#add-executable" class="headerlink" title="add_executable"></a>add_executable</h2><ul>
+<li>格式：<code>add_executable(&lt;name&gt; [WIN32] [MACOSX_BUNDLE] [EXCLUDE_FROM_ALL] [source1 source2...])</code></li>
+<li>[WIN32],[MACOSX_BUNDLE]分别生成win和mac下的gui程序</li>
+<li>[EXCLUDE_FROM_ALL]将使得该目标在默认构建中排除在外，必须-t明确指明</li>
+</ul>
+<h2 id="add-library"><a href="#add-library" class="headerlink" title="add_library"></a>add_library</h2><ul>
+<li>格式：<code>add_library(&lt;name&gt; [STATIC|SHARED|MODULE] [EXCLUDE_FROM_ALL] [source1 source2...])</code></li>
+<li>[STATIC|SHARED|MODULE],分别对应静态，动态，模块</li>
+</ul>
+<h2 id="add-custom-target"><a href="#add-custom-target" class="headerlink" title="add_custom_target"></a>add_custom_target</h2><ul>
+<li>格式：<code>add_custom_target(Name [ALL] [COMMAND command2 [args2...] ...])</code><br>[ALL]与[EXCLUDE_FROM_ALL]含义相反，自定义目标默认不生成,自定义目标通常用于以下场景：</li>
+<li>计算其他二进制文件的校验和</li>
+<li>运行代码消毒器并收集结果</li>
+<li>将编译报告发送到指标通道<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs cmake"><span class="hljs-keyword">cmake_minimum_required</span>(VERSION <span class="hljs-number">3.26</span>)<br><span class="hljs-keyword">project</span>(BankApp CXX)<br><span class="hljs-keyword">add_executable</span>(terminal_app terminal_app.cpp)<br><span class="hljs-keyword">add_executable</span>(gui_app gui_app.cpp)<br><span class="hljs-keyword">target_link_libraries</span>(terminal_app calculations)<br><span class="hljs-keyword">target_link_libraries</span>(gui_app calculations drawing)<br><span class="hljs-keyword">add_library</span>(calculations calculations.cpp)<br><span class="hljs-keyword">add_library</span>(drawing drawing.cpp)<br><span class="hljs-keyword">add_custom_target</span>(checksum ALL<br>    <span class="hljs-keyword">COMMAND</span> sh -c <span class="hljs-string">&quot;cksum terminal_app&gt;terminal.ck&quot;</span><br>    <span class="hljs-keyword">COMMAND</span> sh -c <span class="hljs-string">&quot;cksum gui_app&gt;gui.ck&quot;</span><br>    BYPRODUCTS terminal.ck gui.ck<br>    COMMENT <span class="hljs-string">&quot;Checking the sums...&quot;</span><br>)<br></code></pre></td></tr></table></figure></li>
+</ul>
+<h2 id="find-package"><a href="#find-package" class="headerlink" title="find_package"></a>find_package</h2><ul>
+<li><code>find_package(&lt;Name&gt; [version] [EXACT] [QUIET] [REQUIRED])</code><br>[version]可以指定一个范围，如<code>1.22...1.40.1</code>,EXACT指定确切版本，而不是更新,QUIET抑制包被找到的信息<br>当找到库后，cmake将会自动设置以下变量：</li>
+<li><code>&lt;PKG_NAME&gt;_FOUND</code>: 这表明是否成功找到了包。</li>
+<li><code>&lt;PKG_NAME&gt;_INCLUDE_DIRS 或 &lt;PKG_NAME&gt;_INCLUDES</code>: 这指向包的头文件所在的目<br>录。</li>
+<li><code>&lt;PKG_NAME&gt;_LIBRARIES 或 &lt;PKG_NAME&gt;_LIBS</code>: 这些是要链接的库的列表。<br>可以设置扫描路径<code>CMAKE_MODULE_PATH</code>，而不是系统默认的</li>
+</ul>
+<h2 id="message"><a href="#message" class="headerlink" title="message"></a>message</h2><ul>
+<li><code>message(&lt;MODE&gt; ”text to print”)</code><br>MODE可选以下：</li>
+<li>FATAL_ERROR: 停止处理和生成。</li>
+<li>SEND_ERROR: 继续处理，但跳过生成。</li>
+<li>WARNING: 继续处理。</li>
+<li>AUTHOR_WARNING: 输出警告，但继续处理。</li>
+<li>DEPRECATION: 如 果 启 用 了 CMAKE_ERROR_DEPRECATED 或 CMAKE_WARN_DEPRECATED，则输出相应地信息。</li>
+<li>NOTICE 或省略模式（默认）: 输出消息到 stderr，以吸引使用者的注意。</li>
+<li>STATUS: 继续处理，推荐用于向用户显示的主要消息。</li>
+<li>VERBOSE: 继续处理，应用于更详细的信息，通常不是非常必要。</li>
+<li>DEBUG: 继续处理，应包含项目出现问题时，对处理问题有帮助的详细信息。</li>
+<li>TRACE: 继续处理，建议在项目开发期间输出消息。通常，这类消息会在发布项目之前移除。</li>
+</ul>
+<h2 id="file"><a href="#file" class="headerlink" title="file"></a>file</h2><ul>
+<li>file(READ <filename> <out-var> […])</li>
+<li>file({WRITE | APPEND} <filename> <content>…)</li>
+<li>file(DOWNLOAD <url> [<file>] […])</li>
+</ul>
+<h2 id="execute-process"><a href="#execute-process" class="headerlink" title="execute_process()"></a>execute_process()</h2><ul>
+<li><code>execute_process(COMMAND &lt;cmd1&gt; [&lt;arguments&gt;]... [OPTIONS])</code><br>可选地 TIMEOUT 参数，用来在进程未在所需限制内完成任务时终止该进程，并且可以根据<br>需要设置 WORKING_DIRECTORY 。<br>所有任务的退出代码可以通过提供 RESULTS_VARIABLE 参数来收集到一个列表中。如果只<br>对最后执行的命令的结果感兴趣，请使用单数形式：RESULT_VARIABLE 。<br>为了收集输出，CMake 提供了两个参数：OUTPUT_VARIABLE 和 ERROR_VARIABLE（用法<br>类似）。如果想合并 stdout 和 stderr，请为这两个参数使用相同的变量。</li>
+</ul>
+<h2 id="伪目标"><a href="#伪目标" class="headerlink" title="伪目标"></a>伪目标</h2><h3 id="别名目标"><a href="#别名目标" class="headerlink" title="别名目标"></a>别名目标</h3><p>别名目标的确切作用就是你所期望的——为目标创建另一个不同的名称引用</p>
+<ul>
+<li><code>add_executable(&lt;name&gt; ALIAS &lt;target&gt;)</code></li>
+<li><code>add_library(&lt;name&gt; ALIAS &lt;target&gt;)</code></li>
+</ul>
+<h3 id="接口库"><a href="#接口库" class="headerlink" title="接口库"></a>接口库</h3><ul>
+<li><code>add_library(&lt;name&gt; INTERFACE [item1 ...])</code><br>有两个作用：一是<strong>代表仅包含头文件的库</strong>,二是<strong>将一堆传播属性打包成一个逻辑单元</strong><br>例子一：<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs cmake"><span class="hljs-keyword">add_library</span>(Eigen INTERFACE<br>  src/eigen.h src/vector.h src/matrix.h<br>)<br><span class="hljs-keyword">target_include_directories</span>(Eigen INTERFACE<br>  $&lt;BUILD_INTERFACE:<span class="hljs-variable">$&#123;CMAKE_CURRENT_SOURCE_DIR&#125;</span>/src&gt;<br>  $&lt;INSTALL_INTERFACE:<span class="hljs-keyword">include</span>/Eigen&gt;<br>)<br><span class="hljs-keyword">target_link_libraries</span>(executable Eigen)<br></code></pre></td></tr></table></figure>
+例子二：<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs cmake"><span class="hljs-keyword">add_library</span>(warning_properties INTERFACE)<br><span class="hljs-keyword">target_compile_options</span>(warning_properties INTERFACE<br>    -Wall -Wextra -Wpedantic<br>)<br><span class="hljs-number">5</span> <span class="hljs-keyword">target_link_libraries</span>(executable warning_properties)<br></code></pre></td></tr></table></figure></li>
+</ul>
+<h2 id="对象库"><a href="#对象库" class="headerlink" title="对象库"></a>对象库</h2><p>即.o对象文件</p>
+<ul>
+<li><code>add_library(&lt;target&gt; OBJECT &lt;sources&gt;)</code><br>可以使用target_link_libraries()作为依赖添加，抑或是如下：<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs cmake"><span class="hljs-keyword">add_library</span>(... $&lt;TARGET_OBJECTS:objname&gt; ...)<br><span class="hljs-keyword">add_executable</span>(... $&lt;TARGET_OBJECTS:objname&gt; ...)<br></code></pre></td></tr></table></figure></li>
+</ul>
+<h2 id="target-include-directories"><a href="#target-include-directories" class="headerlink" title="target_include_directories"></a>target_include_directories</h2><figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs cmake"><span class="hljs-keyword">target_include_directories</span>(&lt;<span class="hljs-keyword">target</span>&gt; [SYSTEM] [AFTER|BEFORE]<br>&lt;INTERFACE|PUBLIC|PRIVATE&gt; [item1...]<br>[&lt;INTERFACE|PUBLIC|PRIVATE&gt; [item2...]<br>...])<br></code></pre></td></tr></table></figure>
+<p>SYSTEM 关键字告诉编译器给定的目录应该视为标准系统目录（与尖括号形式一起使用）。<br>BEFORE或AFTER决定是否将这些头文件放在已有的路径之前或之后</p>
+<h2 id="target-compile-definitions"><a href="#target-compile-definitions" class="headerlink" title="target_compile_definitions"></a>target_compile_definitions</h2><ul>
+<li><code>target_compile_definitions(&lt;target&gt; [PRIVATE|PUBLIC|INTERFACE] [var1 &quot;var2=value&quot; ...])</code><br>定义宏变量,相当于-D传递,也可以传递-D选项<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs cmake"><span class="hljs-keyword">target_compile_definitions</span>(<span class="hljs-keyword">defined</span> PRIVATE ABC <span class="hljs-string">&quot;DEF=$&#123;VAR&#125;&quot;</span>)<br><span class="hljs-keyword">target_compile_definitions</span>(hello PRIVATE -DFOO)<br><span class="hljs-keyword">target_compile_definitions</span>(hello PRIVATE -D FOO)<br></code></pre></td></tr></table></figure></li>
+</ul>
+<h2 id="target-compile-options"><a href="#target-compile-options" class="headerlink" title="target_compile_options"></a>target_compile_options</h2><ul>
+<li>传递编译器参数</li>
+<li><code>target_compile_options(&lt;target&gt; [BEFORE] &lt;INTERFACE|PUBLIC|PRIVATE&gt; [items1...] &lt;INTERFACE|PUBLIC|PRIVATE&gt; [items2...]</code></li>
+</ul>
+<h2 id="target-precompile-headers"><a href="#target-precompile-headers" class="headerlink" title="target_precompile_headers"></a>target_precompile_headers</h2><ul>
+<li>预编译头文件</li>
+<li><code>target_precompile_headers(&lt;target&gt; &lt;INTERFACE|PUBLIC|PRIVATE&gt; [header1...] [&lt;INTERFACE|PUBLIC|PRIVATE&gt; [header2...] ...])</code><br>添加的头文件列表存储在PRECOMPILE_HEADERS属性中,不应该对使用install命令导出的目标执行此操作</li>
+</ul>
+<h1 id="目标的属性"><a href="#目标的属性" class="headerlink" title="目标的属性"></a>目标的属性</h1><ul>
+<li>获取属性值:<code>get_target_property(&lt;var&gt; &lt;target&gt; &lt;property-name&gt;)</code></li>
+<li>设置属性:<code>set_target_properties(&lt;target1&gt; &lt;target2&gt; ...  PROPERTIES &lt;prop1-name&gt; &lt;value1&gt; &lt;prop2-name&gt; &lt;value2&gt; ...)</code>或 <code>set_property(Target &lt;target&gt; PROPERTY &lt;prop-name&gt; &lt;value&gt;)</code></li>
+</ul>
+<h2 id="属性传播"><a href="#属性传播" class="headerlink" title="属性传播"></a>属性传播</h2><ul>
+<li>PRIVATE:设置源目标属性</li>
+<li>INTERFACE:设置使用目标的目标属性</li>
+<li>PUBLIC：设置源目标和使用目标属性<br>当指定 PRIVATE 或 PUBLIC 关键字时，CMake 将在目 标的属性中存储提供的值，COMPILE_DEFINITIONS。此外，关键字是 INTERFACE 或 PUBLIC， 将在具有 INTERFACE_前缀的属性中存储值——INTERFACE_COMPILE_DEFINITIONS。配置阶 段，CMake 将读取源目标的接口属性，并将其内容附加到目标目标。就这样传播属性，或 CMake 所说的传递目标的使用要求。<br>设置属性时需要指定上述关键字，如<code>target_compile_definitions(&lt;source&gt; &lt;INTERFACE|PUBLIC|PRIVATE&gt; [items1...])</code>, <code>target_link_libraries(&lt;target&gt; &lt;PRIVATE|PUBLIC|INTERFACE&gt; &lt;item1&gt; [&lt;PRIVATE|PUBLIC|INTERFACE&gt; &lt;item&gt;...])</code>这个命令也需要传播关键字</li>
+</ul>
+<h2 id="自定义属性的传播"><a href="#自定义属性的传播" class="headerlink" title="自定义属性的传播"></a>自定义属性的传播</h2><p>CMake 默认不会传播自定义属性（这个机制只适用 于内置目标属性），必须明确地将自定义属性添加到“兼容”属性列表中。<br>每个目标都有四个这样的列表：</p>
+<ul>
+<li>COMPATIBLE_INTEERFACE_BOOL</li>
+<li>COMPATIBLE_INTERFACE_STRING</li>
+<li>COMPATIBLE_INTERFACE_NUMBER_MAX</li>
+<li>COMPATIBLE_INTERFACE_NUMBER_MIN<br>将属性添加到它们中的任何一个，都会触发传播和兼容性检查。BOOL 列表将检查所有传递到 目标目标的属性是否评估为相同的布尔值。类似地，STRING 将评估为字符串。NUMBER_MAX 和 NUMBER_MIN 略有不同——传递的值不必匹配，但目标目标将只接收最高或最低值。</li>
+</ul>
+<h3 id="例子"><a href="#例子" class="headerlink" title="例子"></a>例子</h3><figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs cmake"><span class="hljs-keyword">cmake_minimum_required</span>(VERSION <span class="hljs-number">3.26</span>)<br> <span class="hljs-keyword">project</span>(PropagatedProperties CXX)<br><br><span class="hljs-keyword">add_library</span>(source1 empty.cpp)<br><span class="hljs-keyword">set_property</span>(<span class="hljs-keyword">TARGET</span> source1 PROPERTY INTERFACE_LIB_VERSION <span class="hljs-number">4</span>)<br><span class="hljs-keyword">set_property</span>(<span class="hljs-keyword">TARGET</span> source1 APPEND PROPERTY<br>    COMPATIBLE_INTERFACE_STRING LIB_VERSION)<br><br><span class="hljs-keyword">add_library</span>(source2 empty.cpp)<br><span class="hljs-keyword">set_property</span>(<span class="hljs-keyword">TARGET</span> source2 PROPERTY INTERFACE_LIB_VERSION <span class="hljs-number">4</span>)<br><span class="hljs-keyword">add_library</span>(destination empty.cpp)<br><span class="hljs-keyword">target_link_libraries</span>(destination source1 source2)<br></code></pre></td></tr></table></figure>
+<p>CMake 将这个自定义属性传播到相应目标，并检查所有源目标的版本是否完全匹配（兼容性属性只需在目标目标上设置一次）。</p>
+<h1 id="参考连接"><a href="#参考连接" class="headerlink" title="参考连接"></a>参考连接</h1><p><a target="_blank" rel="noopener" href="https://kubasejdak.com/19-reasons-why-cmake-is-actually-awesome">19 reasons why cmake is actually awesome</a><br><a target="_blank" rel="noopener" href="https://cliutils.gitlab.io/modern-cmake/">an introduction to modern cmake</a><br><a target="_blank" rel="noopener" href="https://gist.github.com/mbinna/c61dbb39bca0e4fb7d1f73b0d66a4fd1">effective modern cmake</a><br><a target="_blank" rel="noopener" href="https://github.com/onqtam/awesome-cmake">awesome cmake</a><br><a target="_blank" rel="noopener" href="https://gitlab.kitware.com/cmake/community/wikis/doc/cmake/Useful-Variables">useful variables</a></p>
 <h1 id="CTest"><a href="#CTest" class="headerlink" title="CTest"></a>CTest</h1><p>testing tool(integrated in CMake)</p>
 
                 

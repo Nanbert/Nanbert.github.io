@@ -16,16 +16,16 @@
   <meta name="author" content="Nanbert">
   <meta name="keywords" content="">
   
-    <meta name="description" content="uptime该命令输出如下： 123:51:26 up 21:31, 1 user, load average: 30.02, 26.43, 19.02 该平均负载指标了要运行的任务(进程)数量，包括要在CPU上运行的进程以及在不中断IO(磁盘IO)中阻塞的进程。三个值分别代表了1min，5min,15min的平均值 dmesg操作系统消息日志 free vmstatvmstat [-V] [-n">
+    <meta name="description" content="uptime该命令输出如下： 123:51:26 up 21:31, 1 user, load average: 30.02, 26.43, 19.02 该平均负载指标了要运行的任务(进程)数量，包括要在CPU上运行的进程以及在不中断IO(磁盘IO)中阻塞的进程。三个值分别代表了1min，5min,15min的平均值 dmesg操作系统消息日志 freelinuxtools-free vmstat">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Linux命令_资源性能篇">
 <meta property="og:url" content="http://example.com/2024/04/26/Linux%E5%91%BD%E4%BB%A4-%E8%B5%84%E6%BA%90%E6%80%A7%E8%83%BD%E7%AF%87/index.html">
 <meta property="og:site_name" content="Nanbert&#39;s blog">
-<meta property="og:description" content="uptime该命令输出如下： 123:51:26 up 21:31, 1 user, load average: 30.02, 26.43, 19.02 该平均负载指标了要运行的任务(进程)数量，包括要在CPU上运行的进程以及在不中断IO(磁盘IO)中阻塞的进程。三个值分别代表了1min，5min,15min的平均值 dmesg操作系统消息日志 free vmstatvmstat [-V] [-n">
+<meta property="og:description" content="uptime该命令输出如下： 123:51:26 up 21:31, 1 user, load average: 30.02, 26.43, 19.02 该平均负载指标了要运行的任务(进程)数量，包括要在CPU上运行的进程以及在不中断IO(磁盘IO)中阻塞的进程。三个值分别代表了1min，5min,15min的平均值 dmesg操作系统消息日志 freelinuxtools-free vmstat">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="http://example.com/images/linux_performance.jpeg">
 <meta property="article:published_time" content="2024-04-25T19:52:39.000Z">
-<meta property="article:modified_time" content="2024-06-10T14:23:16.428Z">
+<meta property="article:modified_time" content="2024-08-08T22:24:51.870Z">
 <meta property="article:author" content="Nanbert">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="http://example.com/images/linux_performance.jpeg">
@@ -232,7 +232,7 @@
         
         
         
-          41 分钟
+          40 分钟
         
       </span>
     
@@ -278,7 +278,7 @@
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">23:51:26 up 21:31, 1 user, load average: 30.02, 26.43, 19.02<br></code></pre></td></tr></table></figure>
 <p>该平均负载指标了<strong>要</strong>运行的任务(进程)数量，包括要在CPU上运行的进程以及在不中断IO(磁盘IO)中阻塞的进程。<br>三个值分别代表了1min，5min,15min的平均值</p>
 <h1 id="dmesg"><a href="#dmesg" class="headerlink" title="dmesg"></a>dmesg</h1><p>操作系统消息日志</p>
-<h1 id="free"><a href="#free" class="headerlink" title="free"></a>free</h1><p><img src="https://linuxtools-rst.readthedocs.io/zh-cn/latest/tool/free.html" srcset="/images/loading.gif" lazyload></p>
+<h1 id="free"><a href="#free" class="headerlink" title="free"></a>free</h1><p><a target="_blank" rel="noopener" href="https://linuxtools-rst.readthedocs.io/zh-cn/latest/tool/free.html">linuxtools-free</a></p>
 <h1 id="vmstat"><a href="#vmstat" class="headerlink" title="vmstat"></a>vmstat</h1><p><code>vmstat [-V] [-n] [delay [count]]</code></p>
 <ul>
 <li>-V表示打印出版本信息；</li>
@@ -392,7 +392,124 @@
 <li>%steal 利用Xen等操作系统虚拟化技术，等待其它虚拟CPU计算占用的时间比例；</li>
 <li>%idle CPU空闲时间比例；</li>
 </ul>
-<h3 id="sar-q-1-2"><a href="#sar-q-1-2" class="headerlink" title="sar -q 1 2"></a><code>sar -q 1 2</code></h3><h2 id="cpu平均负载-runq-sz：运行队列的长度（等待运行的进程数）-plist-sz：进程列表中进程（processes）和线程（threads）的数量-ldavg-1：最后1分钟的系统平均负载-ldavg-5：过去5分钟的系统平均负载-ldavg-15：过去15分钟的系统平均负载-sar-r-1-2内存情况-kbmemfree：这个值和free命令中的free值基本一致-所以它不包括buffer和cache的空间-kbmemused：这个值和free命令中的used值基本一致-所以它包括buffer和cache的空间-memused：物理内存使用率，这个值是kbmemused和内存总量-不包括swap-的一个百分比-kbbuffers和kbcached：这两个值就是free命令中的buffer和cache-kbcommit：保证当前系统所需要的内存-即为了确保不溢出而需要的内存-RAM-swap-commit：这个值是kbcommit与内存总量-包括swap-的一个百分比-sar-W-1-2页面交换情况pswpin-s：每秒系统换入的交换页面（swap-page）数量pswpout-s：每秒系统换出的交换页面（swap-page）数量-summary-怀疑CPU存在瓶颈，可用-sar-u-和-sar-q-等来查看-怀疑内存存在瓶颈，可用sar-B、sar-r-和-sar-W-等来查看-怀疑I-O存在瓶颈，可用-sar-b、sar-u-和-sar-d-等来查看-ipcs-ipcs-m-共享内存资源-ipcs-q-队列资源-ipcs-s-信号量资源-ipcs-l-类似于ulimit-列出系统资源限制-修改ipc资源限制修改保存后使用sysctl-p-清除IPC资源-ipcrm-M-shmkey-移除用shmkey创建的共享内存段-ipcrm-m-shmid-移除用shmid标识的共享内存段-ipcrm-Q-msgkey-移除用msqkey创建的消息队列-ipcrm-q-msqid-移除用msqid标识的消息队列-ipcrm-S-semkey-移除用semkey创建的信号-ipcrm-s-semid-移除用semid标识的信号-example-清除当前用户创建的所有的IPC资源-fuser显示所有正在使用着指定file-file-system或sockets的进程信息fuser-m-u-redis-server用来查找所有正在使用redis-server的所有进程的PID以及该进程的OWNERfuser-–k-path-to-your-filename-kill所有正在使用某一指定的file-file-system-or-sockets的进程-top-htop更强大的替换工具-输出信息以上为例子-第一行-09-14-56-：-系统当前时间-264-days-20-56-：-系统开机到现在经过了多少时间-1-users-：-当前2用户在线-load-average-0-02-0-04-0-00：-系统1分钟、5分钟、15分钟的CPU负载信息-Tasks-87-total：很好理解，就是当前有87个任务，也就是87个进程。-1-running：1个进程正在运行-86-sleeping：86个进程睡眠-0-stopped：停止的进程数-0-zombie：僵死的进程数-Cpu-s-0-0-us：用户态进程占用CPU时间百分比，不包含renice值为负的任务占用的CPU的时间。-0-7-sy：内核占用CPU时间百分比-0-0-ni：改变过优先级的进程占用CPU的百分比-99-3-id：空闲CPU时间百分比-0-0-wa：等待I-O的CPU时间百分比-0-0-hi：CPU硬中断时间百分比-0-0-si：CPU软中断时间百分比注：这里显示数据是所有cpu的平均值，如果想看每一个cpu的处理情况，按1即可；折叠，再次按1；-Men：内存-8175320kk-total：物理内存总量-8058868k-used：使用的物理内存量-116452k-free：空闲的物理内存量-283084k-buffers：用作内核缓存的物理内存量-Swap：交换空间-6881272k-total：交换区总量-4010444k-used：使用的交换区量-2870828k-free：空闲的交换区量-4336992k-cached：缓冲交换区总量-进程信息-PID：进程的ID-USER：进程所有者-PR：进程的优先级别，越小越优先被执行-NInice：值-VIRT：进程占用的虚拟内存-RES：进程占用的物理内存-SHR：进程使用的共享内存-S：进程的状态。S表示休眠，R表示正在运行，Z表示僵死状态，N表示该进程优先值为负数-CPU：进程占用CPU的使用率-MEM：进程使用的物理内存和总内存的百分比-TIME-：该进程启动后占用的总的CPU时间，即占用CPU使用时间的累加值。-COMMAND：进程启动命令名称-交互模式-q：退出top命令-：立即刷新-s：设置刷新时间间隔-c：显示命令完全模式-t-：显示或隐藏进程和CPU状态信息-m：显示或隐藏内存状态信息-l：显示或隐藏uptime信息-f：增加或减少进程显示标志-S：累计模式，会把已完成或退出的子进程占用的CPU时间累计到父进程的MITE-P：按-CPU使用率排行-T：按MITE-排行-M：按-MEM排行-u：指定显示用户进程-r：修改进程renice值-kkill：进程-i：只显示正在运行的进程-W：保存对top的设置到文件-toprc，下次启动将自动调用toprc文件的设置。-h：帮助命令。-1-显示各个Cpu信息-example-top-p-pid-显示指定进程信息-支持pid-pid多个进程id"><a href="#cpu平均负载-runq-sz：运行队列的长度（等待运行的进程数）-plist-sz：进程列表中进程（processes）和线程（threads）的数量-ldavg-1：最后1分钟的系统平均负载-ldavg-5：过去5分钟的系统平均负载-ldavg-15：过去15分钟的系统平均负载-sar-r-1-2内存情况-kbmemfree：这个值和free命令中的free值基本一致-所以它不包括buffer和cache的空间-kbmemused：这个值和free命令中的used值基本一致-所以它包括buffer和cache的空间-memused：物理内存使用率，这个值是kbmemused和内存总量-不包括swap-的一个百分比-kbbuffers和kbcached：这两个值就是free命令中的buffer和cache-kbcommit：保证当前系统所需要的内存-即为了确保不溢出而需要的内存-RAM-swap-commit：这个值是kbcommit与内存总量-包括swap-的一个百分比-sar-W-1-2页面交换情况pswpin-s：每秒系统换入的交换页面（swap-page）数量pswpout-s：每秒系统换出的交换页面（swap-page）数量-summary-怀疑CPU存在瓶颈，可用-sar-u-和-sar-q-等来查看-怀疑内存存在瓶颈，可用sar-B、sar-r-和-sar-W-等来查看-怀疑I-O存在瓶颈，可用-sar-b、sar-u-和-sar-d-等来查看-ipcs-ipcs-m-共享内存资源-ipcs-q-队列资源-ipcs-s-信号量资源-ipcs-l-类似于ulimit-列出系统资源限制-修改ipc资源限制修改保存后使用sysctl-p-清除IPC资源-ipcrm-M-shmkey-移除用shmkey创建的共享内存段-ipcrm-m-shmid-移除用shmid标识的共享内存段-ipcrm-Q-msgkey-移除用msqkey创建的消息队列-ipcrm-q-msqid-移除用msqid标识的消息队列-ipcrm-S-semkey-移除用semkey创建的信号-ipcrm-s-semid-移除用semid标识的信号-example-清除当前用户创建的所有的IPC资源-fuser显示所有正在使用着指定file-file-system或sockets的进程信息fuser-m-u-redis-server用来查找所有正在使用redis-server的所有进程的PID以及该进程的OWNERfuser-–k-path-to-your-filename-kill所有正在使用某一指定的file-file-system-or-sockets的进程-top-htop更强大的替换工具-输出信息以上为例子-第一行-09-14-56-：-系统当前时间-264-days-20-56-：-系统开机到现在经过了多少时间-1-users-：-当前2用户在线-load-average-0-02-0-04-0-00：-系统1分钟、5分钟、15分钟的CPU负载信息-Tasks-87-total：很好理解，就是当前有87个任务，也就是87个进程。-1-running：1个进程正在运行-86-sleeping：86个进程睡眠-0-stopped：停止的进程数-0-zombie：僵死的进程数-Cpu-s-0-0-us：用户态进程占用CPU时间百分比，不包含renice值为负的任务占用的CPU的时间。-0-7-sy：内核占用CPU时间百分比-0-0-ni：改变过优先级的进程占用CPU的百分比-99-3-id：空闲CPU时间百分比-0-0-wa：等待I-O的CPU时间百分比-0-0-hi：CPU硬中断时间百分比-0-0-si：CPU软中断时间百分比注：这里显示数据是所有cpu的平均值，如果想看每一个cpu的处理情况，按1即可；折叠，再次按1；-Men：内存-8175320kk-total：物理内存总量-8058868k-used：使用的物理内存量-116452k-free：空闲的物理内存量-283084k-buffers：用作内核缓存的物理内存量-Swap：交换空间-6881272k-total：交换区总量-4010444k-used：使用的交换区量-2870828k-free：空闲的交换区量-4336992k-cached：缓冲交换区总量-进程信息-PID：进程的ID-USER：进程所有者-PR：进程的优先级别，越小越优先被执行-NInice：值-VIRT：进程占用的虚拟内存-RES：进程占用的物理内存-SHR：进程使用的共享内存-S：进程的状态。S表示休眠，R表示正在运行，Z表示僵死状态，N表示该进程优先值为负数-CPU：进程占用CPU的使用率-MEM：进程使用的物理内存和总内存的百分比-TIME-：该进程启动后占用的总的CPU时间，即占用CPU使用时间的累加值。-COMMAND：进程启动命令名称-交互模式-q：退出top命令-：立即刷新-s：设置刷新时间间隔-c：显示命令完全模式-t-：显示或隐藏进程和CPU状态信息-m：显示或隐藏内存状态信息-l：显示或隐藏uptime信息-f：增加或减少进程显示标志-S：累计模式，会把已完成或退出的子进程占用的CPU时间累计到父进程的MITE-P：按-CPU使用率排行-T：按MITE-排行-M：按-MEM排行-u：指定显示用户进程-r：修改进程renice值-kkill：进程-i：只显示正在运行的进程-W：保存对top的设置到文件-toprc，下次启动将自动调用toprc文件的设置。-h：帮助命令。-1-显示各个Cpu信息-example-top-p-pid-显示指定进程信息-支持pid-pid多个进程id" class="headerlink" title="cpu平均负载- runq-sz：运行队列的长度（等待运行的进程数）- plist-sz：进程列表中进程（processes）和线程（threads）的数量- ldavg-1：最后1分钟的系统平均负载 ldavg-5：过去5分钟的系统平均负载- ldavg-15：过去15分钟的系统平均负载### sar -r 1 2内存情况- kbmemfree：这个值和free命令中的free值基本一致,所以它不包括buffer和cache的空间.- kbmemused：这个值和free命令中的used值基本一致,所以它包括buffer和cache的空间.- %memused：物理内存使用率，这个值是kbmemused和内存总量(不包括swap)的一个百分比.- kbbuffers和kbcached：这两个值就是free命令中的buffer和cache.- kbcommit：保证当前系统所需要的内存,即为了确保不溢出而需要的内存(RAM+swap).- %commit：这个值是kbcommit与内存总量(包括swap)的一个百分比.### sar -W 1 2页面交换情况pswpin&#x2F;s：每秒系统换入的交换页面（swap page）数量pswpout&#x2F;s：每秒系统换出的交换页面（swap page）数量### summary- 怀疑CPU存在瓶颈，可用 sar -u 和 sar -q 等来查看- 怀疑内存存在瓶颈，可用sar -B、sar -r 和 sar -W 等来查看- 怀疑I&#x2F;O存在瓶颈，可用 sar -b、sar -u 和 sar -d 等来查看# ipcs- ipcs -m:共享内存资源- ipcs -q:队列资源- ipcs -s:信号量资源- ipcs -l:类似于ulimit,列出系统资源限制## 修改ipc资源限制修改保存后使用sysctl -p## 清除IPC资源- ipcrm -M shmkey  移除用shmkey创建的共享内存段- ipcrm -m shmid    移除用shmid标识的共享内存段- ipcrm -Q msgkey  移除用msqkey创建的消息队列- ipcrm -q msqid  移除用msqid标识的消息队列- ipcrm -S semkey  移除用semkey创建的信号- ipcrm -s semid  移除用semid标识的信号## example- 清除当前用户创建的所有的IPC资源# fuser显示所有正在使用着指定file,file system或sockets的进程信息fuser -m -u redis-server用来查找所有正在使用redis-server的所有进程的PID以及该进程的OWNERfuser –k /path/to/your/filename:kill所有正在使用某一指定的file, file system or sockets的进程# top(htop更强大的替换工具)## 输出信息以上为例子### 第一行- 09:14:56 ： 系统当前时间- 264 days, 20:56 ： 系统开机到现在经过了多少时间- 1 users ： 当前2用户在线- load average: 0.02, 0.04, 0.00： 系统1分钟、5分钟、15分钟的CPU负载信息### Tasks- 87 total：很好理解，就是当前有87个任务，也就是87个进程。- 1 running：1个进程正在运行- 86 sleeping：86个进程睡眠- 0 stopped：停止的进程数- 0 zombie：僵死的进程数### Cpu(s)- 0.0%us：用户态进程占用CPU时间百分比，不包含renice值为负的任务占用的CPU的时间。- 0.7%sy：内核占用CPU时间百分比- 0.0%ni：改变过优先级的进程占用CPU的百分比- 99.3%id：空闲CPU时间百分比- 0.0%wa：等待I&#x2F;O的CPU时间百分比- 0.0%hi：CPU硬中断时间百分比- 0.0%si：CPU软中断时间百分比注：这里显示数据是所有cpu的平均值，如果想看每一个cpu的处理情况，按1即可；折叠，再次按1；### Men：内存- 8175320kk total：物理内存总量- 8058868k used：使用的物理内存量- 116452k free：空闲的物理内存量- 283084k buffers：用作内核缓存的物理内存量### Swap：交换空间- 6881272k total：交换区总量- 4010444k used：使用的交换区量- 2870828k free：空闲的交换区量- 4336992k cached：缓冲交换区总量### 进程信息- PID：进程的ID- USER：进程所有者- PR：进程的优先级别，越小越优先被执行- NInice：值- VIRT：进程占用的虚拟内存- RES：进程占用的物理内存- SHR：进程使用的共享内存- S：进程的状态。S表示休眠，R表示正在运行，Z表示僵死状态，N表示该进程优先值为负数- %CPU：进程占用CPU的使用率- %MEM：进程使用的物理内存和总内存的百分比- TIME+：该进程启动后占用的总的CPU时间，即占用CPU使用时间的累加值。- COMMAND：进程启动命令名称## 交互模式- q：退出top命令- ：立即刷新- s：设置刷新时间间隔- c：显示命令完全模式- t:：显示或隐藏进程和CPU状态信息- m：显示或隐藏内存状态信息- l：显示或隐藏uptime信息- f：增加或减少进程显示标志- S：累计模式，会把已完成或退出的子进程占用的CPU时间累计到父进程的MITE+- P：按%CPU使用率排行- T：按MITE+排行- M：按%MEM排行- u：指定显示用户进程- r：修改进程renice值- kkill：进程- i：只显示正在运行的进程- W：保存对top的设置到文件^&#x2F;.toprc，下次启动将自动调用toprc文件的设置。- h：帮助命令。- 1: 显示各个Cpu信息## example- top -p pid:显示指定进程信息(支持pid,pid多个进程id)"></a>cpu平均负载<br>- runq-sz：运行队列的长度（等待运行的进程数）<br>- plist-sz：进程列表中进程（processes）和线程（threads）的数量<br>- ldavg-1：最后1分钟的系统平均负载 ldavg-5：过去5分钟的系统平均负载<br>- ldavg-15：过去15分钟的系统平均负载<br>### <code>sar -r 1 2</code><br>内存情况<br>- kbmemfree：这个值和free命令中的free值基本一致,所以它不包括buffer和cache的空间.<br>- kbmemused：这个值和free命令中的used值基本一致,所以它包括buffer和cache的空间.<br>- %memused：物理内存使用率，这个值是kbmemused和内存总量(不包括swap)的一个百分比.<br>- kbbuffers和kbcached：这两个值就是free命令中的buffer和cache.<br>- kbcommit：保证当前系统所需要的内存,即为了确保不溢出而需要的内存(RAM+swap).<br>- %commit：这个值是kbcommit与内存总量(包括swap)的一个百分比.<br>### <code>sar -W 1 2</code><br>页面交换情况<br>pswpin&#x2F;s：每秒系统换入的交换页面（swap page）数量<br>pswpout&#x2F;s：每秒系统换出的交换页面（swap page）数量<br>### summary<br>- 怀疑CPU存在瓶颈，可用 sar -u 和 sar -q 等来查看<br>- 怀疑内存存在瓶颈，可用sar -B、sar -r 和 sar -W 等来查看<br>- 怀疑I&#x2F;O存在瓶颈，可用 sar -b、sar -u 和 sar -d 等来查看<br># ipcs<br>- <code>ipcs -m</code>:共享内存资源<br>- <code>ipcs -q</code>:队列资源<br>- <code>ipcs -s</code>:信号量资源<br>- <code>ipcs -l</code>:类似于ulimit,列出系统资源限制<br>## 修改ipc资源限制<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-variable">$cat</span> /etc/sysctl.conf<br><span class="hljs-comment"># 一个消息的最大长度</span><br>kernel.msgmax = 524288<br><br><span class="hljs-comment"># 一个消息队列上的最大字节数</span><br><span class="hljs-comment"># 524288*10</span><br>kernel.msgmnb = 5242880<br><br><span class="hljs-comment">#最大消息队列的个数</span><br>kernel.msgmni=2048<br><br><span class="hljs-comment">#一个共享内存区的最大字节数</span><br>kernel.shmmax = 17179869184<br><br><span class="hljs-comment">#系统范围内最大共享内存标识数</span><br>kernel.shmmni=4096<br><br><span class="hljs-comment">#每个信号灯集的最大信号灯数 系统范围内最大信号灯数 每个信号灯支持的最大操作数 系统范围内最大信号灯集数</span><br><span class="hljs-comment">#此参数为系统默认，可以不用修改</span><br><span class="hljs-comment">#kernel.sem = &lt;semmsl&gt; &lt;semmni&gt;*&lt;semmsl&gt; &lt;semopm&gt; &lt;semmni&gt;</span><br>kernel.sem = 250 32000 32 128<br></code></pre></td></tr></table></figure><br>修改保存后使用sysctl -p<br>## 清除IPC资源<br>- ipcrm -M shmkey  移除用shmkey创建的共享内存段<br>- ipcrm -m shmid    移除用shmid标识的共享内存段<br>- ipcrm -Q msgkey  移除用msqkey创建的消息队列<br>- ipcrm -q msqid  移除用msqid标识的消息队列<br>- ipcrm -S semkey  移除用semkey创建的信号<br>- ipcrm -s semid  移除用semid标识的信号<br>## example<br>- 清除当前用户创建的所有的IPC资源<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs bash">ipcs -q | awk <span class="hljs-string">&#x27;&#123; print &quot;ipcrm -q &quot;$2&#125;&#x27;</span> | sh &gt; /dev/null 2&gt;&amp;1;<br>ipcs -m | awk <span class="hljs-string">&#x27;&#123; print &quot;ipcrm -m &quot;$2&#125;&#x27;</span> | sh &gt; /dev/null 2&gt;&amp;1;<br>ipcs -s | awk <span class="hljs-string">&#x27;&#123; print &quot;ipcrm -s &quot;$2&#125;&#x27;</span> | sh &gt; /dev/null 2&gt;&amp;1;<br></code></pre></td></tr></table></figure><br># fuser<br>显示所有正在使用着指定file,file system或sockets的进程信息<br><code>fuser -m -u redis-server</code>用来查找所有正在使用redis-server的所有进程的PID以及该进程的OWNER<br><code>fuser –k /path/to/your/filename</code>:kill所有正在使用某一指定的file, file system or sockets的进程<br># top(htop更强大的替换工具)<br>## 输出信息<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-variable">$top</span><br>    top - 09:14:56 up 264 days, 20:56,  1 user,  load average: 0.02, 0.04, 0.00<br>    Tasks:  87 total,   1 running,  86 sleeping,   0 stopped,   0 zombie<br>    Cpu(s):  0.0%us,  0.2%sy,  0.0%ni, 99.7%<span class="hljs-built_in">id</span>,  0.0%wa,  0.0%hi,  0.0%si,  0.2%st<br>    Mem:    377672k total,   322332k used,    55340k free,    32592k buffers<br>    Swap:   397308k total,    67192k used,   330116k free,    71900k cached<br>    PID USER      PR  NI  VIRT  RES  SHR S %CPU %MEM    TIME+  COMMAND<br>    1 root      20   0  2856  656  388 S  0.0  0.2   0:49.40 init<br>    2 root      20   0     0    0    0 S  0.0  0.0   0:00.00 kthreadd<br>    3 root      20   0     0    0    0 S  0.0  0.0   7:15.20 ksoftirqd/0<br>    4 root      RT   0     0    0    0 S  0.0  0.0   0:00.00 migration/0<br></code></pre></td></tr></table></figure><br>以上为例子<br>### 第一行<br>- 09:14:56 ： 系统当前时间<br>- 264 days, 20:56 ： 系统开机到现在经过了多少时间<br>- 1 users ： 当前2用户在线<br>- load average: 0.02, 0.04, 0.00： 系统1分钟、5分钟、15分钟的CPU负载信息<br>### Tasks<br>- 87 total：很好理解，就是当前有87个任务，也就是87个进程。<br>- 1 running：1个进程正在运行<br>- 86 sleeping：86个进程睡眠<br>- 0 stopped：停止的进程数<br>- 0 zombie：僵死的进程数<br>### Cpu(s)<br>- 0.0%us：用户态进程占用CPU时间百分比，不包含renice值为负的任务占用的CPU的时间。<br>- 0.7%sy：内核占用CPU时间百分比<br>- 0.0%ni：改变过优先级的进程占用CPU的百分比<br>- 99.3%id：空闲CPU时间百分比<br>- 0.0%wa：等待I&#x2F;O的CPU时间百分比<br>- 0.0%hi：CPU硬中断时间百分比<br>- 0.0%si：CPU软中断时间百分比<br>注：这里显示数据是所有cpu的平均值，如果想看每一个cpu的处理情况，按1即可；折叠，再次按1；<br>### Men：内存<br>- 8175320kk total：物理内存总量<br>- 8058868k used：使用的物理内存量<br>- 116452k free：空闲的物理内存量<br>- 283084k buffers：用作内核缓存的物理内存量<br>### Swap：交换空间<br>- 6881272k total：交换区总量<br>- 4010444k used：使用的交换区量<br>- 2870828k free：空闲的交换区量<br>- 4336992k cached：缓冲交换区总量<br>### 进程信息<br>- PID：进程的ID<br>- USER：进程所有者<br>- PR：进程的优先级别，越小越优先被执行<br>- NInice：值<br>- VIRT：进程占用的虚拟内存<br>- RES：进程占用的物理内存<br>- SHR：进程使用的共享内存<br>- S：进程的状态。S表示休眠，R表示正在运行，Z表示僵死状态，N表示该进程优先值为负数<br>- %CPU：进程占用CPU的使用率<br>- %MEM：进程使用的物理内存和总内存的百分比<br>- TIME+：该进程启动后占用的总的CPU时间，即占用CPU使用时间的累加值。<br>- COMMAND：进程启动命令名称<br>## 交互模式<br>- q：退出top命令<br>- <Space>：立即刷新<br>- s：设置刷新时间间隔<br>- c：显示命令完全模式<br>- t:：显示或隐藏进程和CPU状态信息<br>- m：显示或隐藏内存状态信息<br>- l：显示或隐藏uptime信息<br>- f：增加或减少进程显示标志<br>- S：累计模式，会把已完成或退出的子进程占用的CPU时间累计到父进程的MITE+<br>- P：按%CPU使用率排行<br>- T：按MITE+排行<br>- M：按%MEM排行<br>- u：指定显示用户进程<br>- r：修改进程renice值<br>- kkill：进程<br>- i：只显示正在运行的进程<br>- W：保存对top的设置到文件^&#x2F;.toprc，下次启动将自动调用toprc文件的设置。<br>- h：帮助命令。<br>- 1: 显示各个Cpu信息<br>## example<br>- <code>top -p pid</code>:显示指定进程信息(支持pid,pid多个进程id)</h2><h1 id="查询软硬件信息"><a href="#查询软硬件信息" class="headerlink" title="查询软硬件信息"></a>查询软硬件信息</h1><ul>
+<h3 id="sar-q-1-2"><a href="#sar-q-1-2" class="headerlink" title="sar -q 1 2"></a><code>sar -q 1 2</code></h3><p>cpu平均负载</p>
+<ul>
+<li>runq-sz：运行队列的长度（等待运行的进程数）</li>
+<li>plist-sz：进程列表中进程（processes）和线程（threads）的数量</li>
+<li>ldavg-1：最后1分钟的系统平均负载 ldavg-5：过去5分钟的系统平均负载</li>
+<li>ldavg-15：过去15分钟的系统平均负载</li>
+</ul>
+<h3 id="sar-r-1-2"><a href="#sar-r-1-2" class="headerlink" title="sar -r 1 2"></a><code>sar -r 1 2</code></h3><p>内存情况</p>
+<ul>
+<li>kbmemfree：这个值和free命令中的free值基本一致,所以它不包括buffer和cache的空间.</li>
+<li>kbmemused：这个值和free命令中的used值基本一致,所以它包括buffer和cache的空间.</li>
+<li>%memused：物理内存使用率，这个值是kbmemused和内存总量(不包括swap)的一个百分比.</li>
+<li>kbbuffers和kbcached：这两个值就是free命令中的buffer和cache.</li>
+<li>kbcommit：保证当前系统所需要的内存,即为了确保不溢出而需要的内存(RAM+swap).</li>
+<li>%commit：这个值是kbcommit与内存总量(包括swap)的一个百分比.</li>
+</ul>
+<h3 id="sar-W-1-2"><a href="#sar-W-1-2" class="headerlink" title="sar -W 1 2"></a><code>sar -W 1 2</code></h3><p>页面交换情况<br>pswpin&#x2F;s：每秒系统换入的交换页面（swap page）数量<br>pswpout&#x2F;s：每秒系统换出的交换页面（swap page）数量</p>
+<h3 id="summary"><a href="#summary" class="headerlink" title="summary"></a>summary</h3><ul>
+<li>怀疑CPU存在瓶颈，可用 sar -u 和 sar -q 等来查看</li>
+<li>怀疑内存存在瓶颈，可用sar -B、sar -r 和 sar -W 等来查看</li>
+<li>怀疑I&#x2F;O存在瓶颈，可用 sar -b、sar -u 和 sar -d 等来查看</li>
+</ul>
+<h1 id="ipcs"><a href="#ipcs" class="headerlink" title="ipcs"></a>ipcs</h1><ul>
+<li><code>ipcs -m</code>:共享内存资源</li>
+<li><code>ipcs -q</code>:队列资源</li>
+<li><code>ipcs -s</code>:信号量资源</li>
+<li><code>ipcs -l</code>:类似于ulimit,列出系统资源限制</li>
+</ul>
+<h2 id="修改ipc资源限制"><a href="#修改ipc资源限制" class="headerlink" title="修改ipc资源限制"></a>修改ipc资源限制</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-variable">$cat</span> /etc/sysctl.conf<br><span class="hljs-comment"># 一个消息的最大长度</span><br>kernel.msgmax = 524288<br><br><span class="hljs-comment"># 一个消息队列上的最大字节数</span><br><span class="hljs-comment"># 524288*10</span><br>kernel.msgmnb = 5242880<br><br><span class="hljs-comment">#最大消息队列的个数</span><br>kernel.msgmni=2048<br><br><span class="hljs-comment">#一个共享内存区的最大字节数</span><br>kernel.shmmax = 17179869184<br><br><span class="hljs-comment">#系统范围内最大共享内存标识数</span><br>kernel.shmmni=4096<br><br><span class="hljs-comment">#每个信号灯集的最大信号灯数 系统范围内最大信号灯数 每个信号灯支持的最大操作数 系统范围内最大信号灯集数</span><br><span class="hljs-comment">#此参数为系统默认，可以不用修改</span><br><span class="hljs-comment">#kernel.sem = &lt;semmsl&gt; &lt;semmni&gt;*&lt;semmsl&gt; &lt;semopm&gt; &lt;semmni&gt;</span><br>kernel.sem = 250 32000 32 128<br></code></pre></td></tr></table></figure>
+<p>修改保存后使用sysctl -p</p>
+<h2 id="清除IPC资源"><a href="#清除IPC资源" class="headerlink" title="清除IPC资源"></a>清除IPC资源</h2><ul>
+<li>ipcrm -M shmkey  移除用shmkey创建的共享内存段</li>
+<li>ipcrm -m shmid    移除用shmid标识的共享内存段</li>
+<li>ipcrm -Q msgkey  移除用msqkey创建的消息队列</li>
+<li>ipcrm -q msqid  移除用msqid标识的消息队列</li>
+<li>ipcrm -S semkey  移除用semkey创建的信号</li>
+<li>ipcrm -s semid  移除用semid标识的信号</li>
+</ul>
+<h2 id="example-1"><a href="#example-1" class="headerlink" title="example"></a>example</h2><ul>
+<li>清除当前用户创建的所有的IPC资源<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs bash">ipcs -q | awk <span class="hljs-string">&#x27;&#123; print &quot;ipcrm -q &quot;$2&#125;&#x27;</span> | sh &gt; /dev/null 2&gt;&amp;1;<br>ipcs -m | awk <span class="hljs-string">&#x27;&#123; print &quot;ipcrm -m &quot;$2&#125;&#x27;</span> | sh &gt; /dev/null 2&gt;&amp;1;<br>ipcs -s | awk <span class="hljs-string">&#x27;&#123; print &quot;ipcrm -s &quot;$2&#125;&#x27;</span> | sh &gt; /dev/null 2&gt;&amp;1;<br></code></pre></td></tr></table></figure></li>
+</ul>
+<h1 id="fuser"><a href="#fuser" class="headerlink" title="fuser"></a>fuser</h1><p>显示所有正在使用着指定file,file system或sockets的进程信息<br><code>fuser -m -u redis-server</code>用来查找所有正在使用redis-server的所有进程的PID以及该进程的OWNER<br><code>fuser –k /path/to/your/filename</code>:kill所有正在使用某一指定的file, file system or sockets的进程</p>
+<h1 id="top-htop更强大的替换工具"><a href="#top-htop更强大的替换工具" class="headerlink" title="top(htop更强大的替换工具)"></a>top(htop更强大的替换工具)</h1><h2 id="输出信息-1"><a href="#输出信息-1" class="headerlink" title="输出信息"></a>输出信息</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-variable">$top</span><br>    top - 09:14:56 up 264 days, 20:56,  1 user,  load average: 0.02, 0.04, 0.00<br>    Tasks:  87 total,   1 running,  86 sleeping,   0 stopped,   0 zombie<br>    Cpu(s):  0.0%us,  0.2%sy,  0.0%ni, 99.7%<span class="hljs-built_in">id</span>,  0.0%wa,  0.0%hi,  0.0%si,  0.2%st<br>    Mem:    377672k total,   322332k used,    55340k free,    32592k buffers<br>    Swap:   397308k total,    67192k used,   330116k free,    71900k cached<br>    PID USER      PR  NI  VIRT  RES  SHR S %CPU %MEM    TIME+  COMMAND<br>    1 root      20   0  2856  656  388 S  0.0  0.2   0:49.40 init<br>    2 root      20   0     0    0    0 S  0.0  0.0   0:00.00 kthreadd<br>    3 root      20   0     0    0    0 S  0.0  0.0   7:15.20 ksoftirqd/0<br>    4 root      RT   0     0    0    0 S  0.0  0.0   0:00.00 migration/0<br></code></pre></td></tr></table></figure>
+
+<h3 id="第一行"><a href="#第一行" class="headerlink" title="第一行"></a>第一行</h3><ul>
+<li>09:14:56 ： 系统当前时间</li>
+<li>264 days, 20:56 ： 系统开机到现在经过了多少时间</li>
+<li>1 users ： 当前2用户在线</li>
+<li>load average: 0.02, 0.04, 0.00： 系统1分钟、5分钟、15分钟的CPU负载信息</li>
+</ul>
+<h3 id="Tasks"><a href="#Tasks" class="headerlink" title="Tasks"></a>Tasks</h3><ul>
+<li>87 total：很好理解，就是当前有87个任务，也就是87个进程。</li>
+<li>1 running：1个进程正在运行</li>
+<li>86 sleeping：86个进程睡眠</li>
+<li>0 stopped：停止的进程数</li>
+<li>0 zombie：僵死的进程数</li>
+</ul>
+<h3 id="Cpu-s"><a href="#Cpu-s" class="headerlink" title="Cpu(s)"></a>Cpu(s)</h3><ul>
+<li>0.0%us：用户态进程占用CPU时间百分比，不包含renice值为负的任务占用的CPU的时间。</li>
+<li>0.7%sy：内核占用CPU时间百分比</li>
+<li>0.0%ni：改变过优先级的进程占用CPU的百分比</li>
+<li>99.3%id：空闲CPU时间百分比</li>
+<li>0.0%wa：等待I&#x2F;O的CPU时间百分比</li>
+<li>0.0%hi：CPU硬中断时间百分比</li>
+<li>0.0%si：CPU软中断时间百分比<br>注：这里显示数据是所有cpu的平均值，如果想看每一个cpu的处理情况，按1即可；折叠，再次按1；</li>
+</ul>
+<h3 id="Men：内存"><a href="#Men：内存" class="headerlink" title="Men：内存"></a>Men：内存</h3><ul>
+<li>8175320kk total：物理内存总量</li>
+<li>8058868k used：使用的物理内存量</li>
+<li>116452k free：空闲的物理内存量</li>
+<li>283084k buffers：用作内核缓存的物理内存量</li>
+</ul>
+<h3 id="Swap：交换空间"><a href="#Swap：交换空间" class="headerlink" title="Swap：交换空间"></a>Swap：交换空间</h3><ul>
+<li>6881272k total：交换区总量</li>
+<li>4010444k used：使用的交换区量</li>
+<li>2870828k free：空闲的交换区量</li>
+<li>4336992k cached：缓冲交换区总量</li>
+</ul>
+<h3 id="进程信息"><a href="#进程信息" class="headerlink" title="进程信息"></a>进程信息</h3><ul>
+<li>PID：进程的ID</li>
+<li>USER：进程所有者</li>
+<li>PR：进程的优先级别，越小越优先被执行</li>
+<li>NInice：值</li>
+<li>VIRT：进程占用的虚拟内存</li>
+<li>RES：进程占用的物理内存</li>
+<li>SHR：进程使用的共享内存</li>
+<li>S：进程的状态。S表示休眠，R表示正在运行，Z表示僵死状态，N表示该进程优先值为负数</li>
+<li>%CPU：进程占用CPU的使用率</li>
+<li>%MEM：进程使用的物理内存和总内存的百分比</li>
+<li>TIME+：该进程启动后占用的总的CPU时间，即占用CPU使用时间的累加值。</li>
+<li>COMMAND：进程启动命令名称</li>
+</ul>
+<h2 id="交互模式"><a href="#交互模式" class="headerlink" title="交互模式"></a>交互模式</h2><ul>
+<li>q：退出top命令</li>
+<li><Space>：立即刷新</li>
+<li>s：设置刷新时间间隔</li>
+<li>c：显示命令完全模式</li>
+<li>t:：显示或隐藏进程和CPU状态信息</li>
+<li>m：显示或隐藏内存状态信息</li>
+<li>l：显示或隐藏uptime信息</li>
+<li>f：增加或减少进程显示标志</li>
+<li>S：累计模式，会把已完成或退出的子进程占用的CPU时间累计到父进程的MITE+</li>
+<li>P：按%CPU使用率排行</li>
+<li>T：按MITE+排行</li>
+<li>M：按%MEM排行</li>
+<li>u：指定显示用户进程</li>
+<li>r：修改进程renice值</li>
+<li>kkill：进程</li>
+<li>i：只显示正在运行的进程</li>
+<li>W：保存对top的设置到文件^&#x2F;.toprc，下次启动将自动调用toprc文件的设置。</li>
+<li>h：帮助命令。</li>
+<li>1: 显示各个Cpu信息</li>
+</ul>
+<h2 id="example-2"><a href="#example-2" class="headerlink" title="example"></a>example</h2><ul>
+<li><code>top -p pid</code>:显示指定进程信息(支持pid,pid多个进程id)</li>
+<li></li>
+</ul>
+<h1 id="查询软硬件信息"><a href="#查询软硬件信息" class="headerlink" title="查询软硬件信息"></a>查询软硬件信息</h1><ul>
 <li><code>uname -a</code>,<code>lsb_release -a</code>linux系统版本</li>
 <li><code>more /etc/release</code>操作系统版本</li>
 <li><code>neofetch</code>系统概览</li>
@@ -437,7 +554,7 @@
 <li>REG: 常规文件</li>
 </ol>
 <h3 id="FD"><a href="#FD" class="headerlink" title="FD"></a>FD</h3><p>FD 文件描述符号以及访问类型<br>1)cwd：表示current work dirctory，即：应用程序的当前工作目录，这是该应用程序启动的目录，除非它本身对这个目录进行更改<br>2)txt ：该类型的文件是程序代码，如应用程序二进制文件本身或共享库，如上列表中显示的 &#x2F;sbin&#x2F;init 程序<br>3)lnn：library references (AIX);<br>4)er：FD information error (see NAME column);<br>5)jld：jail directory (FreeBSD);<br>6)ltx：shared library text (code and data);<br>7)mxx ：hex memory-mapped type number xx.<br>8)m86：DOS Merge mapped file;<br>9)mem：memory-mapped file;<br>10)mmap：memory-mapped device;<br>11)pd：parent directory;<br>12)rtd：root directory;<br>13)tr：kernel trace file (OpenBSD);<br>14)v86  VP&#x2F;ix mapped file;<br>15)0：表示标准输入<br>16)1：表示标准输出<br>17)2：表示标准错误<br>一般在标准输出、标准错误、标准输入后还跟着文件状态模式：r、w、u等<br>1)u：表示该文件被打开并处于读取&#x2F;写入模式<br>2)r：表示该文件被打开并处于只读模式<br>3)w：表示该文件被打开并处于<br>4)空格：表示该文件的状态模式为unknow，且没有锁定<br>5)-：表示该文件的状态模式为unknow，且被锁定<br>同时在文件状态模式后面，还跟着相关的锁<br>1)N：for a Solaris NFS lock of unknown type;<br>2)r：for read lock on part of the file;<br>3)R：for a read lock on the entire file;<br>4)w：for a write lock on part of the file;文件的部分写锁)<br>5)W：for a write lock on the entire file;整个文件的写锁)<br>6)u：for a read and write lock of any length;<br>7)U：for a lock of unknown type;<br>8)x：for an SCO OpenServer Xenix lock on part      of the file;<br>9)X：for an SCO OpenServer Xenix lock on the      entire file;<br>10)space：if there is no lock.</p>
-<h2 id="example-1"><a href="#example-1" class="headerlink" title="example"></a>example</h2><ul>
+<h2 id="example-3"><a href="#example-3" class="headerlink" title="example"></a>example</h2><ul>
 <li><code>lsof -a -p $$ -d 0,1,2</code>显示当前进程0,1,2的文件描述符信息,信息含义如下:</li>
 <li><code>lsof -i tcp</code>:列出所有tcp网络连接信息</li>
 <li><code>lsof - i :3306</code>:列出谁在使用某个端口</li>
@@ -489,12 +606,12 @@
 <li>T 停止 traced or stopped</li>
 <li>Z 僵死 a defunct (”zombie”) process</li>
 </ul>
-<h3 id="example-2"><a href="#example-2" class="headerlink" title="example"></a>example</h3><ul>
+<h3 id="example-4"><a href="#example-4" class="headerlink" title="example"></a>example</h3><ul>
 <li><code>ps -ef</code>:显示所有进程信息，连同命令行</li>
 <li><code>ps aux</code>:列出目前所有的正在内存中的程序</li>
 </ul>
 <h1 id="strace"><a href="#strace" class="headerlink" title="strace"></a>strace</h1><p>strace常用来跟踪进程执行时的系统调用和所接收的信号</p>
-<h2 id="输出信息-1"><a href="#输出信息-1" class="headerlink" title="输出信息"></a>输出信息</h2><p>每一行都是一条系统调用，等号左边是系统调用的函数名及其参数，右边是该调用的返回值。</p>
+<h2 id="输出信息-2"><a href="#输出信息-2" class="headerlink" title="输出信息"></a>输出信息</h2><p>每一行都是一条系统调用，等号左边是系统调用的函数名及其参数，右边是该调用的返回值。</p>
 <h2 id="参数-1"><a href="#参数-1" class="headerlink" title="参数"></a>参数</h2><ul>
 <li>-c 统计每一系统调用的所执行的时间,次数和出错的次数等.</li>
 <li>-d 输出strace关于标准错误的调试信息.</li>
@@ -533,8 +650,7 @@
 <li>-e raw&#x3D;<set> 将指定的系统调用的参数以十六进制显示.</li>
 <li>-e signal&#x3D;<set> 指定跟踪的系统信号.默认为all.如 signal&#x3D;!SIGIO(或者signal&#x3D;!io),表示不跟踪SIGIO信号.<br>-e read&#x3D;<set> 输出从指定文件中读出 的数据.例如:<br>  -e read&#x3D;3,5.从文件描述符3,5读出的系统调用<br>  -e write&#x3D;<set></li>
 </ul>
-<h2 id="example-3"><a href="#example-3" class="headerlink" title="example"></a>example</h2><p><code>strace -o output.txt -T -tt -e trace=all -p 28979</code><br><code>strace -p &lt;process-pid&gt;</code>:实时输出程序的系统调用<br><code>strace -f -F -o ~/straceout.txt myserver</code>:跟踪可执行程序</p>
-<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><p><a target="_blank" rel="noopener" href="https://jeremyxu2010.github.io/2019/12/60%E7%A7%92%E5%AE%8C%E6%88%90linux%E7%B3%BB%E7%BB%9F%E7%9A%84%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90%E8%AF%91/"></a></p>
+<h2 id="example-5"><a href="#example-5" class="headerlink" title="example"></a>example</h2><p><code>strace -o output.txt -T -tt -e trace=all -p 28979</code><br><code>strace -p &lt;process-pid&gt;</code>:实时输出程序的系统调用<br><code>strace -f -F -o ~/straceout.txt myserver</code>:跟踪可执行程序</p>
 
                 
               </div>
