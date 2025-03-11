@@ -64,7 +64,7 @@ gdm进不去,重装gtk,gdm,gnome,xorg,gnome相关的全部删除
 9.yay包降级
 在wiki上找到那个包,在右边点击View Changes,选择想要的版本,点击下载,然后进入下载的解压缩文件,输入命令makepkg,sudo pacman -U xx.tar*
 10.自动挂载手机
-安装`gvfs-mtp`和`gvfs-gphoto2`
+安装`gvfs-mtp(安卓)\gvfs-afc(iphone)`和`gvfs-gphoto2`
 11.gnome的压缩软件->file-roller
 12.lantern缺少的依赖->'libappindicator-gtk2/3'
 13.ubuntu虚拟机安装增强功能需要`build-essential gcc make perl linux-image-xx-generic`
