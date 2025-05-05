@@ -16,16 +16,16 @@
   <meta name="author" content="Nanbert">
   <meta name="keywords" content="">
   
-    <meta name="description" content="1.cat命令    选项 说明    -A 用$表示每行的结尾,^I表示tab空格字符(是个判别空格和tab的方法)   -n 显示行号   -s 对于连续空行,只保留一行   cat用例cat &lt;&lt; END接下来直到END之间的内容cat &gt; foo.txt快捷新建foo.txt并输入内容,以ctrl-D结束cat &lt;&lt;&lt; filename打印filenam">
+    <meta name="description" content="1. cat命令   选项 说明    -A 用$表示每行的结尾,^I表示tab空格字符(是个判别空格和tab的方法)   -n 显示行号   -s 对于连续空行,只保留一行   1.1 cat用例cat &lt;&lt; END接下来直到END之间的内容cat &gt; foo.txt快捷新建foo.txt并输入内容,以ctrl-D结束cat &lt;&lt;&lt; filename打印fil">
 <meta property="og:type" content="article">
 <meta property="og:title" content="文本处理瑞士军刀--小而强悍">
 <meta property="og:url" content="http://example.com/2020/11/21/%E6%96%87%E6%9C%AC%E5%A4%84%E7%90%86%E7%91%9E%E5%A3%AB%E5%86%9B%E5%88%80-%E5%B0%8F%E8%80%8C%E5%BC%BA%E6%82%8D/index.html">
 <meta property="og:site_name" content="Nanbert&#39;s blog">
-<meta property="og:description" content="1.cat命令    选项 说明    -A 用$表示每行的结尾,^I表示tab空格字符(是个判别空格和tab的方法)   -n 显示行号   -s 对于连续空行,只保留一行   cat用例cat &lt;&lt; END接下来直到END之间的内容cat &gt; foo.txt快捷新建foo.txt并输入内容,以ctrl-D结束cat &lt;&lt;&lt; filename打印filenam">
+<meta property="og:description" content="1. cat命令   选项 说明    -A 用$表示每行的结尾,^I表示tab空格字符(是个判别空格和tab的方法)   -n 显示行号   -s 对于连续空行,只保留一行   1.1 cat用例cat &lt;&lt; END接下来直到END之间的内容cat &gt; foo.txt快捷新建foo.txt并输入内容,以ctrl-D结束cat &lt;&lt;&lt; filename打印fil">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="http://example.com/images/knifes.jpg">
 <meta property="article:published_time" content="2020-11-21T09:50:14.000Z">
-<meta property="article:modified_time" content="2024-04-28T19:41:43.627Z">
+<meta property="article:modified_time" content="2025-03-08T10:05:32.761Z">
 <meta property="article:author" content="Nanbert">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="http://example.com/images/knifes.jpg">
@@ -221,7 +221,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          1.2k 字
+          1.4k 字
         
       </span>
     
@@ -232,7 +232,7 @@
         
         
         
-          11 分钟
+          12 分钟
         
       </span>
     
@@ -274,8 +274,7 @@
             
               <div class="markdown-body">
                 
-                <p><font size=4><strong>1.cat命令</strong></font></p>
-<table>
+                <h1 id="1-cat命令"><a href="#1-cat命令" class="headerlink" title="1. cat命令"></a>1. cat命令</h1><table>
 <thead>
 <tr>
 <th align="center">选项</th>
@@ -295,8 +294,8 @@
 <td align="center">对于连续空行,只保留一行</td>
 </tr>
 </tbody></table>
-<p><strong>cat用例</strong><br><code>cat &lt;&lt; END</code>接下来直到END之间的内容<br><code>cat &gt; foo.txt</code>快捷新建foo.txt并输入内容,以ctrl-D结束<br><code>cat &lt;&lt;&lt; filename</code>打印filename这个单词<br><font size=4><strong>2.sort命令</strong></font></p>
-<table>
+<h2 id="1-1-cat用例"><a href="#1-1-cat用例" class="headerlink" title="1.1 cat用例"></a>1.1 cat用例</h2><p><code>cat &lt;&lt; END</code>接下来直到END之间的内容<br><code>cat &gt; foo.txt</code>快捷新建foo.txt并输入内容,以ctrl-D结束<br><code>cat &lt;&lt;&lt; filename</code>打印filename这个单词</p>
+<h1 id="2-sort命令"><a href="#2-sort命令" class="headerlink" title="2. sort命令"></a>2. sort命令</h1><table>
 <thead>
 <tr>
 <th align="center">选项</th>
@@ -332,10 +331,12 @@
 <td align="center">去除比较相等的行,即便行内容不相等,如果比较结果相等(如只从第二个字符比较)改行也会被去除,</td>
 </tr>
 </tbody></table>
-<p><strong>-key选项的魅力</strong><br><code>sort -k 1,1 -k 2n foo.txt</code>先按第一个字段按字符串排序,如果第一字段相等,再2n表示第二个字段用数值排序,n和sort选项一样表示数值排序,同样还可以指定b(忽略开头的空格),r(逆向排序)<br>考虑系列文本字段,如何以日期的格式降序排序呢</p>
+<h2 id="2-1-key选项的魅力"><a href="#2-1-key选项的魅力" class="headerlink" title="2.1 -key选项的魅力"></a>2.1 -key选项的魅力</h2><p><code>sort -k 1,1 -k 2n foo.txt</code>先按第一个字段按字符串排序,如果第一字段相等,再2n表示第二个字段用数值排序,n和sort选项一样表示数值排序,同样还可以指定b(忽略开头的空格),r(逆向排序)<br>考虑系列文本字段,如何以日期的格式降序排序呢</p>
 <figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">10</span>/<span class="hljs-number">30</span>/<span class="hljs-number">2008</span><br><span class="hljs-attribute">11</span>/<span class="hljs-number">25</span>/<span class="hljs-number">2008</span><br><span class="hljs-attribute">06</span>/<span class="hljs-number">19</span>/<span class="hljs-number">2008</span><br></code></pre></td></tr></table></figure>
 
-<p>简单用如下命令:<br><code>sort -k 1.7nbr -k 1.1nbr -k 1.4nbr xx.txt</code>表示先从第一个字段第7个字符开始进行排序,如果相等,再比较第一个字符开始的第一个字段开始排序,再者第四个字符开始排序<br><strong>sort用例</strong><br><code>sort &gt; foo.txt</code>同cat一样只不过对你输入的内容进行排序,也是ctrl-d结束<br><code>sort file1.txt file2.txt file3.txt &gt; final_sorted.txt</code>对多个文件进行排序<br><font size=4><strong>3.unique命令</strong></font><br>unique命令只能删除排好序的行,即是它只判断连续相等的行</p>
+<p>简单用如下命令:<br><code>sort -k 1.7nbr -k 1.1nbr -k 1.4nbr xx.txt</code>表示先从第一个字段第7个字符开始进行排序,如果相等,再比较第一个字符开始的第一个字段开始排序,再者第四个字符开始排序</p>
+<h2 id="2-2-sort用例"><a href="#2-2-sort用例" class="headerlink" title="2.2 sort用例"></a>2.2 sort用例</h2><p><code>sort &gt; foo.txt</code>同cat一样只不过对你输入的内容进行排序,也是ctrl-d结束<br><code>sort file1.txt file2.txt file3.txt &gt; final_sorted.txt</code>对多个文件进行排序</p>
+<h1 id="3-unique命令"><a href="#3-unique命令" class="headerlink" title="3. unique命令"></a>3. unique命令</h1><p>unique命令只能删除排好序的行,即是它只判断连续相等的行</p>
 <table>
 <thead>
 <tr>
@@ -368,7 +369,7 @@
 <td align="center">只输出独有的文本,默认选项</td>
 </tr>
 </tbody></table>
-<p><font size=4><strong>4.cut命令</strong></font><br>cut 程序被用来从文本行 抽取文本，并把其输出到标准输出。能够接受多个文件参数或标准输入</p>
+<h1 id="4-cut命令"><a href="#4-cut命令" class="headerlink" title="4. cut命令"></a>4. cut命令</h1><p>cut 程序被用来从文本行 抽取文本，并把其输出到标准输出。能够接受多个文件参数或标准输入</p>
 <table>
 <thead>
 <tr>
@@ -397,10 +398,94 @@
 <td align="center">抽取整个文本行，除了那些由-c或-f选项指定的文本</td>
 </tr>
 </tbody></table>
-<p>选项中各个list列表格式如下:<br>N     从第1个开始数的第N个字节、字符或域<br>N-    从第N个开始到所在行结束的所有字符、字节或域<br>N-M   从第N个开始到第M个之间(包括第M个)的所有字符、字节或域<br>-M    从第1个开始到第M个之间(包括第M个)的所有字符、字节或域<br><font size=4><strong>4.paste命令</strong></font><br>格式:<code>paste [file1] [file2]</code>,在file1每行后添加file2中对应行内容,默认使用制表符分割两个文件的内容,可以用-d选项指定分割符<br><font size=4><strong>5.join命令</strong></font><br>与paste类似,但是它对文件有一个要求,每个文件对应行,都有相同的字段(默认为空白分割符),效果如下图:</p>
+<p>选项中各个list列表格式如下:<br>N     从第1个开始数的第N个字节、字符或域<br>N-    从第N个开始到所在行结束的所有字符、字节或域<br>N-M   从第N个开始到第M个之间(包括第M个)的所有字符、字节或域<br>-M    从第1个开始到第M个之间(包括第M个)的所有字符、字节或域</p>
+<h1 id="5-paste命令"><a href="#5-paste命令" class="headerlink" title="5. paste命令"></a>5. paste命令</h1><p>格式:<code>paste [file1] [file2]</code>,在file1每行后添加file2中对应行内容,默认使用制表符分割两个文件的内容,可以用-d选项指定分割符</p>
+<h1 id="6-join命令"><a href="#6-join命令" class="headerlink" title="6. join命令"></a>6. join命令</h1><p>与paste类似,但是它对文件有一个要求,每个文件对应行,都有相同的字段(默认为空白分割符),效果如下图:</p>
 <p>|A文本|B文本|结果|<br>|John 20|John man|John 20 man|<br>|May 15|May woman|May 15 woman|<br>|Mike 33|Mike man|Mike 33 man|</p>
-<p>各种设置有待研究<br><font size=4><strong>6.comm命令</strong></font><br>comm比较两个文本文件,会产生三列输出,第一列包含第一个文件独有的文本行,第二列包含第二个文本行独有的,第三列,两个文本共有的,-n选项会隐藏第n列的内容,n只有三个数字选择1,2,3<br><font size=4><strong>7.diff命令</strong></font><br>格式:<code>diff &lt;options&gt; [old file] [new file]</code><br>diff默认输出如何使第一个文件变成第二个文件<br>常用选项-c,-u选项<br><font size=4><strong>8.patch命令</strong></font><br>patch程序被用来把更改应用到文本文件中。它接受从diff程序的输出,并且通常被用来把较老的文件转变为较新的文件,注意不一定要指定文件名,因为diff信息中已经有了文件信息</p>
-<h2 id="9-tr命令"><a href="#9-tr命令" class="headerlink" title="9.tr命令"></a>9.tr命令</h2><p>选项:<code>tr [选项] [set1] [set2]</code><br>tr用来更改字符(只能从标准输出中接受数据),把一个字母换成另一个字母<br>set1,set2是下列选项之一:<br>1.一个枚举列表,例如:ABSCKAL<br>2.一个字符域:A-Z,a-z<br>3.POSIX字符类:[:upper:]<br><font color=#FF0000>注意:</font>set1和set2字符集长度相同,一对一,但是,也有多对一,把所有符合字符换成同一个字符<br><strong>tr例子</strong><br>1.<code>tr -d &#39;\r&#39; dos_file &gt; unix_file</code>把dos_file的换行符删除<br>2.<code>echo &quot;aabbbbccc&quot; | tr -s ab</code>挤压重复字符,这个结果为”abccc”<br>但如果是<code>echo &quot;abcabcabc&quot; | tr -s ab</code>结果不变<br>3.<code>seq 1 2 9 | paste -sd,</code>paste的神奇用法</p>
+<p>各种设置有待研究</p>
+<h1 id="7-comm命令"><a href="#7-comm命令" class="headerlink" title="7. comm命令"></a>7. comm命令</h1><p>comm比较两个文本文件,会产生三列输出,第一列包含第一个文件独有的文本行,第二列包含第二个文本行独有的,第三列,两个文本共有的,-n选项会隐藏第n列的内容,n只有三个数字选择1,2,3</p>
+<h1 id="8-diff命令"><a href="#8-diff命令" class="headerlink" title="8. diff命令"></a>8. diff命令</h1><p>格式:<code>diff &lt;options&gt; [old file] [new file]</code><br>diff默认输出如何使第一个文件变成第二个文件<br>常用选项-c,-u选项</p>
+<h1 id="10-patch命令"><a href="#10-patch命令" class="headerlink" title="10. patch命令"></a>10. patch命令</h1><p>patch程序被用来把更改应用到文本文件中。它接受从diff程序的输出,并且通常被用来把较老的文件转变为较新的文件,注意不一定要指定文件名,因为diff信息中已经有了文件信息</p>
+<h1 id="11-tr命令"><a href="#11-tr命令" class="headerlink" title="11. tr命令"></a>11. tr命令</h1><p>选项:<code>tr [选项] [set1] [set2]</code><br>tr用来更改字符(只能从标准输出中接受数据),把一个字母换成另一个字母<br>set1,set2是下列选项之一:</p>
+<ol>
+<li>一个枚举列表,例如:ABSCKAL</li>
+<li>一个字符域:A-Z,a-z</li>
+<li>POSIX字符类:[:upper:]<br><font color=#FF0000>注意:set1和set2字符集长度相同,一对一,但是,也有多对一,把所有符合字符换成同一个字符</li>
+</ol>
+<h2 id="11-1-tr例子"><a href="#11-1-tr例子" class="headerlink" title="11.1 tr例子"></a>11.1 tr例子</h2><p>1.<code>tr -d &#39;\r&#39; dos_file &gt; unix_file</code>把dos_file的换行符删除<br>2.<code>echo &quot;aabbbbccc&quot; | tr -s ab</code>挤压重复字符,这个结果为”abccc”<br>但如果是<code>echo &quot;abcabcabc&quot; | tr -s ab</code>结果不变<br>3.<code>seq 1 2 9 | paste -sd,</code>paste的神奇用法</p>
+<h1 id="12-expand"><a href="#12-expand" class="headerlink" title="12. expand"></a>12. expand</h1><ul>
+<li><code>expand [选项] [文件]</code></li>
+<li>将文件中的制表符（Tab）替换为空格</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th align="center">选项</th>
+<th align="center">描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center"><code>-t NUM</code></td>
+<td align="center">指定每个制表符替换为<code>NUM</code>个空格</td>
+</tr>
+<tr>
+<td align="center"><code>-t LIST</code></td>
+<td align="center">自定义制表符位置（例如<code>-t 2,4,8</code>表示在第 2、4、8 列设置制表符）。</td>
+</tr>
+<tr>
+<td align="center"><code>-i</code></td>
+<td align="center">仅替换行首的制表符(忽略行中的制表符)</td>
+</tr>
+<tr>
+<td align="center"><code>--help</code></td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center"><code>--version</code></td>
+<td align="center"></td>
+</tr>
+</tbody></table>
+<h1 id="13-unexpand"><a href="#13-unexpand" class="headerlink" title="13. unexpand"></a>13. unexpand</h1><p>expand的相反命令</p>
+<h1 id="14-split"><a href="#14-split" class="headerlink" title="14. split"></a>14. split</h1><ul>
+<li><code>split [选项] [输入文件] [输出文件前缀]</code></li>
+<li>用于将大文件拆分</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th align="center">选项</th>
+<th align="center">功能说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center"><code>-b SIZE</code></td>
+<td align="center">按大小分割文件（例如<code>-b</code>100M 表示每部分 100MB）</td>
+</tr>
+<tr>
+<td align="center"><code>-l NUM</code></td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center"><code>-a LENGTH</code></td>
+<td align="center">指定后缀长度（例如<code>-a 3</code>表示使用 3 位字母后缀，如<code>xaaa、xaab</code>）</td>
+</tr>
+<tr>
+<td align="center"><code>-d</code></td>
+<td align="center">使用数字后缀而非字母</td>
+</tr>
+<tr>
+<td align="center"><code>--verbose</code></td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center"><code>--help</code></td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center"><code>--version</code></td>
+<td align="center"></td>
+</tr>
+</tbody></table>
 
                 
               </div>
