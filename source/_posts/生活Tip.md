@@ -178,3 +178,5 @@ banner_img: /images/enjoyLife.jpg
 - ![p1](/images/sheBao1.jpg) 
 - ![p2](/images/sheBao2.jpg) 
 - ![p3](/images/sheBao3.jpg) 
+# 消灭小飞虫
+白醋一次性杯子1/4左右，洗洁精2/4,搅拌均匀，放一个地方。
